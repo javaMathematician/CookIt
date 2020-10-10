@@ -9,7 +9,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/appBarToolBarColor"
         android:minHeight="?attr/actionBarSize"
@@ -32,20 +32,20 @@
         tools:ignore="RtlSymmetry" />
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_dark_rounded"
+        android:clickable="true"
+        android:focusable="true"
         android:inputType="textPersonName"
         android:text="@string/searchPrompt"
-        android:layout_margin="5dp"
-
-        app:layout_constraintCircleRadius="40dp"
-        app:queryBackground="@drawable/bg_dark_rounded"
-        app:submitBackground="@drawable/bg_dark_rounded"
-        android:background="@drawable/bg_dark_rounded"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:queryBackground="@drawable/bg_dark_rounded"
+        app:submitBackground="@drawable/bg_dark_rounded" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
@@ -65,7 +65,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_view"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="130dp"
                 android:layout_margin="10dp"
                 android:onClick="cardClicked"
                 android:padding="100dp"
@@ -74,17 +74,44 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/cardViewText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:textColor="@color/cardTextColor"
-                    android:textSize="30sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="RtlSymmetry" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="6dp"
+                        android:background="@drawable/round_outline"
+                        android:scaleType="fitStart"
+                        android:visibility="visible"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:id="@+id/cardViewText"
+                        android:layout_width="237dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/app_name"
+                        android:textColor="@color/cardTextColor"
+                        android:textSize="30sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:background="@android:color/white"/>
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
