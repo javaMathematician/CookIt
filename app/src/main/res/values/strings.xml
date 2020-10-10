@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Рецепты</string>
+    <string name="searchPrompt">Искать</string>
+</resources>
