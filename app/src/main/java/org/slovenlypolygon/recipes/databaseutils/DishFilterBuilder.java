@@ -45,8 +45,18 @@ public class DishFilterBuilder {
         return dishList;
     }
 
+    private String joinList(String delimiter, List<String> list) {
+        StringBuilder builder = new StringBuilder();
+
+        for (String string : list) {
+            builder.append(string).append(delimiter);
+        }
+
+        return builder.substring(0, builder.length() - delimiter.length());
+    }
+
     private boolean listContains(List<String> requiredList, List<String> allOfDishList) {
-        String allOfDishString = String.join(", ", allOfDishList).toLowerCase().trim();
+        String allOfDishString = joinList(", ", allOfDishList).toLowerCase().trim();
 
         for (String required : requiredList) {
             if (!allOfDishString.contains(required.toLowerCase().trim())) {
