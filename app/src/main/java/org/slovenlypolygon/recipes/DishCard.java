@@ -23,8 +23,7 @@ public class DishCard extends CardView {
         int layoutMargin = Converters.fromDPToPixels(context, 10);
         int padding = Converters.fromDPToPixels(context, 100);
 
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT, layoutHeight);
+        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, layoutHeight);
 
         params.setMargins(layoutMargin, layoutMargin, layoutMargin, layoutMargin);
         params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
@@ -32,7 +31,7 @@ public class DishCard extends CardView {
 
         cardView.setLayoutParams(params);
         cardView.setPadding(padding, padding, padding, padding);
-        cardView.setCardBackgroundColor(R.color.cardBackgroundColor);
+        cardView.setCardBackgroundColor(R.color.searchViewColorWhite);
         cardView.setRadius(Converters.fromDPToPixels(context, 6));
     }
 }

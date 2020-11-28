@@ -1,9 +1,10 @@
 package org.slovenlypolygon.recipes;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import org.slovenlypolygon.recipes.databaseutils.Dish;
@@ -24,13 +25,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        getSupportActionBar().hide();
+
         toolbar = findViewById(R.id.toolbar);
         searchView = findViewById(R.id.searchView);
         topTextViewOnToolbar = findViewById(R.id.topTextViewOnToolbar);
         allDishesCardHolder = findViewById(R.id.allDishesCardHolder);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-        getSupportActionBar().hide();
         CardGenerator generator = new CardGenerator(getResources().openRawResource(R.raw.all_dishes));
 
         try {

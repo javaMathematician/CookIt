@@ -12,7 +12,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/appBarToolBarColor"
+            android:background="#FF8A80"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
@@ -22,14 +22,13 @@
             android:id="@+id/topTextViewOnToolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
             android:text="@string/app_name"
             android:textColor="@color/topTextColor"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="RtlSymmetry"/>
+            app:layout_constraintEnd_toEndOf="parent"/>
     <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
@@ -63,7 +62,7 @@
                     android:layout_height="130dp"
                     android:layout_margin="10dp"
                     android:padding="100dp"
-                    app:cardBackgroundColor="@color/cardBackgroundColor"
+                    app:cardBackgroundColor="@color/cardBackgroundColorDark"
                     app:cardCornerRadius="6dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">

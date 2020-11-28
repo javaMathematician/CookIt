@@ -2,10 +2,11 @@
 <resources>
     <color name="colorAccent">#C6C6C6</color>
     <color name="colorPrimary">#2B2B2B</color>
-    <color name="topTextColor">#CCDCEA</color>
+    <color name="topTextColor">#6F7275</color>
     <color name="cardTextColor">#EEEEEE</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="appBarToolBarColor">#1BC6B4</color>
-    <color name="cardBackgroundColor">#333537</color>
+    <color name="cardBackgroundColorDark">#333537</color>
+    <color name="searchViewColorWhite">#EFEFEE</color>
     <color name="commonAppDarkBackgroundColor">#1B1B1B</color>
 </resources>
