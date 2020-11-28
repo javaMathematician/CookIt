@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
-        searchView.
         CardGenerator generator = new CardGenerator(getResources().openRawResource(R.raw.all_dishes));
 
         try {
