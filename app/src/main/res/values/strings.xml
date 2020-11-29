@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Рецепты</string>
     <string name="searchPrompt">Искать</string>
+    <string name="todo">TODO</string>
 </resources>
