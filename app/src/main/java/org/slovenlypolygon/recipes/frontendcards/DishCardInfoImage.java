@@ -1,6 +1,8 @@
 package org.slovenlypolygon.recipes.frontendcards;
 
 import android.content.Context;
+import android.view.Gravity;
+
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -19,8 +21,9 @@ public class DishCardInfoImage extends AppCompatImageView {
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, MATCH_PARENT);
         layoutParams.setMargins(margin, margin, margin, margin);
 
+
         this.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.round_outline));
-        this.setScaleType(ScaleType.FIT_START);
+        this.setScaleType(ScaleType.FIT_CENTER);
         this.setImageResource(android.R.drawable.ic_menu_compass);
     }
 }

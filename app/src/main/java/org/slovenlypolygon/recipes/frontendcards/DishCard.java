@@ -2,6 +2,9 @@ package org.slovenlypolygon.recipes.frontendcards;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Path;
+import android.view.Gravity;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -34,7 +37,6 @@ public class DishCard extends CardView {
         this.setPadding(padding, padding, padding, padding);
         this.setCardBackgroundColor(ContextCompat.getColor(context, R.color.cardBackgroundColorDark));
         this.setRadius(Converters.fromDP(context, 6));
-
         this.addView(new DishCardInfoLinearLayout(context, dish));
     }
 }
