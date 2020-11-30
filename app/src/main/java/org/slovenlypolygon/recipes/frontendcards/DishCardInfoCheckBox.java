@@ -14,7 +14,7 @@ public class DishCardInfoCheckBox extends AppCompatCheckBox {
         super(context);
 
         this.setLayoutParams(new FrameLayout.LayoutParams(Converters.fromDP(context, 75), WRAP_CONTENT, Gravity.CENTER));
-        //this.setBackgroundTintList(ContextCompat.getColorStateList(context, android.R.color.white)); // TODO: 30.11.2020 FIX COLOR
+        this.setButtonTintList(ContextCompat.getColorStateList(context, android.R.color.white));
         this.setScaleX(2);
         this.setScaleY(2);
     }

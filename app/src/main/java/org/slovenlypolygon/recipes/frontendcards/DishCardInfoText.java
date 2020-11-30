@@ -26,8 +26,8 @@ public class DishCardInfoText extends AppCompatTextView {
         layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
         layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
 
+        this.setLayoutParams(layoutParams);
         this.setWidth(Converters.fromDP(context, 220));
-
         this.setText(dishName);
         this.setTextAlignment(TEXT_ALIGNMENT_TEXT_START);
         this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);

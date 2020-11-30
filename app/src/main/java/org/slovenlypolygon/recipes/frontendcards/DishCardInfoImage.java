@@ -19,9 +19,9 @@ public class DishCardInfoImage extends AppCompatImageView {
         int margin = Converters.fromDP(context, 6);
 
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, MATCH_PARENT);
-        layoutParams.setMargins(margin, margin, margin, margin);
+        layoutParams.setMargins(margin * 10, margin, margin, margin);
 
-
+        this.setLayoutParams(layoutParams);
         this.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.round_outline));
         this.setScaleType(ScaleType.FIT_CENTER);
         this.setImageResource(android.R.drawable.ic_menu_compass);
