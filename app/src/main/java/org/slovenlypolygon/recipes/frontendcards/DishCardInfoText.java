@@ -3,14 +3,12 @@ package org.slovenlypolygon.recipes.frontendcards;
 import android.content.Context;
 import android.util.TypedValue;
 import android.view.Gravity;
-
+import android.widget.LinearLayout;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.utils.Converters;
 
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class DishCardInfoText extends AppCompatTextView {
     public DishCardInfoText(Context context, String dishName) {
@@ -21,15 +19,12 @@ public class DishCardInfoText extends AppCompatTextView {
             dishName = dishName.replaceAll("(^«|»$)", "");
         }
 
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(Converters.fromDP(context, 220), WRAP_CONTENT);
-        layoutParams.bottomToBottom = R.id.toolbar;
-        layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, MATCH_PARENT);
+        layoutParams.weight = 2;
 
         this.setLayoutParams(layoutParams);
-        this.setWidth(Converters.fromDP(context, 220));
         this.setText(dishName);
-        this.setTextAlignment(TEXT_ALIGNMENT_TEXT_START);
+        this.setGravity(Gravity.CENTER_VERTICAL);
         this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         this.setTextColor(ContextCompat.getColor(context, R.color.cardTextColor));
     }
