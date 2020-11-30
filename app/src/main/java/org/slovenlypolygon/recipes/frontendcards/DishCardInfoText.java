@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.TypedValue;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.utils.Converters;
 
@@ -23,9 +24,9 @@ public class DishCardInfoText extends AppCompatTextView {
         layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
         layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
 
-        this.setTextAlignment(TEXT_ALIGNMENT_TEXT_START);
-        this.setTextColor(R.color.cardTextColor);
-        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
         this.setText(dishName);
+        this.setTextAlignment(TEXT_ALIGNMENT_TEXT_START);
+        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        this.setTextColor(ContextCompat.getColor(context, R.color.cardTextColor));
     }
 }
