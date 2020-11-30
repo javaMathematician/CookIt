@@ -1,0 +1,31 @@
+package org.slovenlypolygon.recipes.frontendcards;
+
+import android.content.Context;
+import android.util.TypedValue;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.utils.Converters;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
+public class DishCardInfoText extends AppCompatTextView {
+    public DishCardInfoText(Context context, String dishName) {
+        super(context);
+
+        // заменяет только кавычки тех блюд, которые стоят в них целиком. то есть "<<наполеон>>" заменит, а "торт <<наполеон>>" — нет
+        if (dishName.startsWith("«") && dishName.endsWith("»")) {
+            dishName = dishName.replaceAll("(^«|»$)", "");
+        }
+
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(Converters.fromDP(context, 220), WRAP_CONTENT);
+        layoutParams.bottomToBottom = R.id.toolbar;
+        layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+
+        this.setTextAlignment(TEXT_ALIGNMENT_TEXT_START);
+        this.setTextColor(R.color.cardTextColor);
+        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        this.setText(dishName);
+    }
+}

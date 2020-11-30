@@ -1,19 +1,19 @@
 package org.slovenlypolygon.recipes;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.*;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import org.slovenlypolygon.recipes.databaseutils.Dish;
+import org.slovenlypolygon.recipes.frontendcards.DishCard;
 
 import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private int counter = 0;
+    private final int counter = 0;
     private Toolbar toolbar;
     private List<Dish> dishes;
     private SearchView searchView;
