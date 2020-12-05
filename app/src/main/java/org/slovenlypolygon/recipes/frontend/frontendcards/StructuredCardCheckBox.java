@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.frontendcards;
+package org.slovenlypolygon.recipes.frontend.frontendcards;
 
 import android.content.Context;
 import android.widget.LinearLayout;
@@ -8,8 +8,8 @@ import org.slovenlypolygon.recipes.R;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public class DishCardInfoCheckBox extends AppCompatCheckBox {
-    public DishCardInfoCheckBox(Context context) {
+public class StructuredCardCheckBox extends AppCompatCheckBox {
+    public StructuredCardCheckBox(Context context) {
         super(context);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, MATCH_PARENT);

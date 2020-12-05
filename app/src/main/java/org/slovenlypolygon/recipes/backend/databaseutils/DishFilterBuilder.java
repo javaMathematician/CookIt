@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.databaseutils;
+package org.slovenlypolygon.recipes.backend.databaseutils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,18 +45,14 @@ public class DishFilterBuilder {
         return dishList;
     }
 
-    private String joinList(String delimiter, List<String> list) {
+    private boolean listContains(List<String> requiredList, List<String> allOfDishList) {
         StringBuilder builder = new StringBuilder();
 
-        for (String string : list) {
-            builder.append(string).append(delimiter);
+        for (String string : allOfDishList) {
+            builder.append(string).append(", ");
         }
 
-        return builder.substring(0, builder.length() - delimiter.length());
-    }
-
-    private boolean listContains(List<String> requiredList, List<String> allOfDishList) {
-        String allOfDishString = joinList(", ", allOfDishList).toLowerCase().trim();
+        String allOfDishString = builder.substring(0, builder.length() - ", ".length()).toLowerCase().trim();
 
         for (String required : requiredList) {
             if (!allOfDishString.contains(required.toLowerCase().trim())) {

@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.utils;
+package org.slovenlypolygon.recipes.backend.utils;
 
 import android.content.Context;
 import android.util.TypedValue;

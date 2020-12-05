@@ -1,26 +1,42 @@
-package org.slovenlypolygon.recipes.frontendcards;
+package org.slovenlypolygon.recipes.frontend.frontendcards;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.databaseutils.Dish;
-import org.slovenlypolygon.recipes.utils.Converters;
+import org.slovenlypolygon.recipes.backend.utils.Converters;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-@SuppressLint("ViewConstructor")
-public class DishCard extends CardView {
-//    private String tag;
-//    private Dish dish;
+public class StructuredCard extends CardView {
+    private String imageURL;
+    private String text;
+    private Context context;
 
-    public DishCard(@NonNull Context context, Dish dish, int index) {
+    public StructuredCard(@NonNull Context context) {
         super(context);
-//        tag = "CardView" + index;
-//        this.dish = dish;
+        this.context = context;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setCardText(String text) {
+        this.text = text;
+    }
+
+    public void makeContent() {
         int height = Converters.fromDP(context, 130);
         int margin = Converters.fromDP(context, 8);
 
@@ -32,6 +48,12 @@ public class DishCard extends CardView {
         this.setLayoutParams(cardParams);
         this.setCardBackgroundColor(ContextCompat.getColor(context, R.color.cardBackgroundColorDark));
         this.setRadius(Converters.fromDP(context, 6));
-        this.addView(new DishCardInfoLinearLayout(context, dish));
+
+        StructuredCardLinearLayout child = new StructuredCardLinearLayout(context);
+        child.setImageURL(imageURL);
+        child.setLinearLayoutText(text);
+        child.makeContent();
+
+        this.addView(child);
     }
 }

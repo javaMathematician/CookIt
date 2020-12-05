@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.databaseutils;
+package org.slovenlypolygon.recipes.backend.databaseutils;
 
 import com.google.gson.annotations.SerializedName;
 
