@@ -3,7 +3,6 @@ package org.slovenlypolygon.recipes.backend.backendcards;
 import android.content.Context;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.Dish;
-import org.slovenlypolygon.recipes.frontend.frontendcards.StructuredCard;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,25 +36,8 @@ public class CardsFromIngredients {
         }
     }
 
-    public List<StructuredCard> getCards() throws IOException {
-        List<StructuredCard> views = new ArrayList<>(2000);
-
-        Map<String, String> distinctIngredients = getDistinctIngredients();
-
-        for (Map.Entry<String, String> entry : distinctIngredients.entrySet()) {
-            StructuredCard child = new StructuredCard(context);
-            child.setCardText(entry.getKey());
-            child.setImageURL(entry.getValue());
-            child.makeContent();
-
-            views.add(child);
-        }
-
-        return views;
-    }
-
     private Map<String, String> getDistinctIngredients() throws IOException {
-        Map<String, String> map = new HashMap<>(2000);
+        Map<String, String> map = new TreeMap<>();
 
         for (Dish dish : generator.getAll()) {
             map.putAll(cleanIngredients(dish.getRecipeIngredients()));
@@ -64,8 +46,8 @@ public class CardsFromIngredients {
         return map;
     }
 
-    private Map<String, String> cleanIngredients(List<String> dirty) throws IOException {
-        Map<String, String> cleaned = new HashMap<>(15);
+    private Map<String, String> cleanIngredients(List<String> dirty) {
+        Map<String, String> cleaned = new TreeMap<>();
 
         Pattern pattern = Pattern.compile("([\\d]+)|([—]{3})");
         Matcher matcher;
@@ -74,6 +56,7 @@ public class CardsFromIngredients {
             ingredient = ingredient
                     .replace("по вкусу", "")
                     .replace("щепотка", "")
+                    .replace("свежий", "")
                     .trim();
 
             matcher = pattern.matcher(ingredient);

@@ -78,7 +78,7 @@ public class Dish implements Serializable {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || Dish.class != o.getClass()) {
             return false;
         }
 
