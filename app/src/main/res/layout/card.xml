@@ -6,44 +6,44 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="130dp"
-    app:cardElevation="8dp"
     android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:layout_marginTop="7dp"
+    android:layout_marginRight="10dp"
     android:layout_marginBottom="7dp"
-    app:cardBackgroundColor="@color/cardBackgroundColorDark"
+    app:cardBackgroundColor="@color/lightThemeBackgroundCardColor"
     app:cardCornerRadius="9dp"
+    app:cardElevation="8dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout
-      android:background="@color/cardBackgroundColorDark"
-      android:orientation="horizontal"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/darkThemeBackgroundCardColor"
+        android:orientation="horizontal">
 
         <ImageView
-          android:layout_margin="12dp"
-          android:id="@+id/card_image"
-          android:layout_width="0dp"
-          android:layout_weight="1"
-          android:layout_height="match_parent"
-          android:src="@android:color/white"/>
+            android:id="@+id/card_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="12dp"
+            android:layout_weight="1"
+            android:src="@android:color/white" />
 
         <TextView
-          android:layout_weight="2"
-          android:layout_width="0dp"
-          android:gravity="center_vertical"
-          android:textSize="15sp"
-          android:layout_height="match_parent"
-          android:text="ultralongultralongultralongultralongultralongultralongultralong"
-          android:textColor="@color/cardTextColor"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:text="ultralongultralongultralongultralongultralongultralongultralong"
+            android:textColor="@color/darkThemeTextColor"
+            android:textSize="15sp" />
 
         <CheckBox
-          android:layout_weight="0.4"
-          android:gravity="center"
-          android:layout_width="0dp"
-          android:layout_height="match_parent"
-          android:buttonTint="@color/cardTextColor"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:buttonTint="@color/darkThemeTextColor"
+            android:gravity="center" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
