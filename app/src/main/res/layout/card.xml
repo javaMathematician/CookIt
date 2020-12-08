@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/card_view"
-  android:layout_width="match_parent"
-  android:layout_height="130dp"
-  android:layout_margin="8dp">
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    app:cardElevation="8dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="7dp"
+    android:layout_marginBottom="7dp"
+    app:cardBackgroundColor="@color/cardBackgroundColorDark"
+    app:cardCornerRadius="9dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout
       android:background="@color/cardBackgroundColorDark"
@@ -13,7 +23,7 @@
       android:layout_height="match_parent">
 
         <ImageView
-          android:layout_margin="8dp"
+          android:layout_margin="12dp"
           android:id="@+id/card_image"
           android:layout_width="0dp"
           android:layout_weight="1"
