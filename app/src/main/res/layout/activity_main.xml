@@ -1,86 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="@color/commonAppDarkBackgroundColor"
-  tools:context=".MainActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/commonAppDarkBackgroundColor"
+    tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
-      android:id="@+id/toolbar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="@drawable/bg_orange_rounded"
-      android:minHeight="?attr/actionBarSize"
-      android:theme="?attr/actionBarTheme"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/appBarToolBarColor"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-      android:id="@+id/topTextViewOnToolbar"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/app_name"
-      android:textColor="@color/topTextColor"
-      android:textSize="30sp"
-      app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"/>
+        android:id="@+id/topTextViewOnToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-thin"
+        android:layout_marginLeft="12dp"
+        android:text="@string/app_name"
+        android:textAlignment="textStart"
+        android:textColor="@color/topTextColor"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.SearchView
-      android:id="@+id/searchView"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="8dp"
-      android:background="@drawable/bg_dark_rounded"
-      android:clickable="true"
-      android:focusable="true"
-      android:inputType="textPersonName"
-      android:text="@string/searchPrompt"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/toolbar"
-      app:queryBackground="@drawable/bg_dark_rounded"
-      app:submitBackground="@drawable/bg_dark_rounded">
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_dark_rounded"
+        android:backgroundTint="@color/cardBackgroundColorDark"
+        android:clickable="true"
+        android:focusable="true"
+        android:inputType="textPersonName"
+        android:text="@string/searchPrompt"
+        app:theme="@style/SearchViewStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:queryBackground="@drawable/bg_dark_rounded"
+        app:submitBackground="@color/searchViewColorWhite"/>
 
-    </androidx.appcompat.widget.SearchView>
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:layout_constraintBottom_toTopOf="@+id/changeView">
 
-    <FrameLayout
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/searchView"
-      app:layout_constraintBottom_toTopOf="@+id/changeView"
-      android:layout_marginTop="8dp"
-      android:layout_width="0dp"
-      android:layout_height="0dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/allDishesCardHolder">
 
-        <ScrollView
-          android:id="@+id/scrollView2"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                app:cardElevation="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                app:cardBackgroundColor="@color/cardBackgroundColorDark"
+                app:cardCornerRadius="9dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:id="@+id/allDishesCardHolder">
-            </LinearLayout>
-        </ScrollView>
-    </FrameLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="12dp"
+                        android:layout_weight="1"
+                        android:src="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:text="ultralongultralongultralongultralongultralongultralongultralong"
+                        android:textColor="@color/cardTextColor"
+                        android:textSize="15sp" />
+
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:buttonTint="@color/searchViewColorWhite"
+                        android:backgroundTint="@color/searchViewColorWhite"
+                        android:gravity="center" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
-      android:id="@+id/changeView"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintBottom_toBottomOf="parent"
-      android:layout_margin="0dp"
-      android:padding="0dp"
-      android:text="К рецептам">
-    </androidx.appcompat.widget.AppCompatButton>
+        android:id="@+id/changeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/bg_dark_rounded"
+        android:backgroundTint="#4b5f4b"
+        android:padding="0dp"
+        android:text="К рецептам"
+        android:textColor="@color/searchViewColorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:queryBackground="@drawable/bg_dark_rounded" />
 </androidx.constraintlayout.widget.ConstraintLayout>

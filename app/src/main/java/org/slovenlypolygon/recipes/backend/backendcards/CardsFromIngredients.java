@@ -4,6 +4,7 @@ import android.content.Context;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.Dish;
 
+import java.util.Collection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;

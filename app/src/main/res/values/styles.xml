@@ -1,9 +1,16 @@
 <resources>
 
     <style name="AppTheme"
-           parent="Theme.AppCompat.Light.DarkActionBar">
+        parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ButtonSeach">
+        <item name="android:colorBackground">@drawable/button_round_corners</item>
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:editTextColor">#EEEEEE</item>
     </style>
 </resources>
