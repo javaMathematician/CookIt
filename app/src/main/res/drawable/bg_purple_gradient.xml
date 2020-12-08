@@ -3,9 +3,9 @@
     <solid android:color="@color/appBarToolBarColor"/>
     <gradient
       android:type="linear"
-      android:endColor="@color/appBarToolBarColor"
-      android:startColor="#DD0000"
-      android:angle="45.0"/>
+      android:startColor="#623AA2"
+      android:endColor="#ED5A79"
+      android:angle="45.9"/>
 
     <padding
       android:bottom="0dp"
