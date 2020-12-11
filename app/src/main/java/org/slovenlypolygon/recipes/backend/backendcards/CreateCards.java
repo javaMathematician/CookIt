@@ -22,11 +22,11 @@ public class CreateCards {
         for (int i = 0; i < textInCards.size(); i++) {
             CardView generated = (CardView) inflater.inflate(R.layout.card, allDishesCardHolder, false);
 
-            TextView textOnCard = (TextView) generated.findViewById(R.id.textOnCard);
+            TextView textOnCard = generated.findViewById(R.id.textOnCard);
             textOnCard.setText(textInCards.get(i));
             textOnCard.setTypeface(customFont);
 
-            ImageView imageOnCard = (ImageView) generated.findViewById(R.id.imageOnCard);
+            ImageView imageOnCard = generated.findViewById(R.id.imageOnCard);
 
             allDishesCardHolder.addView(generated);
         }

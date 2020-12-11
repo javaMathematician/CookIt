@@ -6,11 +6,9 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-
 import org.slovenlypolygon.recipes.backend.backendcards.CardsFromIngredients;
 import org.slovenlypolygon.recipes.backend.backendcards.CreateCards;
 import org.slovenlypolygon.recipes.backend.databaseutils.Dish;
@@ -51,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         cardsFromIngredients.setPhotoMapper(getResources().openRawResource(R.raw.ingredient_photo_map));
 
         Map<String, String> ingredients = new TreeMap<>();
+
         try {
             ingredients = cardsFromIngredients.getIngredientsMap();
         } catch (IOException e) {
@@ -62,6 +61,5 @@ public class MainActivity extends AppCompatActivity {
         changeView.setTypeface(customFont);
 
         createCards = new CreateCards(ingredients, allDishesCardHolder, customFont, inflater);
-
     }
 }
