@@ -9,25 +9,24 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import org.slovenlypolygon.recipes.backend.backendcards.CardsFromIngredients;
-import org.slovenlypolygon.recipes.backend.backendcards.CreateCards;
+import androidx.cardview.widget.CardView;
+import org.slovenlypolygon.recipes.backend.backendcards.Generator;
+import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.Dish;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private List<Dish> dishes;
-    private SearchView searchView;
-    private TextView topTextViewOnToolbar;
     private Button changeView;
-    private LinearLayout allDishesCardHolder;
+    private Generator generator;
+    private Typeface customFont;
+    private SearchView searchView;
     private LayoutInflater inflater;
-    private CreateCards createCards;
+    private List<CardView> generated;
+    private TextView topTextViewOnToolbar;
+    private LinearLayout allDishesCardHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        toolbar = findViewById(R.id.toolbar);
         searchView = findViewById(R.id.searchView);
         allDishesCardHolder = findViewById(R.id.allDishesCardHolder);
         topTextViewOnToolbar = findViewById(R.id.topTextViewOnToolbar);
@@ -44,22 +42,23 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnClickListener(v -> searchView.setIconified(false));
         inflater = LayoutInflater.from(this);
 
-        CardsFromIngredients cardsFromIngredients = new CardsFromIngredients(this);
-        cardsFromIngredients.setDishList(getResources().openRawResource(R.raw.all_dishes));
-        cardsFromIngredients.setPhotoMapper(getResources().openRawResource(R.raw.ingredient_photo_map));
-
-        Map<String, String> ingredients = new TreeMap<>();
+        customFont = Typeface.createFromAsset(getAssets(), "fonts/17651.ttf");
+        topTextViewOnToolbar.setTypeface(customFont);
+        changeView.setTypeface(customFont);
+        generator = new Generator(inflater);
 
         try {
-            ingredients = cardsFromIngredients.getIngredientsMap();
+            generator.setIngredientURLMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.urls)));
+            generator.setDirtyToCleanedMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
+            generator.setCustomFont(customFont);
+            generator.setRoot(allDishesCardHolder);
+            generated = generator.generate();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/17651.ttf");
-        topTextViewOnToolbar.setTypeface(customFont);
-        changeView.setTypeface(customFont);
-
-        createCards = new CreateCards(ingredients, allDishesCardHolder, customFont, inflater);
+        for (CardView cardView : generated) {
+            allDishesCardHolder.addView(cardView);
+        }
     }
 }

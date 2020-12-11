@@ -16,7 +16,7 @@ public class Deserializer {
         return Arrays.asList(new Gson().fromJson(FileReader.readAll(stream), Dish[].class));
     }
 
-    public static Map<String, String> deserializeIngredientPhotoMapper(InputStream stream) throws IOException {
+    public static Map<String, String> deserializeMap(InputStream stream) throws IOException {
         return new Gson().fromJson(FileReader.readAll(stream), new TypeToken<Map<String, String>>() {}.getType());
     }
 }

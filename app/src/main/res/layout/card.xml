@@ -6,12 +6,12 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="147dp"
-    android:layout_marginLeft="10dp"
+    android:layout_marginLeft="8dp"
     android:layout_marginBottom="10dp"
-    android:layout_marginRight="10dp"
+    android:layout_marginRight="8dp"
     app:cardBackgroundColor="@color/darkThemeBackgroundCardColor"
-    app:cardCornerRadius="9dp"
-    app:cardElevation="8dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
@@ -25,6 +25,7 @@
             android:id="@+id/imageOnCard"
             android:layout_width="15dp"
             android:layout_height="120dp"
+            android:minWidth="15dp"
             android:layout_margin="12dp"
             android:layout_weight="1"
             android:layout_gravity="center"
@@ -36,15 +37,14 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center_vertical"
-            android:text="ultralongultralongultralongultralongultralongultralongultralong"
             android:textColor="@color/darkThemeTextColor"
-            android:textSize="15sp" />
+            android:textSize="18sp" />
 
         <CheckBox
             android:id="@+id/checkBoxOnCard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.4"
+            android:layout_weight=".5"
             android:buttonTint="@color/darkThemeTextColor"
             android:gravity="center" />
     </LinearLayout>
