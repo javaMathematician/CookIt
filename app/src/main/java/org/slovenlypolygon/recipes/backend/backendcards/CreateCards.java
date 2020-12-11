@@ -15,15 +15,11 @@ import java.util.Map;
 
 public class CreateCards {
     public CreateCards(Map<String, String> cards, LinearLayout allDishesCardHolder, Typeface customFont, LayoutInflater inflater) {
-
-        ArrayList<String> textInCards = new ArrayList<>(cards.keySet());
-        ArrayList<String> imagesInCards = new ArrayList<>(cards.values());
-
-        for (int i = 0; i < textInCards.size(); i++) {
+        for (String textInCard : cards.keySet()) {
             CardView generated = (CardView) inflater.inflate(R.layout.card, allDishesCardHolder, false);
 
             TextView textOnCard = generated.findViewById(R.id.textOnCard);
-            textOnCard.setText(textInCards.get(i));
+            textOnCard.setText(textInCard);
             textOnCard.setTypeface(customFont);
 
             ImageView imageOnCard = generated.findViewById(R.id.imageOnCard);

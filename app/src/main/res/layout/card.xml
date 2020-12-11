@@ -5,9 +5,9 @@
 
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="151dp"
+    android:layout_height="150dp"
     android:layout_marginLeft="10dp"
-    android:layout_marginTop="7dp"
+    android:layout_marginTop="5dp"
     android:layout_marginRight="10dp"
     app:cardBackgroundColor="@color/darkThemeBackgroundCardColor"
     app:cardCornerRadius="9dp"
@@ -24,7 +24,7 @@
         <ImageView
             android:id="@+id/imageOnCard"
             android:layout_width="15dp"
-            android:layout_height="118dp"
+            android:layout_height="120dp"
             android:layout_margin="12dp"
             android:layout_weight="1"
             android:layout_gravity="center"
