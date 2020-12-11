@@ -37,6 +37,12 @@ public class CardsFromIngredients {
         }
     }
 
+    public Map<String, String> getIngredientsMap() throws IOException {
+        Map<String, String> map = new TreeMap<>();
+        map = getDistinctIngredients();
+        return map;
+    }
+
     private Map<String, String> getDistinctIngredients() throws IOException {
         Map<String, String> map = new TreeMap<>();
 
