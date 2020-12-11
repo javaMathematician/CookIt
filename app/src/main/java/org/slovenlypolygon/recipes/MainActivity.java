@@ -8,11 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import org.slovenlypolygon.recipes.backend.backendcards.Generator;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
-import org.slovenlypolygon.recipes.backend.databaseutils.Dish;
 
 import java.io.IOException;
 import java.util.List;
