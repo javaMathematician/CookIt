@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
         topTextViewOnToolbar.setTypeface(customFont);
         changeView.setTypeface(customFont);
         generator = new Generator(inflater);
+        searchView.setIconifiedByDefault(false); //Смена цвета лупы в поисковой строке
+        ImageView searchHintIcon = (ImageView) searchView.findViewById(R.id.search_mag_icon);
+        searchHintIcon.setImageResource(R.drawable.ic_baseline_search_24);
 
         try {
             generator.setIngredientURLMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.urls)));

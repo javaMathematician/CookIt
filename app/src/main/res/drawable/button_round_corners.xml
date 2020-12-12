@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <corners>
+            <corners tools:ignore="ExtraText">
                 android:radius="100dp"
             </corners>
 
         </shape>
+        <color android:color="@android:color/white">
+
+        </color>
     </item>
 </selector>
