@@ -107,13 +107,14 @@
         app:queryBackground="@drawable/bg_dark_rounded" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:clickable="true"
-      android:layout_margin="8dp"
-      app:srcCompat="@drawable/close_icon"
-      android:id="@+id/floatingActionButton"
-      app:layout_constraintEnd_toEndOf="@+id/frameLayout"
-      app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
-      android:focusable="true"/>
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@color/cardview_dark_background"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout"
+        app:srcCompat="@drawable/up_arrow" />
 </androidx.constraintlayout.widget.ConstraintLayout>

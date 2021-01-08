@@ -51,7 +51,9 @@ public class Generator {
 
             URL url = null;
 
-            generate.setOnClickListener(v -> checkBox.setChecked(!checkBox.isChecked()));
+            generate.setOnClickListener(v -> {
+                checkBox.setChecked(!checkBox.isChecked());
+            });
             textOnCard.setText(textInCard);
             textOnCard.setTypeface(customFont);
 
