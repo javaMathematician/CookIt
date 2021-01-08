@@ -4,11 +4,14 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.slovenlypolygon.recipes.backend.backendcards.Generator;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 
@@ -22,23 +25,23 @@ public class MainActivity extends AppCompatActivity {
     private ScrollView scrollView;
     private LayoutInflater inflater;
     private TextView topTextViewOnToolbar;
-    private ImageButton scrollToTopButton;
     private LinearLayout allDishesCardHolder;
+    private FloatingActionButton scrollToTopButton;
 
     private void initializeVariables() {
         inflater = LayoutInflater.from(this);
         changeView = findViewById(R.id.changeView);
         searchView = findViewById(R.id.searchView);
         scrollView = findViewById(R.id.scrollView);
-        scrollToTopButton = findViewById(R.id.scrollToTopButton);
+        scrollToTopButton = findViewById(R.id.floatingActionButton);
         allDishesCardHolder = findViewById(R.id.allDishesCardHolder);
         topTextViewOnToolbar = findViewById(R.id.topTextViewOnToolbar);
         searchView.setOnClickListener(v -> searchView.setIconified(false));
 
         customFont = Typeface.createFromAsset(getAssets(), "fonts/17651.ttf");
-        scrollToTopButton.setVisibility(View.INVISIBLE);
         topTextViewOnToolbar.setTypeface(customFont);
         changeView.setTypeface(customFont);
+        scrollToTopButton.hide();
     }
 
     private void generateCards() {
@@ -69,20 +72,11 @@ public class MainActivity extends AppCompatActivity {
         generateCards();
 
         scrollToTopButton.setOnClickListener(t -> scrollView.smoothScrollTo(0, 0));
-
         scrollView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (oldScrollY - scrollY < 0 && scrollY > 2000) {
-                if (scrollToTopButton.getVisibility() == View.INVISIBLE) {
-                    scrollToTopButton.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
-                }
-
-                scrollToTopButton.setVisibility(View.VISIBLE);
+                scrollToTopButton.show();
             } else {
-                if (scrollToTopButton.getVisibility() == View.VISIBLE) {
-                    scrollToTopButton.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out));
-                }
-
-                scrollToTopButton.setVisibility(View.INVISIBLE);
+                scrollToTopButton.hide();
             }
         });
     }

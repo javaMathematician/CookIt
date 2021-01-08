@@ -106,13 +106,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:queryBackground="@drawable/bg_dark_rounded" />
 
-    <ImageButton
-      android:background="@android:color/black"
-      android:layout_width="64dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:clickable="true"
       android:layout_margin="8dp"
-      android:layout_height="64dp"
-      app:srcCompat="@android:drawable/stat_sys_upload"
-      android:id="@+id/scrollToTopButton"
+      app:srcCompat="@drawable/close_icon"
+      android:id="@+id/floatingActionButton"
+      app:layout_constraintEnd_toEndOf="@+id/frameLayout"
       app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
-      app:layout_constraintEnd_toEndOf="parent"/>
+      android:focusable="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
