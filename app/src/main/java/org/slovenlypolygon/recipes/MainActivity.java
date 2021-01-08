@@ -16,6 +16,7 @@ import org.slovenlypolygon.recipes.backend.backendcards.Generator;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         scrollToTopButton.hide();
     }
 
-    private void generateCards() {
+    private void generateCards() throws MalformedURLException {
         Generator generator = new Generator(inflater);
 
         try {
@@ -69,7 +70,11 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         initializeVariables();
-        generateCards();
+        try {
+            generateCards();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
         scrollToTopButton.setOnClickListener(t -> scrollView.smoothScrollTo(0, 0));
         scrollView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {

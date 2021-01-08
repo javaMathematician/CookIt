@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import org.slovenlypolygon.recipes.R;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -39,7 +40,7 @@ public class Generator {
         this.customFont = customFont;
     }
 
-    public List<CardView> generate() {
+    public List<CardView> generate() throws MalformedURLException {
         Set<String> values = new TreeSet<>(dirtyToCleanedMapper.values());
         List<CardView> generated = new ArrayList<>();
 
@@ -49,7 +50,7 @@ public class Generator {
             TextView textOnCard = generate.findViewById(R.id.textOnCard);
             ImageView image = generate.findViewById(R.id.imageOnCard);
 
-            URL url = null;
+            URL url = new URL("http://im0-tub-ru.yandex.net/i?id=eb836ecc2ff1c13f24ebe0897c85c256&amp;n=13");
 
             generate.setOnClickListener(v -> {
                 checkBox.setChecked(!checkBox.isChecked());
