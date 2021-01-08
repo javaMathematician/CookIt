@@ -53,39 +53,39 @@
         app:theme="@style/SearchViewStyle" />
 
     <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/changeView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints">
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginBottom="10dp"
+      app:layout_constraintBottom_toTopOf="@+id/changeView"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/searchView"
+      app:layout_constraintVertical_bias="1.0"
+      tools:ignore="MissingConstraints"
+      android:id="@+id/frameLayout">
 
         <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/changeView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView"
-            app:layout_constraintVertical_bias="0">
+          android:id="@+id/scrollView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="0dp"
+          app:layout_constraintBottom_toTopOf="@+id/changeView"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/searchView"
+          app:layout_constraintVertical_bias="0">
 
             <LinearLayout
-                android:id="@+id/allDishesCardHolder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
+              android:id="@+id/allDishesCardHolder"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
             </LinearLayout>
         </ScrollView>
+
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -104,4 +104,14 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:queryBackground="@drawable/bg_dark_rounded" />
+
+    <ImageButton
+      android:background="@android:color/black"
+      android:layout_width="64dp"
+      android:layout_margin="8dp"
+      android:layout_height="64dp"
+      app:srcCompat="@android:drawable/stat_sys_upload"
+      android:id="@+id/scrollToTopButton"
+      app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+      app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

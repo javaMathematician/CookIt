@@ -12,11 +12,11 @@ import org.slovenlypolygon.recipes.R;
 import java.util.*;
 
 public class Generator {
-    private Map<String, String> ingredientURLMapper;
     private Map<String, String> dirtyToCleanedMapper;
+    private Map<String, String> ingredientURLMapper;
     private LayoutInflater inflater;
-    private ViewGroup root;
     private Typeface customFont;
+    private ViewGroup root;
 
     public Generator(LayoutInflater inflater) {
         this.inflater = inflater;
@@ -45,16 +45,18 @@ public class Generator {
         for (String textInCard : values) {
             CardView generate = (CardView) inflater.inflate(R.layout.card, root, false);
             CheckBox checkBox = generate.findViewById(R.id.checkBoxOnCard);
+            TextView textOnCard = generate.findViewById(R.id.textOnCard);
+            ImageView image = generate.findViewById(R.id.imageOnCard);
 
             generate.setOnClickListener(v -> checkBox.setChecked(!checkBox.isChecked()));
 
-            TextView textOnCard = generate.findViewById(R.id.textOnCard);
             textOnCard.setText(textInCard);
             textOnCard.setTypeface(customFont);
 
-            ImageView imageOnCard = generate.findViewById(R.id.imageOnCard);
-
             generated.add(generate);
+            if (generated.size() > 30) {
+                break;
+            }
         }
 
         return generated;
