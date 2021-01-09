@@ -1,17 +1,17 @@
 package org.slovenlypolygon.recipes.backend.backendcards;
 
+import android.content.Context;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.cardview.widget.CardView;
+import com.squareup.picasso.Picasso;
 import org.slovenlypolygon.recipes.R;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.*;
 
 public class Generator {
@@ -19,10 +19,15 @@ public class Generator {
     private Map<String, String> ingredientURLMapper;
     private LayoutInflater inflater;
     private Typeface customFont;
+    private Context context;
     private ViewGroup root;
 
     public Generator(LayoutInflater inflater) {
         this.inflater = inflater;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     public void setIngredientURLMapper(Map<String, String> ingredientURLMapper) {
@@ -41,30 +46,26 @@ public class Generator {
         this.customFont = customFont;
     }
 
-    public List<CardView> generate() throws MalformedURLException {
+    public List<CardView> generate() {
         Set<String> values = new TreeSet<>(dirtyToCleanedMapper.values());
         List<CardView> generated = new ArrayList<>();
 
-        for (String textInCard : values) {
-            CardView generate = (CardView) inflater.inflate(R.layout.card, root, false);
-            CheckBox checkBox = generate.findViewById(R.id.checkBoxOnCard);
-            TextView textOnCard = generate.findViewById(R.id.textOnCard);
-            ImageView image = generate.findViewById(R.id.imageOnCard);
+        for (String ingredientName : values) {
+            CardView currentCard = (CardView) inflater.inflate(R.layout.card, root, false);
+            CheckBox checkBox = currentCard.findViewById(R.id.checkBoxOnCard);
+            TextView textOnCard = currentCard.findViewById(R.id.textOnCard);
+            ImageView image = currentCard.findViewById(R.id.imageOnCard);
 
-            URL url = new URL("http://im0-tub-ru.yandex.net/i?id=eb836ecc2ff1c13f24ebe0897c85c256&amp;n=13");
+            Uri uri = Uri.parse(ingredientURLMapper.getOrDefault(ingredientName, "https://sun9-65.userapi.com/c858328/v858328616/230711/on7eTEmN6rs.jpg"));
+            Picasso.with(context).load(uri).resize(200, 200).centerCrop().into(image);
 
-            generate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    checkBox.setChecked(!checkBox.isChecked());
-                }
-            });
-            textOnCard.setText(textInCard);
+            currentCard.setOnClickListener(t -> checkBox.setChecked(!checkBox.isChecked()));
+            textOnCard.setText(ingredientName);
             textOnCard.setTypeface(customFont);
 
-            generated.add(generate);
+            generated.add(currentCard);
 
-            if (generated.size() > 30) { // TODO: 08.01.2021 DISABLE LIMIT
+            if (generated.size() > Integer.MAX_VALUE) { // TODO: 08.01.2021 DISABLE LIMIT
                 break;
             }
         }

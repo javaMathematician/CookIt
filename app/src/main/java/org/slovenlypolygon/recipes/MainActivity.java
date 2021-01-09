@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             generator.setIngredientURLMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.urls)));
             generator.setDirtyToCleanedMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
             generator.setCustomFont(customFont);
+            generator.setContext(this);
             generator.setRoot(allDishesCardHolder);
         } catch (IOException e) {
             e.printStackTrace();
