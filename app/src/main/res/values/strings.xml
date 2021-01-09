@@ -5,4 +5,5 @@
     <string name="app_name">Tamperone</string>
     <string name="todo"
             translatable="false">TODO</string>
+    <string name="search_hint">Введите название продукта</string>
 </resources>

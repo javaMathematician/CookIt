@@ -51,7 +51,7 @@
         app:submitBackground="@color/searchViewColorWhite"
         app:closeIcon="@drawable/close_icon"
         app:searchIcon="@drawable/ic_baseline_search_24"
-        app:queryHint="Введите название продукта"
+        app:queryHint="@string/search_hint"
         app:theme="@style/SearchViewStyle" />
 
     <FrameLayout
