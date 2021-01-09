@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Tamperone</string>
+    <string name="none_selected">Выберите хотя бы один ингредиент</string>
+    <string name="to_recipes">К рецептам</string>
     <string name="searchPrompt">Искать</string>
-    <string name="todo">TODO</string>
+    <string name="app_name">Tamperone</string>
+    <string name="todo"
+            translatable="false">TODO</string>
 </resources>

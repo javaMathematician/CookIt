@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tamperone</string>
+    <string name="to_recipes">Go to recipes</string>
+    <string name="searchPrompt">Search</string>
+    <string name="none_selected">At least one item should be selected</string>
+</resources>

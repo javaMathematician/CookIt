@@ -15,6 +15,7 @@ import org.slovenlypolygon.recipes.R;
 import java.util.*;
 
 public class Generator {
+    public static Map<String, Boolean> checkedCards = new HashMap<>();
     private Map<String, String> dirtyToCleanedMapper;
     private Map<String, String> ingredientURLMapper;
     private LayoutInflater inflater;
@@ -58,14 +59,18 @@ public class Generator {
 
             Uri uri = Uri.parse(ingredientURLMapper.getOrDefault(ingredientName, "https://sun9-65.userapi.com/c858328/v858328616/230711/on7eTEmN6rs.jpg"));
             Picasso.with(context).load(uri).resize(200, 200).centerCrop().into(image);
+            checkedCards.put(ingredientName, false);
 
-            currentCard.setOnClickListener(t -> checkBox.setChecked(!checkBox.isChecked()));
             textOnCard.setText(ingredientName);
             textOnCard.setTypeface(customFont);
-
             generated.add(currentCard);
 
-            if (generated.size() > Integer.MAX_VALUE) { // TODO: 08.01.2021 DISABLE LIMIT
+            currentCard.setOnClickListener(t -> {
+                checkBox.setChecked(!checkBox.isChecked());
+                checkedCards.put(ingredientName, checkBox.isChecked());
+            });
+
+            if (generated.size() > 30) { // TODO: 08.01.2021 DISABLE LIMIT
                 break;
             }
         }

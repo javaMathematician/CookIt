@@ -3,11 +3,7 @@ package org.slovenlypolygon.recipes;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
@@ -16,7 +12,6 @@ import org.slovenlypolygon.recipes.backend.backendcards.Generator;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         scrollToTopButton.hide();
     }
 
-    private void generateCards() throws MalformedURLException {
+    private void generateCards() {
         Generator generator = new Generator(inflater);
 
         try {
@@ -66,16 +61,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.list_of_ingredients);
 
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         initializeVariables();
-        try {
-            generateCards();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        generateCards();
+
+        changeView.setOnClickListener(t -> {
+            if (Generator.checkedCards.containsValue(true)) {
+                goToRecipes();
+            } else {
+                Toast.makeText(this, R.string.none_selected, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         scrollToTopButton.setOnClickListener(t -> scrollView.smoothScrollTo(0, 0));
         scrollView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -85,5 +84,9 @@ public class MainActivity extends AppCompatActivity {
                 scrollToTopButton.hide();
             }
         });
+    }
+
+    private void goToRecipes() {
+        setContentView(R.layout.list_of_ingredients);
     }
 }
