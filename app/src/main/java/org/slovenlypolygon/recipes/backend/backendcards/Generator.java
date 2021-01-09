@@ -2,6 +2,7 @@ package org.slovenlypolygon.recipes.backend.backendcards;
 
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -52,8 +53,11 @@ public class Generator {
 
             URL url = new URL("http://im0-tub-ru.yandex.net/i?id=eb836ecc2ff1c13f24ebe0897c85c256&amp;n=13");
 
-            generate.setOnClickListener(v -> {
-                checkBox.setChecked(!checkBox.isChecked());
+            generate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkBox.setChecked(!checkBox.isChecked());
+                }
             });
             textOnCard.setText(textInCard);
             textOnCard.setTypeface(customFont);

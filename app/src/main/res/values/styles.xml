@@ -12,6 +12,9 @@
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="android:editTextColor">#FFFFFF</item>
+        <item name="colorControlActivated">#FFFFFF</item>
+        <item name="queryBackground">@color/darkThemeTextColor</item>
+        <item name="defaultQueryHint">"Поиск"</item>
     </style>
     <style name="checkBoxStyle" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">#FFFFFF</item>
