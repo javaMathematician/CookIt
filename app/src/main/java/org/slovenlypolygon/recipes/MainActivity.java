@@ -15,32 +15,39 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private Button changeView;
     private Typeface customFont;
-    private SearchView searchView;
-    private ScrollView scrollView;
     private LayoutInflater inflater;
-    private TextView topTextViewOnToolbar;
-    private LinearLayout allDishesCardHolder;
-    private FloatingActionButton scrollToTopButton;
+    private Button changeViewIngredient;
+    private SearchView searchViewIngredient;
+    private ScrollView scrollViewIngredient;
+    private TextView topTextViewOnToolbarIngredient;
+    private LinearLayout allDishesCardHolderIngredient;
+    private FloatingActionButton scrollToTopButtonIngredient;
 
-    private void initializeVariables() {
+    private Button changeViewRecipe;
+    private ScrollView scrollViewRecipe;
+    private LinearLayout allDishesCardHolderRecipe;
+    private FloatingActionButton scrollToTopButtonRecipe;
+
+
+
+    private void initializeVariablesForIngredient() {
         inflater = LayoutInflater.from(this);
-        changeView = findViewById(R.id.changeView);
-        searchView = findViewById(R.id.searchView);
-        scrollView = findViewById(R.id.scrollView);
-        scrollToTopButton = findViewById(R.id.floatingActionButton);
-        allDishesCardHolder = findViewById(R.id.allDishesCardHolder);
-        topTextViewOnToolbar = findViewById(R.id.topTextViewOnToolbar);
-        searchView.setOnClickListener(v -> searchView.setIconified(false));
+        changeViewIngredient = findViewById(R.id.changeView);
+        searchViewIngredient = findViewById(R.id.searchView);
+        scrollViewIngredient = findViewById(R.id.scrollView);
+        scrollToTopButtonIngredient = findViewById(R.id.floatingActionButton);
+        allDishesCardHolderIngredient = findViewById(R.id.allDishesCardHolder);
+        topTextViewOnToolbarIngredient = findViewById(R.id.topTextViewOnToolbar);
+        searchViewIngredient.setOnClickListener(v -> searchViewIngredient.setIconified(false));
 
         customFont = Typeface.createFromAsset(getAssets(), "fonts/17651.ttf");
-        topTextViewOnToolbar.setTypeface(customFont);
-        changeView.setTypeface(customFont);
-        scrollToTopButton.hide();
+        topTextViewOnToolbarIngredient.setTypeface(customFont);
+        changeViewIngredient.setTypeface(customFont);
+        scrollToTopButtonIngredient.hide();
     }
 
-    private void generateCards() {
+    private void generateCardsWithIngridients() {
         Generator generator = new Generator(inflater);
 
         try {
@@ -48,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
             generator.setDirtyToCleanedMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
             generator.setCustomFont(customFont);
             generator.setContext(this);
-            generator.setRoot(allDishesCardHolder);
+            generator.setRoot(allDishesCardHolderIngredient);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         for (CardView cardView : generator.generate()) {
-            allDishesCardHolder.addView(cardView);
+            allDishesCardHolderIngredient.addView(cardView);
         }
     }
 
@@ -65,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        initializeVariables();
-        generateCards();
+        initializeVariablesForIngredient();
+        generateCardsWithIngridients();
 
-        changeView.setOnClickListener(t -> {
+        changeViewIngredient.setOnClickListener(t -> {
             if (Generator.checkedCards.containsValue(true)) {
                 goToRecipes();
             } else {
@@ -76,17 +83,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        scrollToTopButton.setOnClickListener(t -> scrollView.smoothScrollTo(0, 0));
-        scrollView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+        scrollToTopButtonIngredient.setOnClickListener(t -> scrollViewIngredient.smoothScrollTo(0, 0));
+        scrollViewIngredient.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (oldScrollY - scrollY < 0 && scrollY > 2000) {
-                scrollToTopButton.show();
+                scrollToTopButtonIngredient.show();
             } else {
-                scrollToTopButton.hide();
+                scrollToTopButtonIngredient.hide();
             }
         });
     }
 
     private void goToRecipes() {
-        setContentView(R.layout.list_of_ingredients);
+        setContentView(R.layout.list_of_recipes);
     }
 }

@@ -2,10 +2,7 @@
 <selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <corners tools:ignore="ExtraText">
-                android:radius="100dp"
-            </corners>
-
+            <corners android:radius="5dp" />
         </shape>
         <color android:color="@android:color/white">
 

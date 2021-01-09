@@ -52,7 +52,7 @@ public class Generator {
         List<CardView> generated = new ArrayList<>();
 
         for (String ingredientName : values) {
-            CardView currentCard = (CardView) inflater.inflate(R.layout.card, root, false);
+            CardView currentCard = (CardView) inflater.inflate(R.layout.card_ingridient, root, false);
             CheckBox checkBox = currentCard.findViewById(R.id.checkBoxOnCard);
             TextView textOnCard = currentCard.findViewById(R.id.textOnCard);
             ImageView image = currentCard.findViewById(R.id.imageOnCard);

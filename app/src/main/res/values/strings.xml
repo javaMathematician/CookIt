@@ -6,4 +6,7 @@
     <string name="todo"
             translatable="false">TODO</string>
     <string name="search_hint">Введите название продукта</string>
+    <string name="recipes">Рецепты</string>
+    <string name="back_to_main_scene">назад</string>
+    <string name="open_recipe">к рецепту</string>
 </resources>
