@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/topTextViewOnToolbar"
+        android:id="@+id/topTextViewOnToolbarRecipes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/recipes"
@@ -30,38 +30,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/returnToMainScene"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/cirlce"
-        android:backgroundTint="@color/cardview_dark_background"
-        android:padding="0dp"
-        android:textColor="@color/searchViewColorWhite"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:queryBackground="@drawable/bg_dark_rounded"
-        tools:ignore="MissingConstraints" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/arrow"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:background="@drawable/left_arrow"
-        android:padding="0dp"
-        android:textColor="@color/searchViewColorWhite"
-        app:layout_constraintBottom_toBottomOf="@+id/returnToMainScene"
-        app:layout_constraintEnd_toEndOf="@+id/returnToMainScene"
-        app:layout_constraintStart_toStartOf="@+id/returnToMainScene"
-        app:layout_constraintTop_toTopOf="@+id/returnToMainScene"
-        app:queryBackground="@drawable/bg_dark_rounded"
-        tools:ignore="MissingConstraints"
-        android:focusable="false"/>
 
     <FrameLayout
         android:id="@+id/frameLayoutInRecipes"

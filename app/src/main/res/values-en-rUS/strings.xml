@@ -5,4 +5,7 @@
     <string name="searchPrompt">Search</string>
     <string name="none_selected">At least one item should be selected</string>
     <string name="search_hint">Type ingredient\'s name</string>
+    <string name="recipes">Recipes</string>
+    <string name="back_to_main_scene">Return</string>
+    <string name="open_recipe">Go to recipe</string>
 </resources>

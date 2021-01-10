@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,15 +9,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import org.slovenlypolygon.recipes.backend.backendcards.Generator;
+import org.slovenlypolygon.recipes.backend.backendcards.IngredientsGenerator;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    private IngredientsGenerator generator;
     private Typeface customFont;
-    private LayoutInflater inflater;
     private Button changeViewIngredient;
     private SearchView searchViewIngredient;
     private ScrollView scrollViewIngredient;
@@ -24,15 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout allDishesCardHolderIngredient;
     private FloatingActionButton scrollToTopButtonIngredient;
 
-    private Button changeViewRecipe;
-    private ScrollView scrollViewRecipe;
-    private LinearLayout allDishesCardHolderRecipe;
-    private FloatingActionButton scrollToTopButtonRecipe;
-
-
-
     private void initializeVariablesForIngredient() {
-        inflater = LayoutInflater.from(this);
         changeViewIngredient = findViewById(R.id.changeView);
         searchViewIngredient = findViewById(R.id.searchView);
         scrollViewIngredient = findViewById(R.id.scrollView);
@@ -45,22 +38,21 @@ public class MainActivity extends AppCompatActivity {
         topTextViewOnToolbarIngredient.setTypeface(customFont);
         changeViewIngredient.setTypeface(customFont);
         scrollToTopButtonIngredient.hide();
+
+        generator = new IngredientsGenerator(LayoutInflater.from(this));
     }
 
-    private void generateCardsWithIngridients() {
-        Generator generator = new Generator(inflater);
-
+    private void generateCardsWithIngredients() {
         try {
             generator.setIngredientURLMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.urls)));
             generator.setDirtyToCleanedMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
             generator.setCustomFont(customFont);
             generator.setContext(this);
-            generator.setRoot(allDishesCardHolderIngredient);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        for (CardView cardView : generator.generate()) {
+        for (CardView cardView : generator.generateIngredients(allDishesCardHolderIngredient)) {
             allDishesCardHolderIngredient.addView(cardView);
         }
     }
@@ -69,14 +61,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_of_ingredients);
-
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         initializeVariablesForIngredient();
-        generateCardsWithIngridients();
+        generateCardsWithIngredients();
 
         changeViewIngredient.setOnClickListener(t -> {
-            if (Generator.checkedCards.containsValue(true)) {
+            if (IngredientsGenerator.checkedCards.containsValue(true)) {
                 goToRecipes();
             } else {
                 Toast.makeText(this, R.string.none_selected, Toast.LENGTH_SHORT).show();
@@ -94,6 +85,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToRecipes() {
-        setContentView(R.layout.list_of_recipes);
+        this.startActivity(new Intent(this, RecipesActivity.class));
     }
 }
