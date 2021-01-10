@@ -61,8 +61,12 @@ public class IngredientsGenerator {
             TextView textOnCard = currentCard.findViewById(R.id.textOnCard);
             ImageView image = currentCard.findViewById(R.id.imageOnCard);
 
-            Uri uri = Uri.parse(ingredientURLMapper.getOrDefault(ingredientName, "https://sun9-65.userapi.com/c858328/v858328616/230711/on7eTEmN6rs.jpg"));
-            Picasso.with(context).load(uri).resize(200, 200).centerCrop().into(image);
+            Picasso.with(context)
+                    .load(Uri.parse(ingredientURLMapper.getOrDefault(ingredientName, "")))
+                    .error(R.drawable.sample_dish_for_error)
+                    .resize(200, 200)
+                    .centerCrop()
+                    .into(image);
             checkedCards.put(ingredientName, false);
 
             textOnCard.setText(ingredientName);
@@ -77,7 +81,7 @@ public class IngredientsGenerator {
                 currentCard.setBackground(checkBox.isChecked() ? selectedCard : regularCard);
             });
 
-            if (generated.size() > 30) { // TODO: 08.01.2021 DISABLE LIMIT
+            if (generated.size() > 3000) { // TODO: 08.01.2021 DISABLE LIMIT
                 break;
             }
         }
