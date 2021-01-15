@@ -1,6 +1,5 @@
 package org.slovenlypolygon.recipes.backend.backendcards;
 
-import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -21,14 +20,9 @@ import java.util.Map;
 public class DishesGenerator {
     private LayoutInflater inflater;
     private List<Dish> recipesList;
-    private Context context;
 
     public DishesGenerator(LayoutInflater inflater) {
         this.inflater = inflater;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 
     public void setRecipesList(List<Dish> recipesList) {

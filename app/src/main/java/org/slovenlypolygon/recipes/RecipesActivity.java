@@ -3,7 +3,6 @@ package org.slovenlypolygon.recipes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -29,24 +28,19 @@ import java.util.stream.Collectors;
 
 public class RecipesActivity extends AppCompatActivity {
     private int savedScrollState;
-    private Button changeViewRecipe;
     private DishesGenerator generator;
     private ScrollView scrollViewRecipe;
-    private TextView topTextViewOnToolbarRecipe;
     private LinearLayout allDishesCardHolderRecipe;
     private FloatingActionButton scrollToTopButtonRecipe;
 
     private void initializeVariablesForRecipes() {
         generator = new DishesGenerator(LayoutInflater.from(this));
-        changeViewRecipe = findViewById(R.id.changeViewRecipe);
         scrollViewRecipe = findViewById(R.id.scrollViewRecipe);
         scrollToTopButtonRecipe = findViewById(R.id.floatingActionButtonInRecipes);
         allDishesCardHolderRecipe = findViewById(R.id.allDishesCardHolderRecipe);
-        topTextViewOnToolbarRecipe = findViewById(R.id.topTextViewOnToolbarRecipes);
+        TextView topTextViewOnToolbarRecipe = findViewById(R.id.topTextViewOnToolbarRecipes);
 
-        generator.setContext(this);
         scrollToTopButtonRecipe.hide();
-
         topTextViewOnToolbarRecipe.setText(getResources().getString(R.string.dishes_with));
     }
 
@@ -61,8 +55,8 @@ public class RecipesActivity extends AppCompatActivity {
         List<String> selected = IngredientsGenerator.checkedCards
                 .entrySet()
                 .stream()
-                .filter(Map.Entry::getValue)
-                .map(Map.Entry::getKey)
+                .filter(Map.Entry::getValue) // отбираем пары, в которых трушные значения (выбранные карточки)
+                .map(Map.Entry::getKey) // из пары (Map.Entry) получаем ключ (строку с название ингредиента)
                 .collect(Collectors.toList());
 
         try {
@@ -76,7 +70,7 @@ public class RecipesActivity extends AppCompatActivity {
                 CardView cardView = entry.getValue();
                 cardView.setOnClickListener(t -> {
                     setContentView(R.layout.step_by_step);
-                    constrainStepByStep(entry.getKey(), cardView);
+                    constrainStepByStep(entry.getKey());
                 });
 
                 allDishesCardHolderRecipe.addView(cardView);
@@ -86,8 +80,8 @@ public class RecipesActivity extends AppCompatActivity {
         }
     }
 
-    private void constrainStepByStep(Dish dish, CardView cardView) {
-        TextView text = cardView.findViewById(R.id.textOnCardRecipe);
+    private void constrainStepByStep(Dish dish) {
+        TextView text = findViewById(R.id.step_by_step_text);
         ImageView imageView = findViewById(R.id.dishStepByStepImage);
 
         Picasso.get()
@@ -96,6 +90,8 @@ public class RecipesActivity extends AppCompatActivity {
                 .resize(1000, 1000)
                 .centerCrop()
                 .into(imageView);
+
+        List<List<String>> recipeInstructions = dish.getRecipeInstructions();
     }
 
     @Override

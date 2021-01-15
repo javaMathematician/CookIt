@@ -33,6 +33,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
+        android:layout_margin="8dp"
         android:id="@+id/frameLayoutInRecipes"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -57,7 +58,7 @@
             app:layout_constraintVertical_bias="0">
 
             <LinearLayout
-                android:id="@+id/allDishesCardHolder"
+                android:id="@+id/stepByStepLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -70,7 +71,7 @@
                         android:id="@+id/dishStepByStepImage"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_margin="8dp"
+                        android:contentDescription="@string/dish_image_step_by_step"
                         app:layout_constraintDimensionRatio="H, 1:1"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
@@ -78,8 +79,12 @@
                         tools:srcCompat="@tools:sample/avatars" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <TextView
+                    android:id="@+id/step_by_step_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"></TextView>
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

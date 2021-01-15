@@ -3,12 +3,11 @@
     <string name="to_recipes">К рецептам</string>
     <string name="searchPrompt">Искать</string>
     <string name="app_name">Tamperone</string>
-    <string name="todo"
-            translatable="false">TODO</string>
     <string name="search_hint">Введите название продукта</string>
     <string name="recipes">Рецепты</string>
     <string name="back_to_main_scene">Назад</string>
     <string name="open_recipe">К рецепту</string>
     <string name="step_by_step_toolbar_string">Рецепт по шагам</string>
     <string name="dishes_with">Блюда</string>
+    <string name="dish_image_step_by_step">Изображение блюда</string>
 </resources>
