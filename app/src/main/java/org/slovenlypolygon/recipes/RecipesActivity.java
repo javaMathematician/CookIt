@@ -46,6 +46,8 @@ public class RecipesActivity extends AppCompatActivity {
 
         generator.setContext(this);
         scrollToTopButtonRecipe.hide();
+
+        topTextViewOnToolbarRecipe.setText(getResources().getString(R.string.dishes_with));
     }
 
     @Override
@@ -55,7 +57,6 @@ public class RecipesActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         initializeVariablesForRecipes();
-//        scrollViewRecipe.setScrollY(savedScrollState);
 
         List<String> selected = IngredientsGenerator.checkedCards
                 .entrySet()
@@ -74,7 +75,6 @@ public class RecipesActivity extends AppCompatActivity {
             for (Map.Entry<Dish, CardView> entry : dishCardPair.entrySet()) {
                 CardView cardView = entry.getValue();
                 cardView.setOnClickListener(t -> {
-//                    savedScrollState = scrollViewRecipe.getScrollY();
                     setContentView(R.layout.step_by_step);
                     constrainStepByStep(entry.getKey(), cardView);
                 });
@@ -90,7 +90,7 @@ public class RecipesActivity extends AppCompatActivity {
         TextView text = cardView.findViewById(R.id.textOnCardRecipe);
         ImageView imageView = findViewById(R.id.dishStepByStepImage);
 
-        Picasso.with(this)
+        Picasso.get()
                 .load(dish.getImageURL())
                 .error(R.drawable.sample_dish_for_error)
                 .resize(1000, 1000)

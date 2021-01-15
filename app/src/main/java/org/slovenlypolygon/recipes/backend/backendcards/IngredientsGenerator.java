@@ -67,7 +67,7 @@ public class IngredientsGenerator {
             TextView textOnCard = currentCard.findViewById(R.id.textOnCard);
             ImageView image = currentCard.findViewById(R.id.imageOnCard);
 
-            Picasso.with(context)
+            Picasso.get()
                     .load(Uri.parse(ingredientURLMapper.getOrDefault(ingredientName, "")))
                     .error(R.drawable.sample_dish_for_error)
                     .resize(200, 200)

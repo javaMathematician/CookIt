@@ -43,7 +43,7 @@ public class DishesGenerator {
             TextView textOnCard = currentCard.findViewById(R.id.textOnCardRecipe);
             ImageView image = currentCard.findViewById(R.id.imageOnCardRecipe);
 
-            Picasso.with(context)
+            Picasso.get()
                     .load(Uri.parse(dish.getImageURL()))
                     .error(R.drawable.sample_dish_for_error)
                     .resize(200, 200)

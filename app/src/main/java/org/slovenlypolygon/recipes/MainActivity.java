@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -105,13 +106,12 @@ public class MainActivity extends AppCompatActivity {
         this.startActivity(new Intent(this, RecipesActivity.class));
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class FilterIngredientsTask extends AsyncTask<String, Void, List<CardView>> {
         protected List<CardView> doInBackground(String... newText) {
-            return cards
-                    .stream().filter(t -> ((TextView) t.findViewById(R.id.textOnCard))
-                            .getText().toString().toLowerCase().trim()
-                            .contains(newText[0].toLowerCase().trim()))
-                    .collect(Collectors.toList());
+            return cards.stream().filter(t -> ((TextView) t.findViewById(R.id.textOnCard))
+                    .getText().toString().toLowerCase().trim()
+                    .contains(newText[0].toLowerCase().trim())).collect(Collectors.toList());
         }
 
         @Override
