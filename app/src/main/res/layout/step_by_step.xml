@@ -16,27 +16,27 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/topTextViewOnToolbarRecipes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/step_by_step_toolbar_string"
-        android:textAlignment="center"
-        android:textColor="@color/darkThemeTextColor"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/topTextViewOnToolbarRecipes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/step_by_step_toolbar_string"
+            android:textAlignment="center"
+            android:textColor="@color/darkThemeTextColor"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.appcompat.widget.Toolbar>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayoutInStepByStep"
+    <FrameLayout
+        android:id="@+id/frameLayoutInRecipes"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="6dp"
-        android:background="@drawable/round_outline_gray"
+        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -45,40 +45,41 @@
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/nameOfRecipe"
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Название"
-            android:textAlignment="textStart"
-            android:textColor="@color/darkThemeTextColor"
-            android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageOfRecipeInStepByStep"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_margin="8dp"
-            android:src="@android:color/white"
+            android:layout_marginTop="0dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameOfRecipe" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0">
 
-        <TextView
-            android:id="@+id/ingredientsForDish"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Ингредиенты:\n\nГорький шоколад 300 г.\nСливочное масло 130 г.\nСахарная пудра 150 г.\nКуриное яйцо 6 штук\nВанильный стручок 1 штука\nСахар 500 г.\nПшеничная мука 130 г.\nКоньяк 2 столовые ложки\nВишня 250 г.\nСливки 33%-ные 170 мл."
-            android:textAlignment="textStart"
-            android:textColor="@color/darkThemeTextColor"
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/imageOfRecipeInStepByStep" />
+            <LinearLayout
+                android:id="@+id/allDishesCardHolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-    />
+                    <ImageView
+                        android:id="@+id/dishStepByStepImage"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_margin="8dp"
+                        app:layout_constraintDimensionRatio="H, 1:1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

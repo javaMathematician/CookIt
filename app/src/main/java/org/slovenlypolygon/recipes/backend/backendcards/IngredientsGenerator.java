@@ -10,14 +10,20 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import com.squareup.picasso.Picasso;
-import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.databaseutils.Dish;
 
-import java.io.Serializable;
-import java.util.*;
+import com.squareup.picasso.Picasso;
+
+import org.slovenlypolygon.recipes.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class IngredientsGenerator {
     public static Map<String, Boolean> checkedCards = new HashMap<>();
@@ -81,7 +87,7 @@ public class IngredientsGenerator {
                 currentCard.setBackground(checkBox.isChecked() ? selectedCard : regularCard);
             });
 
-            if (generated.size() > 3000) { // TODO: 08.01.2021 DISABLE LIMIT
+            if (generated.size() > 30) { // TODO: 08.01.2021 DISABLE LIMIT
                 break;
             }
         }

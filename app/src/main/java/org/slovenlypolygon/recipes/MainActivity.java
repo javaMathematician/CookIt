@@ -4,11 +4,18 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.slovenlypolygon.recipes.backend.backendcards.IngredientsGenerator;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 

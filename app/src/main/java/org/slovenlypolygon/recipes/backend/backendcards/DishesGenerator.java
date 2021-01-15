@@ -1,20 +1,22 @@
 package org.slovenlypolygon.recipes.backend.backendcards;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
+
 import com.squareup.picasso.Picasso;
+
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Dish;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.zip.Inflater;
+import java.util.Map;
 
 public class DishesGenerator {
     private LayoutInflater inflater;
@@ -33,8 +35,8 @@ public class DishesGenerator {
         this.recipesList = recipesList;
     }
 
-    public List<CardView> generateRecipes(ViewGroup root) {
-        List<CardView> generated = new ArrayList<>();
+    public Map<Dish, CardView> generateRecipes(ViewGroup root) {
+        Map<Dish, CardView> output = new HashMap<>();
 
         for (Dish dish : recipesList) {
             CardView currentCard = (CardView) inflater.inflate(R.layout.card_recipe, root, false);
@@ -49,9 +51,9 @@ public class DishesGenerator {
                     .into(image);
 
             textOnCard.setText(dish.getName());
-            generated.add(currentCard);
+            output.put(dish, currentCard);
         }
 
-        return generated;
+        return output;
     }
 }

@@ -1,17 +1,24 @@
 package org.slovenlypolygon.recipes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
+
 import org.slovenlypolygon.recipes.backend.backendcards.DishesGenerator;
 import org.slovenlypolygon.recipes.backend.backendcards.IngredientsGenerator;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
+import org.slovenlypolygon.recipes.backend.databaseutils.Dish;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
 
 import java.io.IOException;
@@ -21,6 +28,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class RecipesActivity extends AppCompatActivity {
+    private int savedScrollState;
     private Button changeViewRecipe;
     private DishesGenerator generator;
     private ScrollView scrollViewRecipe;
@@ -47,6 +55,7 @@ public class RecipesActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         initializeVariablesForRecipes();
+//        scrollViewRecipe.setScrollY(savedScrollState);
 
         List<String> selected = IngredientsGenerator.checkedCards
                 .entrySet()
@@ -60,12 +69,39 @@ public class RecipesActivity extends AppCompatActivity {
             dishFilterBuilder.setRecipeIngredients(selected);
             generator.setRecipesList(dishFilterBuilder.getMatchingList());
 
-            for (CardView cardView : generator.generateRecipes(allDishesCardHolderRecipe)) {
+            Map<Dish, CardView> dishCardPair = generator.generateRecipes(allDishesCardHolderRecipe);
+
+            for (Map.Entry<Dish, CardView> entry : dishCardPair.entrySet()) {
+                CardView cardView = entry.getValue();
+                cardView.setOnClickListener(t -> {
+//                    savedScrollState = scrollViewRecipe.getScrollY();
+                    setContentView(R.layout.step_by_step);
+                    constrainStepByStep(entry.getKey(), cardView);
+                });
+
                 allDishesCardHolderRecipe.addView(cardView);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void constrainStepByStep(Dish dish, CardView cardView) {
+        TextView text = cardView.findViewById(R.id.textOnCardRecipe);
+        ImageView imageView = findViewById(R.id.dishStepByStepImage);
+
+        Picasso.with(this)
+                .load(dish.getImageURL())
+                .error(R.drawable.sample_dish_for_error)
+                .resize(1000, 1000)
+                .centerCrop()
+                .into(imageView);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = getIntent();
+        this.finish();
+        startActivity(intent);
     }
 }
