@@ -1,6 +1,5 @@
 package org.slovenlypolygon.recipes;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -27,7 +26,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class RecipesActivity extends AppCompatActivity {
-    private int savedScrollState;
     private DishesGenerator generator;
     private ScrollView scrollViewRecipe;
     private LinearLayout allDishesCardHolderRecipe;
@@ -42,6 +40,12 @@ public class RecipesActivity extends AppCompatActivity {
 
         scrollToTopButtonRecipe.hide();
         topTextViewOnToolbarRecipe.setText(getResources().getString(R.string.dishes_with));
+
+        try {
+            generator.setDirtyToCleanedMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -62,12 +66,14 @@ public class RecipesActivity extends AppCompatActivity {
         try {
             DishFilterBuilder dishFilterBuilder = new DishFilterBuilder(Deserializer.deserializeDish(getResources().openRawResource(R.raw.all_dishes)));
             dishFilterBuilder.setRecipeIngredients(selected);
+            generator.setSelectedIngredients(selected);
             generator.setRecipesList(dishFilterBuilder.getMatchingList());
 
             Map<Dish, CardView> dishCardPair = generator.generateRecipes(allDishesCardHolderRecipe);
 
             for (Map.Entry<Dish, CardView> entry : dishCardPair.entrySet()) {
                 CardView cardView = entry.getValue();
+
                 cardView.setOnClickListener(t -> {
                     setContentView(R.layout.step_by_step);
                     constrainStepByStep(entry.getKey());
@@ -81,7 +87,6 @@ public class RecipesActivity extends AppCompatActivity {
     }
 
     private void constrainStepByStep(Dish dish) {
-        TextView text = findViewById(R.id.step_by_step_text);
         ImageView imageView = findViewById(R.id.dishStepByStepImage);
 
         Picasso.get()
@@ -90,14 +95,10 @@ public class RecipesActivity extends AppCompatActivity {
                 .resize(1000, 1000)
                 .centerCrop()
                 .into(imageView);
-
-        List<List<String>> recipeInstructions = dish.getRecipeInstructions();
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = getIntent();
-        this.finish();
-        startActivity(intent);
+
     }
 }

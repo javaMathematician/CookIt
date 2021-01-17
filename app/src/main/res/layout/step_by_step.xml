@@ -83,7 +83,7 @@
                     android:id="@+id/step_by_step_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"></TextView>
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </ScrollView>
     </FrameLayout>

@@ -40,4 +40,6 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '20030203.000550'
     implementation group: 'com.squareup.picasso', name: 'picasso', version: '2.71828'
     implementation "android.arch.work:work-runtime:1.0.1"
+    implementation("com.google.guava:guava:30.1-android")
+    api("com.google.guava:guava:30.1-android")
 }

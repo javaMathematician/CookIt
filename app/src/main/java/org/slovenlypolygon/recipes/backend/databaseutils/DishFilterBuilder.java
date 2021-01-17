@@ -33,9 +33,9 @@ public class DishFilterBuilder {
         List<Dish> dishList = new ArrayList<>();
 
         for (Dish dish : assortment) {
-            boolean passedName = (name == null) || dish.getName().toLowerCase().contains(name.toLowerCase());
-            boolean passedCategories = (categories == null) || listContains(categories, dish.getCategories());
-            boolean passedIngredients = (recipeIngredients == null) || listContains(recipeIngredients, dish.getRecipeIngredients());
+            boolean passedName = name == null || dish.getName().toLowerCase().contains(name.toLowerCase());
+            boolean passedCategories = categories == null || listContains(categories, dish.getCategories());
+            boolean passedIngredients = recipeIngredients == null || listContains(recipeIngredients, dish.getRecipeIngredients());
 
             if (passedName && passedCategories && passedIngredients) {
                 dishList.add(dish);
@@ -55,11 +55,11 @@ public class DishFilterBuilder {
         String allOfDishString = builder.substring(0, builder.length() - ", ".length()).toLowerCase().trim();
 
         for (String required : requiredList) {
-            if (!allOfDishString.contains(required.toLowerCase().trim())) {
-                return false;
+            if (allOfDishString.contains(required.toLowerCase().trim())) {
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 }

@@ -67,13 +67,13 @@ public class IngredientsGenerator {
             TextView textOnCard = currentCard.findViewById(R.id.textOnCard);
             ImageView image = currentCard.findViewById(R.id.imageOnCard);
 
+            checkedCards.put(ingredientName, false);
             Picasso.get()
                     .load(Uri.parse(ingredientURLMapper.getOrDefault(ingredientName, "")))
                     .error(R.drawable.sample_dish_for_error)
                     .resize(200, 200)
                     .centerCrop()
                     .into(image);
-            checkedCards.put(ingredientName, false);
 
             textOnCard.setText(ingredientName);
             textOnCard.setTypeface(customFont);

@@ -7,8 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="147dp"
     android:layout_marginLeft="8dp"
-    android:layout_marginBottom="10dp"
     android:layout_marginRight="8dp"
+    android:layout_marginBottom="10dp"
     app:cardBackgroundColor="@color/darkThemeBackgroundCardColor"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
@@ -26,20 +26,36 @@
             android:id="@+id/imageOnCardRecipe"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:layout_margin="8dp"
             android:layout_gravity="center"
+            android:layout_margin="8dp"
             android:src="@android:color/white" />
 
-        <TextView
-            android:id="@+id/textOnCardRecipe"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:layout_margin="8dp"
-            android:text="TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT"
-            android:gravity="center_vertical"
-            android:textColor="@color/darkThemeTextColor"
-            android:textSize="18sp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textOnCardRecipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/sample_big_text"
+                android:textColor="@color/darkThemeTextColor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/ingredientsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/sample_big_text"
+                android:textColor="@android:color/tertiary_text_light"
+                android:textSize="12sp" />
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
