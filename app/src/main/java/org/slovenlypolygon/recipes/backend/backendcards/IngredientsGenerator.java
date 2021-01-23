@@ -87,9 +87,9 @@ public class IngredientsGenerator {
                 currentCard.setBackground(checkBox.isChecked() ? selectedCard : regularCard);
             });
 
-            if (generated.size() > 30) { // TODO: 08.01.2021 DISABLE LIMIT
-                break;
-            }
+            //if (generated.size() > 30) { // TODO: 08.01.2021 DISABLE LIMIT
+            //    break;
+            //}
         }
 
         return generated;
