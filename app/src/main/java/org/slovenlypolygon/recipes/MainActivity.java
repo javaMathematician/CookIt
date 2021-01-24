@@ -3,58 +3,58 @@ package org.slovenlypolygon.recipes;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.slovenlypolygon.recipes.backend.backendcards.IngredientsGenerator;
+import org.slovenlypolygon.recipes.backend.adapters.IngredientAdapter;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
+import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
+import java.util.TreeSet;
 
 public class MainActivity extends AppCompatActivity {
-    private List<CardView> cards;
+    private List<Ingredient> ingredients;
+    private RecyclerView recyclerView;
     private Button changeViewIngredient;
-    private IngredientsGenerator generator;
     private SearchView searchViewIngredient;
-    private ScrollView scrollViewIngredient;
-    private TextView topTextViewOnToolbarIngredient;
-    private LinearLayout allDishesCardHolderIngredient;
     private FloatingActionButton scrollToTopButtonIngredient;
+    private Map<String, String> dirtyToCleanedMapper;
+    private Map<String, String> ingredientURLMapper;
 
     private void initializeVariablesForIngredient() {
+        ingredients = new ArrayList<>();
+        recyclerView = findViewById(R.id.recyclerView);
         changeViewIngredient = findViewById(R.id.changeView);
         searchViewIngredient = findViewById(R.id.searchView);
-        scrollViewIngredient = findViewById(R.id.scrollView);
+
         scrollToTopButtonIngredient = findViewById(R.id.floatingActionButton);
-        allDishesCardHolderIngredient = findViewById(R.id.allDishesCardHolder);
-        topTextViewOnToolbarIngredient = findViewById(R.id.topTextViewOnToolbar);
         searchViewIngredient.setOnClickListener(v -> searchViewIngredient.setIconified(false));
         scrollToTopButtonIngredient.hide();
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        generator = new IngredientsGenerator(LayoutInflater.from(this));
         try {
-            generator.setIngredientURLMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.urls)));
-            generator.setDirtyToCleanedMapper(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
-            generator.setContext(this);
+            dirtyToCleanedMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned));
+            ingredientURLMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.ingredient_to_image_url));
+
+            for (String ingredientName : new TreeSet<>(dirtyToCleanedMapper.values())) {
+                ingredients.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, "")));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        cards = generator.generateIngredients(allDishesCardHolderIngredient);
     }
 
     @Override
@@ -65,24 +65,15 @@ public class MainActivity extends AppCompatActivity {
 
         initializeVariablesForIngredient();
 
-        for (CardView card : cards) {
-            allDishesCardHolderIngredient.addView(card);
-        }
+        IngredientAdapter adapter = new IngredientAdapter(ingredients);
+        adapter.setContext(this);
 
+        recyclerView.setAdapter(adapter);
         changeViewIngredient.setOnClickListener(t -> {
-            if (IngredientsGenerator.checkedCards.containsValue(true)) {
+            if (false) {
                 goToRecipes();
             } else {
                 Toast.makeText(this, R.string.none_selected, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        scrollToTopButtonIngredient.setOnClickListener(t -> scrollViewIngredient.smoothScrollTo(0, 0));
-        scrollViewIngredient.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (oldScrollY - scrollY < 0 && scrollY > 2000) {
-                scrollToTopButtonIngredient.show();
-            } else {
-                scrollToTopButtonIngredient.hide();
             }
         });
 
@@ -105,24 +96,9 @@ public class MainActivity extends AppCompatActivity {
         this.startActivity(new Intent(this, RecipesActivity.class));
     }
 
-    private class FilterIngredientsTask extends AsyncTask<String, Void, List<CardView>> {
-        protected List<CardView> doInBackground(String... newText) {
-            return cards
-                    .stream().filter(t -> ((TextView) t.findViewById(R.id.textOnCard))
-                            .getText().toString().toLowerCase().trim()
-                            .contains(newText[0].toLowerCase().trim()))
-                    .collect(Collectors.toList());
-        }
-
-        @Override
-        protected void onPostExecute(List<CardView> cardViews) {
-            allDishesCardHolderIngredient.removeAllViews();
-
-            try {
-                this.get().forEach(allDishesCardHolderIngredient::addView);
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+    private class FilterIngredientsTask extends AsyncTask<String, Void, List<Ingredient>> {
+        protected List<Ingredient> doInBackground(String... newText) {
+            return ingredients;
         }
     }
 }

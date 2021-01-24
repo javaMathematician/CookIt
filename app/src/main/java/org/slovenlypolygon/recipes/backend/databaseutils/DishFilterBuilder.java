@@ -1,5 +1,7 @@
 package org.slovenlypolygon.recipes.backend.databaseutils;
 
+import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +21,6 @@ public class DishFilterBuilder {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
     }
 
     public void setRecipeIngredients(List<String> recipeIngredients) {
@@ -52,7 +50,7 @@ public class DishFilterBuilder {
             builder.append(string).append(", ");
         }
 
-        String allOfDishString = builder.substring(0, builder.length() - ", ".length()).toLowerCase().trim();
+        String allOfDishString = builder.substring(0, builder.length() - 2).toLowerCase().trim();
 
         for (String required : requiredList) {
             if (allOfDishString.contains(required.toLowerCase().trim())) {

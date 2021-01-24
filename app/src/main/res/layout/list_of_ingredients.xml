@@ -56,38 +56,25 @@
         app:theme="@style/SearchViewStyle" />
 
     <FrameLayout
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginBottom="10dp"
-      app:layout_constraintBottom_toTopOf="@+id/changeView"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.0"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/searchView"
-      app:layout_constraintVertical_bias="1.0"
-      tools:ignore="MissingConstraints"
-      android:id="@+id/frameLayoutInRecipes">
+        android:id="@+id/frameLayoutInRecipes"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/changeView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints">
 
-        <ScrollView
-          android:id="@+id/scrollView"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="0dp"
-          app:layout_constraintBottom_toTopOf="@+id/changeView"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/searchView"
-          app:layout_constraintVertical_bias="0">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <LinearLayout
-              android:id="@+id/allDishesCardHolder"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
-            </LinearLayout>
-        </ScrollView>
+        </androidx.recyclerview.widget.RecyclerView>
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatButton

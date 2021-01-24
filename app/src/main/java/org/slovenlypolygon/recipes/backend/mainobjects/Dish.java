@@ -1,5 +1,7 @@
-package org.slovenlypolygon.recipes.backend.databaseutils;
+package org.slovenlypolygon.recipes.backend.mainobjects;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -62,54 +64,32 @@ public class Dish implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Dish{" +
-                "name='" + name + '\'' +
-                ", image='" + imageURL + '\'' +
-                ", breadcrumbs=" + categories +
-                ", recipeIngredient=" + recipeIngredients +
-                ", recipeInstructions=" + recipeInstructions +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
 
-        if (o == null || Dish.class != o.getClass()) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         Dish dish = (Dish) o;
-
-        if (!name.equals(dish.name)) {
-            return false;
-        }
-
-        if (!imageURL.equals(dish.imageURL)) {
-            return false;
-        }
-
-        if (!categories.equals(dish.categories)) {
-            return false;
-        }
-
-        if (!recipeIngredients.equals(dish.recipeIngredients)) {
-            return false;
-        }
-
-        return recipeInstructions.equals(dish.recipeInstructions);
+        return Objects.equal(name, dish.name) && Objects.equal(imageURL, dish.imageURL);
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + imageURL.hashCode();
-        result = 31 * result + categories.hashCode();
-        result = 31 * result + recipeIngredients.hashCode();
-        result = 31 * result + recipeInstructions.hashCode();
-        return result;
+        return Objects.hashCode(name, imageURL);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("name", name)
+                .add("imageURL", imageURL)
+                .add("categories", categories)
+                .add("recipeIngredients", recipeIngredients)
+                .add("recipeInstructions", recipeInstructions)
+                .toString();
     }
 }
