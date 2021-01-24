@@ -14,6 +14,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
@@ -47,6 +49,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         Drawable regularCard = ContextCompat.getDrawable(context, R.drawable.regular_card);
 
         ingredientViewHolder.textView.setText(ingredients.get(i).getName());
+        Picasso.get()
+                .load(ingredients.get(i).getImageURL())
+                .error(R.drawable.sample_dish_for_error)
+                .resize(200, 200)
+                .centerCrop()
+                .into(ingredientViewHolder.imageView);
+
         ingredientViewHolder.cardView.setOnClickListener(t -> {
             CheckBox checkBox = t.findViewById(R.id.checkBoxOnIngredient);
             LinearLayout linearLayout = t.findViewById(R.id.linearLayoutOnIngredient);
