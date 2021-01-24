@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes;
+package org.slovenlypolygon.recipes.activities;
 
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
+import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;

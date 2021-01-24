@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.backend.adapters;
+package org.slovenlypolygon.recipes.frontend.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

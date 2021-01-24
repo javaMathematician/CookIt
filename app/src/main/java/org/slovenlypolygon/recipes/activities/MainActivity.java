@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes;
+package org.slovenlypolygon.recipes.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,9 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.slovenlypolygon.recipes.backend.adapters.IngredientAdapter;
+import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
+import org.slovenlypolygon.recipes.frontend.adapters.IngredientAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
