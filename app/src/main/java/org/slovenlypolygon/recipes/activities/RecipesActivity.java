@@ -17,7 +17,7 @@ import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
-import org.slovenlypolygon.recipes.frontend.adapters.IngredientAdapter;
+import org.slovenlypolygon.recipes.frontend.adapters.DishAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,13 +47,13 @@ public class RecipesActivity extends AppCompatActivity {
         setContentView(R.layout.recipes_list);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        recyclerView.setAdapter(new IngredientAdapter(selected));
         initializeVariablesForRecipes();
 
         try {
             DishFilterBuilder dishFilterBuilder = new DishFilterBuilder(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes)));
             dishFilterBuilder.setRecipeIngredients(selected);
-            dishFilterBuilder.getMatchingList();
+
+            recyclerView.setAdapter(new DishAdapter(dishFilterBuilder.getMatchingList()));
         } catch (IOException e) {
             e.printStackTrace();
         }
