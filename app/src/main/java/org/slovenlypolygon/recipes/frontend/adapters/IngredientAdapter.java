@@ -5,12 +5,9 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,14 +20,12 @@ import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
     private final List<Ingredient> ingredients;
+    private static Drawable selectedCard;
+    private static Drawable regularCard;
     private Context context;
 
     public IngredientAdapter(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 
     @Override
@@ -45,24 +40,20 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
-        Drawable selectedCard = ContextCompat.getDrawable(context, R.drawable.selected_card);
-        Drawable regularCard = ContextCompat.getDrawable(context, R.drawable.regular_card);
+        Ingredient ingredient = ingredients.get(i);
 
-        ingredientViewHolder.textView.setText(ingredients.get(i).getName());
+        ingredientViewHolder.textView.setText(ingredient.getName());
+        ingredientViewHolder.itemView.setOnClickListener(view -> {
+            ingredient.setSelected(!ingredient.isSelected());
+            System.out.println(ingredient);
+        });
+
         Picasso.get()
-                .load(ingredients.get(i).getImageURL())
+                .load(ingredient.getImageURL())
                 .error(R.drawable.sample_dish_for_error)
                 .resize(200, 200)
                 .centerCrop()
                 .into(ingredientViewHolder.imageView);
-
-        ingredientViewHolder.cardView.setOnClickListener(t -> {
-            CheckBox checkBox = t.findViewById(R.id.checkBoxOnIngredient);
-            LinearLayout linearLayout = t.findViewById(R.id.linearLayoutOnIngredient);
-
-            checkBox.setChecked(!checkBox.isChecked());
-            linearLayout.setBackground(checkBox.isChecked() ? selectedCard : regularCard);
-        });
     }
 
     @Override
@@ -70,15 +61,20 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+
+        selectedCard = ContextCompat.getDrawable(context, R.drawable.selected_card);
+        regularCard = ContextCompat.getDrawable(context, R.drawable.regular_card);
+    }
+
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
-        private CardView cardView;
-        private TextView textView;
-        private ImageView imageView;
+        private final TextView textView;
+        private final ImageView imageView;
 
         public IngredientViewHolder(View itemView) {
             super(itemView);
 
-            cardView = itemView.findViewById(R.id.ingredientCard);
             imageView = itemView.findViewById(R.id.imageOnIngredient);
             textView = itemView.findViewById(R.id.textOnIngredient);
         }

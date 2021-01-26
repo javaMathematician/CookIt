@@ -1,14 +1,24 @@
 package org.slovenlypolygon.recipes.backend.mainobjects;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 public class Ingredient {
     private final String name;
     private final String imageURL;
+    private boolean selected;
 
     public Ingredient(String name, String imageURL) {
         this.name = name;
         this.imageURL = imageURL;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public String getName() {
@@ -36,5 +46,14 @@ public class Ingredient {
     @Override
     public int hashCode() {
         return Objects.hashCode(name, imageURL);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("name", name)
+                .add("imageURL", imageURL)
+                .add("selected", selected)
+                .toString();
     }
 }

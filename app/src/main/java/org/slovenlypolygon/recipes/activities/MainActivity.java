@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
     private List<Ingredient> ingredients;
@@ -31,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private Button changeViewIngredient;
     private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTopButtonIngredient;
-    private Map<String, String> dirtyToCleanedMapper;
-    private Map<String, String> ingredientURLMapper;
 
     private void initializeVariablesForIngredient() {
         ingredients = new ArrayList<>();
@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         try {
-            dirtyToCleanedMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned));
-            ingredientURLMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.ingredient_to_image_url));
+            Map<String, String> dirtyToCleanedMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned));
+            Map<String, String> ingredientURLMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.ingredient_to_image_url));
 
             for (String ingredientName : new TreeSet<>(dirtyToCleanedMapper.values())) {
                 ingredients.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, "")));
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setContext(this);
 
         recyclerView.setAdapter(adapter);
+
         changeViewIngredient.setOnClickListener(t -> {
             if (false) {
                 goToRecipes();
@@ -87,7 +88,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 FilterIngredientsTask filterIngredientsTask = new FilterIngredientsTask();
-                filterIngredientsTask.execute(newText);
+
+                try {
+                    IngredientAdapter adapter = new IngredientAdapter(filterIngredientsTask.execute(newText).get());
+                    adapter.setContext(getApplicationContext());
+                    recyclerView.swapAdapter(adapter, true);
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 return true;
             }
         });
@@ -99,7 +108,14 @@ public class MainActivity extends AppCompatActivity {
 
     private class FilterIngredientsTask extends AsyncTask<String, Void, List<Ingredient>> {
         protected List<Ingredient> doInBackground(String... newText) {
-            return ingredients;
+            return ingredients
+                    .stream()
+                    .filter(t -> {
+                        String name = t.getName().toLowerCase();
+                        String request = newText[0].toLowerCase().replace("ё", "е");
+
+                        return name.contains(request);
+                    }).collect(Collectors.toList());
         }
     }
 }
