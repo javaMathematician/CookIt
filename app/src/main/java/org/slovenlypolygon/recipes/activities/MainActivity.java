@@ -61,19 +61,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_of_ingredients);
+        setContentView(R.layout.ingredients_list);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         initializeVariablesForIngredient();
 
-        IngredientAdapter adapter = new IngredientAdapter(ingredients);
-        adapter.setContext(this);
-
-        recyclerView.setAdapter(adapter);
-
+        recyclerView.setAdapter(new IngredientAdapter(ingredients));
         changeViewIngredient.setOnClickListener(t -> {
-            if (false) {
-                goToRecipes();
+            List<Ingredient> matching = ingredients.stream().filter(Ingredient::isSelected).collect(Collectors.toList());
+
+            if (!matching.isEmpty()) {
+                goToRecipes(matching);
             } else {
                 Toast.makeText(this, R.string.none_selected, Toast.LENGTH_SHORT).show();
             }
@@ -90,9 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 FilterIngredientsTask filterIngredientsTask = new FilterIngredientsTask();
 
                 try {
-                    IngredientAdapter adapter = new IngredientAdapter(filterIngredientsTask.execute(newText).get());
-                    adapter.setContext(getApplicationContext());
-                    recyclerView.swapAdapter(adapter, true);
+                    recyclerView.swapAdapter(new IngredientAdapter(filterIngredientsTask.execute(newText).get()), true);
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -102,20 +98,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void goToRecipes() {
-        this.startActivity(new Intent(this, RecipesActivity.class));
+    private void goToRecipes(List<Ingredient> selected) {
+        Intent intent = new Intent(this, RecipesActivity.class);
+        intent.putParcelableArrayListExtra("selected", new ArrayList<>(selected));
+
+        this.startActivity(intent);
     }
 
     private class FilterIngredientsTask extends AsyncTask<String, Void, List<Ingredient>> {
         protected List<Ingredient> doInBackground(String... newText) {
-            return ingredients
-                    .stream()
-                    .filter(t -> {
-                        String name = t.getName().toLowerCase();
-                        String request = newText[0].toLowerCase().replace("ё", "е");
+            return ingredients.stream().filter(t -> {
+                String name = t.getName().toLowerCase();
+                String request = newText[0].toLowerCase().replace("ё", "е");
 
-                        return name.contains(request);
-                    }).collect(Collectors.toList());
+                return name.contains(request);
+            }).collect(Collectors.toList());
         }
     }
 }

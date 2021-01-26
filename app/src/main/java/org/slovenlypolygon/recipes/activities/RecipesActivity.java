@@ -15,8 +15,10 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class RecipesActivity extends AppCompatActivity {
@@ -37,7 +39,11 @@ public class RecipesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_of_recipes);
+
+        ArrayList<Ingredient> selected = getIntent().getParcelableArrayListExtra("selected");
+        System.out.println(selected);
+
+        setContentView(R.layout.recipes_list);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         initializeVariablesForRecipes();

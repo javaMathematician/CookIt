@@ -1,14 +1,11 @@
 package org.slovenlypolygon.recipes.frontend.adapters;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -20,9 +17,6 @@ import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
     private final List<Ingredient> ingredients;
-    private static Drawable selectedCard;
-    private static Drawable regularCard;
-    private Context context;
 
     public IngredientAdapter(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
@@ -35,7 +29,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public IngredientViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        return new IngredientViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_ingridient, viewGroup, false));
+        return new IngredientViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_card, viewGroup, false));
     }
 
     @Override
@@ -59,13 +53,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-
-        selectedCard = ContextCompat.getDrawable(context, R.drawable.selected_card);
-        regularCard = ContextCompat.getDrawable(context, R.drawable.regular_card);
     }
 
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
