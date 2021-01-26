@@ -31,7 +31,7 @@ public class Ingredient implements Parcelable {
     public Ingredient(Parcel parcel) {
         this.name = parcel.readString();
         this.imageURL = parcel.readString();
-        this.selected = true; // если вызвали этот конструктор, значит, передали ингредиент на активносьт составления блюд. значит, он (ингредиент) заведомо выбран
+        this.selected = true; // если вызвали этот конструктор, значит, передали ингредиент на активность составления блюд. значит, он (ингредиент) заведомо выбран
     }
 
     public boolean isSelected() {
