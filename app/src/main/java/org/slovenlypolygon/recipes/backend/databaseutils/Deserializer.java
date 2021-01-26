@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Deserializer {
 
-    public static List<Dish> deserializeDish(InputStream stream) throws IOException {
+    public static List<Dish> deserializeDishes(InputStream stream) throws IOException {
         return Arrays.asList(new Gson().fromJson(IOUtil.toString(stream), Dish[].class));
     }
 

@@ -1,6 +1,9 @@
 package org.slovenlypolygon.recipes.backend.databaseutils;
 
+import com.google.common.base.Joiner;
+
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +13,7 @@ public class DishFilterBuilder {
 
     private String name;
     private List<String> categories;
-    private List<String> recipeIngredients;
+    private List<Ingredient> recipeIngredients;
 
     public DishFilterBuilder(List<Dish> assortment) {
         this.name = null;
@@ -23,7 +26,7 @@ public class DishFilterBuilder {
         this.name = name;
     }
 
-    public void setRecipeIngredients(List<String> recipeIngredients) {
+    public void setRecipeIngredients(List<Ingredient> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
     }
 
@@ -32,10 +35,9 @@ public class DishFilterBuilder {
 
         for (Dish dish : assortment) {
             boolean passedName = name == null || dish.getName().toLowerCase().contains(name.toLowerCase());
-            boolean passedCategories = categories == null || listContains(categories, dish.getCategories());
-            boolean passedIngredients = recipeIngredients == null || listContains(recipeIngredients, dish.getRecipeIngredients());
+            boolean passedIngredients = recipeIngredients == null || containsAnyIngredient(recipeIngredients, dish.getRecipeIngredients());
 
-            if (passedName && passedCategories && passedIngredients) {
+            if (passedName && passedIngredients) {
                 dishList.add(dish);
             }
         }
@@ -43,21 +45,10 @@ public class DishFilterBuilder {
         return dishList;
     }
 
-    private boolean listContains(List<String> requiredList, List<String> allOfDishList) {
-        StringBuilder builder = new StringBuilder();
+    private boolean containsAnyIngredient(List<Ingredient> required, List<String> provided) {
+        String allOfDishString = Joiner.on(", ").join(provided).toLowerCase().trim(); // не Set, потому что надо искать подстроку подстроки
+        // в частности, при запорсе "Мед", надо найти меды всех масс, ведь они хранятся в виде "Мед 20 грамм", "Мед 40 грамм", ...
 
-        for (String string : allOfDishList) {
-            builder.append(string).append(", ");
-        }
-
-        String allOfDishString = builder.substring(0, builder.length() - 2).toLowerCase().trim();
-
-        for (String required : requiredList) {
-            if (allOfDishString.contains(required.toLowerCase().trim())) {
-                return true;
-            }
-        }
-
-        return false;
+        return required.stream().map(Ingredient::getName).anyMatch(t -> allOfDishString.contains(t.toLowerCase().trim()));
     }
 }
