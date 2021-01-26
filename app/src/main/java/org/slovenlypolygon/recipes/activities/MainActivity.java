@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private SearchView searchViewIngredient;
-    private FloatingActionButton scrollToTopButtonIngredient;
+    private FloatingActionButton scrollToTop;
 
     private void initializeVariablesForIngredient() {
         ingredients = new ArrayList<>();
@@ -40,11 +40,12 @@ public class MainActivity extends AppCompatActivity {
         changeViewIngredient = findViewById(R.id.changeView);
         searchViewIngredient = findViewById(R.id.searchView);
 
-        scrollToTopButtonIngredient = findViewById(R.id.floatingActionButton);
-        searchViewIngredient.setOnClickListener(v -> searchViewIngredient.setIconified(false));
-        scrollToTopButtonIngredient.hide();
+        searchViewIngredient.setOnClickListener(view -> searchViewIngredient.setIconified(false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        scrollToTop = findViewById(R.id.floatingActionButton);
+        scrollToTop.setOnClickListener(view -> recyclerView.smoothScrollToPosition(0));
 
         try {
             Map<String, String> dirtyToCleanedMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned));

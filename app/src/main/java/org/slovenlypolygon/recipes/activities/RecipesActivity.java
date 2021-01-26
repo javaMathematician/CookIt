@@ -23,14 +23,14 @@ import java.util.Objects;
 
 public class RecipesActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private FloatingActionButton scrollToTopButtonRecipe;
+    private FloatingActionButton scrollToTop;
 
     private void initializeVariablesForRecipes() {
         recyclerView = findViewById(R.id.dishesRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        scrollToTopButtonRecipe = findViewById(R.id.floatingActionButtonInRecipes);
+        scrollToTop = findViewById(R.id.floatingActionButtonInRecipes);
     }
 
     @Override
@@ -40,6 +40,8 @@ public class RecipesActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).hide();
         initializeVariablesForRecipes();
+
+        scrollToTop.setOnClickListener(view -> recyclerView.smoothScrollToPosition(0));
 
         try {
             ArrayList<Ingredient> selected = getIntent().getParcelableArrayListExtra("selected");
