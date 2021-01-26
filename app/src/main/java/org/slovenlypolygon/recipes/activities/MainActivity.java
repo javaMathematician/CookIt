@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeVariablesForIngredient() {
         ingredients = new ArrayList<>();
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.ingredientsRecyclerView);
         changeViewIngredient = findViewById(R.id.changeView);
         searchViewIngredient = findViewById(R.id.searchView);
 

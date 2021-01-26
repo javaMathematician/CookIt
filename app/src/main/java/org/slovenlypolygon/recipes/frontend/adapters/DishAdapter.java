@@ -64,9 +64,9 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.DishViewHolder
         public DishViewHolder(View itemView) {
             super(itemView);
 
-            ingredients = itemView.findViewById(R.id.ingredientsList);
-            imageView = itemView.findViewById(R.id.imageOnCardRecipe);
-            name = itemView.findViewById(R.id.textOnCardRecipe);
+            ingredients = itemView.findViewById(R.id.dishIngredients);
+            imageView = itemView.findViewById(R.id.dishImage);
+            name = itemView.findViewById(R.id.dishName);
         }
     }
 }

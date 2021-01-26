@@ -2,11 +2,9 @@ package org.slovenlypolygon.recipes.activities;
 
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,32 +22,27 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class RecipesActivity extends AppCompatActivity {
-    private ScrollView scrollViewRecipe;
     private RecyclerView recyclerView;
-    private LinearLayout allDishesCardHolderRecipe;
     private FloatingActionButton scrollToTopButtonRecipe;
 
     private void initializeVariablesForRecipes() {
-        scrollViewRecipe = findViewById(R.id.scrollViewRecipe);
-        scrollToTopButtonRecipe = findViewById(R.id.floatingActionButtonInRecipes);
-        allDishesCardHolderRecipe = findViewById(R.id.allDishesCardHolderRecipe);
-        TextView topTextViewOnToolbarRecipe = findViewById(R.id.topTextViewOnToolbarRecipes);
+        recyclerView = findViewById(R.id.dishesRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        scrollToTopButtonRecipe.hide();
-        topTextViewOnToolbarRecipe.setText(getResources().getString(R.string.dishes_with));
+        scrollToTopButtonRecipe = findViewById(R.id.floatingActionButtonInRecipes);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayList<Ingredient> selected = getIntent().getParcelableArrayListExtra("selected");
+        setContentView(R.layout.dishes_list);
 
-        setContentView(R.layout.recipes_list);
         Objects.requireNonNull(getSupportActionBar()).hide();
-
         initializeVariablesForRecipes();
 
         try {
+            ArrayList<Ingredient> selected = getIntent().getParcelableArrayListExtra("selected");
             DishFilterBuilder dishFilterBuilder = new DishFilterBuilder(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes)));
             dishFilterBuilder.setRecipeIngredients(selected);
 
