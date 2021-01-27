@@ -2,9 +2,12 @@ package org.slovenlypolygon.recipes.backend.mainobjects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.View;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+
+import org.slovenlypolygon.recipes.frontend.adapters.IngredientAdapter;
 
 public class Ingredient implements Parcelable {
     public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
@@ -40,6 +43,7 @@ public class Ingredient implements Parcelable {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+
     }
 
     public String getName() {

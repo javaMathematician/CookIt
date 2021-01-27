@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         scrollToTop = findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> recyclerView.smoothScrollToPosition(0));
 
+
         try {
             Map<String, String> dirtyToCleanedMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned));
             Map<String, String> ingredientURLMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.ingredient_to_image_url));
