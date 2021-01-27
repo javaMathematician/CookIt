@@ -40,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
         changeViewIngredient = findViewById(R.id.changeView);
         searchViewIngredient = findViewById(R.id.searchView);
 
+
         searchViewIngredient.setOnClickListener(view -> searchViewIngredient.setIconified(false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         scrollToTop = findViewById(R.id.floatingActionButton);
-        scrollToTop.setOnClickListener(view -> recyclerView.smoothScrollToPosition(0));
-
+        scrollToTop.setOnClickListener(view -> recyclerView.scrollToPosition(0));
 
         try {
             Map<String, String> dirtyToCleanedMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned));

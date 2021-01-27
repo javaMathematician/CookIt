@@ -50,9 +50,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             CheckBox checkBox = currentCard.findViewById(R.id.checkBoxOnIngredient);
             LinearLayout layout = currentCard.findViewById(R.id.linearLayoutOnIngredient);
 
-            checkBox.setChecked(!checkBox.isChecked());
-            layout.setBackground(checkBox.isChecked() ? selectedCard : regularCard);
-            currentCard.setBackground(checkBox.isChecked() ? selectedCard : regularCard);
+            //checkBox.setChecked(!checkBox.isChecked());
+            //layout.setBackground(checkBox.isChecked() ? selectedCard : regularCard);
+            //currentCard.setBackground(checkBox.isChecked() ? selectedCard : regularCard);
             ingredient.setSelected(!ingredient.isSelected());
 
             System.out.println(ingredient);
