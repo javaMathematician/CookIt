@@ -46,7 +46,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         scrollToTop = findViewById(R.id.floatingActionButton);
-        scrollToTop.setOnClickListener(view -> recyclerView.scrollToPosition(0));
+        scrollToTop.setOnClickListener(view -> {
+                    System.out.println(recyclerView.getVerticalScrollbarPosition());
+                    recyclerView.scrollToPosition(15);
+                    recyclerView.smoothScrollToPosition(-15);
+                }
+        );
 
 
         try {
