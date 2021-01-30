@@ -42,7 +42,13 @@ public class RecipesActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         initializeVariablesForRecipes();
 
-        scrollToTop.setOnClickListener(view -> recyclerView.smoothScrollToPosition(0));
+        scrollToTop.setOnClickListener(view -> {
+            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
+                recyclerView.scrollToPosition(15);
+            }
+
+            recyclerView.smoothScrollToPosition(0);
+        });
 
         try {
             ArrayList<Ingredient> selected = getIntent().getParcelableArrayListExtra("selected");

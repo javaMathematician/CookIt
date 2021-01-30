@@ -27,7 +27,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-public class MainActivity extends AppCompatActivity {
+public class IngredientsActivity extends AppCompatActivity {
     private List<Ingredient> ingredients;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
@@ -46,7 +46,10 @@ public class MainActivity extends AppCompatActivity {
 
         scrollToTop = findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
-            recyclerView.scrollToPosition(15);
+            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
+                recyclerView.scrollToPosition(15);
+            }
+
             recyclerView.smoothScrollToPosition(0);
         });
 
