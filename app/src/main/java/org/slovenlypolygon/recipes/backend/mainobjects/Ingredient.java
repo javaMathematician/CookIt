@@ -3,6 +3,7 @@ package org.slovenlypolygon.recipes.backend.mainobjects;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -43,7 +44,6 @@ public class Ingredient implements Parcelable {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
-
     }
 
     public String getName() {

@@ -1,5 +1,7 @@
 package org.slovenlypolygon.recipes.frontend.adapters;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -39,22 +42,24 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
+
         Ingredient ingredient = ingredients.get(i);
+
+        if (ingredient.isSelected()) {
+            ingredientViewHolder.checkBox.setChecked(true);
+            ingredientViewHolder.layout.setBackground(ingredientViewHolder.selectedCard);
+        } else {
+            ingredientViewHolder.checkBox.setChecked(false);
+            ingredientViewHolder.layout.setBackground(ingredientViewHolder.regularCard);
+
+        }
+
 
         ingredientViewHolder.textView.setText(ingredient.getName());
         ingredientViewHolder.itemView.setOnClickListener(view -> {
-            Drawable selectedCard = ContextCompat.getDrawable(view.getContext(), R.drawable.selected_card);
-            Drawable regularCard = ContextCompat.getDrawable(view.getContext(), R.drawable.regular_card);
-
-            CardView currentCard = view.findViewById(R.id.ingredientCard);
-            CheckBox checkBox = currentCard.findViewById(R.id.checkBoxOnIngredient);
-            LinearLayout layout = currentCard.findViewById(R.id.linearLayoutOnIngredient);
-
-            //checkBox.setChecked(!checkBox.isChecked());
-            //layout.setBackground(checkBox.isChecked() ? selectedCard : regularCard);
-            //currentCard.setBackground(checkBox.isChecked() ? selectedCard : regularCard);
+            ingredientViewHolder.checkBox.setChecked(!ingredientViewHolder.checkBox.isChecked());
+            ingredientViewHolder.layout.setBackground(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
             ingredient.setSelected(!ingredient.isSelected());
-
             System.out.println(ingredient);
         });
 
@@ -74,12 +79,20 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final ImageView imageView;
+        public final CheckBox checkBox;
+        public final LinearLayout layout;
+        public final Drawable regularCard;
+        public final Drawable selectedCard;
 
         public IngredientViewHolder(View itemView) {
             super(itemView);
 
+            regularCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.regular_card);
+            selectedCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.selected_card);
+            layout = itemView.findViewById(R.id.linearLayoutOnIngredient);
             imageView = itemView.findViewById(R.id.imageOnIngredient);
             textView = itemView.findViewById(R.id.textOnIngredient);
+            checkBox = itemView.findViewById(R.id.checkBoxOnIngredient);
         }
     }
 }

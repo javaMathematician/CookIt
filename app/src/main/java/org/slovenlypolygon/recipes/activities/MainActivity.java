@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
         changeViewIngredient = findViewById(R.id.changeView);
         searchViewIngredient = findViewById(R.id.searchView);
 
-
         searchViewIngredient.setOnClickListener(view -> searchViewIngredient.setIconified(false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         scrollToTop = findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> recyclerView.scrollToPosition(0));
+
 
         try {
             Map<String, String> dirtyToCleanedMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned));
