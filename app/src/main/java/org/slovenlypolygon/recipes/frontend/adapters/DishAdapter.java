@@ -36,7 +36,6 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.DishViewHolder
     @Override
     public void onBindViewHolder(DishAdapter.DishViewHolder dishViewHolder, int i) {
         Dish dish = dishes.get(i);
-
         dishViewHolder.name.setText(dish.getName());
         dishViewHolder.ingredients.setText(Joiner.on(", ").join(dish.getRecipeIngredients()));
         dishViewHolder.itemView.setOnClickListener(view -> {
