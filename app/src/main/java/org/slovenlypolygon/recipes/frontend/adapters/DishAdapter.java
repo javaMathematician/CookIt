@@ -15,12 +15,19 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DishAdapter extends RecyclerView.Adapter<DishAdapter.DishViewHolder> {
     private final List<Dish> dishes;
+    private Map<String, String> cleaned;
 
     public DishAdapter(List<Dish> dishes) {
         this.dishes = dishes;
+    }
+
+    public void setCleaned(Map<String, String> cleaned) {
+        this.cleaned = cleaned;
     }
 
     @Override
@@ -37,7 +44,7 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.DishViewHolder
     public void onBindViewHolder(DishAdapter.DishViewHolder dishViewHolder, int i) {
         Dish dish = dishes.get(i);
         dishViewHolder.name.setText(dish.getName());
-        dishViewHolder.ingredients.setText(Joiner.on(", ").join(dish.getRecipeIngredients()));
+        dishViewHolder.ingredients.setText(Joiner.on(", ").join(dish.getRecipeIngredients().stream().map(t -> cleaned.getOrDefault(t, t)).collect(Collectors.toList())));
         dishViewHolder.itemView.setOnClickListener(view -> {
 
         });

@@ -1,54 +1,35 @@
 package org.slovenlypolygon.recipes.backend.databaseutils;
 
-import com.google.common.base.Joiner;
-
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DishFilterBuilder {
-    private final List<Dish> assortment;
-
+    private List<Dish> assortment;
     private String name;
-    private List<String> categories;
     private List<Ingredient> recipeIngredients;
 
-    public DishFilterBuilder(List<Dish> assortment) {
-        this.name = null;
-        this.categories = null;
-        this.recipeIngredients = null;
+    public DishFilterBuilder setAssortment(List<Dish> assortment) {
         this.assortment = assortment;
+        return this;
     }
 
-    public void setName(String name) {
+    public DishFilterBuilder setName(String name) {
         this.name = name;
+        return this;
     }
 
-    public void setRecipeIngredients(List<Ingredient> recipeIngredients) {
+    public DishFilterBuilder setRecipeIngredients(List<Ingredient> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
+        return this;
     }
 
-    public List<Dish> getMatchingList() {
-        List<Dish> dishList = new ArrayList<>();
+    public DishFilter createDishFilter() {
+        DishFilter dishFilter = new DishFilter(assortment);
+        dishFilter.setRecipeIngredients(recipeIngredients);
+        dishFilter.setName(name);
 
-        for (Dish dish : assortment) {
-            boolean passedName = name == null || dish.getName().toLowerCase().contains(name.toLowerCase());
-            boolean passedIngredients = recipeIngredients == null || containsAnyIngredient(recipeIngredients, dish.getRecipeIngredients());
-
-            if (passedName && passedIngredients) {
-                dishList.add(dish);
-            }
-        }
-
-        return dishList;
-    }
-
-    private boolean containsAnyIngredient(List<Ingredient> required, List<String> provided) {
-        String allOfDishString = Joiner.on(", ").join(provided).toLowerCase().trim(); // не Set, потому что надо искать подстроку подстроки
-        // в частности, при запорсе "Мед", надо найти меды всех масс, ведь они хранятся в виде "Мед 20 грамм", "Мед 40 грамм", ...
-
-        return required.stream().map(Ingredient::getName).anyMatch(t -> allOfDishString.contains(t.toLowerCase().trim()));
+        return dishFilter;
     }
 }

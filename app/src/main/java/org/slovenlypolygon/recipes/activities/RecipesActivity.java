@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
+import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
@@ -45,10 +46,15 @@ public class RecipesActivity extends AppCompatActivity {
 
         try {
             ArrayList<Ingredient> selected = getIntent().getParcelableArrayListExtra("selected");
-            DishFilterBuilder dishFilterBuilder = new DishFilterBuilder(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes)));
-            dishFilterBuilder.setRecipeIngredients(selected);
+            DishFilter dishFilter = new DishFilterBuilder()
+                    .setAssortment(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes)))
+                    .setRecipeIngredients(selected)
+                    .createDishFilter();
 
-            recyclerView.setAdapter(new DishAdapter(dishFilterBuilder.getMatchingList()));
+            DishAdapter adapter = new DishAdapter(dishFilter.getMatchingList());
+            adapter.setCleaned(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
+
+            recyclerView.setAdapter(adapter);
         } catch (IOException e) {
             e.printStackTrace();
         }

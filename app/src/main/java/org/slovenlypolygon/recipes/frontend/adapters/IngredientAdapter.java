@@ -1,7 +1,5 @@
 package org.slovenlypolygon.recipes.frontend.adapters;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -51,9 +47,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         } else {
             ingredientViewHolder.checkBox.setChecked(false);
             ingredientViewHolder.layout.setBackground(ingredientViewHolder.regularCard);
-
         }
-
 
         ingredientViewHolder.textView.setText(ingredient.getName());
         ingredientViewHolder.itemView.setOnClickListener(view -> {
@@ -79,10 +73,10 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final ImageView imageView;
-        public final CheckBox checkBox;
-        public final LinearLayout layout;
-        public final Drawable regularCard;
-        public final Drawable selectedCard;
+        private final CheckBox checkBox;
+        private final LinearLayout layout;
+        private final Drawable regularCard;
+        private final Drawable selectedCard;
 
         public IngredientViewHolder(View itemView) {
             super(itemView);

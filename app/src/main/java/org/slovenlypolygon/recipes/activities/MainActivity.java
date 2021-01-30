@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,12 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
         scrollToTop = findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
-                    System.out.println(recyclerView.getVerticalScrollbarPosition());
-                    recyclerView.scrollToPosition(15);
-                    recyclerView.smoothScrollToPosition(-15);
-                }
-        );
-
+            recyclerView.scrollToPosition(15);
+            recyclerView.smoothScrollToPosition(0);
+        });
 
         try {
             Map<String, String> dirtyToCleanedMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned));
