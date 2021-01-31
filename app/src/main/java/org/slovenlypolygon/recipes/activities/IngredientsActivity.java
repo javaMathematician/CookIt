@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
-import org.slovenlypolygon.recipes.frontend.adapters.IngredientAdapter;
+import org.slovenlypolygon.recipes.frontend.adapters.IngredientsAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,21 +28,20 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class IngredientsActivity extends AppCompatActivity {
-    private List<Ingredient> ingredients;
+    private List<Ingredient> ingredients = new ArrayList<>();
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTop;
 
     private void initializeVariablesForIngredient() {
-        ingredients = new ArrayList<>();
         recyclerView = findViewById(R.id.ingredientsRecyclerView);
-        changeViewIngredient = findViewById(R.id.changeView);
-        searchViewIngredient = findViewById(R.id.searchView);
-
-        searchViewIngredient.setOnClickListener(view -> searchViewIngredient.setIconified(false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        changeViewIngredient = findViewById(R.id.changeView);
+        searchViewIngredient = findViewById(R.id.searchView);
+        searchViewIngredient.setOnClickListener(view -> searchViewIngredient.setIconified(false));
 
         scrollToTop = findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
@@ -73,7 +72,7 @@ public class IngredientsActivity extends AppCompatActivity {
 
         initializeVariablesForIngredient();
 
-        recyclerView.setAdapter(new IngredientAdapter(ingredients));
+        recyclerView.setAdapter(new IngredientsAdapter(ingredients));
         changeViewIngredient.setOnClickListener(t -> {
             List<Ingredient> matching = ingredients.stream().filter(Ingredient::isSelected).collect(Collectors.toList());
 
@@ -95,7 +94,7 @@ public class IngredientsActivity extends AppCompatActivity {
                 FilterIngredientsTask filterIngredientsTask = new FilterIngredientsTask();
 
                 try {
-                    recyclerView.swapAdapter(new IngredientAdapter(filterIngredientsTask.execute(newText).get()), true);
+                    recyclerView.swapAdapter(new IngredientsAdapter(filterIngredientsTask.execute(newText).get()), true);
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -106,10 +105,7 @@ public class IngredientsActivity extends AppCompatActivity {
     }
 
     private void goToRecipes(List<Ingredient> selected) {
-        Intent intent = new Intent(this, RecipesActivity.class);
-        intent.putParcelableArrayListExtra("selected", new ArrayList<>(selected));
-
-        this.startActivity(intent);
+        startActivity(new Intent(this, RecipesActivity.class).putParcelableArrayListExtra("selected", new ArrayList<>(selected)));
     }
 
     private class FilterIngredientsTask extends AsyncTask<String, Void, List<Ingredient>> {

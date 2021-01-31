@@ -2,13 +2,9 @@ package org.slovenlypolygon.recipes.backend.mainobjects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.View;
-import android.widget.CheckBox;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-
-import org.slovenlypolygon.recipes.frontend.adapters.IngredientAdapter;
 
 public class Ingredient implements Parcelable {
     public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {

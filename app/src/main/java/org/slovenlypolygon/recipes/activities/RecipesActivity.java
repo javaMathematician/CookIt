@@ -1,22 +1,19 @@
 package org.slovenlypolygon.recipes.activities;
 
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
-import org.slovenlypolygon.recipes.frontend.adapters.DishAdapter;
+import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,27 +54,13 @@ public class RecipesActivity extends AppCompatActivity {
                     .setRecipeIngredients(selected)
                     .createDishFilter();
 
-            DishAdapter adapter = new DishAdapter(dishFilter.getMatchingList());
+            DishesAdapter adapter = new DishesAdapter(dishFilter.getMatchingList());
             adapter.setCleaned(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
+            adapter.setContext(getApplicationContext());
 
             recyclerView.setAdapter(adapter);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void constrainStepByStep(Dish dish) {
-        ImageView imageView = findViewById(R.id.dishStepByStepImage);
-
-        Picasso.get()
-                .load(dish.getImageURL())
-                .error(R.drawable.sample_dish_for_error)
-                .resize(1500, 1500)
-                .centerCrop()
-                .into(imageView);
-    }
-
-    @Override
-    public void onBackPressed() {
     }
 }

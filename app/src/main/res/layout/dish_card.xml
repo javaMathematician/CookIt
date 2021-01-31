@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:gravity="center_vertical"
-                android:text="tEXTTEXTTEXTTEXT"
+                android:text="TEXTTEXTTEXTTEXT"
                 android:textColor="@color/darkThemeTextColor"
                 android:textSize="18sp" />
 

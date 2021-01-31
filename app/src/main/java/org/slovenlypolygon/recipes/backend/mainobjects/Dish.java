@@ -1,15 +1,27 @@
 package org.slovenlypolygon.recipes.backend.mainobjects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dish implements Serializable {
-    private static final long serialVersionUID = 1049835430954235L;
+public class Dish implements Parcelable {
+    public static final Parcelable.Creator<Dish> CREATOR = new Parcelable.Creator<Dish>() {
+        @Override
+        public Dish createFromParcel(Parcel source) {
+            return new Dish(source);
+        }
+
+        @Override
+        public Dish[] newArray(int size) {
+            return new Dish[size];
+        }
+    };
 
     private String name;
 
@@ -22,6 +34,14 @@ public class Dish implements Serializable {
     @SerializedName("recipeIngredient")
     private List<String> recipeIngredients;
     private List<List<String>> recipeInstructions;
+
+    public Dish(Parcel parcel) {
+        this.name = parcel.readString();
+        this.imageURL = parcel.readString();
+        parcel.readList(categories, String.class.getClassLoader());
+        parcel.readList(recipeIngredients, String.class.getClassLoader());
+        parcel.readList(recipeInstructions, List.class.getClassLoader());
+    }
 
     public String getName() {
         return name;
@@ -92,5 +112,19 @@ public class Dish implements Serializable {
                 .add("recipeIngredients", recipeIngredients)
                 .add("recipeInstructions", recipeInstructions)
                 .toString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(imageURL);
+        dest.writeList(categories);
+        dest.writeList(recipeIngredients);
+        dest.writeList(recipeInstructions);
     }
 }

@@ -19,10 +19,10 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
 import java.util.List;
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
+public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder> {
     private final List<Ingredient> ingredients;
 
-    public IngredientAdapter(List<Ingredient> ingredients) {
+    public IngredientsAdapter(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -38,23 +38,16 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
-
         Ingredient ingredient = ingredients.get(i);
 
-        if (ingredient.isSelected()) {
-            ingredientViewHolder.checkBox.setChecked(true);
-            ingredientViewHolder.layout.setBackground(ingredientViewHolder.selectedCard);
-        } else {
-            ingredientViewHolder.checkBox.setChecked(false);
-            ingredientViewHolder.layout.setBackground(ingredientViewHolder.regularCard);
-        }
-
+        ingredientViewHolder.checkBox.setChecked(ingredient.isSelected());
+        ingredientViewHolder.layout.setBackground(ingredient.isSelected() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
         ingredientViewHolder.textView.setText(ingredient.getName());
+
         ingredientViewHolder.itemView.setOnClickListener(view -> {
             ingredientViewHolder.checkBox.setChecked(!ingredientViewHolder.checkBox.isChecked());
             ingredientViewHolder.layout.setBackground(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
             ingredient.setSelected(!ingredient.isSelected());
-            System.out.println(ingredient);
         });
 
         Picasso.get()
@@ -81,12 +74,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         public IngredientViewHolder(View itemView) {
             super(itemView);
 
+            textView = itemView.findViewById(R.id.textOnIngredient);
+            imageView = itemView.findViewById(R.id.imageOnIngredient);
+            checkBox = itemView.findViewById(R.id.checkBoxOnIngredient);
+            layout = itemView.findViewById(R.id.linearLayoutOnIngredient);
             regularCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.regular_card);
             selectedCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.selected_card);
-            layout = itemView.findViewById(R.id.linearLayoutOnIngredient);
-            imageView = itemView.findViewById(R.id.imageOnIngredient);
-            textView = itemView.findViewById(R.id.textOnIngredient);
-            checkBox = itemView.findViewById(R.id.checkBoxOnIngredient);
         }
     }
 }
