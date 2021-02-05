@@ -51,6 +51,14 @@ public class IngredientsActivity extends AppCompatActivity {
 
             recyclerView.smoothScrollToPosition(0);
         });
+        recyclerView.setRecyclerListener(holder -> {
+            if (holder.getAdapterPosition() > 9) {
+                scrollToTop.show();
+            } else {
+                scrollToTop.hide();
+            }
+        });
+        scrollToTop.hide();
 
         try {
             Map<String, String> dirtyToCleanedMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned));
@@ -91,10 +99,10 @@ public class IngredientsActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                FilterIngredientsTask filterIngredientsTask = new FilterIngredientsTask();
+                SearchFilter searchFilter = new SearchFilter();
 
                 try {
-                    recyclerView.swapAdapter(new IngredientsAdapter(filterIngredientsTask.execute(newText).get()), true);
+                    recyclerView.swapAdapter(new IngredientsAdapter(searchFilter.execute(newText).get()), true);
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -108,14 +116,9 @@ public class IngredientsActivity extends AppCompatActivity {
         startActivity(new Intent(this, RecipesActivity.class).putParcelableArrayListExtra("selected", new ArrayList<>(selected)));
     }
 
-    private class FilterIngredientsTask extends AsyncTask<String, Void, List<Ingredient>> {
+    private class SearchFilter extends AsyncTask<String, Void, List<Ingredient>> {
         protected List<Ingredient> doInBackground(String... newText) {
-            return ingredients.stream().filter(t -> {
-                String name = t.getName().toLowerCase();
-                String request = newText[0].toLowerCase().replace("ё", "е");
-
-                return name.contains(request);
-            }).collect(Collectors.toList());
+            return ingredients.stream().filter(t -> t.getName().toLowerCase().contains(newText[0].toLowerCase().replace("ё", "е"))).collect(Collectors.toList());
         }
     }
 }

@@ -29,6 +29,23 @@ public class RecipesActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         scrollToTop = findViewById(R.id.floatingActionButtonInRecipes);
+        scrollToTop.setOnClickListener(view -> {
+            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
+                recyclerView.scrollToPosition(15);
+            }
+
+            recyclerView.smoothScrollToPosition(0);
+        });
+
+        recyclerView.setRecyclerListener(holder -> {
+            if (holder.getAdapterPosition() > 9) {
+                scrollToTop.show();
+            } else {
+                scrollToTop.hide();
+            }
+        });
+
+        scrollToTop.hide();
     }
 
     @Override

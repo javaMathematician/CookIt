@@ -7,48 +7,22 @@
     android:background="@color/darkThemeBackgroundColor"
     tools:context=".activities.IngredientsActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_purple_gradient"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/topTextViewOnToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:text="@string/app_name"
-            android:textAlignment="textStart"
-            android:textColor="@color/darkThemeTextColor"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.appcompat.widget.Toolbar>
-
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/bg_light_rounded"
-        android:backgroundTint="@color/darkThemeBackgroundCardColor"
         android:clickable="true"
         android:focusable="true"
         android:inputType="textPersonName"
+        android:layout_width="match_parent"
         app:closeIcon="@drawable/close_icon"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_light_rounded"
+        android:backgroundTint="@color/darkThemeBackgroundCardColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:queryBackground="@drawable/bg_dark_rounded"
         app:queryHint="@string/search_hint"
         app:searchIcon="@drawable/ic_baseline_search_24"
@@ -72,9 +46,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ingredientsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent" />
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatButton

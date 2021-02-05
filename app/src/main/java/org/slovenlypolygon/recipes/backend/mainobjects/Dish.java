@@ -67,7 +67,6 @@ public class Dish implements Parcelable {
         List<String> output = new ArrayList<>();
 
         for (List<String> list : recipeInstructions) {
-            //output.add(list.get(0).replace("———", "").replace("---", "")); Надо-ли реплейсить "---" под названием рецепта эти - мозолят глаза
             output.add(list.get(0));
         }
 
