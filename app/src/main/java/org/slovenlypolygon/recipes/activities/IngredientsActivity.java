@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class IngredientsActivity extends AppCompatActivity {
-    private List<Ingredient> ingredients = new ArrayList<>();
+    private final List<Ingredient> ingredients = new ArrayList<>();
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private SearchView searchViewIngredient;

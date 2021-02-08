@@ -76,5 +76,6 @@
         app:backgroundTint="@color/cardview_dark_background"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayoutInRecipes"
         app:layout_constraintEnd_toEndOf="@+id/frameLayoutInRecipes"
+        android:contentDescription="scroll to top"
         app:srcCompat="@drawable/up_arrow" />
 </androidx.constraintlayout.widget.ConstraintLayout>
