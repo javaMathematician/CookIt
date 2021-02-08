@@ -23,21 +23,22 @@ public class Dish implements Parcelable {
         }
     };
 
-    private String name;
+    private final String name;
 
     @SerializedName("image")
-    private String imageURL;
+    private final String imageURL;
 
     @SerializedName("breadcrumbs")
-    private List<String> categories;
+    private final List<String> categories = new ArrayList<>();
 
     @SerializedName("recipeIngredient")
-    private List<String> recipeIngredients;
-    private List<List<String>> recipeInstructions;
+    private final List<String> recipeIngredients = new ArrayList<>();
+    private final List<List<String>> recipeInstructions = new ArrayList<>();
 
     public Dish(Parcel parcel) {
         this.name = parcel.readString();
         this.imageURL = parcel.readString();
+
         parcel.readList(categories, String.class.getClassLoader());
         parcel.readList(recipeIngredients, String.class.getClassLoader());
         parcel.readList(recipeInstructions, List.class.getClassLoader());

@@ -1,6 +1,5 @@
 package org.slovenlypolygon.recipes.frontend.adapters;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> {
     private final List<Dish> dishes;
     private Map<String, String> cleaned;
-    private Context context;
 
     public DishesAdapter(List<Dish> dishes) {
         this.dishes = dishes;
@@ -52,7 +50,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         dishViewHolder.ingredients.setText(Joiner.on(", ").join(dish.getRecipeIngredients().stream().map(t -> cleaned.getOrDefault(t, t)).collect(Collectors.toList())));
 
         dishViewHolder.itemView.setOnClickListener(view -> {
-            context.startActivity(new Intent(view.getContext(), DishActivity.class).putExtra("dish", dish).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            view.getContext().startActivity(new Intent(view.getContext(), DishActivity.class).putExtra("dish", dish).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         });
 
         Picasso.get()
@@ -66,10 +64,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {

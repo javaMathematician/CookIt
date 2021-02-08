@@ -15,9 +15,4 @@ public class DishActivity extends AppCompatActivity {
         setContentView(R.layout.step_by_step);
         Objects.requireNonNull(getSupportActionBar()).hide();
     }
-
-    @Override
-    public void onBackPressed() {
-
-    }
 }

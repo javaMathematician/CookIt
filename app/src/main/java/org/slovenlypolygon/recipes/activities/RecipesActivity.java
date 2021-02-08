@@ -73,7 +73,6 @@ public class RecipesActivity extends AppCompatActivity {
 
             DishesAdapter adapter = new DishesAdapter(dishFilter.getMatchingList());
             adapter.setCleaned(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
-            adapter.setContext(getApplicationContext());
 
             recyclerView.setAdapter(adapter);
         } catch (IOException e) {
