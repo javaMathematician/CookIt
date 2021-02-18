@@ -1,7 +1,6 @@
 <resources>
 
-    <style name="AppTheme"
-        parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
@@ -11,11 +10,23 @@
     </style>
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="android:editTextColor">#FFFFFF</item>
-        <item name="colorControlActivated">#FFFFFF</item>
-        <item name="queryBackground">@color/darkThemeTextColor</item>
         <item name="defaultQueryHint">"Поиск"</item>
+        <item name="closeIcon">@drawable/close_icon</item>
+        <item name="hintTextColor">@android:color/white</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="queryBackground">@android:color/white</item>
+        <item name="android:queryHint">@string/search_hint</item>
+        <item name="android:closeIcon">@drawable/close_icon</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:editTextColor">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="android:background">@drawable/bg_light_rounded</item>
+        <item name="android:queryBackground">@drawable/bg_dark_rounded</item>
+        <item name="android:searchIcon">@drawable/ic_baseline_search_24</item>
+        <item name="android:submitBackground">@color/searchViewColorWhite</item>
+        <item name="android:backgroundTint">@color/darkThemeBackgroundCardColor</item>
     </style>
+
     <style name="checkBoxStyle" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">#FFFFFF</item>
         <item name="colorControlActivated">@android:color/white</item>

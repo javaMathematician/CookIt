@@ -47,7 +47,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         Dish dish = dishes.get(i);
 
         dishViewHolder.name.setText(dish.getName());
-        dishViewHolder.ingredients.setText(Joiner.on(", ").join(dish.getRecipeIngredients().stream().map(t -> cleaned.getOrDefault(t, t)).collect(Collectors.toList())));
+        dishViewHolder.ingredients.setText(Joiner.on(", ").join(dish.getRecipeIngredients().stream().map(t -> cleaned.getOrDefault(t, t)).collect(Collectors.toList())).toLowerCase());
 
         dishViewHolder.itemView.setOnClickListener(view -> {
             view.getContext().startActivity(new Intent(view.getContext(), DishActivity.class).putExtra("dish", dish).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

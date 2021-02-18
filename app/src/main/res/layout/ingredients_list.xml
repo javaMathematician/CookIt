@@ -16,17 +16,11 @@
         android:focusable="true"
         android:inputType="textPersonName"
         android:layout_width="match_parent"
-        app:closeIcon="@drawable/close_icon"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_light_rounded"
-        android:backgroundTint="@color/darkThemeBackgroundCardColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryBackground="@drawable/bg_dark_rounded"
         app:queryHint="@string/search_hint"
-        app:searchIcon="@drawable/ic_baseline_search_24"
-        app:submitBackground="@color/searchViewColorWhite"
         app:theme="@style/SearchViewStyle" />
 
     <FrameLayout

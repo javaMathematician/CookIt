@@ -8,10 +8,6 @@
     android:background="@color/darkThemeBackgroundColor"
     tools:context=".activities.IngredientsActivity">
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:ignore="MissingConstraints">
     <LinearLayout
         android:id="@+id/stepByStepLinearLayout"
         android:layout_width="match_parent"
@@ -21,28 +17,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_purple_gradient">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/dishName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Макарошки"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="30sp" />
-        </androidx.appcompat.widget.Toolbar>
+            <ImageView
+                android:id="@+id/dishStepByStepImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@android:color/white"
+                android:contentDescription="@string/dish_image_step_by_step"
+                app:layout_constraintDimensionRatio="H, 1:1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="350dp"
-            android:layout_height="350dp"
-            android:layout_margin="8dp"
-            android:background="#FFFFFF" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/stepByStepRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
-</ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
