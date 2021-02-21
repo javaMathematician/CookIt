@@ -2,7 +2,7 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    android:foreground="?android:attr/selectableItemBackground"
     android:id="@+id/ingredientCard"
     android:layout_width="match_parent"
     android:layout_height="147dp"
@@ -38,6 +38,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/darkThemeTextColor"
             android:textSize="18sp" />
+
         <CheckBox
             android:id="@+id/checkBoxOnIngredient"
             android:layout_width="0dp"
