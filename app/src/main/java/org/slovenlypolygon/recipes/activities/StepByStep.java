@@ -23,7 +23,7 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import java.util.List;
 import java.util.Objects;
 
-public class DishActivity extends AppCompatActivity {
+public class StepByStep extends AppCompatActivity {
     private LinearLayout linearLayout;
     private Dish dish;
 

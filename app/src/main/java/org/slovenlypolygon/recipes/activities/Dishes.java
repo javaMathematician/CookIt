@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class RecipesActivity extends AppCompatActivity {
+public class Dishes extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FloatingActionButton scrollToTop;
 
@@ -73,6 +73,7 @@ public class RecipesActivity extends AppCompatActivity {
 
             DishesAdapter adapter = new DishesAdapter(dishFilter.getMatchingList());
             adapter.setCleaned(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
+            adapter.setSelected(selected);
 
             recyclerView.setAdapter(adapter);
         } catch (IOException e) {

@@ -27,7 +27,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-public class IngredientsActivity extends AppCompatActivity {
+public class Ingredients extends AppCompatActivity {
     private final List<Ingredient> ingredients = new ArrayList<>();
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
@@ -113,7 +113,7 @@ public class IngredientsActivity extends AppCompatActivity {
     }
 
     private void goToRecipes(List<Ingredient> selected) {
-        startActivity(new Intent(this, RecipesActivity.class).putParcelableArrayListExtra("selected", new ArrayList<>(selected)));
+        startActivity(new Intent(this, Dishes.class).putParcelableArrayListExtra("selected", new ArrayList<>(selected)));
     }
 
     private class SearchFilter extends AsyncTask<String, Void, List<Ingredient>> {

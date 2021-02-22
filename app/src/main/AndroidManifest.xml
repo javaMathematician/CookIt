@@ -20,15 +20,15 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
 
-        <activity android:name=".activities.IngredientsActivity">
+        <activity android:name=".activities.Ingredients">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.RecipesActivity" />
-        <activity android:name=".activities.DishActivity" />
+        <activity android:name=".activities.Dishes" />
+        <activity android:name=".activities.StepByStep" />
     </application>
 
 </manifest>

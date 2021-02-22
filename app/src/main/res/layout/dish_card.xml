@@ -54,7 +54,6 @@
                 android:text="@string/sample_big_text"
                 android:textColor="@android:color/tertiary_text_light"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dishName" />
         </androidx.constraintlayout.widget.ConstraintLayout>
