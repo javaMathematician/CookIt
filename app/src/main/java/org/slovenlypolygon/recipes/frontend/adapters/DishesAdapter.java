@@ -63,6 +63,35 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         String selectedText = Joiner.on(", ").join(intersection).toLowerCase();
         String text = Joiner.on(", ").join(Sets.difference(cleanedDish, intersection)).toLowerCase();
 
+        /*{
+            "name": "Палтус с кабачками и хрустящим фенхелем",
+                "image": "https://eda.ru/img/eda/1200x-i/s1.eda.ru/StaticContent/Photos/120131083215/170712132403/p_O.jpg",
+                "breadcrumbs": [
+            "Пошаговые рецепты",
+                    "Основные блюда",
+                    "Европейская кухня",
+                    "Горячие закуски"
+        ],
+            "recipeIngredient": [
+            "Филе палтуса 300 г",
+                    "Кабачки 300 г",
+                    "Лук-шалот 20 г",
+                    "Перец чили 10 г",
+                    "Базилик 6 г",
+                    "Фенхель 100 г",
+                    "Дижонская горчица 25 г",
+                    "Кайенский перец 3 г",
+                    "Соль по вкусу",
+                    "Салатная заправка «Ароматный чеснок» IDEAL 25 мл",
+                    "Салатная заправка «Пряные травы» IDEAL 25 мл",
+                    "Рафинированное оливковое масло 50 мл",
+                    "Жареный арахис 25 г",
+                    "Васаби паста 20 г",
+                    "Рисовый уксус 30 мл",
+                    "Сахар по вкусу",
+                    "Красный сладкий перец 170 г"
+        ], — баг с пересечением*/ // TODO: 24.02.2021 FIXME
+
         String output = String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text).replace("\n", "");
 
         dishViewHolder.name.setText(dish.getName());

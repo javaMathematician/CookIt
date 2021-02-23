@@ -22,7 +22,6 @@
             android:id="@+id/stepText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/sample_big_text"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toStartOf="@id/expandStepButton"
             app:layout_constraintStart_toStartOf="parent"

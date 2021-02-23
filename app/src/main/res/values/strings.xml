@@ -10,11 +10,8 @@
     <string name="step_by_step_toolbar_string">Рецепт по шагам</string>
     <string name="dishes_with">Блюда</string>
     <string name="dish_image_step_by_step">Изображение блюда</string>
-    <string name="sample_big_text" translatable="false">TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT</string>
-    <string name="title_activity_main">MainActivity</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="hello_world" translatable="false">Hello Square World!</string>
+    <string name="reset_selected">Сбросить выбранные ингредиенты</string>
+    <string name="shuffle_ingredients">Перемешать ингредиенты</string>
 </resources>
