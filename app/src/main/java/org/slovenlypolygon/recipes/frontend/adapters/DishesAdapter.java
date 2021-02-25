@@ -20,22 +20,16 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> {
     private final List<Dish> dishes;
-    private Map<String, String> cleaned;
     private Set<String> selected;
 
     public DishesAdapter(List<Dish> dishes) {
         this.dishes = dishes;
-    }
-
-    public void setCleaned(Map<String, String> cleaned) {
-        this.cleaned = cleaned;
     }
 
     @Override
@@ -50,47 +44,30 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     @Override
     public void onBindViewHolder(DishViewHolder dishViewHolder, int i) {
-        Dish dish = dishes.get(i);
+        dishes.sort((dish1, dish2) -> {
+            Set<String> cleanedDish1 = dish1
+                    .getRecipeIngredients()
+                    .stream()
+                    .collect(Collectors.toSet());
 
+            Set<String> cleanedDish2 = dish2
+                    .getRecipeIngredients()
+                    .stream()
+                    .collect(Collectors.toSet());
+
+            return Sets.intersection(cleanedDish2, selected).size() - Sets.intersection(cleanedDish1, selected).size();
+        });
+
+        Dish dish = dishes.get(i);
         Set<String> cleanedDish = dish
                 .getRecipeIngredients()
                 .stream()
-                .map(t -> cleaned.getOrDefault(t, t))
                 .collect(Collectors.toSet());
 
         Set<String> intersection = Sets.intersection(cleanedDish, selected);
 
         String selectedText = Joiner.on(", ").join(intersection).toLowerCase();
         String text = Joiner.on(", ").join(Sets.difference(cleanedDish, intersection)).toLowerCase();
-
-        /*{
-            "name": "Палтус с кабачками и хрустящим фенхелем",
-                "image": "https://eda.ru/img/eda/1200x-i/s1.eda.ru/StaticContent/Photos/120131083215/170712132403/p_O.jpg",
-                "breadcrumbs": [
-            "Пошаговые рецепты",
-                    "Основные блюда",
-                    "Европейская кухня",
-                    "Горячие закуски"
-        ],
-            "recipeIngredient": [
-            "Филе палтуса 300 г",
-                    "Кабачки 300 г",
-                    "Лук-шалот 20 г",
-                    "Перец чили 10 г",
-                    "Базилик 6 г",
-                    "Фенхель 100 г",
-                    "Дижонская горчица 25 г",
-                    "Кайенский перец 3 г",
-                    "Соль по вкусу",
-                    "Салатная заправка «Ароматный чеснок» IDEAL 25 мл",
-                    "Салатная заправка «Пряные травы» IDEAL 25 мл",
-                    "Рафинированное оливковое масло 50 мл",
-                    "Жареный арахис 25 г",
-                    "Васаби паста 20 г",
-                    "Рисовый уксус 30 мл",
-                    "Сахар по вкусу",
-                    "Красный сладкий перец 170 г"
-        ], — баг с пересечением*/ // TODO: 24.02.2021 FIXME
 
         String output = String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text).replace("\n", "");
 
@@ -111,11 +88,13 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void setSelected(List<Ingredient> selected) {
+    public DishesAdapter setSelected(List<Ingredient> selected) {
         this.selected = selected.stream()
                 .map(Ingredient::getName)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
+
+        return this;
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {

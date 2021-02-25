@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
+import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.IngredientsAdapter;
 
@@ -23,21 +24,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class Ingredients extends AppCompatActivity {
-    private final List<Ingredient> ingredients = new ArrayList<>();
+    private List<Dish> dishes;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTop;
+    private final List<Ingredient> ingredients = new ArrayList<>();
 
     private void initializeVariablesForIngredient() {
         recyclerView = findViewById(R.id.ingredientsRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        try {
+            dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.alpha));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         changeViewIngredient = findViewById(R.id.changeView);
         searchViewIngredient = findViewById(R.id.searchView);
@@ -61,11 +70,20 @@ public class Ingredients extends AppCompatActivity {
         scrollToTop.hide();
 
         try {
-            Map<String, String> dirtyToCleanedMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned));
             Map<String, String> ingredientURLMapper = Deserializer.deserializeMap(getResources().openRawResource(R.raw.ingredient_to_image_url));
+            Set<String> strings = new TreeSet<>();
 
-            for (String ingredientName : new TreeSet<>(dirtyToCleanedMapper.values())) {
-                ingredients.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, "")));
+            for (Dish dish : dishes) {
+                strings.addAll(dish.getRecipeIngredients());
+            }
+
+            for (String ingredientName : strings) {
+                String url = ingredientURLMapper.getOrDefault(ingredientName, "");
+                if (url.length() != 0) {
+                    ingredients.add(new Ingredient(ingredientName, url));
+                } else {
+                    System.out.println(ingredientName);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

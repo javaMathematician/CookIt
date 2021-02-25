@@ -16,7 +16,7 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Dishes extends AppCompatActivity {
@@ -65,17 +65,13 @@ public class Dishes extends AppCompatActivity {
         });
 
         try {
-            ArrayList<Ingredient> selected = getIntent().getParcelableArrayListExtra("selected");
+            List<Ingredient> selected = getIntent().getParcelableArrayListExtra("selected");
             DishFilter dishFilter = new DishFilterBuilder()
-                    .setAssortment(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes)))
+                    .setAssortment(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.alpha)))
                     .setRecipeIngredients(selected)
                     .createDishFilter();
 
-            DishesAdapter adapter = new DishesAdapter(dishFilter.getMatchingList());
-            adapter.setCleaned(Deserializer.deserializeMap(getResources().openRawResource(R.raw.cleaned)));
-            adapter.setSelected(selected);
-
-            recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(new DishesAdapter(dishFilter.getMatchingList()).setSelected(selected));
         } catch (IOException e) {
             e.printStackTrace();
         }
