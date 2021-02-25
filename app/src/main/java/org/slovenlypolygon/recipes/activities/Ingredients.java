@@ -79,6 +79,7 @@ public class Ingredients extends AppCompatActivity {
 
             for (String ingredientName : strings) {
                 String url = ingredientURLMapper.getOrDefault(ingredientName, "");
+
                 if (url.length() != 0) {
                     ingredients.add(new Ingredient(ingredientName, url));
                 } else {

@@ -7,41 +7,33 @@
     android:background="@color/darkThemeBackgroundColor"
     tools:context=".activities.Ingredients">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchViewOnDishesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_purple_gradient"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/topTextViewOnToolbarRecipes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/recipes"
-        android:textAlignment="center"
-        android:textColor="@color/darkThemeTextColor"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="@string/search_hint"
+        app:theme="@style/SearchViewStyle" />
 
     <FrameLayout
         android:id="@+id/frameLayoutInRecipes"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/searchViewOnDishesList"
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints">
 
@@ -57,10 +49,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:clickable="true"
+        android:contentDescription="scroll"
         android:focusable="true"
         app:backgroundTint="@color/cardview_dark_background"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayoutInRecipes"
         app:layout_constraintEnd_toEndOf="@+id/frameLayoutInRecipes"
-        android:contentDescription="scroll"
         app:srcCompat="@drawable/up_arrow" />
 </androidx.constraintlayout.widget.ConstraintLayout>

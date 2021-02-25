@@ -68,8 +68,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
         String selectedText = Joiner.on(", ").join(intersection).toLowerCase();
         String text = Joiner.on(", ").join(Sets.difference(cleanedDish, intersection)).toLowerCase();
-
-        String output = String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text).replace("\n", "");
+        String output = intersection.isEmpty() ?
+                String.format("%s", text).replace("\n", "") :
+                String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text).replace("\n", "");
 
         dishViewHolder.name.setText(dish.getName());
         dishViewHolder.ingredients.setText(Html.fromHtml(output, Html.FROM_HTML_MODE_LEGACY));
