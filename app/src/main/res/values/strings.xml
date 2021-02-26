@@ -14,4 +14,5 @@
     <string name="hello_world" translatable="false">Hello Square World!</string>
     <string name="reset_selected">Сбросить выбранные ингредиенты</string>
     <string name="shuffle_ingredients">Перемешать ингредиенты</string>
+    <string name="you_will_need">Вам понадобятся:</string>
 </resources>

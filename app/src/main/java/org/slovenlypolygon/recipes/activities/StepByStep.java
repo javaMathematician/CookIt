@@ -15,19 +15,35 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.common.base.Joiner;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.io.IOUtil;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class StepByStep extends AppCompatActivity {
+    private Map<String, List<String>> map;
     private LinearLayout linearLayout;
     private Dish dish;
 
     private void initialize() {
+        try (InputStream stream = getResources().openRawResource(R.raw.raw_ingredients)) {
+            map = new Gson().fromJson(IOUtil.toString(stream), new TypeToken<Map<String, List<String>>>() {
+            }.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         dish = getIntent().getParcelableExtra("dish");
         linearLayout = findViewById(R.id.stepByStepLinearLayout);
 
@@ -35,6 +51,11 @@ public class StepByStep extends AppCompatActivity {
                 .load(dish.getImageURL())
                 .error(R.drawable.sample_dish_for_error)
                 .into((ImageView) findViewById(R.id.dishStepByStepImage));
+
+        String ingredients = getResources().getString(R.string.you_will_need)
+                + "\n    " + Joiner.on(",\n    ").join(map.getOrDefault(dish.getName(), new ArrayList<>())) + ".";
+        TextView stepByStepIngredients = findViewById(R.id.stepByStepIngredients);
+        stepByStepIngredients.setText(ingredients);
     }
 
     @Override

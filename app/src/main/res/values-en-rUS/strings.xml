@@ -13,4 +13,5 @@
     <string name="dish_image_step_by_step">Dish image</string>
     <string name="reset_selected">Reset selected ingredients</string>
     <string name="shuffle_ingredients">Shuffle ingredients</string>
+    <string name="you_will_need">You will need:</string>
 </resources>

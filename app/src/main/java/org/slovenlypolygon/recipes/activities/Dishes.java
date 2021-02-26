@@ -94,7 +94,9 @@ public class Dishes extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 try {
-                    recyclerView.swapAdapter(new DishesAdapter(new SearchFilter().execute(newText).get()).setSelected(selected), true);
+                    SearchFilter searchFilter = new SearchFilter();
+
+                    recyclerView.swapAdapter(new DishesAdapter(searchFilter.execute(newText).get()).setSelected(selected), true);
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }

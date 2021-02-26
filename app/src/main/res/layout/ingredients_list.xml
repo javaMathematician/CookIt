@@ -9,14 +9,11 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginRight="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
         android:inputType="textPersonName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -45,11 +42,10 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/changeView"
-        android:foreground="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:background="@drawable/round_outline_purple"
+        android:foreground="?android:attr/selectableItemBackground"
         android:text="@string/to_recipes"
         android:textColor="@color/searchViewColorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,10 +59,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:clickable="true"
+        android:contentDescription="scroll to top"
         android:focusable="true"
         app:backgroundTint="@color/cardview_dark_background"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayoutInRecipes"
         app:layout_constraintEnd_toEndOf="@+id/frameLayoutInRecipes"
-        android:contentDescription="scroll to top"
         app:srcCompat="@drawable/up_arrow" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
