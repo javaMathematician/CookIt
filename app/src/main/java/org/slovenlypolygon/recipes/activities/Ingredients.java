@@ -41,6 +41,7 @@ public class Ingredients extends AppCompatActivity {
     //side menu
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
 
     //another
     private List<Dish> dishes;
@@ -57,26 +58,13 @@ public class Ingredients extends AppCompatActivity {
 
         //side menu
         drawerLayout = findViewById(R.id.drawerMain);
+        navigationView = findViewById(R.id.nav_view);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_recipe, R.string.open_recipe);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
+        toggle.setDrawerIndicatorEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        NavigationView navigationView = findViewById(R.id.nav_view);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getGroupId();
-                switch (id) {
-                    case R.id.something:
-                        Intent goToSomething = new Intent(Ingredients.this, Dishes.class);
-                        startActivity(goToSomething);
-                        break;
-                }
-                return false;
-            }
-        });
 
         try {
             dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.alpha));
@@ -132,7 +120,7 @@ public class Ingredients extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredients_list);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        //Objects.requireNonNull(getSupportActionBar()).hide();
 
         initializeVariablesForIngredient();
 
@@ -146,6 +134,17 @@ public class Ingredients extends AppCompatActivity {
                 Toast.makeText(this, R.string.none_selected, Toast.LENGTH_SHORT).show();
             }
         });
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.something:
+                        Intent goToSomething = new Intent(Ingredients.this, Activity.class);
+                        startActivity(goToSomething);
+                        break;
+                }
+                return false;
+            });
 
         searchViewIngredient.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
