@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -120,7 +121,10 @@ public class Ingredients extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredients_list);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        //getSupportActionBar().hide();
         //Objects.requireNonNull(getSupportActionBar()).hide();
+        setSupportActionBar(toolbar);
 
         initializeVariablesForIngredient();
 

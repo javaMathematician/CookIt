@@ -3,9 +3,11 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="ButtonSeach">
+    <style name="ButtonSearch">
         <item name="android:colorBackground">@drawable/button_round_corners</item>
     </style>
 
@@ -21,14 +23,15 @@
         <item name="android:editTextColor">@android:color/white</item>
         <item name="colorControlActivated">@android:color/white</item>
         <item name="android:background">@drawable/bg_light_rounded</item>
-        <item name="android:queryBackground">@drawable/bg_dark_rounded</item>
+        <item name="android:queryBackground">@drawable/bg_light_rounded</item>
         <item name="android:searchIcon">@drawable/ic_baseline_search_24</item>
         <item name="android:submitBackground">@color/searchViewColorWhite</item>
-        <item name="android:backgroundTint">@color/darkThemeBackgroundCardColor</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
     </style>
 
     <style name="checkBoxStyle" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">#FFFFFF</item>
         <item name="colorControlActivated">@android:color/white</item>
     </style>
+
 </resources>
