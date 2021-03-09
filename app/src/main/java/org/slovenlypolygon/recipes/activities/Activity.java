@@ -24,9 +24,7 @@ public class Activity extends AppCompatActivity {
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_recipe, R.string.open_recipe);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +35,8 @@ public class Activity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
-            switch (id) {
-                case R.id.something:
-                    Intent goIngredients = new Intent(Activity.this, Ingredients.class);
-                    startActivity(goIngredients);
-                    break;
+            if (id == R.id.toIngredients) {
+                startActivity(new Intent(this, Ingredients.class));
             }
             return false;
         });

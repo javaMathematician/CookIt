@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -29,7 +30,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class StepByStep extends AppCompatActivity {
     private Map<String, List<String>> map;
@@ -46,23 +46,21 @@ public class StepByStep extends AppCompatActivity {
 
         dish = getIntent().getParcelableExtra("dish");
         linearLayout = findViewById(R.id.stepByStepLinearLayout);
+        this.<Toolbar>findViewById(R.id.stepByStepToolbar).setTitle(dish.getName());
 
         Picasso.get()
                 .load(dish.getImageURL())
                 .error(R.drawable.sample_dish_for_error)
                 .into((ImageView) findViewById(R.id.dishStepByStepImage));
 
-        String ingredients = getResources().getString(R.string.you_will_need)
-                + "\n    " + Joiner.on(",\n    ").join(map.getOrDefault(dish.getName(), new ArrayList<>())) + ".";
-        TextView stepByStepIngredients = findViewById(R.id.stepByStepIngredients);
-        stepByStepIngredients.setText(ingredients);
+        String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(map.getOrDefault(dish.getName(), new ArrayList<>())) + ".";
+        this.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.step_by_step);
-        Objects.requireNonNull(getSupportActionBar()).hide();
 
         initialize();
         addSteps();
