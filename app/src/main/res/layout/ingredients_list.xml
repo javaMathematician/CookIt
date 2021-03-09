@@ -13,11 +13,16 @@
         tools:context=".activities.Ingredients">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/toolbar"
             android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/app_name"
             tools:ignore="MissingConstraints">
+
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
@@ -25,12 +30,14 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:inputType="textPersonName"
-                android:layout_marginStart="100dp"
+                android:layoutDirection="rtl"
+                app:defaultQueryHint="Tamperone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:defaultQueryHint="Tamperone"
+                app:queryBackground="@android:color/white"
                 app:queryHint="@string/search_hint"
+                app:searchIcon="@drawable/ic_baseline_search_24"
                 app:theme="@style/SearchViewStyle" />
         </androidx.appcompat.widget.Toolbar>
 

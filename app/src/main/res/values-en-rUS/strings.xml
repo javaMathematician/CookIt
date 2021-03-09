@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Tamperone</string>
     <string name="to_recipes">Go to recipes</string>
-    <string name="searchPrompt">Search</string>
+    <string name="searchPromote">Search</string>
     <string name="none_selected">At least one item should be selected</string>
     <string name="search_hint">Type ingredient\'s name</string>
     <string name="recipes">Recipes</string>

@@ -1,9 +1,9 @@
 <resources>
     <string name="none_selected">Выберите хотя бы один ингредиент</string>
     <string name="to_recipes">К рецептам</string>
-    <string name="searchPrompt">Искать</string>
+    <string name="searchPromote">Искать</string>
     <string name="app_name">Tamperone</string>
-    <string name="search_hint">Введите название продукта</string>
+    <string name="search_hint">Поиск</string>
     <string name="recipes">Рецепты</string>
     <string name="back_to_main_scene">Назад</string>
     <string name="open_recipe">К рецепту</string>

@@ -1,8 +1,10 @@
 package org.slovenlypolygon.recipes.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;

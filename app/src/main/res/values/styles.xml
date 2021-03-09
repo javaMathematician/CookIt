@@ -5,7 +5,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="searchViewStyle">@style/SearchViewStyle</item>
+        <item name="drawerArrowStyle">@style/toggleArrow</item>
     </style>
+
+    <style name="toggleArrow" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
+    </style>
+
 
     <style name="ButtonSearch">
         <item name="android:colorBackground">@drawable/button_round_corners</item>
@@ -13,20 +20,23 @@
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="defaultQueryHint">"Поиск"</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="closeIcon">@drawable/close_icon</item>
         <item name="hintTextColor">@android:color/white</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="queryBackground">@android:color/white</item>
         <item name="android:queryHint">@string/search_hint</item>
+        <item name="android:textColorHint">@android:color/white</item>
         <item name="android:closeIcon">@drawable/close_icon</item>
-        <item name="android:textColor">@android:color/white</item>
         <item name="android:editTextColor">@android:color/white</item>
         <item name="colorControlActivated">@android:color/white</item>
-        <item name="android:background">@drawable/bg_light_rounded</item>
-        <item name="android:queryBackground">@drawable/bg_light_rounded</item>
+        <item name="android:background">@drawable/bg_dark_rounded</item>
+        <item name="android:queryBackground">@android:color/white</item>
         <item name="android:searchIcon">@drawable/ic_baseline_search_24</item>
-        <item name="android:submitBackground">@color/searchViewColorWhite</item>
+        <item name="searchHintIcon">@drawable/ic_baseline_search_24</item>
+        <item name="android:submitBackground">@android:color/white</item>
         <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="hintAnimationEnabled">false</item>
     </style>
 
     <style name="checkBoxStyle" parent="Theme.AppCompat.Light">
