@@ -144,7 +144,7 @@ public class Ingredients extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
                 int id = item.getItemId();
                 switch (id) {
-                    case R.id.something:
+                    case R.id.toIngredients:
                         Intent goToSomething = new Intent(Ingredients.this, Activity.class);
                         startActivity(goToSomething);
                         break;
