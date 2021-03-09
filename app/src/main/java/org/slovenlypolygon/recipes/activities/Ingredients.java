@@ -3,15 +3,12 @@ package org.slovenlypolygon.recipes.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
@@ -49,7 +45,6 @@ public class Ingredients extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private SearchView searchViewIngredient;
-    private FloatingActionButton scrollToTop;
     private final List<Ingredient> ingredients = new ArrayList<>();
 
     private void initializeVariablesForIngredient() {
@@ -64,8 +59,6 @@ public class Ingredients extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toggle.setDrawerIndicatorEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         try {
             dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.alpha));
@@ -77,7 +70,7 @@ public class Ingredients extends AppCompatActivity {
         searchViewIngredient = findViewById(R.id.searchView);
         searchViewIngredient.setOnClickListener(view -> searchViewIngredient.setIconified(false));
 
-        scrollToTop = findViewById(R.id.floatingActionButton);
+        FloatingActionButton scrollToTop = findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
             if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
                 recyclerView.scrollToPosition(15);
@@ -85,14 +78,8 @@ public class Ingredients extends AppCompatActivity {
 
             recyclerView.smoothScrollToPosition(0);
         });
-        recyclerView.setRecyclerListener(holder -> {
-            if (holder.getAdapterPosition() > 9) {
-                scrollToTop.show();
-            } else {
-                scrollToTop.hide();
-            }
-        });
-        scrollToTop.hide();
+
+        scrollToTop.show();
 
         try {
             Set<String> strings = new TreeSet<>();
@@ -121,10 +108,7 @@ public class Ingredients extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredients_list);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        //getSupportActionBar().hide();
-        //Objects.requireNonNull(getSupportActionBar()).hide();
-        setSupportActionBar(toolbar);
+        setSupportActionBar(findViewById(R.id.toolbar));
 
         initializeVariablesForIngredient();
 
@@ -140,24 +124,21 @@ public class Ingredients extends AppCompatActivity {
         });
 
         navigationView.setNavigationItemSelectedListener(item -> {
-                int id = item.getItemId();
-                switch (id) {
-                    case R.id.something:
-                        Intent goToSomething = new Intent(Ingredients.this, Activity.class);
-                        startActivity(goToSomething);
-                        break;
-                }
-                return false;
-            });
+            int id = item.getItemId();
+            if (id == R.id.toIngredients) {
+                Intent goToSomething = new Intent(Ingredients.this, Activity.class);
+                startActivity(goToSomething);
+            }
+
+            return false;
+        });
 
         searchViewIngredient.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
+            @Override public boolean onQueryTextSubmit(String query) {
                 return false;
             }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
+            @Override public boolean onQueryTextChange(String newText) {
                 SearchFilter searchFilter = new SearchFilter();
 
                 try {

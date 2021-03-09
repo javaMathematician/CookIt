@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/something"
+        android:id="@+id/toIngredients"
         android:icon="@mipmap/logo_tamperone_main"
-        android:title="something" />
+        android:title="@string/ingredients" />
 
     <item
-        android:id="@+id/something1"
+        android:id="@+id/toDishCategories"
         android:icon="@mipmap/logo_tamperone_main"
-        android:title="something" />
+        android:title="@string/dish_categories" />
 
     <item
-        android:id="@+id/something2"
+        android:id="@+id/toDishes"
         android:icon="@mipmap/logo_tamperone_main"
-        android:title="something" />
+        android:title="@string/dishes" />
 </menu>

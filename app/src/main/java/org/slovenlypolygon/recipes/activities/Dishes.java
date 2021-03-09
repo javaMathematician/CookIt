@@ -62,7 +62,6 @@ public class Dishes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dishes_list);
 
-        Objects.requireNonNull(getSupportActionBar()).hide();
         initializeVariablesForRecipes();
 
         List<Ingredient> selected = getIntent().getParcelableArrayListExtra("selected");
