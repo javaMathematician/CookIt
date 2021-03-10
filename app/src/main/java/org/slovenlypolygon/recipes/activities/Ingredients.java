@@ -4,6 +4,9 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -62,12 +66,14 @@ public class Ingredients extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerMain);
         navigationView = findViewById(R.id.nav_view);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_recipe, R.string.open_recipe);
+        toolbar = findViewById(R.id.toolbar);
         drawerLayout.addDrawerListener(toggle);
+        toolbar.setNavigationOnClickListener(v -> {
+                drawerLayout.openDrawer(Gravity.LEFT);
+        });
         toggle.syncState();
         toggle.setDrawerIndicatorEnabled(true);
-        toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         try {
             dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.alpha));
@@ -83,6 +89,7 @@ public class Ingredients extends AppCompatActivity {
             searchViewIngredient.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
             searchViewIngredient.setIconified(false);
         });
+
 
         scrollToTop = findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
@@ -143,6 +150,9 @@ public class Ingredients extends AppCompatActivity {
                 Toast.makeText(this, R.string.none_selected, Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
 
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
