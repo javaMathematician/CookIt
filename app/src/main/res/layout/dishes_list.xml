@@ -16,6 +16,7 @@
         android:layout_marginRight="4dp"
         android:clickable="true"
         android:focusable="true"
+        app:searchIcon="@drawable/ic_baseline_search_24"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

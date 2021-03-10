@@ -16,29 +16,31 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:title="@string/app_name"
             android:background="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/app_name"
+            app:titleTextColor="@android:color/white"
             tools:ignore="MissingConstraints">
 
             <androidx.appcompat.widget.SearchView
+                android:layout_gravity="end"
                 android:id="@+id/searchView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
                 android:inputType="textPersonName"
                 android:layoutDirection="rtl"
-                app:defaultQueryHint="Tamperone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:queryBackground="@android:color/white"
                 app:queryHint="@string/search_hint"
                 app:searchIcon="@drawable/ic_baseline_search_24"
-                app:theme="@style/SearchViewStyle" />
+                app:theme="@style/SearchViewStyle"
+                tools:targetApi="o" />
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
@@ -88,14 +90,15 @@
             app:srcCompat="@drawable/up_arrow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:menu="@menu/drawer_navigation"
-        android:id="@+id/nav_view"
-        app:itemIconTint="@color/colorPrimary"
         android:layout_gravity="start"
-        app:headerLayout="@layout/drawer_layout">
+        app:headerLayout="@layout/drawer_layout"
+        app:itemIconTint="@color/colorPrimary"
+        app:menu="@menu/drawer_navigation">
 
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -4,12 +4,11 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -34,7 +33,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
@@ -47,6 +45,7 @@ public class Ingredients extends AppCompatActivity {
     private NavigationView navigationView;
 
     //another
+    private Toolbar toolbar;
     private List<Dish> dishes;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
@@ -66,6 +65,7 @@ public class Ingredients extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toggle.setDrawerIndicatorEnabled(true);
+        toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -77,7 +77,12 @@ public class Ingredients extends AppCompatActivity {
 
         changeViewIngredient = findViewById(R.id.changeView);
         searchViewIngredient = findViewById(R.id.searchView);
-        searchViewIngredient.setOnClickListener(view -> searchViewIngredient.setIconified(false));
+
+        searchViewIngredient.setOnClickListener(view -> {
+            searchViewIngredient.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+            searchViewIngredient.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+            searchViewIngredient.setIconified(false);
+        });
 
         scrollToTop = findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
@@ -124,8 +129,6 @@ public class Ingredients extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredients_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        //getSupportActionBar().hide();
-        //Objects.requireNonNull(getSupportActionBar()).hide();
         setSupportActionBar(toolbar);
 
         initializeVariablesForIngredient();
@@ -142,15 +145,15 @@ public class Ingredients extends AppCompatActivity {
         });
 
         navigationView.setNavigationItemSelectedListener(item -> {
-                int id = item.getItemId();
-                switch (id) {
-                    case R.id.toIngredients:
-                        Intent goToSomething = new Intent(Ingredients.this, Activity.class);
-                        startActivity(goToSomething);
-                        break;
-                }
-                return false;
-            });
+            int id = item.getItemId();
+            switch (id) {
+                case R.id.toIngredients:
+                    Intent goToSomething = new Intent(Ingredients.this, Activity.class);
+                    startActivity(goToSomething);
+                    break;
+            }
+            return false;
+        });
 
         searchViewIngredient.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
