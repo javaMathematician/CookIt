@@ -11,6 +11,8 @@
         android:id="@+id/searchViewOnDishesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/darkThemeBackgroundColor"
+        android:layoutDirection="rtl"
         android:clickable="true"
         android:focusable="true"
         app:searchIcon="@drawable/ic_baseline_search_24"

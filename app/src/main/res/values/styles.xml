@@ -7,13 +7,19 @@
         <item name="windowNoTitle">true</item>
         <item name="searchViewStyle">@style/SearchViewStyle</item>
         <item name="drawerArrowStyle">@style/toggleArrow</item>
+        <item name="itemBackground">@color/colorPrimary</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+
     </style>
 
     <style name="toggleArrow" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@android:color/white</item>
     </style>
 
-
+    <style name="menuTheme" parent="Theme.AppCompat">
+        <item name="itemBackground">@color/colorPrimary</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+    </style>
     <style name="ButtonSearch">
         <item name="android:colorBackground">@drawable/button_round_corners</item>
     </style>
@@ -40,7 +46,6 @@
         <item name="backgroundColor">@android:color/white</item>
         <item name="android:backgroundTint">@color/colorPrimary</item>
         <item name="hintAnimationEnabled">false</item>
-
     </style>
 
     <style name="checkBoxStyle" parent="Theme.AppCompat.Light">
