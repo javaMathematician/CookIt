@@ -30,12 +30,14 @@
         <item name="android:closeIcon">@drawable/close_icon</item>
         <item name="android:editTextColor">@android:color/white</item>
         <item name="colorControlActivated">@android:color/white</item>
-        <item name="android:background">@drawable/bg_dark_rounded</item>
         <item name="android:queryBackground">@android:color/white</item>
         <item name="android:searchIcon">@drawable/ic_baseline_search_24</item>
         <item name="searchHintIcon">@drawable/ic_baseline_search_24</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:submitBackground">@android:color/white</item>
+        <item name="background">@android:color/white</item>
+        <item name="backgroundTint">@android:color/white</item>
+        <item name="backgroundColor">@android:color/white</item>
         <item name="android:backgroundTint">@color/colorPrimary</item>
         <item name="hintAnimationEnabled">false</item>
 
