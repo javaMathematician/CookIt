@@ -1,20 +1,16 @@
 package org.slovenlypolygon.recipes.activities;
 
-import android.app.ActionBar;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -37,6 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
@@ -45,11 +42,8 @@ import java.util.stream.Collectors;
 public class Ingredients extends AppCompatActivity {
     //side menu
     private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
-    //another
-    private Toolbar toolbar;
     private List<Dish> dishes;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
@@ -57,6 +51,7 @@ public class Ingredients extends AppCompatActivity {
     private FloatingActionButton scrollToTop;
     private final List<Ingredient> ingredients = new ArrayList<>();
 
+    @SuppressLint("RtlHardcoded")
     private void initializeVariablesForIngredient() {
         recyclerView = findViewById(R.id.ingredientsRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -64,16 +59,16 @@ public class Ingredients extends AppCompatActivity {
 
         //side menu
         drawerLayout = findViewById(R.id.drawerMain);
-        navigationView = findViewById(R.id.nav_view);
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_recipe, R.string.open_recipe);
-        toolbar = findViewById(R.id.toolbar);
+        navigationView = findViewById(R.id.navView);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_recipe, R.string.open_recipe);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         drawerLayout.addDrawerListener(toggle);
         toolbar.setNavigationOnClickListener(v -> {
-                drawerLayout.openDrawer(Gravity.LEFT);
+            drawerLayout.openDrawer(Gravity.LEFT);
         });
         toggle.syncState();
         toggle.setDrawerIndicatorEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         try {
             dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.alpha));
@@ -93,7 +88,7 @@ public class Ingredients extends AppCompatActivity {
 
         scrollToTop = findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
-            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
+            if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
                 recyclerView.scrollToPosition(15);
             }
 
@@ -120,6 +115,7 @@ public class Ingredients extends AppCompatActivity {
             for (String ingredientName : strings) {
                 String url = ingredientURLMapper.getOrDefault(ingredientName, "");
 
+                assert url != null;
                 if (url.length() != 0) {
                     ingredients.add(new Ingredient(ingredientName, url));
                 } else {
@@ -131,6 +127,7 @@ public class Ingredients extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,14 +149,22 @@ public class Ingredients extends AppCompatActivity {
         });
 
 
-
-
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             switch (id) {
                 case R.id.toIngredients:
-                    Intent goToSomething = new Intent(Ingredients.this, Activity.class);
-                    startActivity(goToSomething);
+                    break;
+                case R.id.clearSelected:
+                    ingredients.stream().forEach(x -> x.setSelected(false));
+                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                    break;
+
+                case R.id.toSettings:
+                    Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case R.id.receiptScan:
+                    Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
                     break;
             }
             return false;

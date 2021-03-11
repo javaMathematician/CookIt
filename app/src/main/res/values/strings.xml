@@ -15,7 +15,10 @@
     <string name="reset_selected">Сбросить выбранные ингредиенты</string>
     <string name="shuffle_ingredients">Перемешать ингредиенты</string>
     <string name="you_will_need">Вам понадобятся:</string>
-    <string name="dishes">Блюда</string>
-    <string name="dish_categories">Категории блюд</string>
-    <string name="ingredients">Ингредиенты</string>
+    <string name="dishes">Рецепты</string>
+    <string name="dish_categories">Категории</string>
+    <string name="ingredients">К выбору ингрединтов</string>
+    <string name="settings">Настройки</string>
+    <string name="clearSelected">Сбросить выделения</string>
+    <string name="recipeScan">Сканировать чек</string>
 </resources>

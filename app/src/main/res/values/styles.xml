@@ -8,8 +8,7 @@
         <item name="searchViewStyle">@style/SearchViewStyle</item>
         <item name="drawerArrowStyle">@style/toggleArrow</item>
         <item name="itemBackground">@color/colorPrimary</item>
-        <item name="actionMenuTextColor">@android:color/white</item>
-
+        <item name="itemTextColor">@android:color/white</item>
     </style>
 
     <style name="toggleArrow" parent="Widget.AppCompat.DrawerArrowToggle">

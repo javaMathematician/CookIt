@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/toIngredients"
@@ -14,4 +15,21 @@
         android:id="@+id/toDishes"
         android:icon="@mipmap/logo_tamperone_main"
         android:title="@string/dishes" />
+
+    <item
+        android:id="@+id/receiptScan"
+        android:icon="@drawable/recipe_scan"
+        android:title="@string/recipeScan" />
+
+
+    <item
+        android:id="@+id/toSettings"
+        android:icon="@drawable/settings_img"
+        android:title="@string/settings" />
+
+    <item
+        android:id="@+id/clearSelected"
+        android:icon="@drawable/clear_img"
+        android:title="@string/clearSelected" />
+
 </menu>
