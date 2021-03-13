@@ -1,10 +1,8 @@
 package org.slovenlypolygon.recipes.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,6 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,10 +26,11 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
-import org.slovenlypolygon.recipes.frontend.adapters.IngredientsAdapter;
+import org.slovenlypolygon.recipes.frontend.adapters.IngredientsTypeAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -40,7 +40,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class Ingredients extends AppCompatActivity {
-    //side menu
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
@@ -51,21 +50,23 @@ public class Ingredients extends AppCompatActivity {
     private FloatingActionButton scrollToTop;
     private final List<Ingredient> ingredients = new ArrayList<>();
 
-    @SuppressLint("RtlHardcoded")
     private void initializeVariablesForIngredient() {
         recyclerView = findViewById(R.id.ingredientsRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //side menu
         drawerLayout = findViewById(R.id.drawerMain);
         navigationView = findViewById(R.id.navView);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_recipe, R.string.open_recipe);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         drawerLayout.addDrawerListener(toggle);
+
         toolbar.setNavigationOnClickListener(v -> {
-            drawerLayout.openDrawer(Gravity.LEFT);
+            drawerLayout.openDrawer(GravityCompat.START);
         });
+
         toggle.syncState();
         toggle.setDrawerIndicatorEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -127,46 +128,41 @@ public class Ingredients extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredients_list);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(findViewById(R.id.toolbar));
 
         initializeVariablesForIngredient();
 
-        recyclerView.setAdapter(new IngredientsAdapter(ingredients));
+        recyclerView.setAdapter(new IngredientsTypeAdapter(ingredients));
         changeViewIngredient.setOnClickListener(t -> {
             List<Ingredient> matching = ingredients.stream().filter(Ingredient::isSelected).collect(Collectors.toList());
 
             if (!matching.isEmpty()) {
-                goToRecipes(matching);
+                goToRecipesFromIngredients(matching, true);
             } else {
-                Toast.makeText(this, R.string.none_selected, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.none_selected_ingredient, Toast.LENGTH_SHORT).show();
             }
         });
 
-
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            switch (id) {
-                case R.id.toIngredients:
-                    break;
-                case R.id.clearSelected:
-                    ingredients.stream().forEach(x -> x.setSelected(false));
-                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
-                    break;
-
-                case R.id.toSettings:
-                    Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
-                    break;
-
-                case R.id.receiptScan:
-                    Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
-                    break;
+            if (id == R.id.toDishCategories) {
+                Set<String> allCategories = dishes.stream().map(Dish::getCategories).flatMap(Collection::stream).collect(Collectors.toCollection(TreeSet::new));
+                System.out.println(allCategories);;
+            } else if (id == R.id.clearSelected) {
+                ingredients.stream().forEach(t -> t.setSelected(false));
+                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                Toast.makeText(Ingredients.this, "Сброшено!", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.toSettings || id == R.id.receiptScan) {
+                Toast.makeText(Ingredients.this, "В разработке", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.toDishes) {
+                goToRecipesFromIngredients(ingredients, false);
             }
+
+            drawerLayout.closeDrawer(GravityCompat.START);
             return false;
         });
 
@@ -181,7 +177,7 @@ public class Ingredients extends AppCompatActivity {
                 SearchFilter searchFilter = new SearchFilter();
 
                 try {
-                    recyclerView.swapAdapter(new IngredientsAdapter(searchFilter.execute(newText).get()), true);
+                    recyclerView.swapAdapter(new IngredientsTypeAdapter(searchFilter.execute(newText).get()), true);
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -191,8 +187,14 @@ public class Ingredients extends AppCompatActivity {
         });
     }
 
-    private void goToRecipes(List<Ingredient> selected) {
-        startActivity(new Intent(this, Dishes.class).putParcelableArrayListExtra("selected", new ArrayList<>(selected)));
+    private void goToRecipesFromIngredients(List<Ingredient> selected, boolean highlight) {
+        startActivity(new Intent(this, Dishes.class)
+                .putParcelableArrayListExtra("selectedIngredients", new ArrayList<>(selected))
+                .putExtra("highlight", highlight));
+    }
+
+    private void goToRecipesFromCategories(List<String> selected, boolean highlight) {
+        startActivity(new Intent(this, Dishes.class).putStringArrayListExtra("selectedCategories", new ArrayList<>(selected)));
     }
 
     private class SearchFilter extends AsyncTask<String, Void, List<Ingredient>> {

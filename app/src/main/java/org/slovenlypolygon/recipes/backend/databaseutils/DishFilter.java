@@ -12,6 +12,7 @@ public class DishFilter {
     private final List<Dish> assortment;
 
     private String name;
+    private List<String> recipeCategories;
     private List<Ingredient> recipeIngredients;
 
     public DishFilter(List<Dish> assortment) {
@@ -28,14 +29,19 @@ public class DishFilter {
         this.recipeIngredients = recipeIngredients;
     }
 
+    public void setRecipeCategories(List<String> recipeCategories) {
+        this.recipeCategories = recipeCategories;
+    }
+
     public List<Dish> getMatchingList() {
         List<Dish> dishList = new ArrayList<>();
 
         for (Dish dish : assortment) {
             boolean passedName = name == null || dish.getName().toLowerCase().contains(name.toLowerCase());
-            boolean passedIngredients = recipeIngredients == null || containsAnyIngredient(recipeIngredients, dish.getRecipeIngredients());
+            boolean passedIngredients = recipeIngredients == null || caontainsAny(recipeIngredients, dish.getRecipeIngredients());
+            boolean passedCategories = recipeCategories == null || caontainsAny(recipeIngredients, dish.getRecipeIngredients());
 
-            if (passedName && passedIngredients) {
+            if (passedName && passedIngredients && passedCategories) {
                 dishList.add(dish);
             }
         }
@@ -43,7 +49,7 @@ public class DishFilter {
         return dishList;
     }
 
-    private boolean containsAnyIngredient(List<Ingredient> required, List<String> provided) {
+    private boolean caontainsAny(List<Ingredient> required, List<String> provided) {
         String allOfDishString = Joiner.on(", ").join(provided).toLowerCase().trim(); // не Set, потому что надо искать подстроку подстроки
         // в частности, при запорсе "Мед", надо найти меды всех масс, ведь они хранятся в виде "Мед 20 грамм", "Мед 40 грамм", ...
 

@@ -6,8 +6,9 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 import java.util.List;
 
 public class DishFilterBuilder {
-    private List<Dish> assortment;
     private String name;
+    private List<Dish> assortment;
+    private List<String> categories;
     private List<Ingredient> recipeIngredients;
 
     public DishFilterBuilder setAssortment(List<Dish> assortment) {
@@ -20,6 +21,11 @@ public class DishFilterBuilder {
         return this;
     }
 
+    public DishFilterBuilder setCategories(List<String> categories) {
+        this.categories = categories;
+        return this;
+    }
+
     public DishFilterBuilder setRecipeIngredients(List<Ingredient> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
         return this;
@@ -28,6 +34,7 @@ public class DishFilterBuilder {
     public DishFilter createDishFilter() {
         DishFilter dishFilter = new DishFilter(assortment);
         dishFilter.setRecipeIngredients(recipeIngredients);
+        dishFilter.setRecipeCategories(categories);
         dishFilter.setName(name);
 
         return dishFilter;

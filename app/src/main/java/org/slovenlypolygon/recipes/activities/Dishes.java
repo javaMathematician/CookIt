@@ -64,7 +64,9 @@ public class Dishes extends AppCompatActivity {
 
         initializeVariablesForRecipes();
 
-        List<Ingredient> selected = getIntent().getParcelableArrayListExtra("selected");
+        List<Ingredient> selected = getIntent().getParcelableArrayListExtra("selectedIngredients");
+        boolean highlightSelected = getIntent().getBooleanExtra("highlight", false);
+
         scrollToTop.setOnClickListener(view -> {
             if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
                 recyclerView.scrollToPosition(15);
@@ -79,7 +81,7 @@ public class Dishes extends AppCompatActivity {
                     .setRecipeIngredients(selected)
                     .createDishFilter();
 
-            recyclerView.setAdapter(new DishesAdapter(dishFilter.getMatchingList()).setSelected(selected));
+            recyclerView.setAdapter(new DishesAdapter(dishFilter.getMatchingList(), highlightSelected).setSelected(selected));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,9 +95,7 @@ public class Dishes extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 try {
-                    SearchFilter searchFilter = new SearchFilter();
-
-                    recyclerView.swapAdapter(new DishesAdapter(searchFilter.execute(newText).get()).setSelected(selected), true);
+                    recyclerView.swapAdapter(new DishesAdapter(new SearchFilter().execute(newText).get(), highlightSelected).setSelected(selected), true);
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }

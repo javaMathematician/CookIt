@@ -19,11 +19,16 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
 import java.util.List;
 
-public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder> {
-    private final List<Ingredient> ingredients;
+public class IngredientsTypeAdapter extends RecyclerView.Adapter<IngredientsTypeAdapter.IngredientViewHolder> {
+    private List<Ingredient> ingredients;
+    private List<String> categories;
 
-    public IngredientsAdapter(List<Ingredient> ingredients) {
+    public IngredientsTypeAdapter(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 
     @Override
@@ -43,6 +48,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         ingredientViewHolder.checkBox.setChecked(ingredient.isSelected());
         ingredientViewHolder.layout.setBackground(ingredient.isSelected() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
         ingredientViewHolder.textView.setText(ingredient.getName());
+
 
         ingredientViewHolder.itemView.setOnClickListener(view -> {
             ingredientViewHolder.checkBox.setChecked(!ingredientViewHolder.checkBox.isChecked());

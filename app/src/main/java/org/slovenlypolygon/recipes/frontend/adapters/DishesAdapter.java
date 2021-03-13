@@ -26,10 +26,12 @@ import java.util.stream.Collectors;
 
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> {
     private final List<Dish> dishes;
+    private final boolean highlight;
     private Set<String> selected;
 
-    public DishesAdapter(List<Dish> dishes) {
+    public DishesAdapter(List<Dish> dishes, boolean highlight) {
         this.dishes = dishes;
+        this.highlight = highlight;
     }
 
     @Override
@@ -66,14 +68,18 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
         Set<String> intersection = Sets.intersection(cleanedDish, selected);
 
-        String selectedText = Joiner.on(", ").join(intersection).toLowerCase();
-        String text = Joiner.on(", ").join(Sets.difference(cleanedDish, intersection)).toLowerCase();
-        String output = intersection.isEmpty() ?
-                String.format("%s", text).replace("\n", "") :
-                String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text).replace("\n", "");
+        if (highlight) {
+            String selectedText = Joiner.on(", ").join(intersection).toLowerCase();
+            String text = Joiner.on(", ").join(Sets.difference(cleanedDish, intersection)).toLowerCase();
+            String output = intersection.isEmpty() ?
+                    String.format("%s", text).replace("\n", "") :
+                    String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text).replace("\n", "");
 
+            dishViewHolder.ingredients.setText(Html.fromHtml(output, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            dishViewHolder.ingredients.setText(Joiner.on(", ").join(intersection).toLowerCase());
+        }
         dishViewHolder.name.setText(dish.getName());
-        dishViewHolder.ingredients.setText(Html.fromHtml(output, Html.FROM_HTML_MODE_LEGACY));
         dishViewHolder.itemView.setOnClickListener(view -> view.getContext().startActivity(new Intent(view.getContext(), StepByStep.class).putExtra("dish", dish).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)));
 
         Picasso.get()

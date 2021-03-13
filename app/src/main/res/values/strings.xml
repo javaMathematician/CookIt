@@ -1,5 +1,5 @@
 <resources>
-    <string name="none_selected">Выберите хотя бы один ингредиент</string>
+    <string name="none_selected_ingredient">Выберите хотя бы один ингредиент</string>
     <string name="to_recipes">К рецептам</string>
     <string name="searchPromote">Искать</string>
     <string name="app_name">Tamperone</string>
@@ -15,7 +15,8 @@
     <string name="reset_selected">Сбросить выбранные ингредиенты</string>
     <string name="shuffle_ingredients">Перемешать ингредиенты</string>
     <string name="you_will_need">Вам понадобятся:</string>
-    <string name="dishes">Рецепты</string>
+    <string name="none_selected_category">At least one item should be selected</string>
+    <string name="dishes">Все блюда</string>
     <string name="dish_categories">Категории</string>
     <string name="ingredients">К выбору ингрединтов</string>
     <string name="settings">Настройки</string>
