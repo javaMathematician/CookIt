@@ -85,7 +85,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         Picasso.get()
                 .load(dish.getImageURL())
                 .error(R.drawable.sample_dish_for_error)
-                .resize(200, 200)
+                .fit()
                 .centerCrop()
                 .into(dishViewHolder.imageView);
     }

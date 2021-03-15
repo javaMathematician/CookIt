@@ -59,8 +59,7 @@ public class IngredientsTypeAdapter extends RecyclerView.Adapter<IngredientsType
         Picasso.get()
                 .load(ingredient.getImageURL())
                 .error(R.drawable.sample_dish_for_error)
-                .resize(200, 200)
-                .centerCrop()
+
                 .into(ingredientViewHolder.imageView);
     }
 
