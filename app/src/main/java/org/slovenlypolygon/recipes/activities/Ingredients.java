@@ -147,12 +147,13 @@ public class Ingredients extends AppCompatActivity {
             }
         });
 
+        navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.toDishCategories) {
-                Set<String> allCategories = dishes.stream().map(Dish::getCategories).flatMap(Collection::stream).collect(Collectors.toCollection(TreeSet::new));
-                System.out.println(allCategories);;
-            } else if (id == R.id.clearSelected) {
+            //if (id == R.id.toDishCategories) {
+            //    Set<String> allCategories = dishes.stream().map(Dish::getCategories).flatMap(Collection::stream).collect(Collectors.toCollection(TreeSet::new));
+            //    System.out.println(allCategories);;
+            if (id == R.id.clearSelected) {
                 ingredients.stream().forEach(t -> t.setSelected(false));
                 Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
                 Toast.makeText(Ingredients.this, "Сброшено!", Toast.LENGTH_SHORT).show();

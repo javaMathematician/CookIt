@@ -7,7 +7,6 @@
         <item name="windowNoTitle">true</item>
         <item name="searchViewStyle">@style/SearchViewStyle</item>
         <item name="drawerArrowStyle">@style/toggleArrow</item>
-        <item name="itemBackground">@color/colorPrimary</item>
         <item name="itemTextColor">@android:color/white</item>
     </style>
 
@@ -15,10 +14,6 @@
         <item name="color">@android:color/white</item>
     </style>
 
-    <style name="menuTheme" parent="Theme.AppCompat">
-        <item name="itemBackground">@color/colorPrimary</item>
-        <item name="actionMenuTextColor">@android:color/white</item>
-    </style>
     <style name="ButtonSearch">
         <item name="android:colorBackground">@drawable/button_round_corners</item>
     </style>

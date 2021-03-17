@@ -3,33 +3,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/toIngredients"
-        android:icon="@mipmap/logo_tamperone_main"
+        android:icon="@drawable/color_ingredients"
         android:title="@string/ingredients" />
 
     <item
-        android:id="@+id/toDishCategories"
-        android:icon="@mipmap/logo_tamperone_main"
-        android:title="@string/dish_categories" />
-
-    <item
         android:id="@+id/toDishes"
-        android:icon="@mipmap/logo_tamperone_main"
+        android:icon="@drawable/color_dishes"
         android:title="@string/dishes" />
 
     <item
         android:id="@+id/receiptScan"
-        android:icon="@drawable/recipe_scan"
+        android:icon="@drawable/color_scan"
         android:title="@string/recipeScan" />
 
 
     <item
         android:id="@+id/toSettings"
-        android:icon="@drawable/settings_img"
+        android:icon="@drawable/color_settings"
         android:title="@string/settings" />
 
     <item
         android:id="@+id/clearSelected"
-        android:icon="@drawable/clear_img"
+        android:icon="@drawable/color_close"
         android:title="@string/clearSelected" />
 
 </menu>
