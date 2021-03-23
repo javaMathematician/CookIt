@@ -5,6 +5,8 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,13 +21,15 @@ import org.slovenlypolygon.recipes.activities.StepByStep;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> {
-    private final List<Dish> dishes;
+public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
+    private List<Dish> dishes;
+    private List<Dish> original;
     private final boolean highlight;
     private Set<String> selected;
 
@@ -102,6 +106,41 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 .collect(Collectors.toSet());
 
         return this;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults oReturn = new FilterResults();
+                final List<Dish> results = new ArrayList<>();
+
+                if (original == null) {
+                    original = dishes;
+                }
+
+                if (constraint != null) {
+                    if (original != null && original.size() > 0) {
+                        for (Dish iterate : original) {
+                            if (iterate.getName().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
+                                results.add(iterate);
+                            }
+                        }
+                    }
+
+                    oReturn.values = results;
+                }
+
+                return oReturn;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                dishes = (List<Dish>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,10 +31,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class StepByStep extends AppCompatActivity {
     private Map<String, List<String>> map;
     private LinearLayout linearLayout;
+    private ScrollView scrollView;
     private Dish dish;
 
     private void initialize() {
@@ -46,6 +49,7 @@ public class StepByStep extends AppCompatActivity {
 
         dish = getIntent().getParcelableExtra("dish");
         linearLayout = findViewById(R.id.stepByStepLinearLayout);
+        scrollView = findViewById(R.id.stepByStepScrollView);
         this.<Toolbar>findViewById(R.id.stepByStepToolbar).setTitle(dish.getName());
 
         Picasso.get()
@@ -53,7 +57,7 @@ public class StepByStep extends AppCompatActivity {
                 .error(R.drawable.sample_dish_for_error)
                 .into((ImageView) findViewById(R.id.dishStepByStepImage));
 
-        String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(map.getOrDefault(dish.getName(), new ArrayList<>())) + ".";
+        String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(Objects.requireNonNull(map.getOrDefault(dish.getName(), new ArrayList<>()))) + ".";
         this.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients);
     }
 
@@ -90,13 +94,14 @@ public class StepByStep extends AppCompatActivity {
                 cardView.setOnClickListener(v -> {
                     if (constraintLayout.getVisibility() == View.GONE) {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
-
                         constraintLayout.setVisibility(View.VISIBLE);
                         expandButton.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
                     } else {
                         constraintLayout.setVisibility(View.GONE);
                         expandButton.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
                     }
+
+                    scrollView.fullScroll(View.FOCUS_DOWN);
                 });
             } else {
                 stepText.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -106,4 +111,18 @@ public class StepByStep extends AppCompatActivity {
             linearLayout.addView(cardView);
         }
     }
+
+    /*private int getFirstVisibleItem(ScrollView scrollView) {
+        ViewGroup viewGroup = (ViewGroup) scrollView.getChildAt(0);
+
+        for (int i = 0; i < viewGroup.getChildCount() - 1; i++) {
+            View view = viewGroup.getChildAt(i);
+
+            if (view instanceof CardView && view.getY() + view.getHeight() >= scrollView.getBottom()) {
+                return (int) (viewGroup.getChildAt(i + 1).getY());
+            }
+        }
+
+        return viewGroup.getHeight();
+    }*/ // TODO: 24.03.2021 calculate image height
 }

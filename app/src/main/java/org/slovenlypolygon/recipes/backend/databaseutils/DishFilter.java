@@ -50,8 +50,7 @@ public class DishFilter {
     }
 
     private boolean caontainsAny(List<Ingredient> required, List<String> provided) {
-        String allOfDishString = Joiner.on(", ").join(provided).toLowerCase().trim(); // не Set, потому что надо искать подстроку подстроки
-        // в частности, при запорсе "Мед", надо найти меды всех масс, ведь они хранятся в виде "Мед 20 грамм", "Мед 40 грамм", ...
+        String allOfDishString = Joiner.on(", ").join(provided).toLowerCase().trim();
 
         return required.stream().map(Ingredient::getName).anyMatch(t -> allOfDishString.contains(t.toLowerCase().trim()));
     }

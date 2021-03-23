@@ -1,6 +1,5 @@
 package org.slovenlypolygon.recipes.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,19 +13,18 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 public class Dishes extends AppCompatActivity {
     private SearchView searchView;
     private DishFilter dishFilter;
     private RecyclerView recyclerView;
+    private DishesAdapter dishesAdapter;
     private FloatingActionButton scrollToTop;
 
     private void initializeVariablesForRecipes() {
@@ -81,7 +79,8 @@ public class Dishes extends AppCompatActivity {
                     .setRecipeIngredients(selected)
                     .createDishFilter();
 
-            recyclerView.setAdapter(new DishesAdapter(dishFilter.getMatchingList(), highlightSelected).setSelected(selected));
+            dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
+            recyclerView.setAdapter(dishesAdapter.setSelected(Objects.requireNonNull(selected)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,20 +93,9 @@ public class Dishes extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                try {
-                    recyclerView.swapAdapter(new DishesAdapter(new SearchFilter().execute(newText).get(), highlightSelected).setSelected(selected), true);
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+                dishesAdapter.getFilter().filter(newText.toLowerCase().replace("ё", "е"));
                 return true;
             }
         });
-    }
-
-    private class SearchFilter extends AsyncTask<String, Void, List<Dish>> {
-        protected List<Dish> doInBackground(String... newText) {
-            dishFilter.setName(newText[0].toLowerCase().replace("ё", "е"));
-            return dishFilter.getMatchingList();
-        }
     }
 }

@@ -26,11 +26,10 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
-import org.slovenlypolygon.recipes.frontend.adapters.IngredientsTypeAdapter;
+import org.slovenlypolygon.recipes.frontend.adapters.IngredientsAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,6 +48,7 @@ public class Ingredients extends AppCompatActivity {
     private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTop;
     private final List<Ingredient> ingredients = new ArrayList<>();
+    private IngredientsAdapter adapter;
 
     private void initializeVariablesForIngredient() {
         recyclerView = findViewById(R.id.ingredientsRecyclerView);
@@ -136,7 +136,8 @@ public class Ingredients extends AppCompatActivity {
 
         initializeVariablesForIngredient();
 
-        recyclerView.setAdapter(new IngredientsTypeAdapter(ingredients));
+        adapter = new IngredientsAdapter(ingredients);
+        recyclerView.setAdapter(adapter);
         changeViewIngredient.setOnClickListener(t -> {
             List<Ingredient> matching = ingredients.stream().filter(Ingredient::isSelected).collect(Collectors.toList());
 
@@ -175,14 +176,7 @@ public class Ingredients extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                SearchFilter searchFilter = new SearchFilter();
-
-                try {
-                    recyclerView.swapAdapter(new IngredientsTypeAdapter(searchFilter.execute(newText).get()), true);
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+                adapter.getFilter().filter(newText.toLowerCase().replace("ё", "е"));
                 return true;
             }
         });
@@ -192,15 +186,5 @@ public class Ingredients extends AppCompatActivity {
         startActivity(new Intent(this, Dishes.class)
                 .putParcelableArrayListExtra("selectedIngredients", new ArrayList<>(selected))
                 .putExtra("highlight", highlight));
-    }
-
-    private void goToRecipesFromCategories(List<String> selected, boolean highlight) {
-        startActivity(new Intent(this, Dishes.class).putStringArrayListExtra("selectedCategories", new ArrayList<>(selected)));
-    }
-
-    private class SearchFilter extends AsyncTask<String, Void, List<Ingredient>> {
-        protected List<Ingredient> doInBackground(String... newText) {
-            return ingredients.stream().filter(t -> t.getName().toLowerCase().contains(newText[0].toLowerCase().replace("ё", "е"))).collect(Collectors.toList());
-        }
     }
 }

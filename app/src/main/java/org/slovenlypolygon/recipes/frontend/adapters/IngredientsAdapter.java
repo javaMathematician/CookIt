@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,20 +17,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientsTypeAdapter extends RecyclerView.Adapter<IngredientsTypeAdapter.IngredientViewHolder> {
+public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder> implements Filterable {
     private List<Ingredient> ingredients;
-    private List<String> categories;
+    private List<Ingredient> original;
 
-    public IngredientsTypeAdapter(List<Ingredient> ingredients) {
+    public IngredientsAdapter(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
-    }
-
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
     }
 
     @Override
@@ -59,13 +59,49 @@ public class IngredientsTypeAdapter extends RecyclerView.Adapter<IngredientsType
         Picasso.get()
                 .load(ingredient.getImageURL())
                 .error(R.drawable.sample_dish_for_error)
-
+                .fit()
+                .centerCrop()
                 .into(ingredientViewHolder.imageView);
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults oReturn = new FilterResults();
+                final List<Ingredient> results = new ArrayList<>();
+
+                if (original == null) {
+                    original = ingredients;
+                }
+
+                if (constraint != null) {
+                    if (original != null && original.size() > 0) {
+                        for (Ingredient iterate : original) {
+                            if (iterate.getName().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
+                                results.add(iterate);
+                            }
+                        }
+                    }
+
+                    oReturn.values = results;
+                }
+
+                return oReturn;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                ingredients = (List<Ingredient>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
