@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.activities.StepByStep;
+import org.slovenlypolygon.recipes.backend.mainobjects.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
@@ -96,9 +97,18 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public DishesAdapter setSelected(List<Ingredient> selected) {
+    public DishesAdapter setSelectedIngredients(List<Ingredient> selected) {
         this.selected = selected.stream()
                 .map(Ingredient::getName)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        return this;
+    }
+
+    public DishesAdapter setSelectedCategories(List<Category> selected) {
+        this.selected = selected.stream()
+                .map(Category::getName)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
