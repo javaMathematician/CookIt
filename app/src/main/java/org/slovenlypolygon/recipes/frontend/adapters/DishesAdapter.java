@@ -22,6 +22,7 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -51,25 +52,14 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     @Override
     public void onBindViewHolder(DishViewHolder dishViewHolder, int i) {
         dishes.sort((dish1, dish2) -> {
-            Set<String> cleanedDish1 = dish1
-                    .getRecipeIngredients()
-                    .stream()
-                    .collect(Collectors.toSet());
-
-            Set<String> cleanedDish2 = dish2
-                    .getRecipeIngredients()
-                    .stream()
-                    .collect(Collectors.toSet());
+            Set<String> cleanedDish1 = new HashSet<>(dish1.getRecipeIngredients());
+            Set<String> cleanedDish2 = new HashSet<>(dish2.getRecipeIngredients());
 
             return Sets.intersection(cleanedDish2, selected).size() - Sets.intersection(cleanedDish1, selected).size();
         });
 
         Dish dish = dishes.get(i);
-        Set<String> cleanedDish = dish
-                .getRecipeIngredients()
-                .stream()
-                .collect(Collectors.toSet());
-
+        Set<String> cleanedDish = new HashSet<>(dish.getRecipeIngredients());
         Set<String> intersection = Sets.intersection(cleanedDish, selected);
 
         if (highlight) {
