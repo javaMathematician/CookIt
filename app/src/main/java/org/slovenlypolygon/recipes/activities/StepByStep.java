@@ -58,7 +58,7 @@ public class StepByStep extends AppCompatActivity {
                 .into((ImageView) findViewById(R.id.dishStepByStepImage));
 
         String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(Objects.requireNonNull(map.getOrDefault(dish.getName(), new ArrayList<>()))) + ".";
-        this.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients);
+        this.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients.replace("---", "").replace("———", ""));
     }
 
     @Override
