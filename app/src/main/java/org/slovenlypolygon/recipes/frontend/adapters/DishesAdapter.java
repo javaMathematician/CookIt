@@ -73,8 +73,15 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         } else {
             dishViewHolder.ingredients.setText(Joiner.on(", ").join(intersection).toLowerCase());
         }
+
         dishViewHolder.name.setText(dish.getName());
-        dishViewHolder.itemView.setOnClickListener(view -> view.getContext().startActivity(new Intent(view.getContext(), StepByStep.class).putExtra("dish", dish).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)));
+        dishViewHolder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), StepByStep.class)
+                    .putExtra("dish", dish)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            view.getContext().startActivity(intent);
+        });
 
         Picasso.get()
                 .load(dish.getImageURL())
