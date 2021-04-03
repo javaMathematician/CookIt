@@ -13,6 +13,7 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
+import org.slovenlypolygon.recipes.backend.mainobjects.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
@@ -62,7 +63,8 @@ public class Dishes extends AppCompatActivity {
 
         initializeVariablesForRecipes();
 
-        List<Ingredient> selected = getIntent().getParcelableArrayListExtra("selectedIngredients");
+        List<Ingredient> selectedIngredients = getIntent().getParcelableArrayListExtra("selectedIngredients");
+        List<Category> selectedCategories = getIntent().getParcelableArrayListExtra("selectedCategories");
         boolean highlightSelected = getIntent().getBooleanExtra("highlight", false);
 
         scrollToTop.setOnClickListener(view -> {
@@ -76,11 +78,15 @@ public class Dishes extends AppCompatActivity {
         try {
             dishFilter = new DishFilterBuilder()
                     .setAssortment(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.alpha)))
-                    .setRecipeIngredients(selected)
+                    .setRecipeIngredients(selectedIngredients)
+                    .setCategories(selectedCategories)
                     .createDishFilter();
 
             dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
-            recyclerView.setAdapter(dishesAdapter.setSelected(Objects.requireNonNull(selected)));
+            recyclerView.setAdapter(selectedIngredients != null ?
+                    dishesAdapter.setSelectedIngredients(Objects.requireNonNull(selectedIngredients)) :
+                    dishesAdapter.setSelectedCategories(Objects.requireNonNull(selectedCategories))
+            );
         } catch (IOException e) {
             e.printStackTrace();
         }

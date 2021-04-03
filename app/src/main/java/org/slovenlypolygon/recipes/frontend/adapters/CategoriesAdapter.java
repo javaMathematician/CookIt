@@ -17,46 +17,45 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
+import org.slovenlypolygon.recipes.backend.mainobjects.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder> implements Filterable {
-    private List<Ingredient> ingredients;
-    private List<Ingredient> original;
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder> implements Filterable {
+    private List<Category> categories;
+    private List<Category> original;
 
-    public IngredientsAdapter(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public CategoriesAdapter(List<Category> ingredients) {
+        this.categories = ingredients;
     }
 
     @Override
     public int getItemCount() {
-        return ingredients.size();
+        return categories.size();
     }
 
     @Override
-    public IngredientViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        return new IngredientViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_card, viewGroup, false));
+    public CategoriesAdapter.CategoryViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        return new CategoriesAdapter.CategoryViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_card, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
-        Ingredient ingredient = ingredients.get(i);
+    public void onBindViewHolder(CategoriesAdapter.CategoryViewHolder ingredientViewHolder, int i) {
+        Category category = categories.get(i);
 
-        ingredientViewHolder.checkBox.setChecked(ingredient.isSelected());
-        ingredientViewHolder.layout.setBackground(ingredient.isSelected() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
-        ingredientViewHolder.textView.setText(ingredient.getName());
+        ingredientViewHolder.checkBox.setChecked(category.isSelected());
+        ingredientViewHolder.layout.setBackground(category.isSelected() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
+        ingredientViewHolder.textView.setText(category.getName());
 
         ingredientViewHolder.itemView.setOnClickListener(view -> {
             ingredientViewHolder.checkBox.setChecked(!ingredientViewHolder.checkBox.isChecked());
             ingredientViewHolder.layout.setBackground(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
-            ingredient.setSelected(!ingredient.isSelected());
+            category.setSelected(!category.isSelected());
         });
 
         Picasso.get()
-                .load(ingredient.getImageURL())
+                .load(category.getImageURL())
                 .error(R.drawable.sample_dish_for_error)
                 .fit()
                 .centerCrop()
@@ -74,15 +73,15 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
-                final List<Ingredient> results = new ArrayList<>();
+                final List<Category> results = new ArrayList<>();
 
                 if (original == null) {
-                    original = ingredients;
+                    original = categories;
                 }
 
                 if (constraint != null) {
                     if (original != null && original.size() > 0) {
-                        for (Ingredient iterate : original) {
+                        for (Category iterate : original) {
                             if (iterate.getName().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
                                 results.add(iterate);
                             }
@@ -97,13 +96,13 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                ingredients = (List<Ingredient>) results.values;
+                categories = (List<Category>) results.values;
                 notifyDataSetChanged();
             }
         };
     }
 
-    public static class IngredientViewHolder extends RecyclerView.ViewHolder {
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final ImageView imageView;
         private final CheckBox checkBox;
@@ -111,7 +110,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         private final Drawable regularCard;
         private final Drawable selectedCard;
 
-        public IngredientViewHolder(View itemView) {
+        public CategoryViewHolder(View itemView) {
             super(itemView);
 
             textView = itemView.findViewById(R.id.textOnIngredient);

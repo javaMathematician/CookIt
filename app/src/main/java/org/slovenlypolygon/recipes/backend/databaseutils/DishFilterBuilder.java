@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.backend.databaseutils;
 
+import org.slovenlypolygon.recipes.backend.mainobjects.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
@@ -8,7 +9,7 @@ import java.util.List;
 public class DishFilterBuilder {
     private String name;
     private List<Dish> assortment;
-    private List<String> categories;
+    private List<Category> categories;
     private List<Ingredient> recipeIngredients;
 
     public DishFilterBuilder setAssortment(List<Dish> assortment) {
@@ -21,7 +22,7 @@ public class DishFilterBuilder {
         return this;
     }
 
-    public DishFilterBuilder setCategories(List<String> categories) {
+    public DishFilterBuilder setCategories(List<Category> categories) {
         this.categories = categories;
         return this;
     }
