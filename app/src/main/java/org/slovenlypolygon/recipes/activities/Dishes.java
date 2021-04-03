@@ -77,7 +77,7 @@ public class Dishes extends AppCompatActivity {
 
         try {
             dishFilter = new DishFilterBuilder()
-                    .setAssortment(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.alpha)))
+                    .setAssortment(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes)))
                     .setRecipeIngredients(selectedIngredients)
                     .setCategories(selectedCategories)
                     .createDishFilter();

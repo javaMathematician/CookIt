@@ -70,7 +70,7 @@ public class Categories extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         try {
-            dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.alpha));
+            dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes));
         } catch (IOException e) {
             e.printStackTrace();
         }

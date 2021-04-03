@@ -72,7 +72,7 @@ public class Ingredients extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         try {
-            dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.alpha));
+            dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,7 +114,7 @@ public class Ingredients extends AppCompatActivity {
             }
 
             for (String ingredientName : strings) {
-                String url = ingredientURLMapper.getOrDefault(ingredientName, "");
+                String url = ingredientURLMapper.getOrDefault(ingredientName, "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1");
                 ingredients.add(new Ingredient(ingredientName, url));
             }
         } catch (IOException e) {
