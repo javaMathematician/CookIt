@@ -69,10 +69,17 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         if (highlight) {
             String selectedText = Joiner.on(", ").join(intersection).toLowerCase();
             String text = Joiner.on(", ").join(Sets.difference(cleanedDish, intersection)).toLowerCase();
-            String output = text.length() != 0
-                    ? String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text).replace("\n", "")
-                    : String.format("<font color=#9AFF00>%s</font>", selectedText).replace("\n", "");
+            String output;
 
+            if (selectedText.length() == 0) {
+                output = text;
+            } else if (text.length() == 0) {
+                output = String.format("<font color=#9AFF00>%s</font>", selectedText);
+            } else {
+                output = String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text);
+            }
+
+            output = output.replace("\n", "");
             dishViewHolder.ingredients.setText(Html.fromHtml(output, Html.FROM_HTML_MODE_LEGACY));
         } else {
             dishViewHolder.ingredients.setText(Joiner.on(", ").join(intersection).toLowerCase());

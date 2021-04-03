@@ -29,12 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.Dishes" />
-        <activity android:name=".activities.Categories">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activities.Categories" />
         <activity android:name=".activities.StepByStep" />
         <activity android:name=".activities.dummy.Activity" />
     </application>
