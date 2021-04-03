@@ -16,10 +16,11 @@
     <string name="shuffle_ingredients">Перемешать ингредиенты</string>
     <string name="you_will_need">Вам понадобятся:</string>
     <string name="none_selected_category">At least one item should be selected</string>
-    <string name="dishes">Все блюда</string>
+    <string name="dishes">Ко всем блюдам</string>
     <string name="dish_categories">Категории</string>
     <string name="ingredients">К выбору ингрединтов</string>
     <string name="settings">Настройки</string>
     <string name="clearSelected">Сбросить выделенные ингредиенты</string>
     <string name="recipeScan">Сканировать чек</string>
+    <string name="categories">К выбору категорий</string>
 </resources>

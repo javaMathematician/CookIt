@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;

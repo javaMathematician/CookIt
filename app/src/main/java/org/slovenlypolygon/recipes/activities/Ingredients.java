@@ -1,7 +1,6 @@
 package org.slovenlypolygon.recipes.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,7 +34,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class Ingredients extends AppCompatActivity {
@@ -145,10 +143,9 @@ public class Ingredients extends AppCompatActivity {
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            //if (id == R.id.toDishCategories) {
-            //    Set<String> allCategories = dishes.stream().map(Dish::getCategories).flatMap(Collection::stream).collect(Collectors.toCollection(TreeSet::new));
-            //    System.out.println(allCategories);;
-            if (id == R.id.clearSelected) {
+            if (id == R.id.toCategories) {
+                startActivity(new Intent(this, Categories.class));
+            } else if (id == R.id.clearSelected) {
                 ingredients.stream().forEach(t -> t.setSelected(false));
                 Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
                 Toast.makeText(Ingredients.this, "Сброшено!", Toast.LENGTH_SHORT).show();

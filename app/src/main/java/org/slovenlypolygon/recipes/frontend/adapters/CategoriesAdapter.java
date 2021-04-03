@@ -54,12 +54,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
             category.setSelected(!category.isSelected());
         });
 
-/*        Picasso.get()
+/*
+        Picasso.get()
                 .load(category.getImageURL())
                 .error(R.drawable.sample_dish_for_error)
                 .fit()
                 .centerCrop()
-                .into(ingredientViewHolder.imageView);*/
+                .into(ingredientViewHolder.imageView);
+*/
     }
 
     @Override

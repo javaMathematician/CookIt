@@ -12,6 +12,11 @@
         android:title="@string/dishes" />
 
     <item
+        android:id="@+id/toCategories"
+        android:icon="@drawable/color_dishes"
+        android:title="@string/categories" />
+
+    <item
         android:id="@+id/receiptScan"
         android:icon="@drawable/color_scan"
         android:title="@string/recipeScan" />
