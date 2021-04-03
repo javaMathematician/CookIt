@@ -20,6 +20,6 @@
     <string name="dish_categories">Категории</string>
     <string name="ingredients">К выбору ингрединтов</string>
     <string name="settings">Настройки</string>
-    <string name="clearSelected">Сбросить выделения</string>
+    <string name="clearSelected">Сбросить выделенные ингредиенты</string>
     <string name="recipeScan">Сканировать чек</string>
 </resources>

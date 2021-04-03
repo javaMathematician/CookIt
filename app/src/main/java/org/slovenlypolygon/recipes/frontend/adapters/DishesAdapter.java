@@ -2,6 +2,7 @@ package org.slovenlypolygon.recipes.frontend.adapters;
 
 import android.content.Intent;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,12 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
@@ -66,9 +69,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         if (highlight) {
             String selectedText = Joiner.on(", ").join(intersection).toLowerCase();
             String text = Joiner.on(", ").join(Sets.difference(cleanedDish, intersection)).toLowerCase();
-            String output = intersection.isEmpty() ?
-                    String.format("%s", text).replace("\n", "") :
-                    String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text).replace("\n", "");
+            String output = text.length() != 0
+                    ? String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text).replace("\n", "")
+                    : String.format("<font color=#9AFF00>%s</font>", selectedText).replace("\n", "");
 
             dishViewHolder.ingredients.setText(Html.fromHtml(output, Html.FROM_HTML_MODE_LEGACY));
         } else {
