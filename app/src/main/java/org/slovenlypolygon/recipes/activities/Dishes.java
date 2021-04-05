@@ -23,7 +23,6 @@ import java.util.Objects;
 
 public class Dishes extends AppCompatActivity {
     private SearchView searchView;
-    private DishFilter dishFilter;
     private RecyclerView recyclerView;
     private DishesAdapter dishesAdapter;
     private FloatingActionButton scrollToTop;
@@ -76,7 +75,7 @@ public class Dishes extends AppCompatActivity {
         });
 
         try {
-            dishFilter = new DishFilterBuilder()
+            DishFilter dishFilter = new DishFilterBuilder()
                     .setAssortment(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes)))
                     .setRecipeIngredients(selectedIngredients)
                     .setCategories(selectedCategories)

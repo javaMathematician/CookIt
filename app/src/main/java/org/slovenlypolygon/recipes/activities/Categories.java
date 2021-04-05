@@ -25,6 +25,7 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.CategoriesAdapter;
 
 import java.io.IOException;
@@ -151,6 +152,8 @@ public class Categories extends AppCompatActivity {
                 Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.toDishes) {
                 goToRecipesFromCategories(categories, false);
+            } else if (id == R.id.toIngredients) {
+                startActivity(new Intent(this, Ingredient.class));
             }
 
             drawerLayout.closeDrawer(GravityCompat.START);

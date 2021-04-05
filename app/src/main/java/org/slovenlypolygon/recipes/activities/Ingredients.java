@@ -42,11 +42,11 @@ public class Ingredients extends AppCompatActivity {
 
     private List<Dish> dishes;
     private RecyclerView recyclerView;
+    private IngredientsAdapter adapter;
     private Button changeViewIngredient;
     private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTop;
     private final List<Ingredient> ingredients = new ArrayList<>();
-    private IngredientsAdapter adapter;
 
     private void initializeVariablesForIngredient() {
         recyclerView = findViewById(R.id.ingredientsRecyclerView);
