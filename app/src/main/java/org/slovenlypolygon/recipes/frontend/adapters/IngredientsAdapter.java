@@ -61,7 +61,18 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
                 .error(R.drawable.sample_dish_for_error)
                 .fit()
                 .centerCrop()
-                .into(ingredientViewHolder.imageView);
+                .into(ingredientViewHolder.imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        System.out.println(ingredient.getName());
+                    }
+                });
+
     }
 
     @Override
