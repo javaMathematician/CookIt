@@ -9,17 +9,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -40,7 +34,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class IngredientsFragment extends Fragment {
-    private DrawerLayout drawerLayout;
+//    private DrawerLayout drawerLayout;
 //    private NavigationView navigationView;
 
     private List<Dish> dishes;
@@ -57,7 +51,7 @@ public class IngredientsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        drawerLayout = rootView.findViewById(R.id.drawerMain);
+//        drawerLayout = rootView.findViewById(R.id.drawerMain);
 //        navigationView = rootView.findViewById(R.id.navView);
 
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.open_recipe, R.string.open_recipe);
