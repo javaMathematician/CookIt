@@ -5,11 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtil;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
+import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.IngredientsAdapter;
@@ -41,7 +44,7 @@ public class IngredientsFragment extends Fragment {
     private RecyclerView recyclerView;
     private IngredientsAdapter adapter;
     private Button changeViewIngredient;
-//    private SearchView searchViewIngredient;
+    //    private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTop;
     private final List<Ingredient> ingredients = new ArrayList<>();
 
@@ -172,8 +175,13 @@ public class IngredientsFragment extends Fragment {
     }
 
     private void goToRecipesFromIngredients(List<Ingredient> selected, boolean highlight) {
-//        startActivity(new Intent(this, Dishes.class)
-//                .putParcelableArrayListExtra("selectedIngredients", new ArrayList<>(selected))
-//                .putExtra("highlight", highlight));
+        DishesFragment dishesFragment = new DishesFragment();
+        dishesFragment.setSelectedIngredients(selected);
+        dishesFragment.setHighlightSelected(highlight);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_holder, dishesFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
