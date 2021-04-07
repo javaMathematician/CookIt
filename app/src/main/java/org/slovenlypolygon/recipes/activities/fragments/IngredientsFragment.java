@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtil;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentAdapter;
@@ -45,7 +46,6 @@ public class IngredientsFragment extends Fragment {
     //    private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTop;
     private final List<DishComponent> components = new ArrayList<>();
-
 
     private void initializeVariablesForIngredient(View rootView) {
         recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
@@ -83,7 +83,6 @@ public class IngredientsFragment extends Fragment {
             searchViewIngredient.setIconified(false);
         });*/
 
-
         scrollToTop = rootView.findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
             if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
@@ -102,17 +101,24 @@ public class IngredientsFragment extends Fragment {
         scrollToTop.hide();
 
         try {
-            Set<String> strings = new TreeSet<>();
+            Set<String> ingredientsSet = new TreeSet<>();
+            Set<String> categoriesSet = new TreeSet<>();
             Map<String, String> ingredientURLMapper = new Gson().fromJson(IOUtil.toString(getResources().openRawResource(R.raw.ingredient_to_image_url)), new TypeToken<Map<String, String>>() {
+            }.getType());
+            Map<String, String> categoryURLMapper = new Gson().fromJson(IOUtil.toString(getResources().openRawResource(R.raw.category_to_image_url)), new TypeToken<Map<String, String>>() {
             }.getType());
 
             for (Dish dish : dishes) {
-                strings.addAll(dish.getRecipeIngredients());
+                ingredientsSet.addAll(dish.getRecipeIngredients());
+                categoriesSet.addAll(dish.getCategories());
             }
 
-            for (String ingredientName : strings) {
-                String url = ingredientURLMapper.getOrDefault(ingredientName, "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1");
-                components.add(new Ingredient(ingredientName, url));
+            for (String ingredientName : ingredientsSet) {
+                components.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1")));
+            }
+
+            for (String categoryName : categoriesSet) {
+                components.add(new Category(categoryName, categoryURLMapper.getOrDefault(categoryName, "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1")));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -125,7 +131,7 @@ public class IngredientsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
         initializeVariablesForIngredient(rootView);
 
-        adapter = new DishComponentAdapter(components);
+        adapter = new DishComponentAdapter(components.stream().filter(t -> t instanceof Ingredient).collect(Collectors.toList())); // TODO: 08.04.2021 HERE YOU CAN CHANGE STARTPAGE
         recyclerView.setAdapter(adapter);
         changeViewIngredient.setOnClickListener(t -> {
             List<DishComponent> matching = components.stream().filter(DishComponent::isSelected).collect(Collectors.toList());
