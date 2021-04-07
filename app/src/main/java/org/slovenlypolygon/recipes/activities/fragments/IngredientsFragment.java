@@ -22,8 +22,8 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.PictureDishComponent;
-import org.slovenlypolygon.recipes.frontend.adapters.PictureDishComponentAdapter;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
+import org.slovenlypolygon.recipes.frontend.adapters.DishComponentAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,11 +40,11 @@ public class IngredientsFragment extends Fragment {
 
     private List<Dish> dishes;
     private RecyclerView recyclerView;
-    private PictureDishComponentAdapter adapter;
+    private DishComponentAdapter adapter;
     private Button changeViewIngredient;
     //    private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTop;
-    private final List<PictureDishComponent> components = new ArrayList<>();
+    private final List<DishComponent> components = new ArrayList<>();
 
 
     private void initializeVariablesForIngredient(View rootView) {
@@ -125,10 +125,10 @@ public class IngredientsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
         initializeVariablesForIngredient(rootView);
 
-        adapter = new PictureDishComponentAdapter(components);
+        adapter = new DishComponentAdapter(components);
         recyclerView.setAdapter(adapter);
         changeViewIngredient.setOnClickListener(t -> {
-            List<PictureDishComponent> matching = components.stream().filter(PictureDishComponent::isSelected).collect(Collectors.toList());
+            List<DishComponent> matching = components.stream().filter(DishComponent::isSelected).collect(Collectors.toList());
 
             if (!matching.isEmpty()) {
                 goToRecipes(matching, true);
@@ -137,8 +137,8 @@ public class IngredientsFragment extends Fragment {
             }
         });
 
-//        navigationView.setItemIconTintList(null);
-        /*navigationView.setNavigationItemSelectedListener(item -> {
+/*        navigationView.setItemIconTintList(null);
+          navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.toCategories) {
                 startActivity(new Intent(getContext(), Categories.class));
@@ -172,7 +172,7 @@ public class IngredientsFragment extends Fragment {
         return rootView;
     }
 
-    private void goToRecipes(List<PictureDishComponent> selected, boolean highlight) {
+    private void goToRecipes(List<DishComponent> selected, boolean highlight) {
         DishesFragment dishesFragment = new DishesFragment();
         dishesFragment.setSelectedComponents(selected);
         dishesFragment.setHighlightSelected(highlight);

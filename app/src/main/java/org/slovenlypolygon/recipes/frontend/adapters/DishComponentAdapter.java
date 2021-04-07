@@ -14,20 +14,19 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.PictureDishComponent;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PictureDishComponentAdapter extends RecyclerView.Adapter<PictureDishComponentAdapter.IngredientViewHolder> implements Filterable {
-    private List<PictureDishComponent> components;
-    private List<PictureDishComponent> original;
+public class DishComponentAdapter extends RecyclerView.Adapter<DishComponentAdapter.IngredientViewHolder> implements Filterable {
+    private List<DishComponent> components;
+    private List<DishComponent> original;
 
-    public PictureDishComponentAdapter(List<PictureDishComponent> components) {
+    public DishComponentAdapter(List<DishComponent> components) {
         this.components = components;
     }
 
@@ -43,7 +42,7 @@ public class PictureDishComponentAdapter extends RecyclerView.Adapter<PictureDis
 
     @Override
     public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
-        PictureDishComponent ingredient = components.get(i);
+        DishComponent ingredient = components.get(i);
 
         ingredientViewHolder.checkBox.setChecked(ingredient.isSelected());
         ingredientViewHolder.layout.setBackground(ingredient.isSelected() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
@@ -74,7 +73,7 @@ public class PictureDishComponentAdapter extends RecyclerView.Adapter<PictureDis
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
-                final List<PictureDishComponent> results = new ArrayList<>();
+                final List<DishComponent> results = new ArrayList<>();
 
                 if (original == null) {
                     original = components;
@@ -82,7 +81,7 @@ public class PictureDishComponentAdapter extends RecyclerView.Adapter<PictureDis
 
                 if (constraint != null) {
                     if (original != null && original.size() > 0) {
-                        for (PictureDishComponent iterate : original) {
+                        for (DishComponent iterate : original) {
                             if (iterate.getName().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
                                 results.add(iterate);
                             }
@@ -97,7 +96,7 @@ public class PictureDishComponentAdapter extends RecyclerView.Adapter<PictureDis
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                components = (List<PictureDishComponent>) results.values;
+                components = (List<DishComponent>) results.values;
                 notifyDataSetChanged();
             }
         };

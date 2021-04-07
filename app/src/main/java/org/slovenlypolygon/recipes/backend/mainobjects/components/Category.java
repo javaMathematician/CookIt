@@ -3,7 +3,7 @@ package org.slovenlypolygon.recipes.backend.mainobjects.components;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Category extends PictureDishComponent implements Parcelable {
+public class Category extends DishComponent implements Parcelable {
     public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
         @Override
         public Category createFromParcel(Parcel source) {

@@ -1,6 +1,5 @@
 package org.slovenlypolygon.recipes.frontend.adapters;
 
-import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +16,8 @@ import com.google.common.collect.Sets;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.activities.dummy.StepByStep;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.PictureDishComponent;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -85,11 +81,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
         dishViewHolder.name.setText(dish.getName());
         dishViewHolder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), StepByStep.class)
-                    .putExtra("dish", dish)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            view.getContext().startActivity(intent);
         });
 
         Picasso.get()
@@ -105,9 +97,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public DishesAdapter setSelectedIngredients(List<PictureDishComponent> selected) {
+    public DishesAdapter setSelectedIngredients(List<DishComponent> selected) {
         this.selected = selected.stream()
-                .map(PictureDishComponent::getName)
+                .map(DishComponent::getName)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 

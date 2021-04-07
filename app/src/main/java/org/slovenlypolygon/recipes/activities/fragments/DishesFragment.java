@@ -17,7 +17,7 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.PictureDishComponent;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
 import java.io.IOException;
@@ -29,10 +29,10 @@ public class DishesFragment extends Fragment {
     private RecyclerView recyclerView;
     private DishesAdapter dishesAdapter;
     private FloatingActionButton scrollToTop;
-    private List<PictureDishComponent> selectedComponents;
+    private List<DishComponent> selectedComponents;
     private boolean highlightSelected = false;
 
-    public void setSelectedComponents(List<PictureDishComponent> selectedIngredients) {
+    public void setSelectedComponents(List<DishComponent> selectedIngredients) {
         this.selectedComponents = selectedIngredients;
     }
 

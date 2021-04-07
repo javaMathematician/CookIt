@@ -8,17 +8,17 @@ import com.google.common.base.Objects;
 
 import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
 
-public abstract class PictureDishComponent implements Parcelable {
+public abstract class DishComponent implements Parcelable {
     protected String name;
     protected String imageURL;
     protected boolean selected;
 
-    public PictureDishComponent(String name, String imageURL) {
+    public DishComponent(String name, String imageURL) {
         this.name = name;
         this.imageURL = imageURL;
     }
 
-    public PictureDishComponent(Parcel parcel) {
+    public DishComponent(Parcel parcel) {
         this.name = parcel.readString();
         this.imageURL = parcel.readString();
         this.selected = true; // если вызвали этот конструктор, значит, передали ингредиент на активность составления блюд. значит, он (ингредиент) заведомо выбран
