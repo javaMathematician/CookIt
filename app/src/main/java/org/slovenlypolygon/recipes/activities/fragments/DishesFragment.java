@@ -90,6 +90,7 @@ public class DishesFragment extends Fragment {
                     .createDishFilter();
 
             dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
+            dishesAdapter.setFragmentManager(getFragmentManager());
             recyclerView.setAdapter(dishesAdapter.setSelectedIngredients(Objects.requireNonNull(selectedComponents)));
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,14 +1,19 @@
 package org.slovenlypolygon.recipes.frontend.adapters;
 
+import android.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Joiner;
@@ -16,6 +21,9 @@ import com.google.common.collect.Sets;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.activities.MainActivity;
+import org.slovenlypolygon.recipes.activities.fragments.DishesFragment;
+import org.slovenlypolygon.recipes.activities.fragments.StepByStepFragment;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 
@@ -27,10 +35,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
+    private final boolean highlight;
     private List<Dish> dishes;
     private List<Dish> original;
-    private final boolean highlight;
     private Set<String> selected;
+    private FragmentManager fragmentManager;
 
     public DishesAdapter(List<Dish> dishes, boolean highlight) {
         this.dishes = dishes;
@@ -81,7 +90,13 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
         dishViewHolder.name.setText(dish.getName());
         dishViewHolder.itemView.setOnClickListener(view -> {
+            StepByStepFragment stepByStepFragment = new StepByStepFragment();
+            stepByStepFragment.setDish(dish);
 
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_holder, stepByStepFragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         Picasso.get()
@@ -139,6 +154,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {
