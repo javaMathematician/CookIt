@@ -22,15 +22,11 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
 
-        <activity android:name=".activities.Ingredients">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.Dishes" />
-        <activity android:name=".activities.Categories" />
-        <activity android:name=".activities.StepByStep" />
-        <activity android:name=".activities.dummy.Activity" />
     </application>
 </manifest>

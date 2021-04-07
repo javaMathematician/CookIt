@@ -1,4 +1,5 @@
-package org.slovenlypolygon.recipes.activities;
+/*
+package org.slovenlypolygon.recipes.activities.dummy;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,9 +24,10 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtil;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
+import org.slovenlypolygon.recipes.backend.mainobjects.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
-import org.slovenlypolygon.recipes.frontend.adapters.IngredientsAdapter;
+import org.slovenlypolygon.recipes.frontend.adapters.CategoriesAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,19 +38,19 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-public class Ingredients extends AppCompatActivity {
+public class Categories extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
     private List<Dish> dishes;
     private RecyclerView recyclerView;
-    private IngredientsAdapter adapter;
-    private Button changeViewIngredient;
-    private SearchView searchViewIngredient;
+    private Button changeViewCategory;
+    private CategoriesAdapter adapter;
+    private SearchView searchViewCategory;
     private FloatingActionButton scrollToTop;
-    private final List<Ingredient> ingredients = new ArrayList<>();
+    private final List<Category> categories = new ArrayList<>();
 
-    private void initializeVariablesForIngredient() {
+    private void initializeVariablesForCategory() {
         recyclerView = findViewById(R.id.ingredientsRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -75,15 +77,14 @@ public class Ingredients extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        changeViewIngredient = findViewById(R.id.changeView);
-        searchViewIngredient = findViewById(R.id.searchView);
+        changeViewCategory = findViewById(R.id.changeView);
+        searchViewCategory = findViewById(R.id.searchView);
 
-        searchViewIngredient.setOnClickListener(view -> {
-            searchViewIngredient.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-            searchViewIngredient.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-            searchViewIngredient.setIconified(false);
+        searchViewCategory.setOnClickListener(view -> {
+            searchViewCategory.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+            searchViewCategory.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+            searchViewCategory.setIconified(false);
         });
-
 
         scrollToTop = findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
@@ -104,16 +105,16 @@ public class Ingredients extends AppCompatActivity {
 
         try {
             Set<String> strings = new TreeSet<>();
-            Map<String, String> ingredientURLMapper = new Gson().fromJson(IOUtil.toString(getResources().openRawResource(R.raw.ingredient_to_image_url)), new TypeToken<Map<String, String>>() {
+            Map<String, String> CategoryURLMapper = new Gson().fromJson(IOUtil.toString(getResources().openRawResource(R.raw.category_to_image_url)), new TypeToken<Map<String, String>>() {
             }.getType());
 
             for (Dish dish : dishes) {
-                strings.addAll(dish.getRecipeIngredients());
+                strings.addAll(dish.getCategories());
             }
 
-            for (String ingredientName : strings) {
-                String url = ingredientURLMapper.getOrDefault(ingredientName, "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1");
-                ingredients.add(new Ingredient(ingredientName, url));
+            for (String CategoryName : strings) {
+                String url = CategoryURLMapper.getOrDefault(CategoryName, "");
+                categories.add(new Category(CategoryName, url));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,40 +127,41 @@ public class Ingredients extends AppCompatActivity {
         setContentView(R.layout.ingredients_list);
         setSupportActionBar(findViewById(R.id.toolbar));
 
-        initializeVariablesForIngredient();
+        initializeVariablesForCategory();
 
-        adapter = new IngredientsAdapter(ingredients);
+        adapter = new CategoriesAdapter(categories);
         recyclerView.setAdapter(adapter);
-        changeViewIngredient.setOnClickListener(t -> {
-            List<Ingredient> matching = ingredients.stream().filter(Ingredient::isSelected).collect(Collectors.toList());
+        changeViewCategory.setOnClickListener(t -> {
+            List<Category> matching = categories.stream().filter(Category::isSelected).collect(Collectors.toList());
 
             if (!matching.isEmpty()) {
-                goToRecipesFromIngredients(matching, true);
+                goToRecipesFromCategories(matching, true);
             } else {
-                Toast.makeText(this, R.string.none_selected_ingredient, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.none_selected_category, Toast.LENGTH_SHORT).show();
             }
         });
 
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.toCategories) {
-                startActivity(new Intent(this, Categories.class));
-            } else if (id == R.id.clearSelected) {
-                ingredients.stream().forEach(t -> t.setSelected(false));
+
+            if (id == R.id.clearSelected) {
+                categories.stream().forEach(t -> t.setSelected(false));
                 Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
-                Toast.makeText(Ingredients.this, "Сброшено!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Сброшено!", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.toSettings || id == R.id.receiptScan) {
-                Toast.makeText(Ingredients.this, "В разработке", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.toDishes) {
-                goToRecipesFromIngredients(ingredients, false);
+                goToRecipesFromCategories(categories, false);
+            } else if (id == R.id.toIngredients) {
+                startActivity(new Intent(this, Ingredient.class));
             }
 
             drawerLayout.closeDrawer(GravityCompat.START);
             return false;
         });
 
-        searchViewIngredient.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchViewCategory.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -173,9 +175,10 @@ public class Ingredients extends AppCompatActivity {
         });
     }
 
-    private void goToRecipesFromIngredients(List<Ingredient> selected, boolean highlight) {
+    private void goToRecipesFromCategories(List<Category> selected, boolean highlight) {
         startActivity(new Intent(this, Dishes.class)
-                .putParcelableArrayListExtra("selectedIngredients", new ArrayList<>(selected))
+                .putParcelableArrayListExtra("selectedCategories", new ArrayList<>(selected))
                 .putExtra("highlight", highlight));
     }
 }
+*/

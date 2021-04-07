@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.activities;
+package org.slovenlypolygon.recipes.activities.dummy;
 
 import android.os.Bundle;
 import android.transition.AutoTransition;
