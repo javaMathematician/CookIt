@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,12 +17,10 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
 import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
-import org.slovenlypolygon.recipes.backend.mainobjects.Category;
-import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.PictureDishComponent;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,16 +29,11 @@ public class DishesFragment extends Fragment {
     private RecyclerView recyclerView;
     private DishesAdapter dishesAdapter;
     private FloatingActionButton scrollToTop;
-    private List<Ingredient> selectedIngredients;
-    private List<Category> selectedCategories;
+    private List<PictureDishComponent> selectedComponents;
     private boolean highlightSelected = false;
 
-    public void setSelectedIngredients(List<Ingredient> selectedIngredients) {
-        this.selectedIngredients = selectedIngredients;
-    }
-
-    public void setSelectedCategories(List<Category> selectedCategories) {
-        this.selectedCategories = selectedCategories;
+    public void setSelectedComponents(List<PictureDishComponent> selectedIngredients) {
+        this.selectedComponents = selectedIngredients;
     }
 
     public void setHighlightSelected(boolean highlightSelected) {
@@ -82,7 +74,6 @@ public class DishesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.dishes_fragment, container, false);
 
         initializeVariablesForRecipes(rootView);
-        List<Category> selectedCategories = Collections.emptyList(); // getIntent().getParcelableArrayListExtra("selectedCategories");
 
         scrollToTop.setOnClickListener(view -> {
             if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
@@ -95,15 +86,11 @@ public class DishesFragment extends Fragment {
         try {
             DishFilter dishFilter = new DishFilterBuilder()
                     .setAssortment(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes)))
-                    .setRecipeIngredients(selectedIngredients)
-                    .setCategories(selectedCategories)
+                    .setDishComponents(selectedComponents)
                     .createDishFilter();
 
             dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
-            recyclerView.setAdapter(selectedIngredients != null ?
-                    dishesAdapter.setSelectedIngredients(Objects.requireNonNull(selectedIngredients)) :
-                    dishesAdapter.setSelectedCategories(Objects.requireNonNull(selectedCategories))
-            );
+            recyclerView.setAdapter(dishesAdapter.setSelectedIngredients(Objects.requireNonNull(selectedComponents)));
         } catch (IOException e) {
             e.printStackTrace();
         }

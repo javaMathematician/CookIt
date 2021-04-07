@@ -2,9 +2,8 @@ package org.slovenlypolygon.recipes.backend.databaseutils;
 
 import com.google.common.base.Joiner;
 
-import org.slovenlypolygon.recipes.backend.mainobjects.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.PictureDishComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +12,7 @@ public class DishFilter {
     private final List<Dish> assortment;
 
     private String name;
-    private List<Category> recipeCategories;
-    private List<Ingredient> recipeIngredients;
+    private List<PictureDishComponent> recipeIngredients;
 
     public DishFilter(List<Dish> assortment) {
         this.name = null;
@@ -26,12 +24,8 @@ public class DishFilter {
         this.name = name;
     }
 
-    public void setRecipeIngredients(List<Ingredient> recipeIngredients) {
+    public void setComponents(List<PictureDishComponent> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
-    }
-
-    public void setRecipeCategories(List<Category> recipeCategories) {
-        this.recipeCategories = recipeCategories;
     }
 
     public List<Dish> getMatchingList() {
@@ -39,10 +33,9 @@ public class DishFilter {
 
         for (Dish dish : assortment) {
             boolean passedName = name == null || dish.getName().toLowerCase().contains(name.toLowerCase());
-            boolean passedIngredients = recipeIngredients == null || containsAnyIngredient(recipeIngredients, dish.getRecipeIngredients());
-            boolean passedCategories = recipeCategories == null || containsAnyCategory(recipeCategories, dish.getCategories());
+            boolean passedIngredients = recipeIngredients == null || containsAny(recipeIngredients, dish.getRecipeIngredients());
 
-            if (passedName && passedIngredients && passedCategories) {
+            if (passedName && passedIngredients) {
                 dishList.add(dish);
             }
         }
@@ -50,13 +43,8 @@ public class DishFilter {
         return dishList;
     }
 
-    private boolean containsAnyIngredient(List<Ingredient> required, List<String> provided) {
+    private boolean containsAny(List<PictureDishComponent> required, List<String> provided) {
         String allOfDishString = Joiner.on(", ").join(provided).toLowerCase().trim();
-        return required.stream().map(Ingredient::getName).anyMatch(t -> allOfDishString.contains(t.toLowerCase().trim()));
-    }
-
-    private boolean containsAnyCategory(List<Category> required, List<String> provided) {
-        String allOfDishString = Joiner.on(", ").join(provided).toLowerCase().trim();
-        return required.stream().map(Category::getName).anyMatch(t -> allOfDishString.contains(t.toLowerCase().trim()));
+        return required.stream().map(PictureDishComponent::getName).anyMatch(t -> allOfDishString.contains(t.toLowerCase().trim()));
     }
 }

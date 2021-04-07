@@ -18,23 +18,22 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.PictureDishComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder> implements Filterable {
-    private List<Ingredient> ingredients;
-    private List<Ingredient> original;
+public class PictureDishComponentAdapter extends RecyclerView.Adapter<PictureDishComponentAdapter.IngredientViewHolder> implements Filterable {
+    private List<PictureDishComponent> components;
+    private List<PictureDishComponent> original;
 
-    public IngredientsAdapter(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public PictureDishComponentAdapter(List<PictureDishComponent> components) {
+        this.components = components;
     }
 
     @Override
     public int getItemCount() {
-        return ingredients.size();
+        return components.size();
     }
 
     @Override
@@ -44,7 +43,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
     @Override
     public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
-        Ingredient ingredient = ingredients.get(i);
+        PictureDishComponent ingredient = components.get(i);
 
         ingredientViewHolder.checkBox.setChecked(ingredient.isSelected());
         ingredientViewHolder.layout.setBackground(ingredient.isSelected() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
@@ -61,18 +60,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
                 .error(R.drawable.sample_dish_for_error)
                 .fit()
                 .centerCrop()
-                .into(ingredientViewHolder.imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        System.out.println(ingredient.getName());
-                    }
-                });
-
+                .into(ingredientViewHolder.imageView);
     }
 
     @Override
@@ -86,15 +74,15 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
-                final List<Ingredient> results = new ArrayList<>();
+                final List<PictureDishComponent> results = new ArrayList<>();
 
                 if (original == null) {
-                    original = ingredients;
+                    original = components;
                 }
 
                 if (constraint != null) {
                     if (original != null && original.size() > 0) {
-                        for (Ingredient iterate : original) {
+                        for (PictureDishComponent iterate : original) {
                             if (iterate.getName().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
                                 results.add(iterate);
                             }
@@ -109,7 +97,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                ingredients = (List<Ingredient>) results.values;
+                components = (List<PictureDishComponent>) results.values;
                 notifyDataSetChanged();
             }
         };

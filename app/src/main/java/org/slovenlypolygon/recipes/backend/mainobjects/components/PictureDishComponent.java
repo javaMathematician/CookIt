@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.backend.mainobjects;
+package org.slovenlypolygon.recipes.backend.mainobjects.components;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,32 +6,38 @@ import android.os.Parcelable;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
-public class Ingredient implements Parcelable {
-    public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
-        @Override
-        public Ingredient createFromParcel(Parcel source) {
-            return new Ingredient(source);
-        }
+import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
 
-        @Override
-        public Ingredient[] newArray(int size) {
-            return new Ingredient[size];
-        }
-    };
+public abstract class PictureDishComponent implements Parcelable {
+    protected String name;
+    protected String imageURL;
+    protected boolean selected;
 
-    private final String name;
-    private final String imageURL;
-    private boolean selected;
-
-    public Ingredient(String name, String imageURL) {
+    public PictureDishComponent(String name, String imageURL) {
         this.name = name;
         this.imageURL = imageURL;
     }
 
-    public Ingredient(Parcel parcel) {
+    public PictureDishComponent(Parcel parcel) {
         this.name = parcel.readString();
         this.imageURL = parcel.readString();
         this.selected = true; // если вызвали этот конструктор, значит, передали ингредиент на активность составления блюд. значит, он (ингредиент) заведомо выбран
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public boolean isSelected() {
@@ -40,14 +46,6 @@ public class Ingredient implements Parcelable {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getImageURL() {
-        return imageURL;
     }
 
     @Override

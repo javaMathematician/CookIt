@@ -18,9 +18,10 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.activities.dummy.StepByStep;
-import org.slovenlypolygon.recipes.backend.mainobjects.Category;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.PictureDishComponent;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -104,18 +105,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public DishesAdapter setSelectedIngredients(List<Ingredient> selected) {
+    public DishesAdapter setSelectedIngredients(List<PictureDishComponent> selected) {
         this.selected = selected.stream()
-                .map(Ingredient::getName)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-
-        return this;
-    }
-
-    public DishesAdapter setSelectedCategories(List<Category> selected) {
-        this.selected = selected.stream()
-                .map(Category::getName)
+                .map(PictureDishComponent::getName)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 

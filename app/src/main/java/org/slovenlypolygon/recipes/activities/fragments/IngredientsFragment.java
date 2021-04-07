@@ -5,13 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,10 +20,10 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtil;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
-import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
-import org.slovenlypolygon.recipes.frontend.adapters.IngredientsAdapter;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.PictureDishComponent;
+import org.slovenlypolygon.recipes.frontend.adapters.PictureDishComponentAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,11 +40,11 @@ public class IngredientsFragment extends Fragment {
 
     private List<Dish> dishes;
     private RecyclerView recyclerView;
-    private IngredientsAdapter adapter;
+    private PictureDishComponentAdapter adapter;
     private Button changeViewIngredient;
     //    private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTop;
-    private final List<Ingredient> ingredients = new ArrayList<>();
+    private final List<PictureDishComponent> components = new ArrayList<>();
 
 
     private void initializeVariablesForIngredient(View rootView) {
@@ -114,7 +112,7 @@ public class IngredientsFragment extends Fragment {
 
             for (String ingredientName : strings) {
                 String url = ingredientURLMapper.getOrDefault(ingredientName, "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1");
-                ingredients.add(new Ingredient(ingredientName, url));
+                components.add(new Ingredient(ingredientName, url));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,13 +125,13 @@ public class IngredientsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
         initializeVariablesForIngredient(rootView);
 
-        adapter = new IngredientsAdapter(ingredients);
+        adapter = new PictureDishComponentAdapter(components);
         recyclerView.setAdapter(adapter);
         changeViewIngredient.setOnClickListener(t -> {
-            List<Ingredient> matching = ingredients.stream().filter(Ingredient::isSelected).collect(Collectors.toList());
+            List<PictureDishComponent> matching = components.stream().filter(PictureDishComponent::isSelected).collect(Collectors.toList());
 
             if (!matching.isEmpty()) {
-                goToRecipesFromIngredients(matching, true);
+                goToRecipes(matching, true);
             } else {
                 Toast.makeText(getContext(), R.string.none_selected_ingredient, Toast.LENGTH_SHORT).show();
             }
@@ -174,14 +172,15 @@ public class IngredientsFragment extends Fragment {
         return rootView;
     }
 
-    private void goToRecipesFromIngredients(List<Ingredient> selected, boolean highlight) {
+    private void goToRecipes(List<PictureDishComponent> selected, boolean highlight) {
         DishesFragment dishesFragment = new DishesFragment();
-        dishesFragment.setSelectedIngredients(selected);
+        dishesFragment.setSelectedComponents(selected);
         dishesFragment.setHighlightSelected(highlight);
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_holder, dishesFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_holder, dishesFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

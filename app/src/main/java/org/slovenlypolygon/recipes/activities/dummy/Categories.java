@@ -24,9 +24,9 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtil;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
-import org.slovenlypolygon.recipes.backend.mainobjects.Category;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.Ingredient;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.CategoriesAdapter;
 
 import java.io.IOException;
