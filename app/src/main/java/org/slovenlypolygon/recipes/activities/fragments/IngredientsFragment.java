@@ -5,15 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -36,14 +39,14 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class IngredientsFragment extends Fragment {
-//    private DrawerLayout drawerLayout;
-//    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     private List<Dish> dishes;
     private RecyclerView recyclerView;
     private DishComponentAdapter adapter;
     private Button changeViewIngredient;
-    //    private SearchView searchViewIngredient;
+    private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTop;
     private final List<DishComponent> components = new ArrayList<>();
 
