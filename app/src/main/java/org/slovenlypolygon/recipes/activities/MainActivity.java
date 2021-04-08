@@ -9,6 +9,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.navigation.NavigationView;
+
 import org.slovenlypolygon.recipes.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,8 +20,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.carcass);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.toggle);
         setSupportActionBar(toolbar);
 
+        NavigationView navigationView = findViewById(R.id.navView);
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
 
@@ -29,5 +33,6 @@ public class MainActivity extends AppCompatActivity {
         toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
         toggle.setDrawerIndicatorEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigationView.setItemIconTintList(null);
     }
 }
