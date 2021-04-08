@@ -1,19 +1,15 @@
 package org.slovenlypolygon.recipes.frontend.adapters;
 
-import android.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Joiner;
@@ -21,11 +17,9 @@ import com.google.common.collect.Sets;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.activities.MainActivity;
-import org.slovenlypolygon.recipes.activities.fragments.DishesFragment;
-import org.slovenlypolygon.recipes.activities.fragments.StepByStepFragment;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
+import org.slovenlypolygon.recipes.frontend.fragments.StepByStepFragment;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.activities.fragments;
+package org.slovenlypolygon.recipes.frontend.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

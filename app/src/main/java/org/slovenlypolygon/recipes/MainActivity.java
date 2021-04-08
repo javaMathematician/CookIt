@@ -1,6 +1,5 @@
-package org.slovenlypolygon.recipes.activities;
+package org.slovenlypolygon.recipes;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,8 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.activities.fragments.IngredientsFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.IngredientsFragment;
 
 import java.util.Objects;
 
