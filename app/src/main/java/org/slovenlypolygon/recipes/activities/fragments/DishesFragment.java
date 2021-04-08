@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,10 +24,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-public class DishesFragment extends Fragment {
-//    private SearchView searchView;
+public class DishesFragment extends AbstractFragment {
+    private SearchView searchView;
     private RecyclerView recyclerView;
-    private DishesAdapter dishesAdapter;
     private FloatingActionButton scrollToTop;
     private List<DishComponent> selectedComponents;
     private boolean highlightSelected = false;
@@ -45,8 +44,8 @@ public class DishesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-//        searchView = rootView.findViewById(R.id.searchViewOnDishesList);
-//        searchView.setOnClickListener(view -> searchView.setIconified(false));
+        searchView = Objects.requireNonNull(getActivity()).findViewById(R.id.searchView);
+        searchView.setOnClickListener(view -> searchView.setIconified(false));
 
         scrollToTop = rootView.findViewById(R.id.floatingActionButtonInRecipes);
         scrollToTop.setOnClickListener(view -> {
@@ -89,25 +88,11 @@ public class DishesFragment extends Fragment {
                     .setDishComponents(selectedComponents)
                     .createDishFilter();
 
-            dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
-            dishesAdapter.setFragmentManager(getFragmentManager());
+            DishesAdapter dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
             recyclerView.setAdapter(dishesAdapter.setSelectedIngredients(Objects.requireNonNull(selectedComponents)));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-/*        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                dishesAdapter.getFilter().filter(newText.toLowerCase().replace("ё", "е"));
-                return true;
-            }
-        });*/
 
         return rootView;
     }

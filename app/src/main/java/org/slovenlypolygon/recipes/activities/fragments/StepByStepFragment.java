@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 
 import com.google.common.base.Joiner;
 import com.google.gson.Gson;
@@ -34,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class StepByStepFragment extends Fragment {
+public class StepByStepFragment extends AbstractFragment {
     private Map<String, List<String>> map;
     private LinearLayout linearLayout;
     private ScrollView scrollView;
@@ -115,5 +114,17 @@ public class StepByStepFragment extends Fragment {
         addSteps();
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        searchView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        searchView.setVisibility(View.GONE);
     }
 }

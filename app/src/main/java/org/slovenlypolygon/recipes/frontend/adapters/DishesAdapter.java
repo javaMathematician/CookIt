@@ -39,7 +39,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     private List<Dish> dishes;
     private List<Dish> original;
     private Set<String> selected;
-    private FragmentManager fragmentManager;
 
     public DishesAdapter(List<Dish> dishes, boolean highlight) {
         this.dishes = dishes;
@@ -93,8 +92,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             StepByStepFragment stepByStepFragment = new StepByStepFragment();
             stepByStepFragment.setDish(dish);
 
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_holder, stepByStepFragment)
+            ((AppCompatActivity) view.getContext())
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_holder, stepByStepFragment, "step_by_step")
                     .addToBackStack(null)
                     .commit();
         });
@@ -154,10 +155,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 notifyDataSetChanged();
             }
         };
-    }
-
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {

@@ -5,18 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,8 +21,8 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.Category;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentAdapter;
 
 import java.io.IOException;
@@ -38,15 +34,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-public class IngredientsFragment extends Fragment {
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-
+public class IngredientsFragment extends AbstractFragment {
     private List<Dish> dishes;
     private RecyclerView recyclerView;
-    private DishComponentAdapter adapter;
     private Button changeViewIngredient;
-    private SearchView searchViewIngredient;
     private FloatingActionButton scrollToTop;
     private final List<DishComponent> components = new ArrayList<>();
 
@@ -55,22 +46,6 @@ public class IngredientsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-//        drawerLayout = rootView.findViewById(R.id.drawerMain);
-//        navigationView = rootView.findViewById(R.id.navView);
-
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.open_recipe, R.string.open_recipe);
-//        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
-
-//        drawerLayout.addDrawerListener(toggle);
-
-/*        toolbar.setNavigationOnClickListener(v -> {
-            drawerLayout.openDrawer(GravityCompat.START);
-        });*/
-
-//        toggle.syncState();
-//        toggle.setDrawerIndicatorEnabled(true);
-//        Objects.requireNonNull(getActivity().getActionBar()).setDisplayHomeAsUpEnabled(true);
-
         try {
             dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes));
         } catch (IOException e) {
@@ -78,14 +53,6 @@ public class IngredientsFragment extends Fragment {
         }
 
         changeViewIngredient = rootView.findViewById(R.id.changeView);
-//        searchViewIngredient = rootView.findViewById(R.id.searchView);
-
-/*        searchViewIngredient.setOnClickListener(view -> {
-            searchViewIngredient.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-            searchViewIngredient.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-            searchViewIngredient.setIconified(false);
-        });*/
-
         scrollToTop = rootView.findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
             if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
@@ -134,7 +101,7 @@ public class IngredientsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
         initializeVariablesForIngredient(rootView);
 
-        adapter = new DishComponentAdapter(components.stream().filter(t -> t instanceof Ingredient).collect(Collectors.toList())); // TODO: 08.04.2021 HERE YOU CAN CHANGE STARTPAGE
+        DishComponentAdapter adapter = new DishComponentAdapter(components.stream().filter(t -> t instanceof Ingredient).collect(Collectors.toList())); // TODO: 08.04.2021 HERE YOU CAN CHANGE STARTPAGE
         recyclerView.setAdapter(adapter);
         changeViewIngredient.setOnClickListener(t -> {
             List<DishComponent> matching = components.stream().filter(DishComponent::isSelected).collect(Collectors.toList());
@@ -146,38 +113,6 @@ public class IngredientsFragment extends Fragment {
             }
         });
 
-/*        navigationView.setItemIconTintList(null);
-          navigationView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.toCategories) {
-                startActivity(new Intent(getContext(), Categories.class));
-            } else if (id == R.id.clearSelected) {
-                ingredients.stream().forEach(t -> t.setSelected(false));
-                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
-                Toast.makeText(Ingredients.this, "Сброшено!", Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.toSettings || id == R.id.receiptScan) {
-                Toast.makeText(Ingredients.this, "В разработке", Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.toDishes) {
-                goToRecipesFromIngredients(ingredients, false);
-            }
-
-            drawerLayout.closeDrawer(GravityCompat.START);
-            return false;
-        });*/
-
-/*        searchViewIngredient.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText.toLowerCase().replace("ё", "е"));
-                return true;
-            }
-        });*/
-
         return rootView;
     }
 
@@ -186,9 +121,9 @@ public class IngredientsFragment extends Fragment {
         dishesFragment.setSelectedComponents(selected);
         dishesFragment.setHighlightSelected(highlight);
 
-        getFragmentManager()
+        Objects.requireNonNull(getFragmentManager())
                 .beginTransaction()
-                .replace(R.id.fragment_holder, dishesFragment)
+                .replace(R.id.fragment_holder, dishesFragment, "dishes")
                 .addToBackStack(null)
                 .commit();
     }

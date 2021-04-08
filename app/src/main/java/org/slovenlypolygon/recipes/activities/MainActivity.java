@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,6 +13,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.activities.fragments.IngredientsFragment;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -19,7 +23,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.carcass);
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_holder, new IngredientsFragment(), "dishes")
+                .addToBackStack(null)
+                .commit();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         toolbar.setNavigationIcon(R.drawable.toggle);
         setSupportActionBar(toolbar);
 
@@ -32,7 +43,19 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
         toggle.setDrawerIndicatorEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         navigationView.setItemIconTintList(null);
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.clearSelected) {
+                getFragmentManager().getFragment(savedInstanceState, "ingredients");
+            }
+
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return false;
+        });
     }
 }
