@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 dishesFragment.setSelectedComponents(ingredientsFragment.getAllIngredients());
+                dishesFragment.changeDataSet();
                 Objects.requireNonNull(getSupportFragmentManager())
                         .beginTransaction()
                         .replace(R.id.fragment_holder, dishesFragment, "dishes")

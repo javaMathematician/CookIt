@@ -36,6 +36,11 @@ public class DishesFragment extends AbstractFragment {
         this.selectedComponents = selectedIngredients;
     }
 
+    public void changeDataSet() {
+        dishesAdapter.setSelectedIngredients(selectedComponents);
+        dishesAdapter.notifyDataSetChanged();
+    }
+
     public void setHighlightSelected(boolean highlightSelected) {
         this.highlightSelected = highlightSelected;
     }
