@@ -96,6 +96,11 @@ public class IngredientsFragment extends AbstractFragment {
         }
     }
 
+    @Override
+    protected void searchTextChanged(String newText) {
+        dishComponentAdapter.getFilter().filter(newText);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

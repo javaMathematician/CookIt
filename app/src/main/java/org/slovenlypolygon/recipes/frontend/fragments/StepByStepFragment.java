@@ -123,6 +123,10 @@ public class StepByStepFragment extends AbstractFragment {
     }
 
     @Override
+    protected void searchTextChanged(String newText) {
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         searchView.setVisibility(View.GONE);

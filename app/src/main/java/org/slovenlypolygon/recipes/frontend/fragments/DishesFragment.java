@@ -30,6 +30,7 @@ public class DishesFragment extends AbstractFragment {
     private FloatingActionButton scrollToTop;
     private List<DishComponent> selectedComponents;
     private boolean highlightSelected = false;
+    private DishesAdapter dishesAdapter;
 
     public void setSelectedComponents(List<DishComponent> selectedIngredients) {
         this.selectedComponents = selectedIngredients;
@@ -67,6 +68,11 @@ public class DishesFragment extends AbstractFragment {
         scrollToTop.hide();
     }
 
+    @Override
+    protected void searchTextChanged(String newText) {
+        dishesAdapter.getFilter().filter(newText);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -88,7 +94,7 @@ public class DishesFragment extends AbstractFragment {
                     .setDishComponents(selectedComponents)
                     .createDishFilter();
 
-            DishesAdapter dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
+            dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
             recyclerView.setAdapter(dishesAdapter.setSelectedIngredients(Objects.requireNonNull(selectedComponents)));
         } catch (IOException e) {
             e.printStackTrace();

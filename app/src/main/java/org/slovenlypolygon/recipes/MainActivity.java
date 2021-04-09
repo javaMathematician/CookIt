@@ -19,10 +19,10 @@ import org.slovenlypolygon.recipes.frontend.fragments.SureClearQ;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    IngredientsFragment ingredientsFragment;
+    private IngredientsFragment ingredientsFragment;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.carcass);
 

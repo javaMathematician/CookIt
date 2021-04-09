@@ -28,7 +28,22 @@ public abstract class AbstractFragment extends Fragment {
         drawerLayout = Objects.requireNonNull(getActivity()).findViewById(R.id.drawerLayout);
         searchView = getActivity().findViewById(R.id.searchView);
         toolbar = getActivity().findViewById(R.id.toolbar);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchTextChanged(newText);
+                return false;
+            }
+        });
     }
+
+    protected abstract void searchTextChanged(String newText);
 
     @Nullable
     @Override
