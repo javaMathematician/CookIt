@@ -35,11 +35,12 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class IngredientsFragment extends AbstractFragment {
+    private final List<DishComponent> components = new ArrayList<>();
     private List<Dish> dishes;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private FloatingActionButton scrollToTop;
-    private final List<DishComponent> components = new ArrayList<>();
+    private DishComponentAdapter dishComponentAdapter;
 
     private void initializeVariablesForIngredient(View rootView) {
         recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
@@ -101,13 +102,14 @@ public class IngredientsFragment extends AbstractFragment {
         View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
         initializeVariablesForIngredient(rootView);
 
-        DishComponentAdapter adapter = new DishComponentAdapter(components.stream().filter(t -> t instanceof Ingredient).collect(Collectors.toList())); // TODO: 08.04.2021 HERE YOU CAN CHANGE STARTPAGE
-        recyclerView.setAdapter(adapter);
+        // TODO: 08.04.2021 HERE YOU CAN CHANGE STARTPAGE
+        dishComponentAdapter = new DishComponentAdapter(components.stream().filter(t -> t instanceof Ingredient).collect(Collectors.toList()));
+        recyclerView.setAdapter(dishComponentAdapter);
         changeViewIngredient.setOnClickListener(t -> {
             List<DishComponent> matching = components.stream().filter(DishComponent::isSelected).collect(Collectors.toList());
 
             if (!matching.isEmpty()) {
-                goToRecipes(matching, true);
+                goToRecipes(matching);
             } else {
                 Toast.makeText(getContext(), R.string.none_selected_ingredient, Toast.LENGTH_SHORT).show();
             }
@@ -116,15 +118,24 @@ public class IngredientsFragment extends AbstractFragment {
         return rootView;
     }
 
-    private void goToRecipes(List<DishComponent> selected, boolean highlight) {
+    private void goToRecipes(List<DishComponent> selected) {
         DishesFragment dishesFragment = new DishesFragment();
         dishesFragment.setSelectedComponents(selected);
-        dishesFragment.setHighlightSelected(highlight);
+        dishesFragment.setHighlightSelected(true);
 
         Objects.requireNonNull(getFragmentManager())
                 .beginTransaction()
                 .replace(R.id.fragment_holder, dishesFragment, "dishes")
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public List<DishComponent> getAllIngredients() {
+        return components;
+    }
+
+    public void clearSelectedComponents() {
+        components.stream().forEach(t -> t.setSelected(false));
+        dishComponentAdapter.notifyDataSetChanged();
     }
 }

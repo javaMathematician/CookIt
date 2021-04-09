@@ -8,14 +8,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.slovenlypolygon.recipes.frontend.fragments.DishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.IngredientsFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.SureClearQ;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    IngredientsFragment ingredientsFragment;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_holder, new IngredientsFragment(), "dishes")
+                .replace(R.id.fragment_holder, new IngredientsFragment(), "ingredients")
                 .addToBackStack(null)
                 .commit();
 
@@ -48,12 +53,41 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
+            ingredientsFragment = (IngredientsFragment) getSupportFragmentManager().findFragmentByTag("ingredients");
+            if (ingredientsFragment == null) {
+                ingredientsFragment = new IngredientsFragment();
+            }
+
             if (id == R.id.clearSelected) {
-                getFragmentManager().getFragment(savedInstanceState, "ingredients");
+                DialogFragment dialog = new SureClearQ();
+                dialog.show(getSupportFragmentManager(), "sure_clear_q");
+            } else if (id == R.id.toIngredients) {
+                Objects.requireNonNull(getSupportFragmentManager())
+                        .beginTransaction()
+                        .replace(R.id.fragment_holder, ingredientsFragment, "ingredients")
+                        .addToBackStack(null)
+                        .commit();
+            } else if (id == R.id.toDishes) {
+                DishesFragment dishesFragment = (DishesFragment) getSupportFragmentManager().findFragmentByTag("dishes");
+
+                if (dishesFragment == null) {
+                    dishesFragment = new DishesFragment();
+                }
+
+                dishesFragment.setSelectedComponents(ingredientsFragment.getAllIngredients());
+                Objects.requireNonNull(getSupportFragmentManager())
+                        .beginTransaction()
+                        .replace(R.id.fragment_holder, dishesFragment, "dishes")
+                        .addToBackStack(null)
+                        .commit();
             }
 
             drawerLayout.closeDrawer(GravityCompat.START);
             return false;
         });
+    }
+
+    public void sureClearSelected() {
+        ingredientsFragment.clearSelectedComponents();
     }
 }
