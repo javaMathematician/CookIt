@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 
 public class IngredientsFragment extends AbstractFragment {
     private final List<DishComponent> components = new ArrayList<>();
-    private List<Dish> dishes;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private FloatingActionButton scrollToTop;
@@ -44,7 +43,7 @@ public class IngredientsFragment extends AbstractFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        dishes = ((MainActivity) Objects.requireNonNull(getActivity())).getDishList();
+        List<Dish> dishes = ((MainActivity) Objects.requireNonNull(getActivity())).getDishList();
 
         changeViewIngredient = rootView.findViewById(R.id.changeView);
         scrollToTop = rootView.findViewById(R.id.floatingActionButton);
@@ -102,7 +101,7 @@ public class IngredientsFragment extends AbstractFragment {
             List<DishComponent> matching = components.parallelStream().filter(DishComponent::isSelected).collect(Collectors.toList());
 
             if (!matching.isEmpty()) {
-                goToRecipes(matching);
+                goToRecipes(matching, true);
             } else {
                 Toast.makeText(getContext(), R.string.none_selected_ingredient, Toast.LENGTH_SHORT).show();
             }
@@ -111,10 +110,10 @@ public class IngredientsFragment extends AbstractFragment {
         return rootView;
     }
 
-    private void goToRecipes(List<DishComponent> selected) {
+    public void goToRecipes(List<DishComponent> selected, boolean highlight) {
         DishesFragment dishesFragment = new DishesFragment();
         dishesFragment.setSelectedComponents(selected);
-        dishesFragment.setHighlightSelected(true);
+        dishesFragment.setHighlightSelected(highlight);
 
         Objects.requireNonNull(getFragmentManager())
                 .beginTransaction()

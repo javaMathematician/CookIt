@@ -94,19 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         .addToBackStack(null)
                         .commit();
             } else if (id == R.id.toDishes) {
-                /*DishesFragment dishesFragment = (DishesFragment) getSupportFragmentManager().findFragmentByTag("dishes");
-
-                if (dishesFragment == null) {
-                    dishesFragment = new DishesFragment();
-                }
-
-                dishesFragment.setSelectedComponents(ingredientsFragment.getAllIngredients());
-                Objects.requireNonNull(getSupportFragmentManager())
-                        .beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.fragment_holder, dishesFragment, "dishes")
-                        .addToBackStack(null)
-                        .commit();*/
+                ingredientsFragment.goToRecipes(ingredientsFragment.getAllIngredients(), false);
             }
 
             drawerLayout.closeDrawer(GravityCompat.START);
