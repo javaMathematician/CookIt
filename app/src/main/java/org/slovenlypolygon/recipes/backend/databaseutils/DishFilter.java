@@ -46,6 +46,6 @@ public class DishFilter {
 
     private boolean containsAny(List<DishComponent> required, List<String> provided) {
         String allOfDishString = Joiner.on(", ").join(provided).toLowerCase().trim();
-        return required.stream().map(DishComponent::getName).anyMatch(t -> allOfDishString.contains(t.toLowerCase().trim()));
+        return required.parallelStream().map(DishComponent::getName).anyMatch(t -> allOfDishString.contains(t.toLowerCase().trim()));
     }
 }

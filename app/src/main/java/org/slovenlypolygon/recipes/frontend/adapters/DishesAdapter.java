@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Joiner;
@@ -89,6 +90,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             ((AppCompatActivity) view.getContext())
                     .getSupportFragmentManager()
                     .beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .replace(R.id.fragment_holder, stepByStepFragment, "step_by_step")
                     .addToBackStack(null)
                     .commit();
@@ -108,7 +110,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     }
 
     public DishesAdapter setSelectedIngredients(List<DishComponent> selected) {
-        this.selected = selected.stream()
+        this.selected = selected
+                .parallelStream()
                 .map(DishComponent::getName)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
@@ -131,7 +134,13 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 if (constraint != null) {
                     if (original != null && original.size() > 0) {
                         for (Dish iterate : original) {
-                            if (iterate.getName().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
+                            String all = iterate.getName() + ", " + Joiner.on(", ").join(
+                                    iterate.getCategories(),
+                                    iterate.getRecipeIngredients(),
+                                    iterate.getRecipeTextInstructions()
+                            ).toLowerCase().replace("ё", "е");
+
+                            if (all.contains(constraint.toString())) {
                                 results.add(iterate);
                             }
                         }

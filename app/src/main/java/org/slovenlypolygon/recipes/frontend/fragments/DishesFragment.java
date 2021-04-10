@@ -14,13 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
-import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
-import org.slovenlypolygon.recipes.backend.databaseutils.DishFilterBuilder;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,8 +25,8 @@ public class DishesFragment extends AbstractFragment {
     private RecyclerView recyclerView;
     private FloatingActionButton scrollToTop;
     private List<DishComponent> selectedComponents;
-    private boolean highlightSelected = false;
     private DishesAdapter dishesAdapter;
+    private boolean highlightSelected;
 
     public void setSelectedComponents(List<DishComponent> selectedIngredients) {
         this.selectedComponents = selectedIngredients;
@@ -93,18 +89,14 @@ public class DishesFragment extends AbstractFragment {
             recyclerView.smoothScrollToPosition(0);
         });
 
-        try {
-            DishFilter dishFilter = new DishFilterBuilder()
-                    .setAssortment(Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes)))
-                    .setDishComponents(selectedComponents)
-                    .createDishFilter();
-
-            dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
-            recyclerView.setAdapter(dishesAdapter.setSelectedIngredients(Objects.requireNonNull(selectedComponents)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
+        recyclerView.setAdapter(dishesAdapter.setSelectedIngredients(Objects.requireNonNull(selectedComponents)));
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 }

@@ -9,17 +9,24 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
+import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.fragments.DishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.IngredientsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.SureClearQ;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private IngredientsFragment ingredientsFragment;
+    private List<Dish> dishList = new ArrayList<>();
 
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
@@ -28,11 +35,18 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_holder, new IngredientsFragment(), "ingredients")
                 .addToBackStack(null)
                 .commit();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+        try {
+            dishList = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         toolbar.setNavigationIcon(R.drawable.toggle);
         setSupportActionBar(toolbar);
@@ -64,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.toIngredients) {
                 Objects.requireNonNull(getSupportFragmentManager())
                         .beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .replace(R.id.fragment_holder, ingredientsFragment, "ingredients")
                         .addToBackStack(null)
                         .commit();
@@ -74,13 +89,15 @@ public class MainActivity extends AppCompatActivity {
                     dishesFragment = new DishesFragment();
                 }
 
-                dishesFragment.setSelectedComponents(ingredientsFragment.getAllIngredients());
-                dishesFragment.changeDataSet();
                 Objects.requireNonNull(getSupportFragmentManager())
                         .beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .replace(R.id.fragment_holder, dishesFragment, "dishes")
                         .addToBackStack(null)
                         .commit();
+
+                dishesFragment.setSelectedComponents(ingredientsFragment.getAllIngredients());
+                dishesFragment.changeDataSet();
             }
 
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -90,5 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void sureClearSelected() {
         ingredientsFragment.clearSelectedComponents();
+    }
+
+    public List<Dish> getDishList() {
+        return dishList;
     }
 }

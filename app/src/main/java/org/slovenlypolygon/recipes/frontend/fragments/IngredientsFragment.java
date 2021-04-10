@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -108,10 +109,10 @@ public class IngredientsFragment extends AbstractFragment {
         initializeVariablesForIngredient(rootView);
 
         // TODO: 08.04.2021 HERE YOU CAN CHANGE STARTPAGE
-        dishComponentAdapter = new DishComponentAdapter(components.stream().filter(t -> t instanceof Ingredient).collect(Collectors.toList()));
+        dishComponentAdapter = new DishComponentAdapter(components.parallelStream().filter(t -> t instanceof Ingredient).collect(Collectors.toList()));
         recyclerView.setAdapter(dishComponentAdapter);
         changeViewIngredient.setOnClickListener(t -> {
-            List<DishComponent> matching = components.stream().filter(DishComponent::isSelected).collect(Collectors.toList());
+            List<DishComponent> matching = components.parallelStream().filter(DishComponent::isSelected).collect(Collectors.toList());
 
             if (!matching.isEmpty()) {
                 goToRecipes(matching);
@@ -130,6 +131,7 @@ public class IngredientsFragment extends AbstractFragment {
 
         Objects.requireNonNull(getFragmentManager())
                 .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_holder, dishesFragment, "dishes")
                 .addToBackStack(null)
                 .commit();
@@ -140,7 +142,7 @@ public class IngredientsFragment extends AbstractFragment {
     }
 
     public void clearSelectedComponents() {
-        components.stream().forEach(t -> t.setSelected(false));
+        components.parallelStream().forEach(t -> t.setSelected(false));
         dishComponentAdapter.notifyDataSetChanged();
     }
 }
