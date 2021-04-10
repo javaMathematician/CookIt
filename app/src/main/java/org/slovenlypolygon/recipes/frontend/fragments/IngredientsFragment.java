@@ -33,10 +33,19 @@ import java.util.stream.Collectors;
 
 public class IngredientsFragment extends AbstractFragment {
     private final List<DishComponent> components = new ArrayList<>();
+    private boolean showCategories;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private FloatingActionButton scrollToTop;
     private DishComponentAdapter dishComponentAdapter;
+
+    public void setShowCategories(boolean showCategories) {
+        this.showCategories = showCategories;
+    }
+
+    public void notifyDataSetChanged() {
+        dishComponentAdapter.notifyDataSetChanged();
+    }
 
     private void initializeVariablesForIngredient(View rootView) {
         recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
@@ -94,8 +103,7 @@ public class IngredientsFragment extends AbstractFragment {
         View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
         initializeVariablesForIngredient(rootView);
 
-        // TODO: 08.04.2021 HERE YOU CAN CHANGE STARTPAGE
-        dishComponentAdapter = new DishComponentAdapter(components.parallelStream().filter(t -> t instanceof Ingredient).collect(Collectors.toList()));
+        dishComponentAdapter = new DishComponentAdapter(components.parallelStream().filter(showCategories ? Category.class::isInstance : Ingredient.class::isInstance).collect(Collectors.toList()));
         recyclerView.setAdapter(dishComponentAdapter);
         changeViewIngredient.setOnClickListener(t -> {
             List<DishComponent> matching = components.parallelStream().filter(DishComponent::isSelected).collect(Collectors.toList());

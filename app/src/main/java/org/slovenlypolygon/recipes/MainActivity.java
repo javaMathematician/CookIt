@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
@@ -87,19 +88,33 @@ public class MainActivity extends AppCompatActivity {
                 DialogFragment dialog = new SureClearQ();
                 dialog.show(getSupportFragmentManager(), "sure_clear_q");
             } else if (id == R.id.toIngredients) {
-                Objects.requireNonNull(getSupportFragmentManager())
-                        .beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .replace(R.id.fragment_holder, ingredientsFragment, "ingredients")
-                        .addToBackStack(null)
-                        .commit();
+                ingredientsFragment.setShowCategories(false);
+                showIngredientsFragment();
             } else if (id == R.id.toDishes) {
                 ingredientsFragment.goToRecipes(ingredientsFragment.getAllIngredients(), false);
+            } else if (id == R.id.toCategories) {
+                ingredientsFragment.setShowCategories(true);
+                showIngredientsFragment();
             }
 
             drawerLayout.closeDrawer(GravityCompat.START);
             return false;
         });
+    }
+
+    private void showIngredientsFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_holder, new Fragment())
+                .addToBackStack(null)
+                .commit(); // бешеный костыль, но не знаю, как перерендерить фрагмент))))
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.fragment_holder, ingredientsFragment, "ingredients")
+                .addToBackStack(null)
+                .commit();
     }
 
     public void sureClearSelected() {
