@@ -52,7 +52,8 @@ public class IngredientsFragment extends AbstractFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        List<Dish> dishes = ((MainActivity) Objects.requireNonNull(getActivity())).getDishList();
+        MainActivity mainActivity = (MainActivity) Objects.requireNonNull(getActivity());
+        List<Dish> dishes = mainActivity.getDishList();
 
         changeViewIngredient = rootView.findViewById(R.id.changeView);
         scrollToTop = rootView.findViewById(R.id.floatingActionButton);
@@ -74,8 +75,8 @@ public class IngredientsFragment extends AbstractFragment {
 
         Set<String> ingredientsSet = new TreeSet<>();
         Set<String> categoriesSet = new TreeSet<>();
-        Map<String, String> ingredientURLMapper = ((MainActivity) Objects.requireNonNull(getActivity())).getIngredientURLMapper();
-        Map<String, String> categoryURLMapper = ((MainActivity) getActivity()).getCategoryURLMapper();
+        Map<String, String> ingredientURLMapper = mainActivity.getIngredientURLMapper();
+        Map<String, String> categoryURLMapper = mainActivity.getCategoryURLMapper();
 
         for (Dish dish : dishes) {
             ingredientsSet.addAll(dish.getRecipeIngredients());

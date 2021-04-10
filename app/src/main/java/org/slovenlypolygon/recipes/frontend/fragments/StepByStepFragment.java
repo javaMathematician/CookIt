@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,33 +23,16 @@ import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class StepByStepFragment extends AbstractFragment {
     private LinearLayout linearLayout;
-    private ScrollView scrollView;
     private Dish dish;
 
     public void setDish(Dish dish) {
         this.dish = dish;
-    }
-
-    private void initialize(View rootView) {
-        Map<String, List<String>> map = ((MainActivity) Objects.requireNonNull(getActivity())).getDishToRawIngredients();
-
-        linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
-        scrollView = rootView.findViewById(R.id.stepByStepScrollView);
-
-        Picasso.get()
-                .load(dish.getImageURL())
-                .error(R.drawable.sample_dish_for_error)
-                .into((ImageView) rootView.findViewById(R.id.dishStepByStepImage));
-
-        String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(Objects.requireNonNull(map.getOrDefault(dish.getName(), new ArrayList<>()))) + ".";
-        ((TextView) rootView.findViewById(R.id.stepByStepIngredients)).setText(ingredients.replace("---", "").replace("———", ""));
     }
 
     private void addSteps() {
@@ -83,8 +65,6 @@ public class StepByStepFragment extends AbstractFragment {
                         constraintLayout.setVisibility(View.GONE);
                         expandButton.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
                     }
-
-                    scrollView.fullScroll(View.FOCUS_DOWN);
                 });
             } else {
                 stepText.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -100,7 +80,17 @@ public class StepByStepFragment extends AbstractFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.step_by_step_fragment, container, false);
 
-        initialize(rootView);
+        Map<String, List<String>> map = ((MainActivity) Objects.requireNonNull(getActivity())).getDishToRawIngredients();
+        linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
+
+        Picasso.get()
+                .load(dish.getImageURL())
+                .error(R.drawable.sample_dish_for_error)
+                .into((ImageView) rootView.findViewById(R.id.dishStepByStepImage));
+
+        String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(Objects.requireNonNull(map.get(dish.getName()))) + ".";
+        rootView.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients.replace("---", "").replace("———", ""));
+
         addSteps();
 
         return rootView;
