@@ -18,23 +18,18 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.common.base.Joiner;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
-import org.apache.commons.io.IOUtil;
+import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class StepByStepFragment extends AbstractFragment {
-    private Map<String, List<String>> map;
     private LinearLayout linearLayout;
     private ScrollView scrollView;
     private Dish dish;
@@ -44,12 +39,7 @@ public class StepByStepFragment extends AbstractFragment {
     }
 
     private void initialize(View rootView) {
-        try (InputStream stream = getResources().openRawResource(R.raw.raw_ingredients)) {
-            map = new Gson().fromJson(IOUtil.toString(stream), new TypeToken<Map<String, List<String>>>() {
-            }.getType());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Map<String, List<String>> map = ((MainActivity) Objects.requireNonNull(getActivity())).getDishToRawIngredients();
 
         linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
         scrollView = rootView.findViewById(R.id.stepByStepScrollView);

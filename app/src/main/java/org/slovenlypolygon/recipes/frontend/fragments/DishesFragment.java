@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
@@ -32,16 +34,11 @@ public class DishesFragment extends AbstractFragment {
         this.selectedComponents = selectedIngredients;
     }
 
-    public void changeDataSet() {
-        dishesAdapter.setSelectedIngredients(selectedComponents);
-        dishesAdapter.notifyDataSetChanged();
-    }
-
     public void setHighlightSelected(boolean highlightSelected) {
         this.highlightSelected = highlightSelected;
     }
 
-    private void initializeVariablesForRecipes(View rootView) {
+    private void initializeVariablesForDishes(View rootView) {
         recyclerView = rootView.findViewById(R.id.dishesRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -79,7 +76,7 @@ public class DishesFragment extends AbstractFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.dishes_fragment, container, false);
 
-        initializeVariablesForRecipes(rootView);
+        initializeVariablesForDishes(rootView);
 
         scrollToTop.setOnClickListener(view -> {
             if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
@@ -89,14 +86,13 @@ public class DishesFragment extends AbstractFragment {
             recyclerView.smoothScrollToPosition(0);
         });
 
-        dishesAdapter = new DishesAdapter(dishFilter.getMatchingList(), highlightSelected);
-        recyclerView.setAdapter(dishesAdapter.setSelectedIngredients(Objects.requireNonNull(selectedComponents)));
+        DishFilter filter = new DishFilter(((MainActivity) Objects.requireNonNull(getActivity())).getDishList());
+        filter.setComponents(selectedComponents);
 
+        dishesAdapter = new DishesAdapter(filter.getMatchingList(), highlightSelected);
+        dishesAdapter.setSelectedIngredients(selectedComponents); // otherwise i don't know how to sort
+        recyclerView.setAdapter(dishesAdapter);
         return rootView;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 }

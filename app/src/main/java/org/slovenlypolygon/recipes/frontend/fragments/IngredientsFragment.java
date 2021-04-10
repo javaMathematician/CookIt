@@ -14,19 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.apache.commons.io.IOUtil;
+import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentAdapter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,11 +44,7 @@ public class IngredientsFragment extends AbstractFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        try {
-            dishes = Deserializer.deserializeDishes(getResources().openRawResource(R.raw.all_dishes));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        dishes = ((MainActivity) Objects.requireNonNull(getActivity())).getDishList();
 
         changeViewIngredient = rootView.findViewById(R.id.changeView);
         scrollToTop = rootView.findViewById(R.id.floatingActionButton);
@@ -72,28 +64,23 @@ public class IngredientsFragment extends AbstractFragment {
         });
         scrollToTop.hide();
 
-        try {
-            Set<String> ingredientsSet = new TreeSet<>();
-            Set<String> categoriesSet = new TreeSet<>();
-            Map<String, String> ingredientURLMapper = new Gson().fromJson(IOUtil.toString(getResources().openRawResource(R.raw.ingredient_to_image_url)), new TypeToken<Map<String, String>>() {
-            }.getType());
-            Map<String, String> categoryURLMapper = new Gson().fromJson(IOUtil.toString(getResources().openRawResource(R.raw.category_to_image_url)), new TypeToken<Map<String, String>>() {
-            }.getType());
+        Set<String> ingredientsSet = new TreeSet<>();
+        Set<String> categoriesSet = new TreeSet<>();
+        Map<String, String> ingredientURLMapper = ((MainActivity) Objects.requireNonNull(getActivity())).getIngredientURLMapper();
+        Map<String, String> categoryURLMapper = ((MainActivity) getActivity()).getCategoryURLMapper();
 
-            for (Dish dish : dishes) {
-                ingredientsSet.addAll(dish.getRecipeIngredients());
-                categoriesSet.addAll(dish.getCategories());
-            }
+        for (Dish dish : dishes) {
+            ingredientsSet.addAll(dish.getRecipeIngredients());
+            categoriesSet.addAll(dish.getCategories());
+        }
 
-            for (String ingredientName : ingredientsSet) {
-                components.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1")));
-            }
+        String errorPictureURL = "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1";
+        for (String ingredientName : ingredientsSet) {
+            components.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, errorPictureURL)));
+        }
 
-            for (String categoryName : categoriesSet) {
-                components.add(new Category(categoryName, categoryURLMapper.getOrDefault(categoryName, "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1")));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (String categoryName : categoriesSet) {
+            components.add(new Category(categoryName, categoryURLMapper.getOrDefault(categoryName, errorPictureURL)));
         }
     }
 
