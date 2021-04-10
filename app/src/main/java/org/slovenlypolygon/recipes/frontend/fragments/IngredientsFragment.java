@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 
 public class IngredientsFragment extends AbstractFragment {
     private final List<DishComponent> components = new ArrayList<>();
+    private boolean initialized;
     private boolean showCategories;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
@@ -43,17 +44,10 @@ public class IngredientsFragment extends AbstractFragment {
         this.showCategories = showCategories;
     }
 
-    public void notifyDataSetChanged() {
-        dishComponentAdapter.notifyDataSetChanged();
-    }
-
     private void initializeVariablesForIngredient(View rootView) {
         recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        MainActivity mainActivity = (MainActivity) Objects.requireNonNull(getActivity());
-        List<Dish> dishes = mainActivity.getDishList();
 
         changeViewIngredient = rootView.findViewById(R.id.changeView);
         scrollToTop = rootView.findViewById(R.id.floatingActionButton);
@@ -73,23 +67,29 @@ public class IngredientsFragment extends AbstractFragment {
         });
         scrollToTop.hide();
 
-        Set<String> ingredientsSet = new TreeSet<>();
-        Set<String> categoriesSet = new TreeSet<>();
-        Map<String, String> ingredientURLMapper = mainActivity.getIngredientURLMapper();
-        Map<String, String> categoryURLMapper = mainActivity.getCategoryURLMapper();
+        if (!initialized) {
+            MainActivity mainActivity = (MainActivity) Objects.requireNonNull(getActivity());
+            List<Dish> dishes = mainActivity.getDishList();
 
-        for (Dish dish : dishes) {
-            ingredientsSet.addAll(dish.getRecipeIngredients());
-            categoriesSet.addAll(dish.getCategories());
-        }
+            Set<String> ingredientsSet = new TreeSet<>();
+            Set<String> categoriesSet = new TreeSet<>();
+            Map<String, String> ingredientURLMapper = mainActivity.getIngredientURLMapper();
+            Map<String, String> categoryURLMapper = mainActivity.getCategoryURLMapper();
 
-        String errorPictureURL = "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1";
-        for (String ingredientName : ingredientsSet) {
-            components.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, errorPictureURL)));
-        }
+            for (Dish dish : dishes) {
+                ingredientsSet.addAll(dish.getRecipeIngredients());
+                categoriesSet.addAll(dish.getCategories());
+            }
 
-        for (String categoryName : categoriesSet) {
-            components.add(new Category(categoryName, categoryURLMapper.getOrDefault(categoryName, errorPictureURL)));
+            String errorPictureURL = "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1";
+
+            for (String ingredientName : ingredientsSet) {
+                components.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, errorPictureURL)));
+            }
+
+            for (String categoryName : categoriesSet) {
+                components.add(new Category(categoryName, categoryURLMapper.getOrDefault(categoryName, errorPictureURL)));
+            }
         }
     }
 
@@ -102,7 +102,9 @@ public class IngredientsFragment extends AbstractFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
+
         initializeVariablesForIngredient(rootView);
+        initialized = true;
 
         dishComponentAdapter = new DishComponentAdapter(components.parallelStream().filter(showCategories ? Category.class::isInstance : Ingredient.class::isInstance).collect(Collectors.toList()));
         recyclerView.setAdapter(dishComponentAdapter);

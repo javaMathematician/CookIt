@@ -21,12 +21,6 @@
         android:icon="@drawable/color_scan"
         android:title="@string/recipeScan" />
 
-
-    <item
-        android:id="@+id/toSettings"
-        android:icon="@drawable/color_settings"
-        android:title="@string/settings" />
-
     <item
         android:id="@+id/clearSelected"
         android:icon="@drawable/color_close"

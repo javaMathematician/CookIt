@@ -2,7 +2,7 @@
     <string name="none_selected_ingredient">Выберите хотя бы один ингредиент</string>
     <string name="to_recipes">К рецептам</string>
     <string name="searchPromote">Искать</string>
-    <string name="app_name">Tamperone</string>
+    <string name="app_name">CookIt!</string>
     <string name="search_hint">Поиск</string>
     <string name="recipes">Рецепты</string>
     <string name="back_to_main_scene">Назад</string>
