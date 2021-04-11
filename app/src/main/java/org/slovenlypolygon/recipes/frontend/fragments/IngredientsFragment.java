@@ -23,7 +23,6 @@ import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -32,7 +31,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class IngredientsFragment extends AbstractFragment {
-    private final List<DishComponent> components = new ArrayList<>();
+    private final Set<DishComponent> components = new TreeSet<>();
     private boolean initialized;
     private boolean showCategories;
     private RecyclerView recyclerView;
@@ -58,8 +57,8 @@ public class IngredientsFragment extends AbstractFragment {
 
             recyclerView.smoothScrollToPosition(0);
         });
-        recyclerView.setRecyclerListener(holder -> {
-            if (holder.getAdapterPosition() > 9) {
+        recyclerView.addRecyclerListener(holder -> {
+            if (holder.getBindingAdapterPosition() > 9) {
                 scrollToTop.show();
             } else {
                 scrollToTop.hide();
@@ -109,7 +108,7 @@ public class IngredientsFragment extends AbstractFragment {
         dishComponentAdapter = new DishComponentAdapter(components.parallelStream().filter(showCategories ? Category.class::isInstance : Ingredient.class::isInstance).collect(Collectors.toList()));
         recyclerView.setAdapter(dishComponentAdapter);
         changeViewIngredient.setOnClickListener(t -> {
-            List<DishComponent> matching = components.parallelStream().filter(DishComponent::isSelected).collect(Collectors.toList());
+            Set<DishComponent> matching = components.parallelStream().filter(DishComponent::isSelected).collect(Collectors.toSet());
 
             if (!matching.isEmpty()) {
                 goToRecipes(matching, true);
@@ -121,7 +120,7 @@ public class IngredientsFragment extends AbstractFragment {
         return rootView;
     }
 
-    public void goToRecipes(List<DishComponent> selected, boolean highlight) {
+    public void goToRecipes(Set<DishComponent> selected, boolean highlight) {
         DishesFragment dishesFragment = new DishesFragment();
         dishesFragment.setSelectedComponents(selected);
         dishesFragment.setHighlightSelected(highlight);
@@ -134,7 +133,7 @@ public class IngredientsFragment extends AbstractFragment {
                 .commit();
     }
 
-    public List<DishComponent> getAllIngredients() {
+    public Set<DishComponent> getAllIngredients() {
         return components;
     }
 

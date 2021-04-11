@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Dish implements Parcelable {
     public static final Parcelable.Creator<Dish> CREATOR = new Parcelable.Creator<Dish>() {
@@ -65,23 +66,11 @@ public class Dish implements Parcelable {
     }
 
     public List<String> getRecipeImageURLs() {
-        List<String> output = new ArrayList<>();
-
-        for (List<String> list : recipeInstructions) {
-            output.add(list.get(0));
-        }
-
-        return output;
+        return recipeInstructions.parallelStream().map(t -> t.get(0)).collect(Collectors.toList());
     }
 
     public List<String> getRecipeTextInstructions() {
-        List<String> output = new ArrayList<>();
-
-        for (List<String> recipeInstruction : recipeInstructions) {
-            output.add(recipeInstruction.get(1));
-        }
-
-        return output;
+        return recipeInstructions.parallelStream().map(t -> t.get(1)).collect(Collectors.toList());
     }
 
     @Override

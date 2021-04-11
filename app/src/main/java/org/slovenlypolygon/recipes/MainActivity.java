@@ -89,11 +89,13 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show(getSupportFragmentManager(), "sure_clear_q");
             } else if (id == R.id.toIngredients) {
                 ingredientsFragment.setShowCategories(false);
+                sureClearSelected();
                 showIngredientsFragment();
             } else if (id == R.id.toDishes) {
                 ingredientsFragment.goToRecipes(ingredientsFragment.getAllIngredients(), false);
             } else if (id == R.id.toCategories) {
                 ingredientsFragment.setShowCategories(true);
+                sureClearSelected();
                 showIngredientsFragment();
             }
 

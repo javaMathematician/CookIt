@@ -19,18 +19,18 @@ import org.slovenlypolygon.recipes.backend.databaseutils.DishFilter;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class DishesFragment extends AbstractFragment {
     private SearchView searchView;
     private RecyclerView recyclerView;
     private FloatingActionButton scrollToTop;
-    private List<DishComponent> selectedComponents;
+    private Set<DishComponent> selectedComponents;
     private DishesAdapter dishesAdapter;
     private boolean highlightSelected;
 
-    public void setSelectedComponents(List<DishComponent> selectedIngredients) {
+    public void setSelectedComponents(Set<DishComponent> selectedIngredients) {
         this.selectedComponents = selectedIngredients;
     }
 

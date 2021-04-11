@@ -109,7 +109,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void setSelectedIngredients(List<DishComponent> selected) {
+    public void setSelectedIngredients(Set<DishComponent> selected) {
         this.selected = selected
                 .parallelStream()
                 .map(DishComponent::getName)

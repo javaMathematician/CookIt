@@ -6,9 +6,7 @@ import android.os.Parcelable;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
-import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
-
-public abstract class DishComponent implements Parcelable {
+public abstract class DishComponent implements Parcelable, Comparable<DishComponent> {
     protected String name;
     protected String imageURL;
     protected boolean selected;
@@ -85,5 +83,10 @@ public abstract class DishComponent implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(imageURL);
+    }
+
+    @Override
+    public int compareTo(DishComponent o) {
+        return this.getName().compareTo(o.getName());
     }
 }

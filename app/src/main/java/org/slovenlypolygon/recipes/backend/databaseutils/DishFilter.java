@@ -1,18 +1,22 @@
 package org.slovenlypolygon.recipes.backend.databaseutils;
 
-import com.google.common.base.Joiner;
+import com.google.common.collect.Sets;
 
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DishFilter {
     private final List<Dish> assortment;
 
     private String name;
-    private List<DishComponent> dishComponents;
+    private Set<DishComponent> dishComponents;
+    private Set<String> dishComponentNames;
 
     public DishFilter(List<Dish> assortment) {
         this.name = null;
@@ -24,8 +28,9 @@ public class DishFilter {
         this.name = name;
     }
 
-    public void setComponents(List<DishComponent> dishComponents) {
+    public void setComponents(Set<DishComponent> dishComponents) {
         this.dishComponents = dishComponents;
+        this.dishComponentNames = dishComponents.parallelStream().map(DishComponent::getName).collect(Collectors.toSet());
     }
 
     public List<Dish> getMatchingList() {
@@ -33,8 +38,8 @@ public class DishFilter {
 
         for (Dish dish : assortment) {
             boolean passedName = name == null || dish.getName().toLowerCase().contains(name.toLowerCase());
-            boolean passedIngredients = dishComponents == null || containsAny(dishComponents, dish.getRecipeIngredients());
-            boolean passedCategories = dishComponents == null || containsAny(dishComponents, dish.getCategories());
+            boolean passedIngredients = dishComponents == null || containsAnyComponent(dish.getRecipeIngredients());
+            boolean passedCategories = dishComponents == null || containsAnyComponent(dish.getCategories());
 
             if (passedName && (passedIngredients || passedCategories)) {
                 dishList.add(dish);
@@ -44,8 +49,8 @@ public class DishFilter {
         return dishList;
     }
 
-    private boolean containsAny(List<DishComponent> required, List<String> provided) {
-        String allOfDishString = Joiner.on(", ").join(provided).toLowerCase().trim();
-        return required.parallelStream().map(DishComponent::getName).anyMatch(t -> allOfDishString.contains(t.toLowerCase().trim()));
+    private boolean containsAnyComponent(List<String> provided) {
+        Set<String> set = new HashSet<>(provided);
+        return !Sets.intersection(set, dishComponentNames).isEmpty();
     }
 }
