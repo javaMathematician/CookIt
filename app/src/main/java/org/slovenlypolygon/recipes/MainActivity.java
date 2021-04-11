@@ -85,8 +85,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (id == R.id.clearSelected) {
-                DialogFragment dialog = new SureClearQ();
-                dialog.show(getSupportFragmentManager(), "sure_clear_q");
+                Fragment current = getSupportFragmentManager().findFragmentByTag("ingredients");
+
+                if (current != null && current.isVisible()) {
+                    DialogFragment dialog = new SureClearQ();
+                    dialog.show(getSupportFragmentManager(), "sure_clear_q");
+                }
             } else if (id == R.id.toIngredients) {
                 ingredientsFragment.setShowCategories(false);
                 sureClearSelected();

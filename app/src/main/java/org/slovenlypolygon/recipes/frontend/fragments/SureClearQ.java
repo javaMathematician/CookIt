@@ -2,7 +2,6 @@ package org.slovenlypolygon.recipes.frontend.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -26,7 +25,6 @@ public class SureClearQ extends DialogFragment {
         builder.setMessage(message);
 
         builder.setPositiveButton(accept, (dialog, id) -> {
-            Toast.makeText(getActivity(), "Сброшно", Toast.LENGTH_LONG).show();
             ((MainActivity) getActivity()).sureClearSelected();
         });
         builder.setNegativeButton(decline, (dialog, id) -> {
