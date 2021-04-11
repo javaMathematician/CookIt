@@ -23,14 +23,4 @@ public class Ingredient extends DishComponent implements Parcelable {
     public Ingredient(Parcel parcel) {
         super(parcel);
     }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 }
