@@ -27,16 +27,13 @@
             <ImageView
                 android:id="@+id/dishStepByStepImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="1dp"
                 android:adjustViewBounds="true"
                 android:background="@android:color/white"
+                android:layout_weight="1"
                 android:contentDescription="@string/dish_image_step_by_step"
-                android:src="@android:mipmap/sym_def_app_icon"
-                app:layout_constraintDimensionRatio="H, 16:9"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:src="@android:mipmap/sym_def_app_icon" />
 
             <TextView
                 android:id="@+id/stepByStepIngredients"

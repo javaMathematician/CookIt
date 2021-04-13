@@ -1,14 +1,18 @@
 package org.slovenlypolygon.recipes.frontend.fragments;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -92,6 +96,13 @@ public class StepByStepFragment extends AbstractFragment {
         rootView.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients.replace("---", "").replace("———", ""));
 
         addSteps();
+
+        View bottomEmptySpace = new View(getContext());
+        bottomEmptySpace.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                Resources.getSystem().getDisplayMetrics().heightPixels / 2
+        ));
+        linearLayout.addView(bottomEmptySpace);
 
         return rootView;
     }
