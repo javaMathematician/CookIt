@@ -48,7 +48,7 @@
 
             <fragment
                 android:id="@+id/main_fragment"
-                android:name="org.slovenlypolygon.recipes.frontend.fragments.IngredientsFragment"
+                android:name="org.slovenlypolygon.recipes.frontend.fragments.DishComponentsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>

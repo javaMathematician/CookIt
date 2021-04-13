@@ -22,11 +22,11 @@ import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DishComponentAdapter extends RecyclerView.Adapter<DishComponentAdapter.IngredientViewHolder> implements Filterable {
+public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
     private List<DishComponent> components;
     private List<DishComponent> original;
 
-    public DishComponentAdapter(List<DishComponent> components) {
+    public DishComponentsAdapter(List<DishComponent> components) {
         this.components = components;
     }
 

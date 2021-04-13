@@ -16,7 +16,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.frontend.fragments.IngredientsFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.DishComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.SureClearQ;
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private IngredientsFragment ingredientsFragment;
+    private DishComponentsFragment dishComponentsFragment;
     private List<Dish> dishList = new ArrayList<>();
     private Map<String, List<String>> dishToRawIngredients = new HashMap<>();
     private Map<String, String> ingredientURLMapper = new HashMap<>();
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.fragment_holder, new IngredientsFragment(), "ingredients")
+                .replace(R.id.fragment_holder, new DishComponentsFragment(), "ingredients")
                 .addToBackStack(null)
                 .commit();
 
@@ -79,9 +79,9 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
-            ingredientsFragment = (IngredientsFragment) getSupportFragmentManager().findFragmentByTag("ingredients");
-            if (ingredientsFragment == null) {
-                ingredientsFragment = new IngredientsFragment();
+            dishComponentsFragment = (DishComponentsFragment) getSupportFragmentManager().findFragmentByTag("ingredients");
+            if (dishComponentsFragment == null) {
+                dishComponentsFragment = new DishComponentsFragment();
             }
 
             if (id == R.id.clearSelected) {
@@ -92,13 +92,13 @@ public class MainActivity extends AppCompatActivity {
                     dialog.show(getSupportFragmentManager(), "sure_clear_q");
                 }
             } else if (id == R.id.toIngredients) {
-                ingredientsFragment.setShowCategories(false);
+                dishComponentsFragment.setShowCategories(false);
                 sureClearSelected();
                 showIngredientsFragment();
             } else if (id == R.id.toDishes) {
-                ingredientsFragment.goToRecipes(ingredientsFragment.getAllIngredients(), false);
+                dishComponentsFragment.goToRecipes(dishComponentsFragment.getAllIngredients(), false);
             } else if (id == R.id.toCategories) {
-                ingredientsFragment.setShowCategories(true);
+                dishComponentsFragment.setShowCategories(true);
                 sureClearSelected();
                 showIngredientsFragment();
             }
@@ -118,13 +118,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.fragment_holder, ingredientsFragment, "ingredients")
+                .replace(R.id.fragment_holder, dishComponentsFragment, "ingredients")
                 .addToBackStack(null)
                 .commit();
     }
 
     public void sureClearSelected() {
-        ingredientsFragment.clearSelectedComponents();
+        dishComponentsFragment.clearSelectedComponents();
     }
 
     public List<Dish> getDishList() {
