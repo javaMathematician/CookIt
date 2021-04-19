@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="mainBackgroundColor" format="color" />
+    <attr name="cardBackgroundColor" format="color" />
+    <attr name="textCardColor" format="color" />
+    <attr name="toolbarBackgroundColor" format="color" />
+    <attr name="searchViewColor" format="color" />
+    <attr name="gradient" format="reference" />
+
+</resources>

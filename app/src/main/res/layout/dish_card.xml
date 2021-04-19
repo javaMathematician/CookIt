@@ -9,7 +9,7 @@
     app:cardCornerRadius="2dp"
     app:cardElevation="4dp"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/darkThemeBackgroundCardColor"
+    app:cardBackgroundColor="?attr/cardBackgroundColor"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
@@ -17,7 +17,7 @@
         android:id="@+id/dishLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/darkThemeBackgroundCardColor"
+        android:background="?attr/cardBackgroundColor"
         android:orientation="horizontal">
 
         <ImageView
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="NAME"
-                android:textColor="@color/darkThemeTextColor"
+                android:textColor="?attr/textCardColor"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="INSIDE"
-                android:textColor="@android:color/tertiary_text_light"
+                android:textColor="?attr/textCardColor"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dishName" />

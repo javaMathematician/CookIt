@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkThemeBackgroundColor">
+    android:background="?attr/mainBackgroundColor">
 
     <FrameLayout
         android:id="@+id/frameLayoutInRecipes"
@@ -32,7 +32,7 @@
         android:clickable="true"
         android:contentDescription="scroll"
         android:focusable="true"
-        app:backgroundTint="@color/cardview_dark_background"
+        app:backgroundTint="?attr/toolbarBackgroundColor"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayoutInRecipes"
         app:layout_constraintEnd_toEndOf="@+id/frameLayoutInRecipes"
         app:srcCompat="@drawable/up_arrow" />

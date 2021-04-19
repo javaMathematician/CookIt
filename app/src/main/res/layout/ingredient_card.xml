@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="1dp"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/darkThemeBackgroundCardColor"
+    app:cardBackgroundColor="?attr/cardBackgroundColor"
     app:cardCornerRadius="0dp"
     app:cardElevation="4dp"
     app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center_vertical"
-            android:textColor="@color/darkThemeTextColor"
+            android:textColor="?attr/textCardColor"
             android:textSize="18sp" />
 
         <CheckBox

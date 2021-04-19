@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="1dp"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="#EFEFEF"
+    app:cardBackgroundColor="?attr/cardBackgroundColor"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     tools:ignore="MissingConstraints">
@@ -21,7 +21,7 @@
             android:id="@+id/stepText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="?attr/textCardColor"
             app:layout_constraintEnd_toStartOf="@id/expandStepButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
             android:id="@+id/expandStepButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/abc_vector_test"
+            android:background="@drawable/ic_baseline_keyboard_arrow_down_24"
             android:clickable="false"
             android:focusable="false"
             android:visibility="invisible"

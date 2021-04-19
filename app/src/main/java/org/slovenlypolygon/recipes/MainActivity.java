@@ -1,8 +1,16 @@
 package org.slovenlypolygon.recipes;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,17 +36,35 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String THEME = "Dark";
+    private SharedPreferences sharedPreferences;
     private DishComponentsFragment dishComponentsFragment;
     private List<Dish> dishList = new ArrayList<>();
     private Map<String, List<String>> dishToRawIngredients = new HashMap<>();
     private Map<String, String> ingredientURLMapper = new HashMap<>();
     private Map<String, String> categoryURLMapper = new HashMap<>();
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.carcass);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Тема
+        sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (sharedPreferences.getString(THEME, "Dark").equals("Dark")) {
+            toolbar.setBackgroundResource(R.color.toolbarBackgroundDarkColor);
+            toolbar.setTitleTextColor(Color.WHITE);
+            setTheme(R.style.Dark);
+        } else {
+            toolbar.setBackgroundResource(R.color.toolbarBackgroundLightColor);
+            toolbar.setTitleTextColor(Color.BLACK);
+            setTheme(R.style.Light);
+        }
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -46,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null)
                 .commit();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
 
         try (InputStream ingredientsStream = getResources().openRawResource(R.raw.raw_ingredients);
              InputStream dishesStream = getResources().openRawResource(R.raw.all_dishes);
@@ -60,20 +85,47 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        toolbar.setNavigationIcon(R.drawable.toggle);
-        setSupportActionBar(toolbar);
-
         NavigationView navigationView = findViewById(R.id.navView);
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
 
         drawerLayout.addDrawerListener(toggle);
-        toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
+
         toggle.syncState();
         toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
         toggle.setDrawerIndicatorEnabled(true);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(t -> {
+            drawerLayout.openDrawer(GravityCompat.START);
+            ImageButton themeBtn = findViewById(R.id.themeBtn);
+
+            if (sharedPreferences.getString(THEME, "").equals("Dark"))
+                themeBtn.setBackgroundResource(R.drawable.dark_mode);
+            else themeBtn.setBackgroundResource(R.drawable.light_mode);
+
+            // Установка темы по клику
+            themeBtn.setOnClickListener(item -> {
+                if (sharedPreferences.getString(THEME, "").equals("Dark")) {
+                    themeBtn.setBackgroundResource(R.drawable.light_mode);
+                    editor.putString(THEME, "Light");
+                    editor.apply();
+                    toolbar.setBackgroundResource(R.color.toolbarBackgroundLightColor);
+                    setTheme(R.style.Light);
+                } else {
+                    themeBtn.setBackgroundResource(R.drawable.dark_mode);
+                    editor.putString(THEME, "Dark");
+                    editor.apply();
+                    toolbar.setBackgroundResource(R.color.toolbarBackgroundDarkColor);
+                    setTheme(R.style.Dark);
+                }
+
+                drawerLayout.closeDrawer(GravityCompat.START);
+                recreate();
+            });
+        });
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         navigationView.setItemIconTintList(null);
 
         navigationView.setNavigationItemSelectedListener(item -> {

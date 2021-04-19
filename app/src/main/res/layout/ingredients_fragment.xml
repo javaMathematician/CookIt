@@ -5,13 +5,13 @@
     android:id="@+id/drawerMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkThemeBackgroundColor">
+    android:background="?attr/mainBackgroundColor">
 
     <FrameLayout
         android:id="@+id/frameLayoutInRecipes"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="0dp"
         app:layout_constraintBottom_toTopOf="@+id/changeView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -30,10 +30,10 @@
         android:id="@+id/changeView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_outline_purple"
+        android:background="?attr/gradient"
         android:foreground="?android:attr/selectableItemBackground"
         android:text="@string/to_recipes"
-        android:textColor="@color/searchViewColorWhite"
+        android:textColor="?attr/textCardColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -47,7 +47,7 @@
         android:clickable="true"
         android:contentDescription="scroll to top"
         android:focusable="true"
-        app:backgroundTint="@color/cardview_dark_background"
+        app:backgroundTint="?attr/toolbarBackgroundColor"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayoutInRecipes"
         app:layout_constraintEnd_toEndOf="@+id/frameLayoutInRecipes"
         app:srcCompat="@drawable/up_arrow" />

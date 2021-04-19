@@ -4,7 +4,7 @@
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkThemeBackgroundColor">
+    android:background="?attr/mainBackgroundColor">
 
     <ScrollView
         android:id="@+id/stepByStepScrollView"
@@ -30,7 +30,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="1dp"
                 android:adjustViewBounds="true"
-                android:background="@android:color/white"
+                android:background="?attr/textCardColor"
                 android:layout_weight="1"
                 android:contentDescription="@string/dish_image_step_by_step"
                 android:src="@android:mipmap/sym_def_app_icon" />
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
-                android:textColor="@android:color/white" />
+                android:textColor="?attr/textCardColor" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

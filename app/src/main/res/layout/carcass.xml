@@ -15,12 +15,12 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="?attr/toolbarBackgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/app_name"
-            app:titleTextColor="@android:color/white">
+            app:titleTextColor="?attr/textCardColor">
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchView"
@@ -59,9 +59,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorPrimary"
+        android:background="?attr/toolbarBackgroundColor"
         app:headerLayout="@layout/drawer_layout"
         app:itemIconSize="30dp"
         app:itemIconTint="@android:color/white"
+        app:itemTextColor="?attr/searchViewColor"
         app:menu="@menu/drawer_navigation" />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -2,6 +2,8 @@
 <resources>
     <color name="colorAccent">#C6C6C6</color>
     <color name="colorPrimary">#21211F</color>
+    <color name="toolbarBackgroundDarkColor">#21211F</color>
+    <color name="toolbarBackgroundLightColor">#E4E4E4</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="searchViewColorWhite">#FFFFFF</color>
     <color name="darkThemeBackgroundColor">#101211</color>
