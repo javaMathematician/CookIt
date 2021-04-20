@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorAccent">#C6C6C6</color>
-    <color name="colorPrimary">#21211F</color>
-    <color name="toolbarBackgroundDarkColor">#21211F</color>
-    <color name="toolbarBackgroundLightColor">#E4E4E4</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="searchViewColorWhite">#FFFFFF</color>
-    <color name="darkThemeBackgroundColor">#101211</color>
-    <color name="lightThemeBackgroundColor">#F2F2F2</color>
-    <color name="darkThemeBackgroundCardColor">#191917</color>
-    <color name="lightThemeBackgroundCardColor">#CCCCCC</color>
+    <color name="endColorGreen">#8BC34A</color>
+    <color name="startColorGreen">#4CAF50</color>
+    <color name="greenStrokeColor">#8BC34A</color>
+    <color name="orangeStrokeColor">#F7A943</color>
     <color name="darkThemeTextColor">#FFFFFF</color>
     <color name="lightThemeTextColor">#121212</color>
+    <color name="searchViewColorWhite">#FFFFFF</color>
+    <color name="darkThemeBackgroundColor">#101211</color>
+    <color name="lightThemeBackgroundColor">#AFAFAF</color>
+    <color name="toolbarBackgroundDarkColor">#21211F</color>
+    <color name="toolbarBackgroundLightColor">#EDEEF0</color>
+    <color name="darkThemeBackgroundCardColor">#191917</color>
+    <color name="lightThemeBackgroundCardColor">#CFCECE</color>
 </resources>

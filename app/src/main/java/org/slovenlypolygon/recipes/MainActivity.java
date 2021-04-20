@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -37,6 +38,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private static final String THEME = "Dark";
+    private static SharedPreferences.Editor editor;
     private SharedPreferences sharedPreferences;
     private DishComponentsFragment dishComponentsFragment;
     private List<Dish> dishList = new ArrayList<>();
@@ -48,23 +50,50 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        if (sharedPreferences.getString(THEME, "").equals("Dark")) setTheme(R.style.Dark);
+        else setTheme(R.style.Light);
         setContentView(R.layout.carcass);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Тема
-        sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (sharedPreferences.getString(THEME, "Dark").equals("Dark")) {
-            toolbar.setBackgroundResource(R.color.toolbarBackgroundDarkColor);
-            toolbar.setTitleTextColor(Color.WHITE);
-            setTheme(R.style.Dark);
-        } else {
-            toolbar.setBackgroundResource(R.color.toolbarBackgroundLightColor);
-            toolbar.setTitleTextColor(Color.BLACK);
-            setTheme(R.style.Light);
-        }
+        NavigationView navigationView = findViewById(R.id.navView);
+        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+
+        drawerLayout.addDrawerListener(toggle);
+        drawerLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                ImageButton themeBtn = findViewById(R.id.themeBtn);
+
+                if (sharedPreferences.getString(THEME, "").equals("Dark"))
+                    themeBtn.setBackgroundResource(R.drawable.dark_mode);
+                else themeBtn.setBackgroundResource(R.drawable.light_mode);
+
+                // Установка темы по клику
+                themeBtn.setOnClickListener(item -> {
+                    if (sharedPreferences.getString(THEME, "").equals("Dark")) {
+                        themeBtn.setBackgroundResource(R.drawable.light_mode);
+                        editor.putString(THEME, "Light");
+                        editor.apply();
+                    } else {
+                        themeBtn.setBackgroundResource(R.drawable.dark_mode);
+                        editor.putString(THEME, "Dark");
+                        editor.apply();
+                    }
+                    changeTheme(drawerLayout);
+                });
+            }
+        });
+
+
+        toggle.syncState();
+        toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
+        toggle.setDrawerIndicatorEnabled(true);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -85,46 +114,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        NavigationView navigationView = findViewById(R.id.navView);
-        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
-
-        drawerLayout.addDrawerListener(toggle);
-
-        toggle.syncState();
-        toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
-        toggle.setDrawerIndicatorEnabled(true);
-
-        toolbar.setNavigationOnClickListener(t -> {
-            drawerLayout.openDrawer(GravityCompat.START);
-            ImageButton themeBtn = findViewById(R.id.themeBtn);
-
-            if (sharedPreferences.getString(THEME, "").equals("Dark"))
-                themeBtn.setBackgroundResource(R.drawable.dark_mode);
-            else themeBtn.setBackgroundResource(R.drawable.light_mode);
-
-            // Установка темы по клику
-            themeBtn.setOnClickListener(item -> {
-                if (sharedPreferences.getString(THEME, "").equals("Dark")) {
-                    themeBtn.setBackgroundResource(R.drawable.light_mode);
-                    editor.putString(THEME, "Light");
-                    editor.apply();
-                    toolbar.setBackgroundResource(R.color.toolbarBackgroundLightColor);
-                    setTheme(R.style.Light);
-                } else {
-                    themeBtn.setBackgroundResource(R.drawable.dark_mode);
-                    editor.putString(THEME, "Dark");
-                    editor.apply();
-                    toolbar.setBackgroundResource(R.color.toolbarBackgroundDarkColor);
-                    setTheme(R.style.Dark);
-                }
-
-                drawerLayout.closeDrawer(GravityCompat.START);
-                recreate();
-            });
-        });
-
-
+        toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         navigationView.setItemIconTintList(null);
 
@@ -193,5 +183,17 @@ public class MainActivity extends AppCompatActivity {
 
     public Map<String, String> getCategoryURLMapper() {
         return categoryURLMapper;
+    }
+
+    private void changeTheme(DrawerLayout drawerLayout) {
+        if (sharedPreferences.getString(THEME, "Dark").equals("Dark")) {
+            setTheme(R.style.Dark);
+        } else {
+            setTheme(R.style.Light);
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+
+        // TODO: вот тут надо перезапустить активность и запустить ее на том моменте где мы остановились(например на выборе блюда)
+        recreate();
     }
 }

@@ -39,7 +39,7 @@
         android:layout_marginStart="20dp"
         android:text="Меню"
         android:textAlignment="center"
-        android:textColor="?attr/searchViewColor"
+        android:textColor="@android:color/white"
         android:textSize="24sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
