@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="endColorGreen">#8BC34A</color>
-    <color name="startColorGreen">#4CAF50</color>
     <color name="greenStrokeColor">#8BC34A</color>
-    <color name="orangeStrokeColor">#F7A943</color>
+    <color name="purpleStrokeColor">#ED5A79</color>
     <color name="darkThemeTextColor">#FFFFFF</color>
     <color name="lightThemeTextColor">#121212</color>
     <color name="searchViewColorWhite">#FFFFFF</color>
     <color name="darkThemeBackgroundColor">#101211</color>
     <color name="lightThemeBackgroundColor">#AFAFAF</color>
     <color name="toolbarBackgroundDarkColor">#21211F</color>
-    <color name="toolbarBackgroundLightColor">#EDEEF0</color>
+    <color name="toolbarBackgroundLightColor">#CFCECE</color>
     <color name="darkThemeBackgroundCardColor">#191917</color>
-    <color name="lightThemeBackgroundCardColor">#CFCECE</color>
+    <color name="lightThemeBackgroundCardColor">#EDEEF0</color>
 </resources>

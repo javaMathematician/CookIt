@@ -71,9 +71,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             if (selectedText.length() == 0) {
                 output = text;
             } else if (text.length() == 0) {
-                output = String.format("<font color=#9AFF00>%s</font>", selectedText);
+                output = String.format("<font color=#ED5A79>%s</font>", selectedText);
             } else {
-                output = String.format("<font color=#9AFF00>%s</font>, %s", selectedText, text);
+                output = String.format("<font color=#ED5A79>%s</font>, %s", selectedText, text);
             }
 
             output = output.replace("\n", "");

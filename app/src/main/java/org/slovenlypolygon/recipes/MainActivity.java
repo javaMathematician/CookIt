@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         }
         drawerLayout.closeDrawer(GravityCompat.START);
 
-        // TODO: вот тут надо перезапустить активность и запустить ее на том моменте где мы остановились(например на выборе блюда)
+        // вот тут надо перезапустить активность и запустить ее на том моменте где мы остановились(например на выборе блюда)
         recreate();
     }
 }
