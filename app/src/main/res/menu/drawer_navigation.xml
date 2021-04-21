@@ -13,13 +13,8 @@
 
     <item
         android:id="@+id/toCategories"
-        android:icon="@drawable/color_dishes"
+        android:icon="@drawable/color_categories"
         android:title="@string/categories" />
-
-    <item
-        android:id="@+id/receiptScan"
-        android:icon="@drawable/color_scan"
-        android:title="@string/recipeScan" />
 
     <item
         android:id="@+id/clearSelected"
