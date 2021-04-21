@@ -8,6 +8,7 @@
         <item name="homeAsUpIndicator">@color/darkThemeBackgroundCardColor</item>
         <item name="android:itemTextAppearance">@style/TextAppearanceLight</item>
 
+        <item name="logo">@drawable/orange_logo</item>
         <item name="strokeColor">@color/purpleStrokeColor</item>
         <item name="gradient">@drawable/bg_orange_gradient</item>
         <item name="searchViewColor">@android:color/black</item>
@@ -26,6 +27,7 @@
         <item name="android:itemTextAppearance">@style/TextAppearanceDark</item>
         <item name="homeAsUpIndicator">@color/lightThemeBackgroundCardColor</item>
 
+        <item name="logo">@drawable/purple_logo</item>
         <item name="strokeColor">@color/greenStrokeColor</item>
         <item name="searchViewColor">@android:color/white</item>
         <item name="gradient">@drawable/bg_purple_gradient</item>

@@ -22,13 +22,13 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="77dp"
+            android:layout_height="77dp"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:background="@drawable/bg_dark_rounded"
+            android:background="@android:color/white"
             android:contentDescription="img"
-            android:src="@mipmap/logo_tamperone_main"
+            android:src="?attr/logo"
             tools:ignore="MissingConstraints" />
     </androidx.cardview.widget.CardView>
 
