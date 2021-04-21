@@ -132,11 +132,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 if (constraint != null) {
                     if (original != null && original.size() > 0) {
                         for (Dish iterate : original) {
-                            String all = iterate.getName() + ", " + Joiner.on(", ").join(
-                                    iterate.getCategories(),
-                                    iterate.getRecipeIngredients(),
-                                    iterate.getRecipeTextInstructions()
-                            ).toLowerCase().replace("ё", "е");
+                            String all = iterate.getName().toLowerCase().replace("ё", "е");
 
                             if (all.contains(constraint.toString())) {
                                 results.add(iterate);

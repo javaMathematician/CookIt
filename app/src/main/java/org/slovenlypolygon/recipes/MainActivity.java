@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.carcass);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setLogo(null);
         setSupportActionBar(toolbar);
 
         NavigationView navigationView = findViewById(R.id.navView);
