@@ -17,51 +17,51 @@ import org.slovenlypolygon.recipes.R;
 import java.util.Objects;
 
 public abstract class AbstractFragment extends Fragment {
-    protected DrawerLayout drawerLayout;
-    protected SearchView searchView;
-    protected Toolbar toolbar;
+  protected DrawerLayout drawerLayout;
+  protected SearchView searchView;
+  protected Toolbar toolbar;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
 
-        drawerLayout = Objects.requireNonNull(getActivity()).findViewById(R.id.drawerLayout);
-        searchView = getActivity().findViewById(R.id.searchView);
-        toolbar = getActivity().findViewById(R.id.toolbar);
+    drawerLayout = Objects.requireNonNull(getActivity()).findViewById(R.id.drawerLayout);
+    searchView = getActivity().findViewById(R.id.searchView);
+    toolbar = getActivity().findViewById(R.id.toolbar);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        return false;
+      }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                searchTextChanged(newText);
-                return false;
-            }
-        });
-    }
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        searchTextChanged(newText);
+        return false;
+      }
+    });
+  }
 
-    protected abstract void searchTextChanged(String newText);
+  protected abstract void searchTextChanged(String newText);
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    return super.onCreateView(inflater, container, savedInstanceState);
+  }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        searchView.setVisibility(View.VISIBLE);
-        searchView.setIconified(true);
-    }
+  @Override
+  public void onResume() {
+    super.onResume();
+    searchView.setVisibility(View.VISIBLE);
+    searchView.setIconified(true);
+  }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        searchView.setVisibility(View.VISIBLE);
-        searchView.setIconified(true);
-    }
+  @Override
+  public void onStart() {
+    super.onStart();
+    searchView.setVisibility(View.VISIBLE);
+    searchView.setIconified(true);
+  }
 }

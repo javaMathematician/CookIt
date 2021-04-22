@@ -49,9 +49,9 @@
 
     <ImageButton
         android:id="@+id/themeBtn"
-        android:layout_margin="10dp"
         android:layout_width="35dp"
         android:layout_height="35dp"
+        android:layout_margin="10dp"
         android:background="@drawable/dark_mode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
