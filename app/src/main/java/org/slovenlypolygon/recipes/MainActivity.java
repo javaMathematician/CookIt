@@ -19,6 +19,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.Components;
 import org.slovenlypolygon.recipes.frontend.fragments.DishComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
@@ -92,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         .beginTransaction()
         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         .replace(R.id.fragment_holder, new DishComponentsFragment(), "ingredients")
-        .addToBackStack(null)
         .commit();
 
 
@@ -128,15 +128,13 @@ public class MainActivity extends AppCompatActivity {
           dialog.show(getSupportFragmentManager(), "sure_clear_q");
         }
       } else if (id == R.id.toIngredients) {
-        dishComponentsFragment.setShowCategories(false);
         sureClearSelected();
-        showIngredientsFragment();
+        showIngredientsFragment(Components.INGREDIENT);
       } else if (id == R.id.toDishes) {
         dishComponentsFragment.goToRecipes(dishComponentsFragment.getAllIngredients(), false);
       } else if (id == R.id.toCategories) {
-        dishComponentsFragment.setShowCategories(true);
         sureClearSelected();
-        showIngredientsFragment();
+        showIngredientsFragment(Components.CATEGORY);
       }
 
       drawerLayout.closeDrawer(GravityCompat.START);
@@ -144,17 +142,14 @@ public class MainActivity extends AppCompatActivity {
     });
   }
 
-  private void showIngredientsFragment() {
-    getSupportFragmentManager()
-        .beginTransaction()
-        .replace(R.id.fragment_holder, new Fragment())
-        .addToBackStack(null)
-        .commit(); // бешеный костыль, но не знаю, как перерендерить фрагмент))))
+  private void showIngredientsFragment(Components type) {
+    DishComponentsFragment fragment = new DishComponentsFragment();
+    fragment.setDisplayedType(type);
 
     getSupportFragmentManager()
         .beginTransaction()
         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        .replace(R.id.fragment_holder, dishComponentsFragment, "ingredients")
+        .replace(R.id.fragment_holder, fragment, "ingredients")
         .addToBackStack(null)
         .commit();
   }

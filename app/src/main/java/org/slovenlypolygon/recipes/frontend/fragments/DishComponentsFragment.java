@@ -19,6 +19,7 @@ import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.Category;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.Components;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
@@ -33,17 +34,13 @@ import java.util.stream.Collectors;
 public class DishComponentsFragment extends AbstractFragment {
   private final Set<DishComponent> components = new TreeSet<>();
   private boolean initialized;
-  private boolean showCategories;
   private RecyclerView recyclerView;
   private Button changeViewIngredient;
   private FloatingActionButton scrollToTop;
   private DishComponentsAdapter dishComponentsAdapter;
+  private Components displayedType = Components.INGREDIENT;
 
-  public void setShowCategories(boolean showCategories) {
-    this.showCategories = showCategories;
-  }
-
-  private void initializeVariablesForIngredient(View rootView) {
+  private void initializeVariablesForComponents(View rootView) {
     recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -102,10 +99,10 @@ public class DishComponentsFragment extends AbstractFragment {
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
 
-    initializeVariablesForIngredient(rootView);
+    initializeVariablesForComponents(rootView);
     initialized = true;
 
-    dishComponentsAdapter = new DishComponentsAdapter(components.parallelStream().filter(showCategories ? Category.class::isInstance : Ingredient.class::isInstance).collect(Collectors.toList()));
+    dishComponentsAdapter = new DishComponentsAdapter(components.parallelStream().filter(displayedType == Components.CATEGORY ? Category.class::isInstance : Ingredient.class::isInstance).collect(Collectors.toList()));
     recyclerView.setAdapter(dishComponentsAdapter);
     changeViewIngredient.setOnClickListener(t -> {
       Set<DishComponent> matching = components.parallelStream().filter(DishComponent::isSelected).collect(Collectors.toSet());
@@ -141,5 +138,9 @@ public class DishComponentsFragment extends AbstractFragment {
   public void clearSelectedComponents() {
     components.parallelStream().forEach(t -> t.setSelected(false));
     dishComponentsAdapter.notifyDataSetChanged();
+  }
+
+  public void setDisplayedType(Components displayedType) {
+    this.displayedType = displayedType;
   }
 }
