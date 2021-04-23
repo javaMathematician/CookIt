@@ -71,11 +71,6 @@ public class DishesFragment extends AbstractFragment {
         dishesAdapter.getFilter().filter(newText);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(R.string.app_name);
-    }
 
     @Nullable
     @Override
