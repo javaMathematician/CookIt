@@ -107,24 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 dishComponentsFragment = new DishComponentsFragment();
             }
 
-            if (id == R.id.clearSelected) {
-                Fragment current = getSupportFragmentManager().findFragmentByTag("ingredients");
-
-                if (current != null && current.isVisible()) {
-                    DialogFragment dialog = new SureClearSelectedQDialog();
-                    dialog.show(getSupportFragmentManager(), "sure_clear_q");
-                }
-            } else if (id == R.id.toIngredients) {
-                sureClearSelected();
-                showIngredientsFragment(Components.INGREDIENT);
-            } else if (id == R.id.toDishes) {
-                dishComponentsFragment.goToRecipes(dishComponentsFragment.getAllIngredients(), false);
-            } else if (id == R.id.toCategories) {
-                sureClearSelected();
-                showIngredientsFragment(Components.CATEGORY);
-            }
-
-            drawerLayout.closeDrawer(GravityCompat.START);
+            menuItemsActions(id);
             return false;
         });
     }
@@ -164,6 +147,27 @@ public class MainActivity extends AppCompatActivity {
     private void changeTheme(DrawerLayout drawerLayout) {
         DialogFragment dialog = new RestartAppForThemeQDialog();
         dialog.show(getSupportFragmentManager(), "restart_q");
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    private void menuItemsActions(int id) {
+        if (id == R.id.clearSelected) {
+            Fragment current = getSupportFragmentManager().findFragmentByTag("ingredients");
+
+            if (current != null && current.isVisible()) {
+                DialogFragment dialog = new SureClearSelectedQDialog();
+                dialog.show(getSupportFragmentManager(), "sure_clear_q");
+            }
+        } else if (id == R.id.toIngredients) {
+            sureClearSelected();
+            showIngredientsFragment(Components.INGREDIENT);
+        } else if (id == R.id.toDishes) {
+            dishComponentsFragment.goToRecipes(dishComponentsFragment.getAllIngredients(), false);
+        } else if (id == R.id.toCategories) {
+            sureClearSelected();
+            showIngredientsFragment(Components.CATEGORY);
+        }
+
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
