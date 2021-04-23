@@ -6,9 +6,9 @@
     <color name="lightThemeTextColor">#121212</color>
     <color name="searchViewColorWhite">#FFFFFF</color>
     <color name="darkThemeBackgroundColor">#101211</color>
-    <color name="lightThemeBackgroundColor">#AFAFAF</color>
+    <color name="lightThemeBackgroundColor">#E8EAED</color>
     <color name="toolbarBackgroundDarkColor">#21211F</color>
-    <color name="toolbarBackgroundLightColor">#CFCECE</color>
+    <color name="toolbarBackgroundLightColor">#FFFFFF</color>
     <color name="darkThemeBackgroundCardColor">#191917</color>
-    <color name="lightThemeBackgroundCardColor">#EDEEF0</color>
+    <color name="lightThemeBackgroundCardColor">#FFFFFF</color>
 </resources>
