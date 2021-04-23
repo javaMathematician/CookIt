@@ -31,21 +31,21 @@ public class RestartAppForThemeQDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
         builder.setTitle(title);
         builder.setMessage(message);
+        ImageButton themeBtn = getActivity().findViewById(R.id.themeBtn);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Dark", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if (sharedPreferences.getString("Dark", "Dark").equals("Dark")) {
+            themeBtn.setBackgroundResource(R.drawable.light_mode);
+            editor.putString("Dark", "Light");
+        } else {
+            themeBtn.setBackgroundResource(R.drawable.dark_mode);
+            editor.putString("Dark", "Dark");
+        }
+        editor.apply();
 
         builder.setPositiveButton(accept, (dialog, id) -> {
             // if accepted then change the theme
-            ImageButton themeBtn = getActivity().findViewById(R.id.themeBtn);
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Dark", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            if (sharedPreferences.getString("Dark", "Dark").equals("Dark")) {
-                themeBtn.setBackgroundResource(R.drawable.light_mode);
-                editor.putString("Dark", "Light");
-            } else {
-                themeBtn.setBackgroundResource(R.drawable.dark_mode);
-                editor.putString("Dark", "Dark");
-            }
-            editor.apply();
             getActivity().setTheme(sharedPreferences.getString("Dark", "Dark").equals("Dark") ? R.style.Dark : R.style.Light);
 
             // restart activity
