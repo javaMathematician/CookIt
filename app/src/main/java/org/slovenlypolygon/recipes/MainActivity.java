@@ -32,162 +32,147 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-  private final static String THEME = "Dark";
-  private static SharedPreferences.Editor editor;
-  private SharedPreferences sharedPreferences;
-  private DishComponentsFragment dishComponentsFragment;
-  private List<Dish> dishList = new ArrayList<>();
-  private Map<String, List<String>> dishToRawIngredients = new HashMap<>();
-  private Map<String, String> ingredientURLMapper = new HashMap<>();
-  private Map<String, String> categoryURLMapper = new HashMap<>();
-  private DrawerLayout drawerLayout;
+    private final static String THEME = "Dark";
+    private static SharedPreferences.Editor editor;
+    private SharedPreferences sharedPreferences;
+    private DishComponentsFragment dishComponentsFragment;
+    private List<Dish> dishList = new ArrayList<>();
+    private Map<String, List<String>> dishToRawIngredients = new HashMap<>();
+    private Map<String, String> ingredientURLMapper = new HashMap<>();
+    private Map<String, String> categoryURLMapper = new HashMap<>();
+    private DrawerLayout drawerLayout;
 
-  @Override
-  protected void onCreate(final @Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(final @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
-    editor = sharedPreferences.edit();
+        // set theme and toolbar setting
+        sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
-    setTheme(sharedPreferences.getString(THEME, "").equals("Dark") ? R.style.Dark : R.style.Light);
-    setContentView(R.layout.carcass);
+        setTheme(sharedPreferences.getString(THEME, "").equals("Dark") ? R.style.Dark : R.style.Light);
+        setContentView(R.layout.carcass);
+        setFrontend();
 
-    Toolbar toolbar = findViewById(R.id.toolbar);
-    toolbar.setLogo(null);
-    setSupportActionBar(toolbar);
+        // installing a fragment
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragmentHolder, new DishComponentsFragment(), "ingredients")
+                .commit();
 
-    drawerLayout = findViewById(R.id.drawerLayout);
-    NavigationView navigationView = findViewById(R.id.navView);
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        // try to get resources and deserialize it
+        try (InputStream ingredientsStream = getResources().openRawResource(R.raw.raw_ingredients);
+             InputStream dishesStream = getResources().openRawResource(R.raw.all_dishes);
+             InputStream ingredientToImage = getResources().openRawResource(R.raw.ingredient_to_image_url);
+             InputStream categoryToImage = getResources().openRawResource(R.raw.category_to_image_url)) {
+            dishList = Deserializer.deserializeDishes(dishesStream);
+            dishToRawIngredients = Deserializer.deserializeDishToRawIngredients(ingredientsStream);
+            ingredientURLMapper = Deserializer.deserializeStringToString(ingredientToImage);
+            categoryURLMapper = Deserializer.deserializeStringToString(categoryToImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    drawerLayout.addDrawerListener(toggle);
-    drawerLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-      ImageButton themeBtn = findViewById(R.id.themeBtn);
+    private void setFrontend() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setLogo(null);
+        setSupportActionBar(toolbar);
 
-      if (sharedPreferences.getString(THEME, "").equals("Dark")) {
-        themeBtn.setBackgroundResource(R.drawable.dark_mode);
-      } else {
-        themeBtn.setBackgroundResource(R.drawable.light_mode);
-      }
+        drawerLayout = findViewById(R.id.drawerLayout);
+        NavigationView navigationView = findViewById(R.id.navView);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
 
-      // Установка темы по клику
-      themeBtn.setOnClickListener(item -> {
-        if (sharedPreferences.getString(THEME, "Dark").equals("Dark")) {
-          themeBtn.setBackgroundResource(R.drawable.light_mode);
-          editor.putString(THEME, "Light");
+        toggle.syncState();
+        toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
+        toggle.setDrawerIndicatorEnabled(true);
+
+        toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        navigationView.setItemIconTintList(null);
+
+        drawerLayout.addDrawerListener(toggle);
+        drawerLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            ImageButton themeBtn = findViewById(R.id.themeBtn);
+            themeBtn.setBackgroundResource(sharedPreferences.getString(THEME, "").equals("Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
+            themeBtn.setOnClickListener(item -> changeTheme(drawerLayout));
+        });
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            dishComponentsFragment = (DishComponentsFragment) getSupportFragmentManager().findFragmentByTag("ingredients");
+            if (dishComponentsFragment == null) {
+                dishComponentsFragment = new DishComponentsFragment();
+            }
+
+            if (id == R.id.clearSelected) {
+                Fragment current = getSupportFragmentManager().findFragmentByTag("ingredients");
+
+                if (current != null && current.isVisible()) {
+                    DialogFragment dialog = new SureClearSelectedQDialog();
+                    dialog.show(getSupportFragmentManager(), "sure_clear_q");
+                }
+            } else if (id == R.id.toIngredients) {
+                sureClearSelected();
+                showIngredientsFragment(Components.INGREDIENT);
+            } else if (id == R.id.toDishes) {
+                dishComponentsFragment.goToRecipes(dishComponentsFragment.getAllIngredients(), false);
+            } else if (id == R.id.toCategories) {
+                sureClearSelected();
+                showIngredientsFragment(Components.CATEGORY);
+            }
+
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return false;
+        });
+    }
+
+    private void showIngredientsFragment(Components type) {
+        DishComponentsFragment fragment = new DishComponentsFragment();
+        fragment.setDisplayedType(type);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.fragmentHolder, fragment, "ingredients")
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void sureClearSelected() {
+        dishComponentsFragment.clearSelectedComponents();
+    }
+
+    public List<Dish> getDishList() {
+        return dishList;
+    }
+
+    public Map<String, List<String>> getDishToRawIngredients() {
+        return dishToRawIngredients;
+    }
+
+    public Map<String, String> getIngredientURLMapper() {
+        return ingredientURLMapper;
+    }
+
+    public Map<String, String> getCategoryURLMapper() {
+        return categoryURLMapper;
+    }
+
+    private void changeTheme(DrawerLayout drawerLayout) {
+        DialogFragment dialog = new RestartAppForThemeQDialog();
+        dialog.show(getSupportFragmentManager(), "restart_q");
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-          themeBtn.setBackgroundResource(R.drawable.dark_mode);
-          editor.putString(THEME, "Dark");
+            super.onBackPressed();
         }
-
-        editor.apply();
-        changeTheme(drawerLayout);
-      });
-    });
-
-    toggle.syncState();
-    toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
-    toggle.setDrawerIndicatorEnabled(true);
-
-    getSupportFragmentManager()
-        .beginTransaction()
-        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        .replace(R.id.fragment_holder, new DishComponentsFragment(), "ingredients")
-        .commit();
-
-
-    try (InputStream ingredientsStream = getResources().openRawResource(R.raw.raw_ingredients);
-         InputStream dishesStream = getResources().openRawResource(R.raw.all_dishes);
-         InputStream ingredientToImage = getResources().openRawResource(R.raw.ingredient_to_image_url);
-         InputStream categoryToImage = getResources().openRawResource(R.raw.category_to_image_url)) {
-      dishList = Deserializer.deserializeDishes(dishesStream);
-      dishToRawIngredients = Deserializer.deserializeDishToRawIngredients(ingredientsStream);
-      ingredientURLMapper = Deserializer.deserializeStringToString(ingredientToImage);
-      categoryURLMapper = Deserializer.deserializeStringToString(categoryToImage);
-    } catch (IOException e) {
-      e.printStackTrace();
     }
-
-    toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
-    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-    navigationView.setItemIconTintList(null);
-
-    navigationView.setNavigationItemSelectedListener(item -> {
-      int id = item.getItemId();
-
-      dishComponentsFragment = (DishComponentsFragment) getSupportFragmentManager().findFragmentByTag("ingredients");
-      if (dishComponentsFragment == null) {
-        dishComponentsFragment = new DishComponentsFragment();
-      }
-
-      if (id == R.id.clearSelected) {
-        Fragment current = getSupportFragmentManager().findFragmentByTag("ingredients");
-
-        if (current != null && current.isVisible()) {
-          DialogFragment dialog = new SureClearSelectedQDialog();
-          dialog.show(getSupportFragmentManager(), "sure_clear_q");
-        }
-      } else if (id == R.id.toIngredients) {
-        sureClearSelected();
-        showIngredientsFragment(Components.INGREDIENT);
-      } else if (id == R.id.toDishes) {
-        dishComponentsFragment.goToRecipes(dishComponentsFragment.getAllIngredients(), false);
-      } else if (id == R.id.toCategories) {
-        sureClearSelected();
-        showIngredientsFragment(Components.CATEGORY);
-      }
-
-      drawerLayout.closeDrawer(GravityCompat.START);
-      return false;
-    });
-  }
-
-  private void showIngredientsFragment(Components type) {
-    DishComponentsFragment fragment = new DishComponentsFragment();
-    fragment.setDisplayedType(type);
-
-    getSupportFragmentManager()
-        .beginTransaction()
-        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        .replace(R.id.fragment_holder, fragment, "ingredients")
-        .addToBackStack(null)
-        .commit();
-  }
-
-  public void sureClearSelected() {
-    dishComponentsFragment.clearSelectedComponents();
-  }
-
-  public List<Dish> getDishList() {
-    return dishList;
-  }
-
-  public Map<String, List<String>> getDishToRawIngredients() {
-    return dishToRawIngredients;
-  }
-
-  public Map<String, String> getIngredientURLMapper() {
-    return ingredientURLMapper;
-  }
-
-  public Map<String, String> getCategoryURLMapper() {
-    return categoryURLMapper;
-  }
-
-  private void changeTheme(DrawerLayout drawerLayout) {
-    setTheme(sharedPreferences.getString(THEME, "Dark").equals("Dark") ? R.style.Dark : R.style.Light);
-    drawerLayout.closeDrawer(GravityCompat.START);
-
-    DialogFragment dialog = new RestartAppForThemeQDialog();
-    dialog.show(getSupportFragmentManager(), "restart_q");
-  }
-
-  @Override
-  public void onBackPressed() {
-    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-      drawerLayout.closeDrawer(GravityCompat.START);
-    } else {
-      super.onBackPressed();
-    }
-  }
 }

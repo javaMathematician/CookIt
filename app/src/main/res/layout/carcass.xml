@@ -33,12 +33,12 @@
                 android:layoutDirection="rtl"
                 app:queryBackground="@android:color/white"
                 app:queryHint="@string/search_hint"
-                app:searchIcon="@drawable/ic_baseline_search_24"
+                app:searchIcon="@drawable/search_icon"
                 app:theme="@style/SearchViewStyle" />
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
-            android:id="@+id/fragment_holder"
+            android:id="@+id/fragmentHolder"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -47,7 +47,7 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <fragment
-                android:id="@+id/main_fragment"
+                android:id="@+id/mainFragment"
                 android:name="org.slovenlypolygon.recipes.frontend.fragments.DishComponentsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

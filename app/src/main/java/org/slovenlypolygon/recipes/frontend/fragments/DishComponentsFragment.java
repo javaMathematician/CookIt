@@ -126,7 +126,7 @@ public class DishComponentsFragment extends AbstractFragment {
         .getSupportFragmentManager()
         .beginTransaction()
         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        .replace(R.id.fragment_holder, dishesFragment, "dishes")
+        .replace(R.id.fragmentHolder, dishesFragment, "dishes")
         .addToBackStack(null)
         .commit();
   }
