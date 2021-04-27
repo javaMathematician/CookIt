@@ -19,7 +19,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.Components;
+import org.slovenlypolygon.recipes.backend.mainobjects.components.ComponentTypes;
 import org.slovenlypolygon.recipes.frontend.fragments.DishComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showIngredientsFragment(Components type) {
+    private void showIngredientsFragment(ComponentTypes type) {
         DishComponentsFragment fragment = new DishComponentsFragment();
         fragment.setDisplayedType(type);
 
@@ -160,12 +160,12 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (id == R.id.toIngredients) {
             sureClearSelected();
-            showIngredientsFragment(Components.INGREDIENT);
+            showIngredientsFragment(ComponentTypes.INGREDIENT);
         } else if (id == R.id.toDishes) {
             dishComponentsFragment.goToRecipes(dishComponentsFragment.getAllIngredients(), false);
         } else if (id == R.id.toCategories) {
             sureClearSelected();
-            showIngredientsFragment(Components.CATEGORY);
+            showIngredientsFragment(ComponentTypes.CATEGORY);
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
