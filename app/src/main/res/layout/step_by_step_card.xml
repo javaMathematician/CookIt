@@ -30,7 +30,7 @@
             android:id="@+id/expandStepButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/ic_baseline_keyboard_arrow_down_24"
+            android:background="@drawable/expandable_arrow_down"
             android:clickable="false"
             android:focusable="false"
             android:visibility="invisible"

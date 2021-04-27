@@ -74,8 +74,8 @@
         <item name="android:editTextColor">?attr/searchViewColor</item>
         <item name="colorControlActivated">?attr/searchViewColor</item>
         <item name="android:queryBackground">?attr/searchViewColor</item>
-        <item name="android:searchIcon">@drawable/ic_baseline_search_24</item>
-        <item name="searchHintIcon">@drawable/ic_baseline_search_24</item>
+        <item name="android:searchIcon">@drawable/search_icon</item>
+        <item name="searchHintIcon">@drawable/search_icon</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:submitBackground">?attr/searchViewColor</item>
         <item name="background">?attr/searchViewColor</item>

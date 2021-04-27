@@ -8,7 +8,7 @@
     android:background="?attr/mainBackgroundColor">
 
     <FrameLayout
-        android:id="@+id/frameLayoutInRecipes"
+        android:id="@+id/frameLayoutInIngredientsFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="0dp"
@@ -48,8 +48,8 @@
         android:contentDescription="scroll to top"
         android:focusable="true"
         app:backgroundTint="?attr/toolbarBackgroundColor"
-        app:layout_constraintBottom_toBottomOf="@+id/frameLayoutInRecipes"
-        app:layout_constraintEnd_toEndOf="@+id/frameLayoutInRecipes"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayoutInIngredientsFragment"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayoutInIngredientsFragment"
         app:srcCompat="@drawable/up_arrow" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

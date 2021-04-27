@@ -91,7 +91,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
           .getSupportFragmentManager()
           .beginTransaction()
           .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-          .replace(R.id.fragment_holder, stepByStepFragment, "step_by_step")
+          .replace(R.id.fragmentHolder, stepByStepFragment, "step_by_step")
           .addToBackStack(null)
           .commit();
     });
