@@ -1,6 +1,7 @@
 package org.slovenlypolygon.recipes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageButton;
@@ -11,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -33,7 +33,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Dark";
-    private static SharedPreferences.Editor editor;
     private SharedPreferences sharedPreferences;
     private DishComponentsFragment dishComponentsFragment;
     private List<Dish> dishList = new ArrayList<>();
@@ -45,23 +44,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // set theme and toolbar setting
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
 
         setTheme(sharedPreferences.getString(THEME, "").equals("Dark") ? R.style.Dark : R.style.Light);
         setContentView(R.layout.carcass);
         setFrontend();
 
-        // installing a fragment
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragmentHolder, new DishComponentsFragment(), "ingredients")
                 .commit();
 
-        // try to get resources and deserialize it
         try (InputStream ingredientsStream = getResources().openRawResource(R.raw.raw_ingredients);
              InputStream dishesStream = getResources().openRawResource(R.raw.all_dishes);
              InputStream ingredientToImage = getResources().openRawResource(R.raw.ingredient_to_image_url);
@@ -145,8 +139,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeTheme(DrawerLayout drawerLayout) {
-        DialogFragment dialog = new RestartAppForThemeQDialog();
-        dialog.show(getSupportFragmentManager(), "restart_q");
+        new RestartAppForThemeQDialog().show(getSupportFragmentManager(), "restart_q");
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
@@ -155,8 +148,21 @@ public class MainActivity extends AppCompatActivity {
             Fragment current = getSupportFragmentManager().findFragmentByTag("ingredients");
 
             if (current != null && current.isVisible()) {
-                DialogFragment dialog = new SureClearSelectedQDialog();
-                dialog.show(getSupportFragmentManager(), "sure_clear_q");
+                ImageButton themeBtn = findViewById(R.id.themeBtn);
+                SharedPreferences sharedPreferences = getSharedPreferences("Dark", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                if (sharedPreferences.getString("Dark", "Dark").equals("Dark")) {
+                    themeBtn.setBackgroundResource(R.drawable.light_mode);
+                    editor.putString("Dark", "Light");
+                } else {
+                    themeBtn.setBackgroundResource(R.drawable.dark_mode);
+                    editor.putString("Dark", "Dark");
+                }
+
+                editor.apply();
+
+                new SureClearSelectedQDialog().show(getSupportFragmentManager(), "sure_clear_q");
             }
         } else if (id == R.id.toIngredients) {
             sureClearSelected();
@@ -178,5 +184,15 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void sureChangeTheme() {
+        // if accepted then change the theme
+        setTheme(sharedPreferences.getString("Dark", "Dark").equals("Dark") ? R.style.Dark : R.style.Light);
+
+        // restart activity
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 }
