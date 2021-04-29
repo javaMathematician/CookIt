@@ -5,10 +5,10 @@
     <color name="darkThemeTextColor">#FFFFFF</color>
     <color name="lightThemeTextColor">#121212</color>
     <color name="searchViewColorWhite">#FFFFFF</color>
-    <color name="darkThemeBackgroundColor">#101211</color>
+    <color name="darkThemeBackgroundColor">#121212</color>
     <color name="lightThemeBackgroundColor">#E8EAED</color>
-    <color name="toolbarBackgroundDarkColor">#21211F</color>
+    <color name="toolbarBackgroundDarkColor">#1f1f1f</color>
     <color name="toolbarBackgroundLightColor">#FFFFFF</color>
-    <color name="darkThemeBackgroundCardColor">#191917</color>
+    <color name="darkThemeBackgroundCardColor">#1d1d1d</color>
     <color name="lightThemeBackgroundCardColor">#FFFFFF</color>
 </resources>

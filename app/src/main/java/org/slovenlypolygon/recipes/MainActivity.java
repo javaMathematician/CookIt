@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private final static String THEME = "Dark";
+    private final static String THEME = "Theme";
     private SharedPreferences sharedPreferences;
     private DishComponentsFragment dishComponentsFragment;
     private List<Dish> dishList = new ArrayList<>();
@@ -139,6 +139,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeTheme(DrawerLayout drawerLayout) {
+        SharedPreferences sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if (sharedPreferences.getString(THEME, "Dark").equals("Light")) {
+            editor.putString(THEME, "Dark");
+        } else {
+            editor.putString(THEME, "Light");
+        }
+
+        editor.apply();
+
         new RestartAppForThemeQDialog().show(getSupportFragmentManager(), "restart_q");
         drawerLayout.closeDrawer(GravityCompat.START);
     }
@@ -148,21 +159,7 @@ public class MainActivity extends AppCompatActivity {
             Fragment current = getSupportFragmentManager().findFragmentByTag("ingredients");
 
             if (current != null && current.isVisible()) {
-                ImageButton themeBtn = findViewById(R.id.themeBtn);
-                SharedPreferences sharedPreferences = getSharedPreferences("Dark", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                if (sharedPreferences.getString("Dark", "Dark").equals("Dark")) {
-                    themeBtn.setBackgroundResource(R.drawable.light_mode);
-                    editor.putString("Dark", "Light");
-                } else {
-                    themeBtn.setBackgroundResource(R.drawable.dark_mode);
-                    editor.putString("Dark", "Dark");
-                }
-
-                editor.apply();
-
-                new SureClearSelectedQDialog().show(getSupportFragmentManager(), "sure_clear_q");
             }
         } else if (id == R.id.toIngredients) {
             sureClearSelected();
@@ -188,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sureChangeTheme() {
         // if accepted then change the theme
-        setTheme(sharedPreferences.getString("Dark", "Dark").equals("Dark") ? R.style.Dark : R.style.Light);
+        setTheme(sharedPreferences.getString(THEME, "Dark").equals("Dark") ? R.style.Light : R.style.Dark);
 
         // restart activity
         Intent intent = getIntent();
