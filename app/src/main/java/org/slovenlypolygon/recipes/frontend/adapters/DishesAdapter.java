@@ -34,6 +34,15 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     private List<Dish> dishes;
     private List<Dish> original;
     private Set<String> selected;
+    private String accent;
+
+    public String getAccent() {
+        return accent;
+    }
+
+    public void setAccent(String accent) {
+        this.accent = accent;
+    }
 
     public DishesAdapter(List<Dish> dishes, boolean highlight) {
         this.dishes = dishes;
@@ -71,9 +80,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             if (selectedText.length() == 0) {
                 output = text;
             } else if (text.length() == 0) {
-                output = String.format("<font color=#ED5A79>%s</font>", selectedText);
+                output = String.format("<font color=" + accent + ">%s</font>", selectedText);
             } else {
-                output = String.format("<font color=#ED5A79>%s</font>, %s", selectedText, text);
+                output = String.format("<font color=" + accent + ">%s</font>, %s", selectedText, text);
             }
 
             output = output.replace("\n", "");

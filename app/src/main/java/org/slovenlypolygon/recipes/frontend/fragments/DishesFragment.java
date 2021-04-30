@@ -92,6 +92,8 @@ public class DishesFragment extends AbstractFragment {
 
         dishesAdapter = new DishesAdapter(filter.getMatchingList(), highlightSelected);
         dishesAdapter.setSelectedIngredients(selectedComponents); // otherwise i don't know how to sort
+
+        // TODO: 30.04.21  dishesAdapter.setAccent(getResources().getString(R.attr.strokeColor));
         recyclerView.setAdapter(dishesAdapter);
         return rootView;
     }
