@@ -9,7 +9,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Dish implements Parcelable {
     public static final Parcelable.Creator<Dish> CREATOR = new Parcelable.Creator<Dish>() {
@@ -34,7 +35,7 @@ public class Dish implements Parcelable {
 
     @SerializedName("recipeIngredient")
     private final List<String> recipeIngredients = new ArrayList<>();
-    private final List<List<String>> recipeInstructions = new ArrayList<>();
+    private final Map<String, String> recipeInstructions = new TreeMap<>();
 
     public Dish(Parcel parcel) {
         this.name = parcel.readString();
@@ -42,7 +43,7 @@ public class Dish implements Parcelable {
 
         parcel.readList(categories, String.class.getClassLoader());
         parcel.readList(recipeIngredients, String.class.getClassLoader());
-        parcel.readList(recipeInstructions, List.class.getClassLoader());
+        parcel.readMap(recipeInstructions, Map.class.getClassLoader());
     }
 
     public String getName() {
@@ -61,16 +62,8 @@ public class Dish implements Parcelable {
         return recipeIngredients;
     }
 
-    public List<List<String>> getRecipeInstructions() {
+    public Map<String, String> getRecipeInstructions() {
         return recipeInstructions;
-    }
-
-    public List<String> getRecipeImageURLs() {
-        return recipeInstructions.parallelStream().map(t -> t.get(0)).collect(Collectors.toList());
-    }
-
-    public List<String> getRecipeTextInstructions() {
-        return recipeInstructions.parallelStream().map(t -> t.get(1)).collect(Collectors.toList());
     }
 
     @Override
@@ -114,6 +107,6 @@ public class Dish implements Parcelable {
         dest.writeString(imageURL);
         dest.writeList(categories);
         dest.writeList(recipeIngredients);
-        dest.writeList(recipeInstructions);
+        dest.writeMap(recipeInstructions);
     }
 }

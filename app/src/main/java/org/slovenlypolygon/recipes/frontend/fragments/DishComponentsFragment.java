@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -37,7 +36,6 @@ import java.util.stream.Collectors;
 
 public class DishComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
     private final Set<DishComponent> components = new TreeSet<>();
-    private Animation ripple;
     private boolean initialized;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
@@ -92,8 +90,6 @@ public class DishComponentsFragment extends AbstractFragment implements Fragment
             for (String categoryName : categoriesSet) {
                 components.add(new Category(categoryName, categoryURLMapper.getOrDefault(categoryName, errorPictureURL)));
             }
-
-            ripple = changeViewIngredient.getAnimation();
         }
     }
 

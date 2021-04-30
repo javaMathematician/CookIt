@@ -39,7 +39,7 @@ public class StepByStepFragment extends AbstractFragment {
     private void addSteps() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        for (List<String> pair : dish.getRecipeInstructions()) {
+        for (Map.Entry<String, String> pair : dish.getRecipeInstructions().entrySet()) {
             CardView cardView = (CardView) inflater.inflate(R.layout.step_by_step_card, linearLayout, false);
 
             Button expandButton = cardView.findViewById(R.id.expandStepButton);
@@ -47,14 +47,10 @@ public class StepByStepFragment extends AbstractFragment {
             ImageView imageView = cardView.findViewById(R.id.stepByStepImage);
             ConstraintLayout constraintLayout = cardView.findViewById(R.id.expandableStep);
 
-            String url = pair.get(0);
-            String text = pair.get(1);
+            String url = pair.getValue();
 
             if (url.length() != 0) {
-                Picasso.get()
-                        .load(url)
-                        .error(R.drawable.sample_dish_for_error)
-                        .into(imageView);
+                Picasso.get().load(url).error(R.drawable.sample_dish_for_error).into(imageView);
 
                 expandButton.setVisibility(View.VISIBLE);
                 cardView.setOnClickListener(v -> {
@@ -71,7 +67,7 @@ public class StepByStepFragment extends AbstractFragment {
                 stepText.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
 
-            stepText.setText(text);
+            stepText.setText(pair.getKey());
             linearLayout.addView(cardView);
         }
     }
