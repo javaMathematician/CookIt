@@ -1,7 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.fragments;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -159,18 +159,21 @@ public class DishComponentsFragment extends AbstractFragment implements Fragment
         this.displayedType = displayedType;
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void counterChanged(int counter) {
         if (counter == 0) {
-            changeViewIngredient.getBackground().setColorFilter(Color.rgb(100, 100, 100), PorterDuff.Mode.MULTIPLY);
-            changeViewIngredient.getBackground().setAlpha(200);
+            changeViewIngredient.setBackground(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), R.drawable.to_recipes_btn_grey));
             changeViewIngredient.setActivated(false);
-            changeViewIngredient.setFocusable(false);
-        } else {
-            changeViewIngredient.getBackground().setColorFilter(null);
-            changeViewIngredient.getBackground().setAlpha(255);
-            changeViewIngredient.setActivated(true);
+            changeViewIngredient.setEnabled(false);
             changeViewIngredient.setFocusable(true);
+            changeViewIngredient.setElevation(0);
+        } else {
+            changeViewIngredient.setBackground(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), R.drawable.to_recipes_btn));
+            changeViewIngredient.setActivated(true);
+            changeViewIngredient.setEnabled(true);
+            changeViewIngredient.setFocusable(true);
+            changeViewIngredient.setElevation(16);
         }
     }
 }
