@@ -1,5 +1,7 @@
 package org.slovenlypolygon.recipes.frontend.fragments;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import org.slovenlypolygon.recipes.backend.mainobjects.components.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.ComponentTypes;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
+import org.slovenlypolygon.recipes.backend.utils.FragmentAdapterBridge;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 
 import java.util.List;
@@ -31,7 +34,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-public class DishComponentsFragment extends AbstractFragment {
+public class DishComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
     private final Set<DishComponent> components = new TreeSet<>();
     private boolean initialized;
     private RecyclerView recyclerView;
@@ -46,6 +49,8 @@ public class DishComponentsFragment extends AbstractFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         changeViewIngredient = rootView.findViewById(R.id.changeView);
+        counterChanged(0); // to initialize button as inactive
+
         scrollToTop = rootView.findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
             if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
@@ -102,7 +107,13 @@ public class DishComponentsFragment extends AbstractFragment {
         initializeVariablesForComponents(rootView);
         initialized = true;
 
-        dishComponentsAdapter = new DishComponentsAdapter(components.parallelStream().filter(displayedType == ComponentTypes.CATEGORY ? Category.class::isInstance : Ingredient.class::isInstance).collect(Collectors.toList()));
+        dishComponentsAdapter = new DishComponentsAdapter(
+                components.parallelStream()
+                        .filter(displayedType == ComponentTypes.CATEGORY ?
+                                Category.class::isInstance :
+                                Ingredient.class::isInstance)
+                        .collect(Collectors.toList()), this);
+
         recyclerView.setAdapter(dishComponentsAdapter);
         changeViewIngredient.setOnClickListener(t -> {
             Set<DishComponent> matching = components.parallelStream().filter(DishComponent::isSelected).collect(Collectors.toSet());
@@ -142,5 +153,18 @@ public class DishComponentsFragment extends AbstractFragment {
 
     public void setDisplayedType(ComponentTypes displayedType) {
         this.displayedType = displayedType;
+    }
+
+    @Override
+    public void counterChanged(int counter) {
+        if (counter == 0) {
+            changeViewIngredient.getBackground().setColorFilter(Color.rgb(100, 100, 100), PorterDuff.Mode.MULTIPLY);
+            changeViewIngredient.getBackground().setAlpha(200);
+            changeViewIngredient.setActivated(false);
+        } else {
+            changeViewIngredient.getBackground().setColorFilter(null);
+            changeViewIngredient.getBackground().setAlpha(255);
+            changeViewIngredient.setActivated(true);
+        }
     }
 }

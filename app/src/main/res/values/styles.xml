@@ -36,7 +36,6 @@
         <item name="mainBackgroundColor">@color/darkThemeBackgroundColor</item>
         <item name="cardBackgroundColor">@color/darkThemeBackgroundCardColor</item>
         <item name="toolbarBackgroundColor">@color/toolbarBackgroundDarkColor</item>
-
     </style>
 
     <style name="TextAppearanceLight">

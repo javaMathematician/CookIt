@@ -4,23 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Category extends DishComponent implements Parcelable {
-  public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
-    @Override
-    public Category createFromParcel(Parcel source) {
-      return new Category(source);
+    public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
+        @Override
+        public Category createFromParcel(Parcel source) {
+            return new Category(source);
+        }
+
+        @Override
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
+
+    public Category(String name, String imageURL) {
+        super(name, imageURL);
     }
 
-    @Override
-    public Category[] newArray(int size) {
-      return new Category[size];
+    public Category(Parcel parcel) {
+        super(parcel);
     }
-  };
-
-  public Category(String name, String imageURL) {
-    super(name, imageURL);
-  }
-
-  public Category(Parcel parcel) {
-    super(parcel);
-  }
 }

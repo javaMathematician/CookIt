@@ -90,7 +90,16 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             ImageButton themeBtn = findViewById(R.id.themeBtn);
             themeBtn.setBackgroundResource(sharedPreferences.getString(THEME, "").equals("Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
-            themeBtn.setOnClickListener(item -> changeTheme(drawerLayout));
+            themeBtn.setOnClickListener(item -> {
+                SharedPreferences sharedPreferences1 = getSharedPreferences(THEME, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences1.edit();
+
+                editor.putString(THEME, sharedPreferences1.getString(THEME, "Dark").equals("Light") ? "Dark" : "Light");
+                editor.apply();
+
+                new RestartAppForThemeQDialog().show(getSupportFragmentManager(), "restart_q");
+                drawerLayout.closeDrawer(GravityCompat.START);
+            });
         });
 
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -138,28 +147,12 @@ public class MainActivity extends AppCompatActivity {
         return categoryURLMapper;
     }
 
-    private void changeTheme(DrawerLayout drawerLayout) {
-        SharedPreferences sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        if (sharedPreferences.getString(THEME, "Dark").equals("Light")) {
-            editor.putString(THEME, "Dark");
-        } else {
-            editor.putString(THEME, "Light");
-        }
-
-        editor.apply();
-
-        new RestartAppForThemeQDialog().show(getSupportFragmentManager(), "restart_q");
-        drawerLayout.closeDrawer(GravityCompat.START);
-    }
-
     private void menuItemsActions(int id) {
         if (id == R.id.clearSelected) {
             Fragment current = getSupportFragmentManager().findFragmentByTag("ingredients");
 
             if (current != null && current.isVisible()) {
-
+                new SureClearSelectedQDialog().show(getSupportFragmentManager(), "sure_clear_selected_q");
             }
         } else if (id == R.id.toIngredients) {
             sureClearSelected();
@@ -183,11 +176,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void sureChangeTheme() {
-        // if accepted then change the theme
+    public void sureChangeThemeAndRestart() {
         setTheme(sharedPreferences.getString(THEME, "Dark").equals("Dark") ? R.style.Light : R.style.Dark);
 
-        // restart activity
         Intent intent = getIntent();
         finish();
         startActivity(intent);
