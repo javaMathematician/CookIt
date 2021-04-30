@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
 
 public class DishComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
     private final Set<DishComponent> components = new TreeSet<>();
+    private Animation ripple;
     private boolean initialized;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
@@ -49,7 +51,6 @@ public class DishComponentsFragment extends AbstractFragment implements Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         changeViewIngredient = rootView.findViewById(R.id.changeView);
-        counterChanged(0); // to initialize button as inactive
 
         scrollToTop = rootView.findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
@@ -91,6 +92,8 @@ public class DishComponentsFragment extends AbstractFragment implements Fragment
             for (String categoryName : categoriesSet) {
                 components.add(new Category(categoryName, categoryURLMapper.getOrDefault(categoryName, errorPictureURL)));
             }
+
+            ripple = changeViewIngredient.getAnimation();
         }
     }
 
@@ -125,6 +128,7 @@ public class DishComponentsFragment extends AbstractFragment implements Fragment
             }
         });
 
+        counterChanged(dishComponentsAdapter.getCounter()); // pseudo-initializer
         return rootView;
     }
 
@@ -161,10 +165,12 @@ public class DishComponentsFragment extends AbstractFragment implements Fragment
             changeViewIngredient.getBackground().setColorFilter(Color.rgb(100, 100, 100), PorterDuff.Mode.MULTIPLY);
             changeViewIngredient.getBackground().setAlpha(200);
             changeViewIngredient.setActivated(false);
+            changeViewIngredient.setFocusable(false);
         } else {
             changeViewIngredient.getBackground().setColorFilter(null);
             changeViewIngredient.getBackground().setAlpha(255);
             changeViewIngredient.setActivated(true);
+            changeViewIngredient.setFocusable(true);
         }
     }
 }

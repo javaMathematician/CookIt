@@ -19,7 +19,6 @@ import com.squareup.picasso.Picasso;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.backend.utils.FragmentAdapterBridge;
-import org.slovenlypolygon.recipes.frontend.fragments.DishComponentsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,10 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     @Override
     public IngredientViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new IngredientViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_card, viewGroup, false));
+    }
+
+    public int getCounter() {
+        return counter;
     }
 
     @Override
@@ -73,6 +76,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+        counter = (int) components.parallelStream().filter(DishComponent::isSelected).count();
     }
 
     @Override
