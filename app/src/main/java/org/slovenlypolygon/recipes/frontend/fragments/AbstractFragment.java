@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import org.slovenlypolygon.recipes.MainActivity;
@@ -18,19 +16,14 @@ import org.slovenlypolygon.recipes.R;
 import java.util.Objects;
 
 public abstract class AbstractFragment extends Fragment {
-    protected DrawerLayout drawerLayout;
     protected SearchView searchView;
-    protected Toolbar toolbar;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(R.string.app_name);
 
-
-        drawerLayout = Objects.requireNonNull(getActivity()).findViewById(R.id.drawerLayout);
         searchView = getActivity().findViewById(R.id.searchView);
-        toolbar = getActivity().findViewById(R.id.toolbar);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

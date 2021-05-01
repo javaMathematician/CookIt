@@ -29,20 +29,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unchecked")
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
     private final boolean highlight;
     private List<Dish> dishes;
     private List<Dish> original;
     private Set<String> selected;
-    private String accent;
-
-    public String getAccent() {
-        return accent;
-    }
-
-    public void setAccent(String accent) {
-        this.accent = accent;
-    }
 
     public DishesAdapter(List<Dish> dishes, boolean highlight) {
         this.dishes = dishes;
@@ -80,9 +72,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             if (selectedText.length() == 0) {
                 output = text;
             } else if (text.length() == 0) {
-                output = String.format("<font color=" + accent + ">%s</font>", selectedText);
+                output = String.format("<font color=" + "#FF0000" + ">%s</font>", selectedText);
             } else {
-                output = String.format("<font color=" + accent + ">%s</font>, %s", selectedText, text);
+                output = String.format("<font color=" + "#FF0000" + ">%s</font>, %s", selectedText, text);
             }
 
             output = output.replace("\n", "");

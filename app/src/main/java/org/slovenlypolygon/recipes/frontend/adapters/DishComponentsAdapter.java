@@ -23,6 +23,7 @@ import org.slovenlypolygon.recipes.backend.utils.FragmentAdapterBridge;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
     private final FragmentAdapterBridge bridge;
     private List<DishComponent> components;

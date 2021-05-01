@@ -7,8 +7,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 public abstract class DishComponent implements Parcelable, Comparable<DishComponent> {
-    protected String name;
-    protected String imageURL;
+    protected final String name;
+    protected final String imageURL;
     protected boolean selected;
 
     public DishComponent(String name, String imageURL) {
@@ -26,16 +26,8 @@ public abstract class DishComponent implements Parcelable, Comparable<DishCompon
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getImageURL() {
         return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
     }
 
     public boolean isSelected() {

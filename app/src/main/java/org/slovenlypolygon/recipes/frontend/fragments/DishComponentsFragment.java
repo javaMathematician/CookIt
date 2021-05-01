@@ -133,7 +133,7 @@ public class DishComponentsFragment extends AbstractFragment implements Fragment
         dishesFragment.setSelectedComponents(selected);
         dishesFragment.setHighlightSelected(highlight);
 
-        getActivity()
+        Objects.requireNonNull(getActivity())
                 .getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)

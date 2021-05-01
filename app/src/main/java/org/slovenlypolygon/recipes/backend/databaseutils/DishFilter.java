@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class DishFilter {
     private final List<Dish> assortment;
 
-    private String name;
+    private final String name;
     private Set<DishComponent> dishComponents;
     private Set<String> dishComponentNames;
 
@@ -22,10 +22,6 @@ public class DishFilter {
         this.name = null;
         this.dishComponents = null;
         this.assortment = assortment;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setComponents(Set<DishComponent> dishComponents) {

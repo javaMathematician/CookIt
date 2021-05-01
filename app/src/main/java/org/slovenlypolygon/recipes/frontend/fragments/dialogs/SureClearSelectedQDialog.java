@@ -24,9 +24,7 @@ public class SureClearSelectedQDialog extends DialogFragment {
         builder.setTitle(title);
         builder.setMessage(message);
 
-        builder.setPositiveButton(accept, (dialog, id) -> {
-            ((MainActivity) getActivity()).sureClearSelected();
-        });
+        builder.setPositiveButton(accept, (dialog, id) -> ((MainActivity) getActivity()).sureClearSelected());
         builder.setNegativeButton(decline, (dialog, id) -> {
         });
 

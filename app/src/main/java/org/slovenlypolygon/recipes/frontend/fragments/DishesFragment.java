@@ -96,5 +96,4 @@ public class DishesFragment extends AbstractFragment {
         recyclerView.setAdapter(dishesAdapter);
         return rootView;
     }
-
 }

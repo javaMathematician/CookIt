@@ -3,6 +3,8 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
@@ -17,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.slovenlypolygon.recipes.backend.dao.DBHelper;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.ComponentTypes;
@@ -27,9 +30,11 @@ import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQ
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Theme";
@@ -46,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
 
-        setTheme(sharedPreferences.getString(THEME, "").equals("Dark") ? R.style.Dark : R.style.Light);
+        setTheme(Objects.equals(sharedPreferences.getString(THEME, ""), "Dark") ? R.style.Dark : R.style.Light);
         setContentView(R.layout.carcass);
         setFrontend();
 
@@ -67,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        DBHelper helper = new DBHelper(getApplicationContext(), "global.db", null, 3);
+        SQLiteDatabase database = helper.getReadableDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM id_to_categories", null);
+
+        System.out.println(Arrays.toString(cursor.getColumnNames()));
+        cursor.close();
     }
 
     private void setFrontend() {
@@ -83,18 +95,18 @@ public class MainActivity extends AppCompatActivity {
         toggle.setDrawerIndicatorEnabled(true);
 
         toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         navigationView.setItemIconTintList(null);
 
         drawerLayout.addDrawerListener(toggle);
         drawerLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             ImageButton themeBtn = findViewById(R.id.themeBtn);
-            themeBtn.setBackgroundResource(sharedPreferences.getString(THEME, "").equals("Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
+            themeBtn.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, ""), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
             themeBtn.setOnClickListener(item -> {
                 SharedPreferences sharedPreferences1 = getSharedPreferences(THEME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences1.edit();
 
-                editor.putString(THEME, sharedPreferences1.getString(THEME, "Dark").equals("Light") ? "Dark" : "Light");
+                editor.putString(THEME, Objects.equals(sharedPreferences1.getString(THEME, "Dark"), "Light") ? "Dark" : "Light");
                 editor.apply();
 
                 new RestartAppForThemeQDialog().show(getSupportFragmentManager(), "restart_q");
@@ -177,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sureChangeThemeAndRestart() {
-        setTheme(sharedPreferences.getString(THEME, "Dark").equals("Dark") ? R.style.Light : R.style.Dark);
+        setTheme(Objects.equals(sharedPreferences.getString(THEME, "Dark"), "Dark") ? R.style.Light : R.style.Dark);
 
         Intent intent = getIntent();
         finish();
