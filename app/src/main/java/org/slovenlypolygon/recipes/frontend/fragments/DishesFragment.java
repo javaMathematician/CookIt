@@ -71,7 +71,6 @@ public class DishesFragment extends AbstractFragment {
         dishesAdapter.getFilter().filter(newText);
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
