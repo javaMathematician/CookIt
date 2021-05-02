@@ -61,6 +61,7 @@
         android:layout_gravity="start"
         android:background="?attr/toolbarBackgroundColor"
         app:headerLayout="@layout/drawer_layout"
+        app:elevation="4dp"
         app:itemIconSize="30dp"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="?attr/searchViewColor"

@@ -3,12 +3,12 @@
     <color name="greenStrokeColor">#04B97F</color>
     <color name="purpleStrokeColor">#BB86FC</color>
     <color name="darkThemeTextColor">#FFFFFF</color>
-    <color name="lightThemeTextColor">#121212</color>
+    <color name="lightThemeTextColor">#282930</color>
     <color name="searchViewColorWhite">#FFFFFF</color>
     <color name="darkThemeBackgroundColor">#121212</color>
-    <color name="lightThemeBackgroundColor">#E8EAED</color>
+    <color name="lightThemeBackgroundColor">#FFFFFF</color>
     <color name="toolbarBackgroundDarkColor">#1F1F1F</color>
-    <color name="toolbarBackgroundLightColor">#FFFFFF</color>
+    <color name="toolbarBackgroundLightColor">#EEEFF1</color>
     <color name="darkThemeBackgroundCardColor">#1D1D1D</color>
     <color name="lightThemeBackgroundCardColor">#FFFFFF</color>
 </resources>

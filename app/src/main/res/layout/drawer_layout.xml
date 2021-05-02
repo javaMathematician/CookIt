@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bg"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="130dp"
     android:background="?attr/gradient"
     android:orientation="vertical">
 
@@ -22,13 +22,12 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="77dp"
-            android:layout_height="77dp"
+            android:layout_width="78dp"
+            android:layout_height="78dp"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:background="@android:color/white"
+            android:background="?attr/logo"
             android:contentDescription="img"
-            android:src="?attr/logo"
             tools:ignore="MissingConstraints" />
     </androidx.cardview.widget.CardView>
 
