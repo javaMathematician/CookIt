@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
+    private String accent;
     private final boolean highlight;
     private List<Dish> dishes;
     private List<Dish> original;
@@ -72,9 +73,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             if (selectedText.length() == 0) {
                 output = text;
             } else if (text.length() == 0) {
-                output = String.format("<font color=" + "#FF0000" + ">%s</font>", selectedText);
+                output = String.format("<font color=" + accent + ">%s</font>", selectedText);
             } else {
-                output = String.format("<font color=" + "#FF0000" + ">%s</font>, %s", selectedText, text);
+                output = String.format("<font color=" + accent + ">%s</font>, %s", selectedText, text);
             }
 
             output = output.replace("\n", "");
@@ -153,6 +154,14 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public String getAccent() {
+        return accent;
+    }
+
+    public void setAccent(String accent) {
+        this.accent = accent;
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {

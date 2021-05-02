@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,7 +93,7 @@ public class DishesFragment extends AbstractFragment {
         dishesAdapter = new DishesAdapter(filter.getMatchingList(), highlightSelected);
         dishesAdapter.setSelectedIngredients(selectedComponents); // otherwise i don't know how to sort
 
-        // TODO: 30.04.21  dishesAdapter.setAccent(getResources().getString(R.attr.strokeColor));
+        dishesAdapter.setAccent(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "").equals("Dark") ? "#04B97F" : "#BB86FC");
         recyclerView.setAdapter(dishesAdapter);
         return rootView;
     }
