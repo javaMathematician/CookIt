@@ -3,7 +3,9 @@
     <color name="greenStrokeColor">#04B97F</color>
     <color name="purpleStrokeColor">#BB86FC</color>
     <color name="darkThemeTextColor">#FFFFFF</color>
+    <color name="separatorDarkColor">#121212</color>
     <color name="lightThemeTextColor">#282930</color>
+    <color name="separatorLightColor">#E6E0E0</color>
     <color name="searchViewColorWhite">#FFFFFF</color>
     <color name="darkThemeBackgroundColor">#121212</color>
     <color name="lightThemeBackgroundColor">#FFFFFF</color>

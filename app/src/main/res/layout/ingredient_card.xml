@@ -5,7 +5,6 @@
     android:id="@+id/ingredientCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="2dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="?attr/cardBackgroundColor"
     app:cardCornerRadius="0dp"
@@ -48,4 +47,12 @@
             android:gravity="center"
             android:theme="@style/checkBoxStyle" />
     </LinearLayout>
+    <View
+        android:id="@+id/separator"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/separatorColor"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="10dp"/>
 </androidx.cardview.widget.CardView>

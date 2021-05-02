@@ -7,6 +7,7 @@
     <attr name="cardBackgroundColor" format="color" />
     <attr name="toolbarBackgroundColor" format="color" />
     <attr name="toRecipeTextColor" format="color" />
+    <attr name="separatorColor" format="color" />
 
     <attr name="logo" format="reference" />
     <attr name="gradient" format="reference" />

@@ -1,7 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="?attr/cardBackgroundColor" />
-    <stroke
-        android:width="2dp"
-        android:color="?attr/strokeColor" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/cardBackgroundColor" />
+            <padding android:top="1dp"
+                android:left="2dp"
+                android:right="2dp"
+                android:bottom="2dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/cardBackgroundColor" />
+            <stroke
+                android:width="2dp"
+                android:color="?attr/strokeColor" />
+        </shape>
+    </item>
+</layer-list>
