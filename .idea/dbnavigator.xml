@@ -29,16 +29,16 @@
         <schema name="main" object-types="view, table" />
       </connection>
       <connection connection-id="3b373015-d408-46e6-9fdb-d7b68e64ed0e">
-        <schema name="main" object-types="constraint, view, index, table, dataset trigger, column" />
+        <schema name="main" object-types="view, table" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="b17a1cf6-4ae5-4f6d-b6fa-a9e6937dff95">
-      <console name="componentsToUrls" type="STANDARD" schema="main" session="Main"><![CDATA[select * from ingredients_to_urls]]></console>
+      <console name="componentsToUrls" type="STANDARD" schema="main" session="Main"><![CDATA[select * from]]></console>
     </connection>
     <connection id="3b373015-d408-46e6-9fdb-d7b68e64ed0e">
-      <console name="global" type="STANDARD" schema="main" session="Main" />
+      <console name="global" type="STANDARD" schema="main" session="Main"><![CDATA[select * from component_detail]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -47,6 +47,9 @@
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="b17a1cf6-4ae5-4f6d-b6fa-a9e6937dff95" />
     <connection id="3b373015-d408-46e6-9fdb-d7b68e64ed0e" />
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="3b373015-d408-46e6-9fdb-d7b68e64ed0e" dataset="main.component_dish" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />

@@ -14,15 +14,12 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.ComponentTypes;
-import org.slovenlypolygon.recipes.backend.roomattempts.RepoDatabase;
-import org.slovenlypolygon.recipes.backend.roomattempts.dao.RoomDishPartDAO;
 import org.slovenlypolygon.recipes.frontend.fragments.DishComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
@@ -71,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        processDAO();
     }
 
     private void setFrontend() {
@@ -188,17 +183,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         finish();
         startActivity(intent);
-    }
-
-    private void processDAO() {
-        RoomDishPartDAO dao = Room
-                .databaseBuilder(getBaseContext(), RepoDatabase.class, "globalDatabase")
-                .createFromAsset("databases/global.sqlite3")
-                .allowMainThreadQueries()
-                .build()
-                .getRoomDishPartDao();
-
-        System.out.println(dao.getAllDishes());
     }
 }
 

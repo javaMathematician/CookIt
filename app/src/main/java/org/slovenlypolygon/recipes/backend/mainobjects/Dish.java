@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -29,7 +28,6 @@ public class Dish implements Parcelable {
         }
     };
 
-    @PrimaryKey
     private final int id;
     private final String name;
 
