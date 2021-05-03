@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DataExportManager">
@@ -25,26 +25,28 @@
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
     <loaded-nodes>
-      <connection connection-id="b1642dbc-fc43-4597-b8d2-4140eb9ca2f4">
-        <schema name="main" object-types="index, dataset trigger, view, constraint, table, column" />
+      <connection connection-id="b17a1cf6-4ae5-4f6d-b6fa-a9e6937dff95">
+        <schema name="main" object-types="view, table" />
+      </connection>
+      <connection connection-id="3b373015-d408-46e6-9fdb-d7b68e64ed0e">
+        <schema name="main" object-types="constraint, view, index, table, dataset trigger, column" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="b1642dbc-fc43-4597-b8d2-4140eb9ca2f4">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from id_to_instructions where step_image notnull]]></console>
+    <connection id="b17a1cf6-4ae5-4f6d-b6fa-a9e6937dff95">
+      <console name="componentsToUrls" type="STANDARD" schema="main" session="Main"><![CDATA[select * from ingredients_to_urls]]></console>
+    </connection>
+    <connection id="3b373015-d408-46e6-9fdb-d7b68e64ed0e">
+      <console name="global" type="STANDARD" schema="main" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="b1642dbc-fc43-4597-b8d2-4140eb9ca2f4" />
-  </component>
-  <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="b1642dbc-fc43-4597-b8d2-4140eb9ca2f4" dataset="main.id_to_instructions" active-filter-id="" />
-    <filter-actions connection-id="b1642dbc-fc43-4597-b8d2-4140eb9ca2f4" dataset="main.id_to_ingredients" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="b1642dbc-fc43-4597-b8d2-4140eb9ca2f4" dataset="main.sqlite_sequence" active-filter-id="EMPTY_FILTER" />
+    <connection id="b17a1cf6-4ae5-4f6d-b6fa-a9e6937dff95" />
+    <connection id="3b373015-d408-46e6-9fdb-d7b68e64ed0e" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -72,9 +74,9 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="b1642dbc-fc43-4597-b8d2-4140eb9ca2f4" active="true">
+      <connection id="b17a1cf6-4ae5-4f6d-b6fa-a9e6937dff95" active="true">
         <database>
-          <name value="Connection" />
+          <name value="componentsToUrls" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
@@ -87,7 +89,94 @@
           <port value="1234" />
           <database value="database" />
           <files>
-            <file path="C:\Users\Seryozha\StudioProjects\android_recipes\app\src\main\assets\databases\global.db" schema="main" />
+            <file path="C:\Users\Seryozha\StudioProjects\android_recipes\app\src\main\assets\databases\components_to_urls.sqlite3" schema="main" />
+          </files>
+          <type value="NONE" />
+          <user value="" />
+          <deprecated-pwd value="" />
+        </database>
+        <properties>
+          <auto-commit value="false" />
+        </properties>
+        <ssh-settings>
+          <active value="false" />
+          <proxy-host value="" />
+          <proxy-port value="22" />
+          <proxy-user value="" />
+          <deprecated-proxy-pwd value="" />
+          <auth-type value="PASSWORD" />
+          <key-file value="" />
+          <key-passphrase value="" />
+        </ssh-settings>
+        <ssl-settings>
+          <active value="false" />
+          <certificate-authority-file value="" />
+          <client-certificate-file value="" />
+          <client-key-file value="" />
+        </ssl-settings>
+        <details>
+          <charset value="UTF-8" />
+          <session-management value="true" />
+          <ddl-file-binding value="true" />
+          <database-logging value="false" />
+          <connect-automatically value="true" />
+          <restore-workspace value="true" />
+          <restore-workspace-deep value="true" />
+          <environment-type value="default" />
+          <connectivity-timeout value="5" />
+          <idle-time-to-disconnect value="30" />
+          <idle-time-to-disconnect-pool value="5" />
+          <credential-expiry-time value="10" />
+          <max-connection-pool-size value="7" />
+          <alternative-statement-delimiter value="" />
+        </details>
+        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
+          <object-type-filter use-master-settings="true">
+            <object-type name="SCHEMA" enabled="true" />
+            <object-type name="USER" enabled="true" />
+            <object-type name="ROLE" enabled="true" />
+            <object-type name="PRIVILEGE" enabled="true" />
+            <object-type name="CHARSET" enabled="true" />
+            <object-type name="TABLE" enabled="true" />
+            <object-type name="VIEW" enabled="true" />
+            <object-type name="MATERIALIZED_VIEW" enabled="true" />
+            <object-type name="NESTED_TABLE" enabled="true" />
+            <object-type name="COLUMN" enabled="true" />
+            <object-type name="INDEX" enabled="true" />
+            <object-type name="CONSTRAINT" enabled="true" />
+            <object-type name="DATASET_TRIGGER" enabled="true" />
+            <object-type name="DATABASE_TRIGGER" enabled="true" />
+            <object-type name="SYNONYM" enabled="true" />
+            <object-type name="SEQUENCE" enabled="true" />
+            <object-type name="PROCEDURE" enabled="true" />
+            <object-type name="FUNCTION" enabled="true" />
+            <object-type name="PACKAGE" enabled="true" />
+            <object-type name="TYPE" enabled="true" />
+            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
+            <object-type name="ARGUMENT" enabled="true" />
+            <object-type name="DIMENSION" enabled="true" />
+            <object-type name="CLUSTER" enabled="true" />
+            <object-type name="DBLINK" enabled="true" />
+          </object-type-filter>
+          <object-name-filters />
+        </object-filters>
+      </connection>
+      <connection id="3b373015-d408-46e6-9fdb-d7b68e64ed0e" active="true">
+        <database>
+          <name value="global" />
+          <description value="" />
+          <database-type value="SQLITE" />
+          <config-type value="BASIC" />
+          <database-version value="3.21" />
+          <driver-source value="BUILTIN" />
+          <driver-library value="" />
+          <driver value="" />
+          <url-type value="FILE" />
+          <host value="localhost" />
+          <port value="1234" />
+          <database value="database" />
+          <files>
+            <file path="C:\Users\Seryozha\StudioProjects\android_recipes\app\src\main\assets\databases\global.sqlite3" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

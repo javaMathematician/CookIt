@@ -3,6 +3,9 @@ package org.slovenlypolygon.recipes.backend.mainobjects;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Entity
 public class Dish implements Parcelable {
     public static final Parcelable.Creator<Dish> CREATOR = new Parcelable.Creator<Dish>() {
         @Override
@@ -25,6 +29,8 @@ public class Dish implements Parcelable {
         }
     };
 
+    @PrimaryKey
+    private final int id;
     private final String name;
 
     @SerializedName("image")
@@ -38,6 +44,7 @@ public class Dish implements Parcelable {
     private final Map<String, String> recipeInstructions = new TreeMap<>();
 
     public Dish(Parcel parcel) {
+        this.id = parcel.readInt();
         this.name = parcel.readString();
         this.imageURL = parcel.readString();
 
@@ -103,6 +110,7 @@ public class Dish implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(name);
         dest.writeString(imageURL);
         dest.writeList(categories);

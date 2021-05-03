@@ -3,8 +3,6 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
@@ -16,13 +14,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
 
-import org.slovenlypolygon.recipes.backend.dao.DBHelper;
 import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.ComponentTypes;
+import org.slovenlypolygon.recipes.backend.roomattempts.RepoDatabase;
+import org.slovenlypolygon.recipes.backend.roomattempts.dao.RoomDishPartDAO;
 import org.slovenlypolygon.recipes.frontend.fragments.DishComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
@@ -30,7 +30,6 @@ import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQ
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,12 +72,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        DBHelper helper = new DBHelper(getApplicationContext(), "global.db", null, 3);
-        SQLiteDatabase database = helper.getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM id_to_categories", null);
-
-        System.out.println(Arrays.toString(cursor.getColumnNames()));
-        cursor.close();
+        processDAO();
     }
 
     private void setFrontend() {
@@ -195,4 +189,39 @@ public class MainActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
+
+    private void processDAO() {
+        RoomDishPartDAO dao = Room
+                .databaseBuilder(getBaseContext(), RepoDatabase.class, "globalDatabase")
+                .createFromAsset("databases/global.sqlite3")
+                .allowMainThreadQueries()
+                .build()
+                .getRoomDishPartDao();
+
+        System.out.println(dao.getAllDishes());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
