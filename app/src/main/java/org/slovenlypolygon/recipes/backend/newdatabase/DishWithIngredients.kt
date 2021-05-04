@@ -5,14 +5,15 @@ import androidx.room.Junction
 import androidx.room.Relation
 
 data class DishWithIngredients(
-        @Embedded val dish: Dish,
+        @Embedded var dish: Dish,
         @Relation(
-                parentColumn = "id",
-                entityColumn = "id",
+                parentColumn = "dishID",
+                entity = Component::class,
+                entityColumn = "componentID",
                 associateBy = Junction(
-                        DishComponentCrossRef::class,
-                        parentColumn = "dish_id",
-                        entityColumn = "component_id"
+                        value = DishWithIngredient::class,
+                        parentColumn = "dishID",
+                        entityColumn = "componentID"
                 )
-        ) val components: List<Component>
+        ) var dishWithComponents: List<Component>
 )

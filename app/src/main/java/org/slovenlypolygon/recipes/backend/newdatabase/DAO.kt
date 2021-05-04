@@ -7,6 +7,6 @@ import androidx.room.Transaction
 @Dao
 interface DAO {
     @Transaction
-    @Query("SELECT * FROM dish")
-    fun getDishWithIngredients(): List<DishWithIngredients>
+    @Query("SELECT * FROM dish WHERE dish.id = :id")
+    fun getDishWithIngredients(id: Int): List<DishWithIngredients>
 }
