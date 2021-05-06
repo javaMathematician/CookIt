@@ -3,6 +3,7 @@ package org.slovenlypolygon.recipes.backend.mainobjects;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 
 import com.google.common.base.MoreObjects;
@@ -91,6 +92,7 @@ public class Dish implements Parcelable {
     }
 
     @Override
+    @NonNull
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("name", name)

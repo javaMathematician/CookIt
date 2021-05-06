@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,6 +42,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     }
 
     @Override
+    @NonNull
     public IngredientViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new IngredientViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_card, viewGroup, false));
     }
@@ -75,7 +77,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         counter = (int) components.parallelStream().filter(DishComponent::isSelected).count();
     }
@@ -93,7 +95,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                 }
 
                 if (constraint != null) {
-                    if (original != null && original.size() > 0) {
+                    if (original != null && !original.isEmpty()) {
                         for (DishComponent iterate : original) {
                             if (iterate.getName().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
                                 results.add(iterate);

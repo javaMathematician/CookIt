@@ -9,6 +9,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,12 +49,13 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     }
 
     @Override
+    @NonNull
     public DishViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new DishViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dish_card, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(DishViewHolder dishViewHolder, int i) {
+    public void onBindViewHolder(@NonNull DishViewHolder dishViewHolder, int i) {
         dishes.sort((dish1, dish2) -> {
             Set<String> cleanedDish1 = new HashSet<>(dish1.getRecipeIngredients());
             Set<String> cleanedDish2 = new HashSet<>(dish2.getRecipeIngredients());
@@ -70,9 +72,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             String text = Joiner.on(", ").join(Sets.difference(cleanedDish, intersection)).toLowerCase();
             String output;
 
-            if (selectedText.length() == 0) {
+            if (selectedText.isEmpty()) {
                 output = text;
-            } else if (text.length() == 0) {
+            } else if (text.isEmpty()) {
                 output = String.format("<font color=" + accent + ">%s</font>", selectedText);
             } else {
                 output = String.format("<font color=" + accent + ">%s</font>, %s", selectedText, text);
@@ -107,11 +109,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void setSelectedIngredients(Set<DishComponent> selected) {
+    public void setSelectedIngredients(Set<? extends DishComponent> selected) {
         this.selected = selected
                 .parallelStream()
                 .map(DishComponent::getName)
@@ -132,7 +134,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 }
 
                 if (constraint != null) {
-                    if (original != null && original.size() > 0) {
+                    if (original != null && !original.isEmpty()) {
                         for (Dish iterate : original) {
                             String all = iterate.getName().toLowerCase().replace("ё", "е");
 
@@ -154,10 +156,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 notifyDataSetChanged();
             }
         };
-    }
-
-    public String getAccent() {
-        return accent;
     }
 
     public void setAccent(String accent) {

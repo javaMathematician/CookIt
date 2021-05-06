@@ -49,7 +49,7 @@ public class StepByStepFragment extends AbstractFragment {
 
             String url = pair.getValue();
 
-            if (url.length() != 0) {
+            if (!url.isEmpty()) {
                 Picasso.get().load(url).error(R.drawable.sample_dish_for_error).into(imageView);
 
                 expandButton.setVisibility(View.VISIBLE);

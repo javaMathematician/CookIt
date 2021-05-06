@@ -3,6 +3,8 @@ package org.slovenlypolygon.recipes.backend.mainobjects.components;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
@@ -58,6 +60,7 @@ public abstract class DishComponent implements Parcelable, Comparable<DishCompon
     }
 
     @Override
+    @NonNull
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("name", name)
@@ -79,6 +82,6 @@ public abstract class DishComponent implements Parcelable, Comparable<DishCompon
 
     @Override
     public int compareTo(DishComponent o) {
-        return this.getName().compareTo(o.getName());
+        return this.name.compareTo(o.name);
     }
 }

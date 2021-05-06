@@ -12,15 +12,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DishFilter {
-    private final List<Dish> assortment;
+    private final List<? extends Dish> assortment;
 
-    private final String name;
     private Set<DishComponent> dishComponents;
     private Set<String> dishComponentNames;
 
-    public DishFilter(List<Dish> assortment) {
-        this.name = null;
-        this.dishComponents = null;
+    public DishFilter(List<? extends Dish> assortment) {
         this.assortment = assortment;
     }
 
@@ -33,11 +30,10 @@ public class DishFilter {
         List<Dish> dishList = new ArrayList<>();
 
         for (Dish dish : assortment) {
-            boolean passedName = name == null || dish.getName().toLowerCase().contains(name.toLowerCase());
             boolean passedIngredients = dishComponents == null || containsAnyComponent(dish.getRecipeIngredients());
             boolean passedCategories = dishComponents == null || containsAnyComponent(dish.getCategories());
 
-            if (passedName && (passedIngredients || passedCategories)) {
+            if (passedIngredients || passedCategories) {
                 dishList.add(dish);
             }
         }

@@ -93,7 +93,7 @@ public class DishesFragment extends AbstractFragment {
         dishesAdapter = new DishesAdapter(filter.getMatchingList(), highlightSelected);
         dishesAdapter.setSelectedIngredients(selectedComponents); // otherwise i don't know how to sort
 
-        dishesAdapter.setAccent(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "").equals("Dark") ? "#04B97F" : "#BB86FC");
+        dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
         recyclerView.setAdapter(dishesAdapter);
         return rootView;
     }

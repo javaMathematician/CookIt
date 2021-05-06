@@ -67,29 +67,31 @@ public class DishComponentsFragment extends AbstractFragment implements Fragment
         });
         scrollToTop.hide();
 
-        if (!initialized) {
-            MainActivity mainActivity = (MainActivity) Objects.requireNonNull(getActivity());
-            List<Dish> dishes = mainActivity.getDishList();
+        if (initialized) {
+            return;
+        }
 
-            Set<String> ingredientsSet = new TreeSet<>();
-            Set<String> categoriesSet = new TreeSet<>();
-            Map<String, String> ingredientURLMapper = mainActivity.getIngredientURLMapper();
-            Map<String, String> categoryURLMapper = mainActivity.getCategoryURLMapper();
+        MainActivity mainActivity = (MainActivity) Objects.requireNonNull(getActivity());
+        List<Dish> dishes = mainActivity.getDishList();
 
-            for (Dish dish : dishes) {
-                ingredientsSet.addAll(dish.getRecipeIngredients());
-                categoriesSet.addAll(dish.getCategories());
-            }
+        Set<String> ingredientsSet = new TreeSet<>();
+        Set<String> categoriesSet = new TreeSet<>();
+        Map<String, String> ingredientURLMapper = mainActivity.getIngredientURLMapper();
+        Map<String, String> categoryURLMapper = mainActivity.getCategoryURLMapper();
 
-            String errorPictureURL = "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1";
+        for (Dish dish : dishes) {
+            ingredientsSet.addAll(dish.getRecipeIngredients());
+            categoriesSet.addAll(dish.getCategories());
+        }
 
-            for (String ingredientName : ingredientsSet) {
-                components.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, errorPictureURL)));
-            }
+        String errorPictureURL = "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1";
 
-            for (String categoryName : categoriesSet) {
-                components.add(new Category(categoryName, categoryURLMapper.getOrDefault(categoryName, errorPictureURL)));
-            }
+        for (String ingredientName : ingredientsSet) {
+            components.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, errorPictureURL)));
+        }
+
+        for (String categoryName : categoriesSet) {
+            components.add(new Category(categoryName, categoryURLMapper.getOrDefault(categoryName, errorPictureURL)));
         }
     }
 
