@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.backend.newdatabase
+package org.slovenlypolygon.recipes.backend.newdatabase.mainonjects
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -30,6 +30,7 @@ import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQ
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 .build()
                 .getDAO();
 
-        System.out.println(database.getDishWithIngredients(5));
+        System.out.println(Arrays.toString(database.));
     }
 
     private void setFrontend() {
