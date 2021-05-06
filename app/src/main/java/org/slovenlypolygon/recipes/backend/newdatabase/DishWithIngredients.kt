@@ -11,9 +11,9 @@ data class DishWithIngredients(
                 entity = Component::class,
                 entityColumn = "componentID",
                 associateBy = Junction(
-                        value = DishWithIngredient::class,
+                        value = DishIngredientCross::class,
                         parentColumn = "dishID",
-                        entityColumn = "componentID"
+                        entityColumn = "dishID"
                 )
         ) var dishWithComponents: List<Component>
 )

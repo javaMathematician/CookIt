@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase;
 @Database(entities = {
         Dish.class,
         Component.class,
-        DishWithIngredient.class
+        DishIngredientCross.class
 }, version = 1, exportSchema = false)
 public abstract class GlobalDatabase extends RoomDatabase {
     public abstract DAO getDAO();
