@@ -32,10 +32,13 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="b17a1cf6-4ae5-4f6d-b6fa-a9e6937dff95">
-      <console name="componentsToUrls" type="STANDARD" schema="main" session="Main">select * from</console>
+      <console name="componentsToUrls" type="STANDARD" schema="main" session="Main"><![CDATA[select * from]]></console>
     </connection>
     <connection id="3b373015-d408-46e6-9fdb-d7b68e64ed0e">
-      <console name="global" type="STANDARD" schema="main" session="Main">select * from component_detail</console>
+      <console name="global" type="STANDARD" schema="main" session="Main"><![CDATA[select dish.dishName, dish.dishImageURL, component.componentName, component.qIsIngredient, component.componentImageURL 
+from dish
+join dishWithIngredients on (Dish.dishID = DishWithIngredients.dishID) 
+join component on (component.componentID = DishWithIngredients.componentID)]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
