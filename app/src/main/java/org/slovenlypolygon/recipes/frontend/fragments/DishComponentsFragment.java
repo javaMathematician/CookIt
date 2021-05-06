@@ -159,7 +159,7 @@ public class DishComponentsFragment extends AbstractFragment implements Fragment
     @Override
     public void counterChanged(int counter) {
         if (counter == 0) {
-            changeViewIngredient.setBackground(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), R.drawable.to_recipes_btn_grey));
+            changeViewIngredient.setBackground(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), R.drawable.to_recipes_btn_gray));
             changeViewIngredient.setActivated(false);
             changeViewIngredient.setEnabled(false);
             changeViewIngredient.setFocusable(true);

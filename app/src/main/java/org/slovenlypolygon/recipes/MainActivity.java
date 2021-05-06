@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void setFrontend() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setLogo(null);
