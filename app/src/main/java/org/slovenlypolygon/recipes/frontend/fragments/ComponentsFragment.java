@@ -1,6 +1,5 @@
 package org.slovenlypolygon.recipes.frontend.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-public class DishComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
+public class ComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
     private final Set<DishComponent> components = new TreeSet<>();
     private boolean initialized;
     private RecyclerView recyclerView;
@@ -157,7 +156,6 @@ public class DishComponentsFragment extends AbstractFragment implements Fragment
         this.displayedType = displayedType;
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void counterChanged(int counter) {
         if (counter == 0) {
