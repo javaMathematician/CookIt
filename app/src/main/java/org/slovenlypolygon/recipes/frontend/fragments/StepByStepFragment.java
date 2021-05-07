@@ -24,6 +24,8 @@ import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -85,7 +87,8 @@ public class StepByStepFragment extends AbstractFragment {
                 .error(R.drawable.sample_dish_for_error)
                 .into((ImageView) rootView.findViewById(R.id.dishStepByStepImage));
 
-        String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(Objects.requireNonNull(map.get(dish.getName()))) + ".";
+
+        String ingredients = getResources().getString(R.string.you_will_need) +  "\n    " + Joiner.on(",\n    ").join(Objects.requireNonNull(map.get(dish.getName()))) + ".";
         rootView.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients.replace("---", "").replace("———", ""));
 
         addSteps();
