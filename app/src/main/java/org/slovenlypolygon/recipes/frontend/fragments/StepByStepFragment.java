@@ -88,9 +88,7 @@ public class StepByStepFragment extends AbstractFragment {
                 .into((ImageView) rootView.findViewById(R.id.dishStepByStepImage));
 
 
-        String ingredients = getResources().getString(R.string.you_will_need);
-        System.out.println(map.containsKey(dish.getName()));
-        ingredients +=  "\n    " + Joiner.on(",\n    ").join(Objects.requireNonNull(map.get(dish.getName()))) + ".";
+        String ingredients = getResources().getString(R.string.you_will_need) +  "\n    " + Joiner.on(",\n    ").join(Objects.requireNonNull(map.get(dish.getName()))) + ".";
         rootView.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients.replace("---", "").replace("———", ""));
 
         addSteps();
