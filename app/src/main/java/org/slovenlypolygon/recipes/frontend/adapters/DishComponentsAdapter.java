@@ -21,19 +21,20 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.backend.utils.FragmentAdapterBridge;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
 public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
-    private final FragmentAdapterBridge bridge;
+    private final WeakReference<FragmentAdapterBridge> bridge;
     private List<DishComponent> components;
     private List<DishComponent> original;
     private int counter;
 
     public DishComponentsAdapter(List<DishComponent> components, FragmentAdapterBridge fragmentAdapterBridge) {
         this.components = components;
-        this.bridge = fragmentAdapterBridge;
+        this.bridge = new WeakReference<>(fragmentAdapterBridge);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
             ingredient.setSelected(!ingredient.isSelected());
             counter += ingredient.isSelected() ? 1 : -1;
-            bridge.counterChanged(counter);
+            bridge.get().counterChanged(counter);
         });
 
         Picasso.get()

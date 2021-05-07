@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+                                           xmlns:app="http://schemas.android.com/apk/res-auto"
+                                           xmlns:tools="http://schemas.android.com/tools"
+                                           android:id="@+id/drawerLayout"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="match_parent"
+                                           tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
 
             <fragment
                 android:id="@+id/mainFragment"
-                android:name="org.slovenlypolygon.recipes.frontend.fragments.DishComponentsFragment"
+                android:name="org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>
@@ -60,8 +60,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/toolbarBackgroundColor"
-        app:headerLayout="@layout/drawer_layout"
         app:elevation="4dp"
+        app:headerLayout="@layout/drawer_layout"
         app:itemIconSize="30dp"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="?attr/searchViewColor"
