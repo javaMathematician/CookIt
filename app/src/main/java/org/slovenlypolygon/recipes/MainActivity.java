@@ -38,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
+        dao = Room.databaseBuilder(getApplicationContext(), GlobalDatabase.class, "global")
+                .createFromAsset("global.sqlite3")
+                .allowMainThreadQueries()
+                .build()
+                .getDAO();
 
         setTheme(Objects.equals(sharedPreferences.getString(THEME, ""), "Dark") ? R.style.Dark : R.style.Light);
         setContentView(R.layout.carcass);
@@ -48,12 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragmentHolder, new ComponentsFragment(), "ingredients")
                 .commit();
-
-        dao = Room.databaseBuilder(getApplicationContext(), GlobalDatabase.class, "global")
-                .createFromAsset("global.sqlite3")
-                .allowMainThreadQueries()
-                .build()
-                .getDAO();
     }
 
     public DAO getDao() {
@@ -94,21 +93,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         navigationView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-
-            componentsFragment = (ComponentsFragment) getSupportFragmentManager().findFragmentByTag("ingredients");
-            if (componentsFragment == null) {
-                componentsFragment = new ComponentsFragment();
-            }
-
-            menuItemsActions(id);
+            menuItemsActions(item.getItemId());
             return false;
         });
     }
 
     private void showIngredientsFragment(ComponentTypes type) {
         ComponentsFragment fragment = new ComponentsFragment();
-        fragment.setDisplayedType(type);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -133,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             sureClearSelected();
             showIngredientsFragment(ComponentTypes.INGREDIENT);
         } else if (id == R.id.toDishes) {
-            componentsFragment.goToRecipes(componentsFragment.getAllIngredients(), false);
+            componentsFragment.goToRecipes(false);
         } else if (id == R.id.toCategories) {
             sureClearSelected();
             showIngredientsFragment(ComponentTypes.CATEGORY);

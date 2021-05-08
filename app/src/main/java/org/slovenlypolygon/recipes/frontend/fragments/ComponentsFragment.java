@@ -15,9 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.ComponentTypes;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.backend.utils.FragmentAdapterBridge;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
@@ -56,6 +55,8 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
             }
         });
         scrollToTop.hide();
+
+        dishComponentsAdapter = new DishComponentsAdapter(((MainActivity) getActivity()).getDao().getAllCategories(), this);
     }
 
     @Override
@@ -70,8 +71,6 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         initializeVariablesForComponents(rootView);
 
-        dishComponentsAdapter = new DishComponentsAdapter(, this)
-
         recyclerView.setAdapter(dishComponentsAdapter);
         changeViewIngredient.setOnClickListener(t -> {
         });
@@ -80,9 +79,8 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         return rootView;
     }
 
-    public void goToRecipes(Set<DishComponent> selected, boolean highlight) {
+    public void goToRecipes(boolean highlight) {
         DishesFragment dishesFragment = new DishesFragment();
-        dishesFragment.setSelectedComponents(selected);
         dishesFragment.setHighlightSelected(highlight);
 
         Objects.requireNonNull(getActivity())
@@ -92,10 +90,6 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
                 .replace(R.id.fragmentHolder, dishesFragment, "dishes")
                 .addToBackStack(null)
                 .commit();
-    }
-
-    public void setDisplayedType(ComponentTypes displayedType) {
-        this.displayedType = displayedType;
     }
 
     @Override
@@ -113,5 +107,9 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
             changeViewIngredient.setFocusable(true);
             changeViewIngredient.setElevation(16);
         }
+    }
+
+    public void clearSelectedComponents() {
+        components.clear();
     }
 }

@@ -9,7 +9,7 @@ import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent
 interface DAO {
     @Transaction
     @Query("SELECT * FROM dish")
-    fun getAllDishes(): Set<Dish>
+    fun getAllDishes(): List<Dish>
 
     @Transaction
     @Query("SELECT * FROM dish WHERE dishID = :id")
@@ -17,9 +17,9 @@ interface DAO {
 
     @Transaction
     @Query("SELECT * FROM component WHERE qIsIngredient = 0")
-    fun getAllCategories(): Set<RawComponent>
+    fun getAllCategories(): List<RawComponent>
 
     @Transaction
     @Query("SELECT * FROM component WHERE qIsIngredient = 1")
-    fun getAllIngredients(): Set<RawComponent>
+    fun getAllIngredients(): List<RawComponent>
 }

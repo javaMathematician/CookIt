@@ -18,23 +18,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
 import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.backend.utils.FragmentAdapterBridge;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
     private final WeakReference<FragmentAdapterBridge> bridge;
+    private Set<Integer> selectedIDs = new HashSet<>();
     private List<RawComponent> components;
     private int counter;
 
     public DishComponentsAdapter(List<RawComponent> components, FragmentAdapterBridge fragmentAdapterBridge) {
         this.components = components;
         this.bridge = new WeakReference<>(fragmentAdapterBridge);
+    }
+
+    public Set<Integer> getSelectedIDs() {
+        return selectedIDs;
     }
 
     @Override
@@ -56,21 +62,26 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
         RawComponent ingredient = components.get(i);
 
-        ingredientViewHolder.checkBox.setChecked(ingredient.isSelected());
-        ingredientViewHolder.layout.setBackground(ingredient.isSelected() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
-        ingredientViewHolder.textView.setText(ingredient.getName());
+        ingredientViewHolder.checkBox.setChecked(selectedIDs.contains(ingredient.getComponentID()));
+        ingredientViewHolder.layout.setBackground(selectedIDs.contains(ingredient.getComponentID()) ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
+        ingredientViewHolder.textView.setText(ingredient.getComponentName());
 
         ingredientViewHolder.itemView.setOnClickListener(view -> {
             ingredientViewHolder.checkBox.setChecked(!ingredientViewHolder.checkBox.isChecked());
             ingredientViewHolder.layout.setBackground(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
 
-            ingredient.setSelected(!ingredient.isSelected());
-            counter += ingredient.isSelected() ? 1 : -1;
+            if (selectedIDs.contains(ingredient.getComponentID())) {
+                selectedIDs.remove(ingredient.getComponentID());
+            } else {
+                selectedIDs.add(ingredient.getComponentID());
+            }
+
+            counter = selectedIDs.size();
             bridge.get().counterChanged(counter);
         });
 
         Picasso.get()
-                .load(ingredient.getImageURL())
+                .load(ingredient.getComponentImageURL())
                 .error(R.drawable.sample_dish_for_error)
                 .fit()
                 .centerCrop()
@@ -80,7 +91,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        counter = (int) components.parallelStream().filter(DishComponent::isSelected).count();
+        counter = selectedIDs.size();
     }
 
     @Override
@@ -89,12 +100,12 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
-                final List<DishComponent> results = new ArrayList<>();
+                final List<RawComponent> results = new ArrayList<>();
 
                 if (constraint != null) {
                     if (components != null && !components.isEmpty()) {
-                        for (DishComponent iterate : components) {
-                            if (iterate.getName().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
+                        for (RawComponent iterate : components) {
+                            if (iterate.getComponentName().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
                                 results.add(iterate);
                             }
                         }
@@ -108,7 +119,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                components = (List<DishComponent>) results.values;
+                components = (List<RawComponent>) results.values;
                 notifyDataSetChanged();
             }
         };
