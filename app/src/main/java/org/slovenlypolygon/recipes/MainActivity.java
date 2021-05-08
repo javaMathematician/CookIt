@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
         dao = Room.databaseBuilder(getApplicationContext(), GlobalDatabase.class, "global")
                 .createFromAsset("global.sqlite3")
