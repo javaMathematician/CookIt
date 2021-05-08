@@ -17,8 +17,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent;
-import org.slovenlypolygon.recipes.backend.utils.FragmentAdapterBridge;
+import org.slovenlypolygon.recipes.backend.FragmentAdapterBridge;
+import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 
 import java.util.HashSet;

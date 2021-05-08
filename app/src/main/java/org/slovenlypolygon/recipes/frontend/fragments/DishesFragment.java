@@ -16,8 +16,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.room.Component;
-import org.slovenlypolygon.recipes.backend.room.DAO;
+import org.slovenlypolygon.recipes.backend.Component;
+import org.slovenlypolygon.recipes.backend.DAO;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
 import java.util.ArrayList;

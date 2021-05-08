@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.backend.room.rawobjects
+package org.slovenlypolygon.recipes.backend.rawobjects
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

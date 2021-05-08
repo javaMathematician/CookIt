@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.backend.utils;
+package org.slovenlypolygon.recipes.backend;
 
 public interface FragmentAdapterBridge {
     void counterChanged(int counter);

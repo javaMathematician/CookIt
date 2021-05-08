@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent;
-import org.slovenlypolygon.recipes.backend.utils.FragmentAdapterBridge;
+import org.slovenlypolygon.recipes.backend.FragmentAdapterBridge;
+import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

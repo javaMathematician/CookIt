@@ -22,8 +22,8 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.room.Dish;
-import org.slovenlypolygon.recipes.backend.room.rawobjects.RawStep;
+import org.slovenlypolygon.recipes.backend.Dish;
+import org.slovenlypolygon.recipes.backend.rawobjects.RawStep;
 
 import java.util.Objects;
 

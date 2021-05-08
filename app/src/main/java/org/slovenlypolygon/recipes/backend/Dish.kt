@@ -1,8 +1,12 @@
-package org.slovenlypolygon.recipes.backend.room
+package org.slovenlypolygon.recipes.backend
 
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent
+import org.slovenlypolygon.recipes.backend.rawobjects.RawDirtyComponent
+import org.slovenlypolygon.recipes.backend.rawobjects.RawDish
+import org.slovenlypolygon.recipes.backend.rawobjects.RawStep
 import org.slovenlypolygon.recipes.backend.room.rawobjects.*
 import java.util.stream.Collectors
 

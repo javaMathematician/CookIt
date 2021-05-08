@@ -1,9 +1,9 @@
-package org.slovenlypolygon.recipes.backend.room
+package org.slovenlypolygon.recipes.backend
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent
+import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent
 
 @Dao
 interface DAO {

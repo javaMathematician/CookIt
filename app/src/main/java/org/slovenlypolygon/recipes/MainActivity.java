@@ -18,9 +18,9 @@ import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.slovenlypolygon.recipes.backend.DAO;
+import org.slovenlypolygon.recipes.backend.GlobalDatabase;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.ComponentTypes;
-import org.slovenlypolygon.recipes.backend.room.DAO;
-import org.slovenlypolygon.recipes.backend.room.GlobalDatabase;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;

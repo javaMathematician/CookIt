@@ -1,11 +1,11 @@
-package org.slovenlypolygon.recipes.backend.room
+package org.slovenlypolygon.recipes.backend
 
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
-import org.slovenlypolygon.recipes.backend.room.rawobjects.DishComponentCrossReference
-import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent
-import org.slovenlypolygon.recipes.backend.room.rawobjects.RawDish
+import org.slovenlypolygon.recipes.backend.rawobjects.DishComponentCrossReference
+import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent
+import org.slovenlypolygon.recipes.backend.rawobjects.RawDish
 
 data class Component(
     @Embedded val rawComponent: RawComponent,

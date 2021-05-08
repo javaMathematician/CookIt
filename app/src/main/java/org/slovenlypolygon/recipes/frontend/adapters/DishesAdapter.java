@@ -19,9 +19,9 @@ import com.google.common.collect.Sets;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.room.Component;
-import org.slovenlypolygon.recipes.backend.room.Dish;
-import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent;
+import org.slovenlypolygon.recipes.backend.Component;
+import org.slovenlypolygon.recipes.backend.Dish;
+import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.frontend.fragments.StepByStepFragment;
 
 import java.util.ArrayList;
