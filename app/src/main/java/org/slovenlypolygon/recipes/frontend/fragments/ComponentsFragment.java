@@ -73,6 +73,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         recyclerView.setAdapter(dishComponentsAdapter);
         changeViewIngredient.setOnClickListener(t -> {
+            goToRecipes(true);
         });
 
         counterChanged(dishComponentsAdapter.getCounter()); // pseudo-initializer
@@ -82,6 +83,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     public void goToRecipes(boolean highlight) {
         DishesFragment dishesFragment = new DishesFragment();
         dishesFragment.setHighlightSelected(highlight);
+        dishesFragment.setSelectedComponentIDs(dishComponentsAdapter.getSelectedIDs());
 
         Objects.requireNonNull(getActivity())
                 .getSupportFragmentManager()

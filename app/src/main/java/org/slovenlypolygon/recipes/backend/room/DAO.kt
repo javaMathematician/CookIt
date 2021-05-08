@@ -22,4 +22,8 @@ interface DAO {
     @Transaction
     @Query("SELECT * FROM component WHERE qIsIngredient = 1")
     fun getAllIngredients(): List<RawComponent>
+
+    @Transaction
+    @Query("SELECT * FROM component WHERE componentID in (:ids)")
+    fun getNestedDishesFromComponentIDs(ids: List<Int>): List<Component>
 }

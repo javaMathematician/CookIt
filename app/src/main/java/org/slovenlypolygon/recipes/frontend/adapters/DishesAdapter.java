@@ -19,6 +19,7 @@ import com.google.common.collect.Sets;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.room.Component;
 import org.slovenlypolygon.recipes.backend.room.Dish;
 import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.frontend.fragments.StepByStepFragment;
@@ -112,10 +113,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void setSelectedIngredients(Set<? extends RawComponent> selected) {
+    public void setSelectedIngredients(List<? extends Component> selected) {
         this.selected = selected
                 .parallelStream()
-                .map(RawComponent::getComponentName)
+                .map(t -> t.getRawComponent().getComponentName())
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
     }

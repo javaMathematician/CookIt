@@ -21,19 +21,22 @@
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
-    <autoscroll-to-editor value="false" />
+    <autoscroll-to-editor value="true" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013">
-        <schema name="main" object-types="column, view, dataset trigger, constraint, table, index" />
+        <schema name="main" object-types="view, index, table, column, constraint, dataset trigger" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select  * from "Dish"
-join "DishWithIngredients" on "Dish"."dishID" = "DishWithIngredients"."dishID"]]></console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from "Dish"
+join "dishComponentCrossReference" on dish."dishID" = "dishComponentCrossReference"."dishID"
+join component on component."componentID" = "dishComponentCrossReference"."componentID"
+
+where dish."dishID" = 1]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -44,6 +47,9 @@ join "DishWithIngredients" on "Dish"."dishID" = "DishWithIngredients"."dishID"]]
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" dataset="main.DishWithIngredients" active-filter-id="" />
+    <filter-actions connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" dataset="main.dishComponentCrossReference" active-filter-id="" />
+    <filter-actions connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" dataset="main.sqlite_sequence" active-filter-id="" />
+    <filter-actions connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" dataset="main.rawIngredient" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />

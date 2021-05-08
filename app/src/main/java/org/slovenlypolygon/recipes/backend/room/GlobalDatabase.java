@@ -15,7 +15,7 @@ import org.slovenlypolygon.recipes.backend.room.rawobjects.RawStep;
         RawComponent.class,
         RawDish.class,
         RawStep.class
-}, version = 1)
+}, version = 1, exportSchema = false)
 public abstract class GlobalDatabase extends RoomDatabase {
     public abstract DAO getDAO();
 }
