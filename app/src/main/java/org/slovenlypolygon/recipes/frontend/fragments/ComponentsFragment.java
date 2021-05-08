@@ -47,14 +47,19 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
             recyclerView.smoothScrollToPosition(0);
         });
-        recyclerView.addRecyclerListener(holder -> {
-            if (holder.getBindingAdapterPosition() > 9) {
-                scrollToTop.show();
-            } else {
-                scrollToTop.hide();
+
+        scrollToTop.hide();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    scrollToTop.hide();
+                } else if (dy < 0) {
+                    scrollToTop.show();
+                }
             }
         });
-        scrollToTop.hide();
 
         dishComponentsAdapter = new DishComponentsAdapter(((MainActivity) getActivity()).getDao().getAllCategories(), this);
     }
