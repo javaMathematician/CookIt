@@ -1,14 +1,11 @@
 package org.slovenlypolygon.recipes.backend.mainobjects.components;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
-public abstract class DishComponent implements Parcelable, Comparable<DishComponent> {
+public abstract class DishComponent implements Comparable<DishComponent> {
     protected final String name;
     protected final String imageURL;
     protected boolean selected;
@@ -16,12 +13,6 @@ public abstract class DishComponent implements Parcelable, Comparable<DishCompon
     public DishComponent(String name, String imageURL) {
         this.name = name;
         this.imageURL = imageURL;
-    }
-
-    public DishComponent(Parcel parcel) {
-        this.name = parcel.readString();
-        this.imageURL = parcel.readString();
-        this.selected = true; // если вызвали этот конструктор, значит, передали ингредиент на активность составления блюд. значит, он (ингредиент) заведомо выбран
     }
 
     public String getName() {
@@ -67,17 +58,6 @@ public abstract class DishComponent implements Parcelable, Comparable<DishCompon
                 .add("imageURL", imageURL)
                 .add("selected", selected)
                 .toString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(imageURL);
     }
 
     @Override

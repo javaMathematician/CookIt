@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 .build()
                 .getDAO();
 
-        System.out.println(dao.getDishWithComponentsByID(10));
+        System.out.println(dao.getAllCategories());
     }
 
     private void setFrontend() {
