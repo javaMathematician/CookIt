@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,31 +15,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.Category;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.ComponentTypes;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.Ingredient;
+import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.backend.utils.FragmentAdapterBridge;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 public class ComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
-    private final Set<DishComponent> components = new TreeSet<>();
-    private boolean initialized;
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private FloatingActionButton scrollToTop;
     private DishComponentsAdapter dishComponentsAdapter;
-    private ComponentTypes displayedType = ComponentTypes.INGREDIENT;
+    private final Set<RawComponent> components = new HashSet<>();
 
     private void initializeVariablesForComponents(View rootView) {
         recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
@@ -65,33 +56,6 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
             }
         });
         scrollToTop.hide();
-
-        if (initialized) {
-            return;
-        }
-
-        MainActivity mainActivity = (MainActivity) Objects.requireNonNull(getActivity());
-        List<Dish> dishes = mainActivity.getDishList();
-
-        Set<String> ingredientsSet = new TreeSet<>();
-        Set<String> categoriesSet = new TreeSet<>();
-        Map<String, String> ingredientURLMapper = mainActivity.getIngredientURLMapper();
-        Map<String, String> categoryURLMapper = mainActivity.getCategoryURLMapper();
-
-        for (Dish dish : dishes) {
-            ingredientsSet.addAll(dish.getRecipeIngredients());
-            categoriesSet.addAll(dish.getCategories());
-        }
-
-        String errorPictureURL = "https://sun9-60.userapi.com/dylNRBX-QrACucpHbXaBlobPNfd0ihbv37SJkw/MZ9j1ew2xWA.jpg?ava=1";
-
-        for (String ingredientName : ingredientsSet) {
-            components.add(new Ingredient(ingredientName, ingredientURLMapper.getOrDefault(ingredientName, errorPictureURL)));
-        }
-
-        for (String categoryName : categoriesSet) {
-            components.add(new Category(categoryName, categoryURLMapper.getOrDefault(categoryName, errorPictureURL)));
-        }
     }
 
     @Override
@@ -105,24 +69,11 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
 
         initializeVariablesForComponents(rootView);
-        initialized = true;
 
-        dishComponentsAdapter = new DishComponentsAdapter(
-                components.parallelStream()
-                        .filter(displayedType == ComponentTypes.CATEGORY ?
-                                Category.class::isInstance :
-                                Ingredient.class::isInstance)
-                        .collect(Collectors.toList()), this);
+        dishComponentsAdapter = new DishComponentsAdapter(, this)
 
         recyclerView.setAdapter(dishComponentsAdapter);
         changeViewIngredient.setOnClickListener(t -> {
-            Set<DishComponent> matching = components.parallelStream().filter(DishComponent::isSelected).collect(Collectors.toSet());
-
-            if (!matching.isEmpty()) {
-                goToRecipes(matching, true);
-            } else {
-                Toast.makeText(getContext(), R.string.none_selected_ingredient, Toast.LENGTH_SHORT).show();
-            }
         });
 
         counterChanged(dishComponentsAdapter.getCounter()); // pseudo-initializer
@@ -141,15 +92,6 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
                 .replace(R.id.fragmentHolder, dishesFragment, "dishes")
                 .addToBackStack(null)
                 .commit();
-    }
-
-    public Set<DishComponent> getAllIngredients() {
-        return components;
-    }
-
-    public void clearSelectedComponents() {
-        components.parallelStream().forEach(t -> t.setSelected(false));
-        dishComponentsAdapter.notifyDataSetChanged();
     }
 
     public void setDisplayedType(ComponentTypes displayedType) {

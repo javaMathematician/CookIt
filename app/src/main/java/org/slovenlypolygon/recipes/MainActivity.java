@@ -18,8 +18,6 @@ import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
 
-import org.slovenlypolygon.recipes.backend.databaseutils.Deserializer;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.ComponentTypes;
 import org.slovenlypolygon.recipes.backend.room.DAO;
 import org.slovenlypolygon.recipes.backend.room.GlobalDatabase;
@@ -27,23 +25,14 @@ import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private final static String THEME = "Theme";
+    private final static String THEME = "Dark";
     private SharedPreferences sharedPreferences;
     private ComponentsFragment componentsFragment;
-    private List<Dish> dishList = new ArrayList<>();
-    private Map<String, List<String>> dishToRawIngredients = new HashMap<>();
-    private Map<String, String> ingredientURLMapper = new HashMap<>();
-    private Map<String, String> categoryURLMapper = new HashMap<>();
     private DrawerLayout drawerLayout;
+    private DAO dao;
 
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
@@ -60,29 +49,15 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragmentHolder, new ComponentsFragment(), "ingredients")
                 .commit();
 
-        try (InputStream ingredientsStream = getResources().openRawResource(R.raw.raw_ingredients);
-             InputStream dishesStream = getResources().openRawResource(R.raw.all_dishes);
-             InputStream ingredientToImage = getResources().openRawResource(R.raw.ingredient_to_image_url);
-             InputStream categoryToImage = getResources().openRawResource(R.raw.category_to_image_url)) {
-            dishList = Deserializer.deserializeDishes(dishesStream);
-            dishToRawIngredients = Deserializer.deserializeDishToRawIngredients(ingredientsStream);
-            ingredientURLMapper = Deserializer.deserializeStringToString(ingredientToImage);
-            categoryURLMapper = Deserializer.deserializeStringToString(categoryToImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        processDAO();
-    }
-
-    private void processDAO() {
-        DAO dao = Room.databaseBuilder(getApplicationContext(), GlobalDatabase.class, "main")
+        dao = Room.databaseBuilder(getApplicationContext(), GlobalDatabase.class, "global")
                 .createFromAsset("global.sqlite3")
                 .allowMainThreadQueries()
                 .build()
                 .getDAO();
+    }
 
-        System.out.println(dao.getAllCategories());
+    public DAO getDao() {
+        return dao;
     }
 
     private void setFrontend() {
@@ -145,22 +120,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void sureClearSelected() {
         componentsFragment.clearSelectedComponents();
-    }
-
-    public List<Dish> getDishList() {
-        return dishList;
-    }
-
-    public Map<String, List<String>> getDishToRawIngredients() {
-        return dishToRawIngredients;
-    }
-
-    public Map<String, String> getIngredientURLMapper() {
-        return ingredientURLMapper;
-    }
-
-    public Map<String, String> getCategoryURLMapper() {
-        return categoryURLMapper;
     }
 
     private void menuItemsActions(int id) {

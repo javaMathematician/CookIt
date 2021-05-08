@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
+import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.backend.utils.FragmentAdapterBridge;
 
 import java.lang.ref.WeakReference;
@@ -28,11 +29,10 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
     private final WeakReference<FragmentAdapterBridge> bridge;
-    private List<DishComponent> components;
-    private List<DishComponent> original;
+    private List<RawComponent> components;
     private int counter;
 
-    public DishComponentsAdapter(List<DishComponent> components, FragmentAdapterBridge fragmentAdapterBridge) {
+    public DishComponentsAdapter(List<RawComponent> components, FragmentAdapterBridge fragmentAdapterBridge) {
         this.components = components;
         this.bridge = new WeakReference<>(fragmentAdapterBridge);
     }
@@ -54,7 +54,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
     @Override
     public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
-        DishComponent ingredient = components.get(i);
+        RawComponent ingredient = components.get(i);
 
         ingredientViewHolder.checkBox.setChecked(ingredient.isSelected());
         ingredientViewHolder.layout.setBackground(ingredient.isSelected() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
@@ -91,13 +91,9 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                 final FilterResults oReturn = new FilterResults();
                 final List<DishComponent> results = new ArrayList<>();
 
-                if (original == null) {
-                    original = components;
-                }
-
                 if (constraint != null) {
-                    if (original != null && !original.isEmpty()) {
-                        for (DishComponent iterate : original) {
+                    if (components != null && !components.isEmpty()) {
+                        for (DishComponent iterate : components) {
                             if (iterate.getName().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
                                 results.add(iterate);
                             }

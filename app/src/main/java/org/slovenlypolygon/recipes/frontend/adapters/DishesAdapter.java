@@ -19,12 +19,11 @@ import com.google.common.collect.Sets;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.DishComponent;
+import org.slovenlypolygon.recipes.backend.room.Dish;
+import org.slovenlypolygon.recipes.backend.room.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.frontend.fragments.StepByStepFragment;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -57,14 +56,14 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     @Override
     public void onBindViewHolder(@NonNull DishViewHolder dishViewHolder, int i) {
         dishes.sort((dish1, dish2) -> {
-            Set<String> cleanedDish1 = new HashSet<>(dish1.getRecipeIngredients());
-            Set<String> cleanedDish2 = new HashSet<>(dish2.getRecipeIngredients());
+            Set<String> cleanedDish1 = dish1.getIngredients().parallelStream().map(RawComponent::getComponentName).collect(Collectors.toSet());
+            Set<String> cleanedDish2 = dish2.getIngredients().parallelStream().map(RawComponent::getComponentName).collect(Collectors.toSet());
 
             return Sets.intersection(cleanedDish2, selected).size() - Sets.intersection(cleanedDish1, selected).size();
         });
 
         Dish dish = dishes.get(i);
-        Set<String> cleanedDish = new HashSet<>(dish.getRecipeIngredients());
+        Set<String> cleanedDish = dish.getIngredients().stream().map(RawComponent::getComponentName).collect(Collectors.toSet());
         Set<String> intersection = Sets.intersection(cleanedDish, selected);
 
         if (highlight) {
@@ -86,7 +85,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             dishViewHolder.ingredients.setText(Joiner.on(", ").join(intersection).toLowerCase());
         }
 
-        dishViewHolder.name.setText(dish.getName());
+        dishViewHolder.name.setText(dish.getRawDish().getDishName());
         dishViewHolder.itemView.setOnClickListener(view -> {
             StepByStepFragment stepByStepFragment = new StepByStepFragment();
             stepByStepFragment.setDish(dish);
@@ -101,7 +100,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         });
 
         Picasso.get()
-                .load(dish.getImageURL())
+                .load(dish.getRawDish().getDishImageURL())
                 .error(R.drawable.sample_dish_for_error)
                 .fit()
                 .centerCrop()
@@ -113,10 +112,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void setSelectedIngredients(Set<? extends DishComponent> selected) {
+    public void setSelectedIngredients(Set<? extends RawComponent> selected) {
         this.selected = selected
                 .parallelStream()
-                .map(DishComponent::getName)
+                .map(RawComponent::getComponentName)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
     }
@@ -136,7 +135,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 if (constraint != null) {
                     if (original != null && !original.isEmpty()) {
                         for (Dish iterate : original) {
-                            String all = iterate.getName().toLowerCase().replace("ё", "е");
+                            String all = iterate.getRawDish().getDishName().toLowerCase().replace("ё", "е");
 
                             if (all.contains(constraint.toString())) {
                                 results.add(iterate);

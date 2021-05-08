@@ -4,9 +4,10 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 import org.slovenlypolygon.recipes.backend.room.rawobjects.*
+import java.util.stream.Collectors
 
 data class Dish(
-    @Embedded val dish: RawDish,
+    @Embedded val rawDish: RawDish,
     @Relation(
         parentColumn = "dishID",
         entityColumn = "componentID",
@@ -27,4 +28,12 @@ data class Dish(
         associateBy = Junction(RawStep::class)
     )
     val steps: List<RawStep>
-)
+) {
+    fun getIngredients(): Set<RawComponent> {
+        return components.parallelStream().filter { t -> t.qIsIngredient == 1 }.collect(Collectors.toSet())
+    }
+
+    fun getCategories(): Set<RawComponent> {
+        return components.parallelStream().filter { t -> t.qIsIngredient == 0 }.collect(Collectors.toSet())
+    }
+}
