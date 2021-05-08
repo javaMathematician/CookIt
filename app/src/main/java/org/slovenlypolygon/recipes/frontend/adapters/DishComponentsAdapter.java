@@ -82,7 +82,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
         Picasso.get()
                 .load(ingredient.getComponentImageURL())
-                .error(R.drawable.sample_dish_for_error)
+                .error(R.drawable.ic_error_image)
                 .fit()
                 .centerCrop()
                 .into(ingredientViewHolder.imageView);

@@ -33,7 +33,7 @@ public abstract class AbstractFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchTextChanged(newText);
+                searchTextChanged(newText.toLowerCase());
                 return false;
             }
         });

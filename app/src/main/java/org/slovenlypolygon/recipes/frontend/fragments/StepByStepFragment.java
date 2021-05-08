@@ -49,7 +49,10 @@ public class StepByStepFragment extends AbstractFragment {
             String url = step.getStepImageURL();
 
             if (url != null) {
-                Picasso.get().load(url).error(R.drawable.sample_dish_for_error).into(imageView);
+                Picasso.get()
+                        .load(url)
+                        .error(R.drawable.ic_error_image)
+                        .into(imageView);
 
                 expandButton.setVisibility(View.VISIBLE);
                 cardView.setOnClickListener(v -> {
@@ -80,7 +83,7 @@ public class StepByStepFragment extends AbstractFragment {
 
         Picasso.get()
                 .load(dish.getRawDish().getDishImageURL())
-                .error(R.drawable.sample_dish_for_error)
+                .error(R.drawable.ic_error_image)
                 .into((ImageView) rootView.findViewById(R.id.dishStepByStepImage));
 
         String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(dish.getSteps()) + ".";
