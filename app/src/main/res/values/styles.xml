@@ -94,5 +94,4 @@
         <item name="colorControlNormal">?attr/textCardColor</item>
         <item name="colorControlActivated">?attr/textCardColor</item>
     </style>
-
 </resources>

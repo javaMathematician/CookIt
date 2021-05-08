@@ -101,7 +101,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
             changeViewIngredient.setFocusable(true);
             changeViewIngredient.setElevation(0);
         } else {
-            changeViewIngredient.setBackground(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), R.drawable.to_recipes_button_enabled));
+            changeViewIngredient.setBackground(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), R.drawable.to_recipes_button_enabled_with_mask));
             changeViewIngredient.setActivated(true);
             changeViewIngredient.setEnabled(true);
             changeViewIngredient.setFocusable(true);
