@@ -59,15 +59,18 @@ public class DishesFragment extends AbstractFragment {
             recyclerView.smoothScrollToPosition(0);
         });
 
-        recyclerView.addRecyclerListener(holder -> {
-            if (holder.getBindingAdapterPosition() > 9) {
-                scrollToTop.show();
-            } else {
-                scrollToTop.hide();
+        scrollToTop.hide();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    scrollToTop.hide();
+                } else if (dy < 0) {
+                    scrollToTop.show();
+                }
             }
         });
-
-        scrollToTop.hide();
     }
 
     @Override
