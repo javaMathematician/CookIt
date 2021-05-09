@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.backend;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 import androidx.room.Transaction;
@@ -17,7 +18,7 @@ import java.util.List;
 public abstract class DAO {
     @Transaction
     @Query("SELECT * FROM dish")
-    public abstract List<RawDish> getAllDishes();
+    public abstract LiveData<List<RawDish>> getAllDishes();
 
     @Transaction
     @Query("SELECT * FROM dish WHERE dishID = :id")
@@ -25,7 +26,7 @@ public abstract class DAO {
 
     @Transaction
     @Query("SELECT * FROM component WHERE qIsIngredient = 0")
-    public abstract List<RawComponent> getAllCategories();
+    public abstract LiveData<List<RawComponent>> getAllCategories();
 
     @Transaction
     @Query("SELECT * FROM component WHERE componentID = :id")
@@ -33,25 +34,25 @@ public abstract class DAO {
 
     @Transaction
     @Query("SELECT * FROM component WHERE qIsIngredient = 1")
-    public abstract List<RawComponent> getAllIngredients();
+    public abstract LiveData<List<RawComponent>> getAllIngredients();
 
     @Transaction
     @Query("SELECT * FROM component WHERE componentID = :id")
-    public abstract List<ComponentWithDishes> getComponentWithDishesFromComponentIDs(int id);
+    public abstract LiveData<List<ComponentWithDishes>> getComponentWithDishesFromComponentIDs(int id);
 
     @Transaction
     @Query("SELECT * FROM dish WHERE dishID = :id")
-    public abstract List<DishWithComponents> getDishWithComponentsFromDishID(int id);
+    public abstract LiveData<List<DishWithComponents>> getDishWithComponentsFromDishID(int id);
 
     @Transaction
     @Query("SELECT * FROM component WHERE componentID IN (:ids)")
-    public abstract List<ComponentWithDishes> getComponentWithDishesFromComponentIDs(List<Integer> ids);
+    public abstract LiveData<List<ComponentWithDishes>> getComponentWithDishesFromComponentIDs(List<Integer> ids);
 
     @Transaction
     @Query("SELECT * FROM step WHERE dishID = :id")
-    public abstract List<RawStep> getStepsFromDishID(int id);
+    public abstract LiveData<List<RawStep>> getStepsFromDishID(int id);
 
     @Transaction
     @Query("SELECT * FROM rawIngredient WHERE dishID = :id")
-    public abstract List<RawDirtyComponent> getDirtyComponentsFromDishID(int id);
+    public abstract LiveData<List<RawDirtyComponent>> getDirtyComponentsFromDishID(int id);
 }

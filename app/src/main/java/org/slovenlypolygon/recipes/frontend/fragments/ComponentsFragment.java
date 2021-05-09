@@ -18,7 +18,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.FragmentAdapterBridge;
-import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 
 import java.util.HashSet;
@@ -30,7 +29,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     private Button changeViewIngredient;
     private FloatingActionButton scrollToTop;
     private DishComponentsAdapter dishComponentsAdapter;
-    private final Set<RawComponent> components = new HashSet<>();
+    private Set<Integer> componentIDs = new HashSet<>();
 
     private void initializeVariablesForComponents(View rootView) {
         recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
@@ -50,7 +49,6 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         scrollToTop.hide();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0) {
@@ -61,7 +59,12 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
             }
         });
 
-        dishComponentsAdapter = new DishComponentsAdapter(((MainActivity) getActivity()).getDao().getAllCategories(), this);
+        dishComponentsAdapter = new DishComponentsAdapter(this);
+        ((MainActivity) getActivity()).getDao().getAllCategories().observe(this, rawComponents -> {
+            dishComponentsAdapter.setComponents(rawComponents);
+            dishComponentsAdapter.notifyDataSetChanged();
+        });
+        dishComponentsAdapter.setSelectedIDs(componentIDs);
     }
 
     @Override
@@ -86,6 +89,8 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     }
 
     public void goToRecipes(boolean highlight) {
+        componentIDs = dishComponentsAdapter.getSelectedIDs();
+
         DishesFragment dishesFragment = new DishesFragment();
         dishesFragment.setHighlightSelected(highlight);
         dishesFragment.setSelectedComponentIDs(dishComponentsAdapter.getSelectedIDs());
@@ -101,22 +106,14 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
     @Override
     public void counterChanged(int counter) {
-        if (counter == 0) {
-            changeViewIngredient.setBackground(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), R.drawable.to_recipes_btn_disabled));
-            changeViewIngredient.setActivated(false);
-            changeViewIngredient.setEnabled(false);
-            changeViewIngredient.setFocusable(true);
-            changeViewIngredient.setElevation(0);
-        } else {
-            changeViewIngredient.setBackground(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), R.drawable.to_recipes_button_enabled_with_mask));
-            changeViewIngredient.setActivated(true);
-            changeViewIngredient.setEnabled(true);
-            changeViewIngredient.setFocusable(true);
-            changeViewIngredient.setElevation(16);
-        }
+        changeViewIngredient.setActivated(counter != 0);
+        changeViewIngredient.setEnabled(counter != 0);
+        changeViewIngredient.setFocusable(counter == 0);
+        changeViewIngredient.setElevation(counter == 0 ? 0 : 16);
+        changeViewIngredient.setBackground(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), counter == 0 ? R.drawable.to_recipes_btn_disabled : R.drawable.to_recipes_button_enabled_with_mask));
     }
 
     public void clearSelectedComponents() {
-        components.clear();
+        componentIDs.clear();
     }
 }

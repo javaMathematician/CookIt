@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
         dao = Room.databaseBuilder(getApplicationContext(), GlobalDatabase.class, "global")
                 .createFromAsset("global.sqlite3")
-                .allowMainThreadQueries()
                 .build()
                 .getDAO();
 

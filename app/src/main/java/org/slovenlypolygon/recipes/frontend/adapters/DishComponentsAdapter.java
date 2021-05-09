@@ -30,13 +30,20 @@ import java.util.Set;
 @SuppressWarnings("unchecked")
 public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
     private final WeakReference<FragmentAdapterBridge> bridge;
+    private List<RawComponent> components = new ArrayList<>();
     private Set<Integer> selectedIDs = new HashSet<>();
-    private List<RawComponent> components;
     private int counter;
 
-    public DishComponentsAdapter(List<RawComponent> components, FragmentAdapterBridge fragmentAdapterBridge) {
-        this.components = components;
+    public DishComponentsAdapter(FragmentAdapterBridge fragmentAdapterBridge) {
         this.bridge = new WeakReference<>(fragmentAdapterBridge);
+    }
+
+    public void setComponents(List<RawComponent> components) {
+        this.components = components;
+    }
+
+    public void setSelectedIDs(Set<Integer> selectedIDs) {
+        this.selectedIDs = selectedIDs;
     }
 
     public Set<Integer> getSelectedIDs() {

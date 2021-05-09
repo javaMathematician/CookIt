@@ -17,7 +17,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DAO;
-import org.slovenlypolygon.recipes.backend.mergedpojos.ComponentWithDishes;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawDish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
@@ -95,19 +94,21 @@ public class DishesFragment extends AbstractFragment {
 
         List<RawDish> output = new ArrayList<>();
         DAO dao = ((MainActivity) Objects.requireNonNull(getActivity())).getDao();
-        List<ComponentWithDishes> components = dao.getComponentWithDishesFromComponentIDs(new ArrayList<>(selectedComponents));
-
-        for (int i = 0; i < components.size(); i++) {
-            for (RawDish dish : components.get(i).getDishes()) {
-                dish.setDirtyComponents(dao.getDirtyComponentsFromDishID(dish.getDishID()));
-                dish.setSteps(dao.getStepsFromDishID(dish.getDishID()));
-                output.add(dish);
-            }
-        }
 
         dishesAdapter = new DishesAdapter(output, highlightSelected);
-
         dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
+
+        dao.getComponentWithDishesFromComponentIDs(new ArrayList<>(selectedComponents)).observe(this, componentWithDishes -> {
+            for (int i = 0; i < componentWithDishes.size(); i++) {
+                for (RawDish dish : componentWithDishes.get(i).getDishes()) {
+                    dao.getDirtyComponentsFromDishID(dish.getDishID()).observe(this, dish::setDirtyComponents);
+                    dao.getStepsFromDishID(dish.getDishID()).observe(this, dish::setSteps);
+                    output.add(dish);
+                }
+            }
+
+            dishesAdapter.notifyDataSetChanged();
+        });
         recyclerView.setAdapter(dishesAdapter);
         return rootView;
     }
