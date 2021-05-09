@@ -26,7 +26,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013">
-        <schema name="main" object-types="view, index, table, column, constraint, dataset trigger" />
+        <schema name="main" object-types="index, dataset trigger, column, table, view, constraint" />
       </connection>
     </loaded-nodes>
   </component>
@@ -46,9 +46,11 @@ where dish."dishID" = 1]]></console>
     <connection id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" dataset="main.dish" active-filter-id="" />
     <filter-actions connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" dataset="main.DishWithIngredients" active-filter-id="" />
     <filter-actions connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" dataset="main.dishComponentCrossReference" active-filter-id="" />
     <filter-actions connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" dataset="main.sqlite_sequence" active-filter-id="" />
+    <filter-actions connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" dataset="main.step" active-filter-id="" />
     <filter-actions connection-id="7d06c863-fef8-41ec-ad9c-07a3dfdd2013" dataset="main.rawIngredient" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">

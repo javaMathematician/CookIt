@@ -20,7 +20,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.DAO;
 import org.slovenlypolygon.recipes.backend.GlobalDatabase;
-import org.slovenlypolygon.recipes.backend.mainobjects.components.ComponentTypes;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
         dao = Room.databaseBuilder(getApplicationContext(), GlobalDatabase.class, "global")
                 .createFromAsset("global.sqlite3")
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showIngredientsFragment(ComponentTypes type) {
+    private void showIngredientsFragment() {
         ComponentsFragment fragment = new ComponentsFragment();
 
         getSupportFragmentManager()
@@ -123,12 +121,10 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (id == R.id.toIngredients) {
             sureClearSelected();
-            showIngredientsFragment(ComponentTypes.INGREDIENT);
         } else if (id == R.id.toDishes) {
             componentsFragment.goToRecipes(false);
         } else if (id == R.id.toCategories) {
             sureClearSelected();
-            showIngredientsFragment(ComponentTypes.CATEGORY);
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

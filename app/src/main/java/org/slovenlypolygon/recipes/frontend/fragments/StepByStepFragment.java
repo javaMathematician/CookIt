@@ -22,16 +22,18 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.Dish;
+import org.slovenlypolygon.recipes.backend.rawobjects.RawDirtyComponent;
+import org.slovenlypolygon.recipes.backend.rawobjects.RawDish;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawStep;
 
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class StepByStepFragment extends AbstractFragment {
     private LinearLayout linearLayout;
-    private Dish dish;
+    private RawDish dish;
 
-    public void setDish(Dish dish) {
+    public void setDish(RawDish dish) {
         this.dish = dish;
     }
 
@@ -82,11 +84,17 @@ public class StepByStepFragment extends AbstractFragment {
         linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
 
         Picasso.get()
-                .load(dish.getRawDish().getDishImageURL())
+                .load(dish.getDishImageURL())
                 .error(R.drawable.ic_error_image)
                 .into((ImageView) rootView.findViewById(R.id.dishStepByStepImage));
 
-        String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(dish.getSteps()) + ".";
+        String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(
+                dish.getDirtyComponents()
+                        .stream()
+                        .map(RawDirtyComponent::getContent)
+                        .sorted((t, u) -> t.length() - u.length())
+                        .collect(Collectors.toList())
+        ) + ".";
         rootView.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients.replace("---", "").replace("———", ""));
 
         addSteps();
@@ -105,7 +113,7 @@ public class StepByStepFragment extends AbstractFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         searchView.setVisibility(View.GONE);
-        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(dish.getRawDish().getDishName());
+        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(dish.getDishName());
     }
 
     @Override

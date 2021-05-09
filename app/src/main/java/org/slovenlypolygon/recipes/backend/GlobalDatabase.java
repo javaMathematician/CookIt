@@ -3,7 +3,7 @@ package org.slovenlypolygon.recipes.backend;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
-import org.slovenlypolygon.recipes.backend.rawobjects.DishComponentCrossReference;
+import org.slovenlypolygon.recipes.backend.crossreferences.DishComponentCrossReference;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawDirtyComponent;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawDish;
