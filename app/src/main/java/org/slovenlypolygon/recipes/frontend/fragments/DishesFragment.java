@@ -98,17 +98,18 @@ public class DishesFragment extends AbstractFragment {
         dishesAdapter = new DishesAdapter(output, highlightSelected);
         dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
 
-        dao.getComponentWithDishesFromComponentIDs(new ArrayList<>(selectedComponents)).observe(this, componentWithDishes -> {
-            for (int i = 0; i < componentWithDishes.size(); i++) {
-                for (RawDish dish : componentWithDishes.get(i).getDishes()) {
-                    dao.getDirtyComponentsFromDishID(dish.getDishID()).observe(this, dish::setDirtyComponents);
-                    dao.getStepsFromDishID(dish.getDishID()).observe(this, dish::setSteps);
-                    output.add(dish);
-                }
-            }
+        if (!selectedComponents.isEmpty()) {
+            dao.getComponentWithDishesFromComponentIDs(new ArrayList<>(selectedComponents)).observe(this, componentWithDishes -> {
+                componentWithDishes.forEach(t -> output.addAll(t.getDishes()));
+                dishesAdapter.notifyDataSetChanged();
+            });
+        } else {
+            dao.getAllDishes().observe(this, rawDishes -> {
+                output.addAll(rawDishes);
+                dishesAdapter.notifyDataSetChanged();
+            });
+        }
 
-            dishesAdapter.notifyDataSetChanged();
-        });
         recyclerView.setAdapter(dishesAdapter);
         return rootView;
     }

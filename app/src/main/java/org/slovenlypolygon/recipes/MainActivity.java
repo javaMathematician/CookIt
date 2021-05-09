@@ -12,12 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.slovenlypolygon.recipes.backend.ComponentType;
 import org.slovenlypolygon.recipes.backend.DAO;
 import org.slovenlypolygon.recipes.backend.GlobalDatabase;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
@@ -112,21 +112,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void menuItemsActions(int id) {
-        if (id == R.id.clearSelected) {
-            Fragment current = getSupportFragmentManager().findFragmentByTag("ingredients");
+        drawerLayout.closeDrawer(GravityCompat.START);
+        componentsFragment = (ComponentsFragment) getSupportFragmentManager().findFragmentByTag("ingredients");
 
-            if (current != null && current.isVisible()) {
-                new SureClearSelectedQDialog().show(getSupportFragmentManager(), "sure_clear_selected_q");
-            }
+        if (componentsFragment == null) {
+            componentsFragment = new ComponentsFragment();
+        }
+
+        if (id == R.id.clearSelected && componentsFragment.isVisible()) {
+            new SureClearSelectedQDialog().show(getSupportFragmentManager(), "sure_clear_selected_q");
         } else if (id == R.id.toIngredients) {
             sureClearSelected();
+            changeComponentView(ComponentType.INGREDIENT);
         } else if (id == R.id.toDishes) {
             componentsFragment.goToRecipes(false);
         } else if (id == R.id.toCategories) {
             sureClearSelected();
+            changeComponentView(ComponentType.CATEGORY);
         }
+    }
 
-        drawerLayout.closeDrawer(GravityCompat.START);
+    private void changeComponentView(ComponentType componentType) {
+        componentsFragment.changeDatasetTo(componentType);
     }
 
     @Override

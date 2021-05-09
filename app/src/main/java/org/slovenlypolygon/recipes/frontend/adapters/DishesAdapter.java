@@ -34,7 +34,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     private final boolean highlight;
     private List<RawDish> dishes;
     private List<RawDish> original;
-    private Set<String> selected = new HashSet<>();
 
     public DishesAdapter(List<RawDish> dishes, boolean highlight) {
         this.dishes = dishes;
@@ -56,7 +55,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     public void onBindViewHolder(@NonNull DishViewHolder dishViewHolder, int i) {
         RawDish dish = dishes.get(i);
         Set<String> cleanedDish = dish.getComponents().parallelStream().map(RawComponent::getComponentName).collect(Collectors.toSet());
-        Set<String> intersection = Sets.intersection(cleanedDish, selected);
+        Set<String> intersection = new HashSet<>(); // TODO: 09.05.2021
 
         if (highlight) {
             String selectedText = Joiner.on(", ").join(intersection).toLowerCase();
