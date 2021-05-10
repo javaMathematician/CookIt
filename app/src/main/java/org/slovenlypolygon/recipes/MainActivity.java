@@ -168,8 +168,4 @@ public class MainActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
-
-    public Set<ConstructedDish> getConstructedDishSet() {
-        return constructedDishSet;
-    }
 }

@@ -17,13 +17,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.ConstructedDish;
-import org.slovenlypolygon.recipes.backend.dao.RoomDAO;
+import org.slovenlypolygon.recipes.backend.dao.PseudoLocalDAO;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 public class DishesFragment extends AbstractFragment {
     private SearchView searchView;
@@ -93,12 +96,20 @@ public class DishesFragment extends AbstractFragment {
         });
 
         List<ConstructedDish> output = new ArrayList<>();
-        RoomDAO dao = ((MainActivity) Objects.requireNonNull(getActivity())).getRoomDAO();
-
         dishesAdapter = new DishesAdapter(output, highlightSelected);
-        dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
 
+        dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
         recyclerView.setAdapter(dishesAdapter);
+
+        PseudoLocalDAO localDAO = ((MainActivity) getActivity()).getPseudoLocalDAO();
+        localDAO.getDishesFromComponentIDs(selectedComponents)
+                .buffer(200, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(constructedDish -> {
+                    output.addAll(constructedDish);
+                    dishesAdapter.notifyDataSetChanged();
+                }, Throwable::printStackTrace);
+
         return rootView;
     }
 }
