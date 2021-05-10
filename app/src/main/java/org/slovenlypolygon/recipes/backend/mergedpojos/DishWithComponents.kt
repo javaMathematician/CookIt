@@ -29,10 +29,4 @@ data class DishWithComponents(
         entityColumn = "rawIngredientID",
         associateBy = Junction(RawDirtyComponent::class)
     ) val rawDirtyComponents: List<RawDirtyComponent>
-) {
-    fun injectDependencies() {
-        dish.dirtyComponents = rawDirtyComponents
-        dish.components = components
-        dish.steps = steps
-    }
-}
+)

@@ -16,8 +16,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.DAO;
-import org.slovenlypolygon.recipes.backend.rawobjects.RawDish;
+import org.slovenlypolygon.recipes.backend.ConstructedDish;
+import org.slovenlypolygon.recipes.backend.dao.RoomDAO;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
 import java.util.ArrayList;
@@ -92,23 +92,11 @@ public class DishesFragment extends AbstractFragment {
             recyclerView.smoothScrollToPosition(0);
         });
 
-        List<RawDish> output = new ArrayList<>();
-        DAO dao = ((MainActivity) Objects.requireNonNull(getActivity())).getDao();
+        List<ConstructedDish> output = new ArrayList<>();
+        RoomDAO dao = ((MainActivity) Objects.requireNonNull(getActivity())).getRoomDAO();
 
         dishesAdapter = new DishesAdapter(output, highlightSelected);
         dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
-
-        if (!selectedComponents.isEmpty()) {
-            dao.getComponentWithDishesFromComponentIDs(new ArrayList<>(selectedComponents)).observe(this, componentWithDishes -> {
-                componentWithDishes.forEach(t -> output.addAll(t.getDishes()));
-                dishesAdapter.notifyDataSetChanged();
-            });
-        } else {
-            dao.getAllDishes().observe(this, rawDishes -> {
-                output.addAll(rawDishes);
-                dishesAdapter.notifyDataSetChanged();
-            });
-        }
 
         recyclerView.setAdapter(dishesAdapter);
         return rootView;

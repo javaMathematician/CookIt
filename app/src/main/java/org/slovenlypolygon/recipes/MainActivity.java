@@ -18,26 +18,43 @@ import androidx.room.Room;
 import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.ComponentType;
-import org.slovenlypolygon.recipes.backend.DAO;
+import org.slovenlypolygon.recipes.backend.ConstructedDish;
 import org.slovenlypolygon.recipes.backend.GlobalDatabase;
+import org.slovenlypolygon.recipes.backend.dao.PseudoLocalDAO;
+import org.slovenlypolygon.recipes.backend.dao.RoomDAO;
+import org.slovenlypolygon.recipes.backend.mergedpojos.DishWithComponents;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Dark";
+    private final Set<ConstructedDish> constructedDishSet = new HashSet<>();
     private SharedPreferences sharedPreferences;
-    private ComponentsFragment componentsFragment;
     private DrawerLayout drawerLayout;
-    private DAO dao;
+    private final PseudoLocalDAO pseudoLocalDAO = new PseudoLocalDAO(constructedDishSet);
+    private ComponentsFragment componentsFragment;
+    private RoomDAO roomDAO;
+
+    public RoomDAO getRoomDAO() {
+        return roomDAO;
+    }
+
+    public PseudoLocalDAO getPseudoLocalDAO() {
+        return pseudoLocalDAO;
+    }
 
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
-        dao = Room.databaseBuilder(getApplicationContext(), GlobalDatabase.class, "global")
+        roomDAO = Room.databaseBuilder(getApplicationContext(), GlobalDatabase.class, "global")
                 .createFromAsset("global.sqlite3")
                 .build()
                 .getDAO();
@@ -51,10 +68,20 @@ public class MainActivity extends AppCompatActivity {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragmentHolder, new ComponentsFragment(), "ingredients")
                 .commit();
-    }
 
-    public DAO getDao() {
-        return dao;
+        roomDAO.getAllDishWithComponents()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(dishWithComponents -> {
+                    for (DishWithComponents dish : dishWithComponents) {
+                        ConstructedDish constructedDish = new ConstructedDish();
+
+                        constructedDish.setDishWithComponents(dish);
+                        roomDAO.getDirtyComponentsFromDishID(dish.getDish().getDishID()).subscribe(constructedDish::setRawDirtyComponents, Throwable::printStackTrace);
+                        roomDAO.getStepsFromDishID(dish.getDish().getDishID()).subscribe(constructedDish::setRawSteps, Throwable::printStackTrace);
+
+                        constructedDishSet.add(constructedDish);
+                    }
+                }, Throwable::printStackTrace);
     }
 
     private void setFrontend() {
@@ -94,17 +121,6 @@ public class MainActivity extends AppCompatActivity {
             menuItemsActions(item.getItemId());
             return false;
         });
-    }
-
-    private void showIngredientsFragment() {
-        ComponentsFragment fragment = new ComponentsFragment();
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.fragmentHolder, fragment, "ingredients")
-                .addToBackStack(null)
-                .commit();
     }
 
     public void sureClearSelected() {
@@ -151,5 +167,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+    }
+
+    public Set<ConstructedDish> getConstructedDishSet() {
+        return constructedDishSet;
     }
 }

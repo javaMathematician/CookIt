@@ -4,6 +4,7 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
 import org.slovenlypolygon.recipes.backend.crossreferences.DishComponentCrossReference;
+import org.slovenlypolygon.recipes.backend.dao.RoomDAO;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawDirtyComponent;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawDish;
@@ -17,5 +18,5 @@ import org.slovenlypolygon.recipes.backend.rawobjects.RawStep;
         RawStep.class
 }, version = 1, exportSchema = false)
 public abstract class GlobalDatabase extends RoomDatabase {
-    public abstract DAO getDAO();
+    public abstract RoomDAO getDAO();
 }

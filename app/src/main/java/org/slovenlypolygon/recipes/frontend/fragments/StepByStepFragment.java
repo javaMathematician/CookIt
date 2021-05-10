@@ -22,8 +22,8 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.ConstructedDish;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawDirtyComponent;
-import org.slovenlypolygon.recipes.backend.rawobjects.RawDish;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawStep;
 
 import java.util.Objects;
@@ -31,16 +31,16 @@ import java.util.stream.Collectors;
 
 public class StepByStepFragment extends AbstractFragment {
     private LinearLayout linearLayout;
-    private RawDish dish;
+    private ConstructedDish dish;
 
-    public void setDish(RawDish dish) {
+    public void setDish(ConstructedDish dish) {
         this.dish = dish;
     }
 
     private void addSteps() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        for (RawStep step : dish.getSteps()) {
+        for (RawStep step : dish.getRawSteps()) {
             CardView cardView = (CardView) inflater.inflate(R.layout.step_by_step_card, linearLayout, false);
 
             Button expandButton = cardView.findViewById(R.id.expandStepButton);
@@ -84,12 +84,12 @@ public class StepByStepFragment extends AbstractFragment {
         linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
 
         Picasso.get()
-                .load(dish.getDishImageURL())
+                .load(dish.getDishWithComponents().getDish().getDishImageURL())
                 .error(R.drawable.ic_error_image)
                 .into((ImageView) rootView.findViewById(R.id.dishStepByStepImage));
 
         String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(
-                dish.getDirtyComponents()
+                dish.getRawDirtyComponents()
                         .stream()
                         .map(RawDirtyComponent::getContent)
                         .sorted((t, u) -> t.length() - u.length())
@@ -113,7 +113,7 @@ public class StepByStepFragment extends AbstractFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         searchView.setVisibility(View.GONE);
-        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(dish.getDishName());
+        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(dish.getDishWithComponents().getDish().getDishName());
     }
 
     @Override

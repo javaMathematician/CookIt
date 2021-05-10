@@ -1,6 +1,5 @@
 package org.slovenlypolygon.recipes.frontend.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.ComponentType;
-import org.slovenlypolygon.recipes.backend.DAO;
-import org.slovenlypolygon.recipes.backend.FragmentAdapterBridge;
+import org.slovenlypolygon.recipes.backend.dao.RoomDAO;
 import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 
@@ -30,19 +27,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class ComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private FloatingActionButton scrollToTop;
-    private LiveData<List<RawComponent>> shownContent;
+    private Flowable<List<RawComponent>> shownContent;
     private DishComponentsAdapter dishComponentsAdapter;
     private Set<Integer> componentIDs = new HashSet<>();
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        shownContent = ((MainActivity) getActivity()).getDao().getAllIngredients();
-    }
 
     private void initializeVariablesForComponents(View rootView) {
         recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
@@ -123,15 +118,16 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     }
 
     public void changeDatasetTo(ComponentType componentType) {
-        DAO dao = ((MainActivity) getActivity()).getDao();
+        RoomDAO dao = ((MainActivity) getActivity()).getRoomDAO();
         shownContent = componentType == ComponentType.INGREDIENT ? dao.getAllIngredients() : dao.getAllCategories();
 
         dishComponentsAdapter = new DishComponentsAdapter(this);
-        shownContent.observe(this, rawComponents -> {
-            dishComponentsAdapter.setComponents(rawComponents);
-            dishComponentsAdapter.notifyDataSetChanged();
-        });
-        dishComponentsAdapter.setSelectedIDs(componentIDs);
+        shownContent.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(rawComponents -> {
+                    dishComponentsAdapter.setComponents(rawComponents);
+                    dishComponentsAdapter.notifyDataSetChanged();
+                }, Throwable::printStackTrace);
 
         recyclerView.swapAdapter(dishComponentsAdapter, true);
     }
