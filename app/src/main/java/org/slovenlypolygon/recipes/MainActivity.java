@@ -31,15 +31,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Dark";
-    private final Set<ConstructedDish> constructedDishSet = new HashSet<>();
-    private SharedPreferences sharedPreferences;
-    private DrawerLayout drawerLayout;
-    private final PseudoLocalDAO pseudoLocalDAO = new PseudoLocalDAO(constructedDishSet);
     private ComponentsFragment componentsFragment;
+    private SharedPreferences sharedPreferences;
+    private PseudoLocalDAO pseudoLocalDAO;
+    private DrawerLayout drawerLayout;
     private RoomDAO roomDAO;
 
     public RoomDAO getRoomDAO() {
@@ -59,6 +58,23 @@ public class MainActivity extends AppCompatActivity {
                 .build()
                 .getDAO();
 
+        Set<ConstructedDish> set = new HashSet<>();
+        pseudoLocalDAO = new PseudoLocalDAO(set);
+
+        roomDAO.getAllDishWithComponents()
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(dishWithComponents -> {
+                    for (DishWithComponents dish : dishWithComponents) {
+                        ConstructedDish constructedDish = new ConstructedDish();
+                        constructedDish.setDishWithComponents(dish);
+
+                        roomDAO.getDirtyComponentsFromDishID(dish.getDish().getDishID()).subscribe(constructedDish::setRawDirtyComponents, Throwable::printStackTrace);
+                        roomDAO.getStepsFromDishID(dish.getDish().getDishID()).subscribe(constructedDish::setRawSteps, Throwable::printStackTrace);
+
+                        set.add(constructedDish);
+                    }
+                }, Throwable::printStackTrace);
+
         setTheme(Objects.equals(sharedPreferences.getString(THEME, ""), "Dark") ? R.style.Dark : R.style.Light);
         setContentView(R.layout.carcass);
         setFrontend();
@@ -68,20 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragmentHolder, new ComponentsFragment(), "ingredients")
                 .commit();
-
-        roomDAO.getAllDishWithComponents()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(dishWithComponents -> {
-                    for (DishWithComponents dish : dishWithComponents) {
-                        ConstructedDish constructedDish = new ConstructedDish();
-
-                        constructedDish.setDishWithComponents(dish);
-                        roomDAO.getDirtyComponentsFromDishID(dish.getDish().getDishID()).subscribe(constructedDish::setRawDirtyComponents, Throwable::printStackTrace);
-                        roomDAO.getStepsFromDishID(dish.getDish().getDishID()).subscribe(constructedDish::setRawSteps, Throwable::printStackTrace);
-
-                        constructedDishSet.add(constructedDish);
-                    }
-                }, Throwable::printStackTrace);
     }
 
     private void setFrontend() {
@@ -150,6 +152,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeComponentView(ComponentType componentType) {
         componentsFragment.changeDatasetTo(componentType);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragmentHolder, componentsFragment, "ingredients")
+                .commit();
     }
 
     @Override

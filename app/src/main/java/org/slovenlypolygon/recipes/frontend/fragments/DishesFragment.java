@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 
 public class DishesFragment extends AbstractFragment {
     private SearchView searchView;
@@ -102,8 +103,9 @@ public class DishesFragment extends AbstractFragment {
         recyclerView.setAdapter(dishesAdapter);
 
         PseudoLocalDAO localDAO = ((MainActivity) getActivity()).getPseudoLocalDAO();
-        localDAO.getDishesFromComponentIDs(selectedComponents)
-                .buffer(200, TimeUnit.MILLISECONDS)
+        Observable<ConstructedDish> provider = selectedComponents.isEmpty() ? localDAO.getAllDishes() : localDAO.getDishesFromComponentIDs(selectedComponents);
+
+        provider.buffer(200, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(constructedDish -> {
                     output.addAll(constructedDish);

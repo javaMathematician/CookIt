@@ -35,7 +35,6 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private FloatingActionButton scrollToTop;
-    private Flowable<List<RawComponent>> shownContent;
     private DishComponentsAdapter dishComponentsAdapter;
     private Set<Integer> componentIDs = new HashSet<>();
 
@@ -119,7 +118,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
     public void changeDatasetTo(ComponentType componentType) {
         RoomDAO dao = ((MainActivity) getActivity()).getRoomDAO();
-        shownContent = componentType == ComponentType.INGREDIENT ? dao.getAllIngredients() : dao.getAllCategories();
+        Flowable<List<RawComponent>> shownContent = componentType == ComponentType.INGREDIENT ? dao.getAllIngredients() : dao.getAllCategories();
 
         dishComponentsAdapter = new DishComponentsAdapter(this);
         shownContent.subscribeOn(Schedulers.newThread())

@@ -26,4 +26,8 @@ public class PseudoLocalDAO {
                     return !Sets.intersection(dishIDs, componentIDs).isEmpty();
                 });
     }
+
+    public Observable<ConstructedDish> getAllDishes() {
+        return Observable.fromIterable(constructedDishSet);
+    }
 }
