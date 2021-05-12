@@ -25,6 +25,10 @@ public class Dish implements Cloneable {
 
     public Dish(Dish other) {
         this(other.id, other.name, other.imageURL, other.dishURL);
+
+        this.steps = other.steps;
+        this.dirtyIngredients = other.dirtyIngredients;
+        this.cleanComponents = other.cleanComponents;
     }
 
     public String getName() {

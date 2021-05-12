@@ -32,6 +32,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     private final WeakReference<FragmentAdapterBridge> bridge;
     private List<Component> components = new ArrayList<>();
     private Set<Integer> selectedIDs = new HashSet<>();
+    private List<Component> original;
     private int counter;
 
     public DishComponentsAdapter(FragmentAdapterBridge fragmentAdapterBridge) {
@@ -109,17 +110,22 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                 final FilterResults oReturn = new FilterResults();
                 final List<Component> results = new ArrayList<>();
 
+                if (original == null) {
+                    original = components;
+                }
+
                 if (constraint != null) {
-                    if (components != null && !components.isEmpty()) {
-                        for (Component iterate : components) {
-                            if (iterate.getImageURL().toLowerCase().replace("ё", "е").contains(constraint.toString())) {
+                    if (original != null && !original.isEmpty()) {
+                        for (Component iterate : original) {
+                            String all = iterate.getName().toLowerCase().replace("ё", "е");
+
+                            if (all.contains(constraint.toString())) {
                                 results.add(iterate);
                             }
                         }
                     }
 
                     oReturn.values = results;
-                    oReturn.count = results.size();
                 }
 
                 return oReturn;

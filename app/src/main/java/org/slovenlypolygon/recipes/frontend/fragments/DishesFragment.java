@@ -65,7 +65,6 @@ public class DishesFragment extends AbstractFragment {
 
         scrollToTop.hide();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0) {

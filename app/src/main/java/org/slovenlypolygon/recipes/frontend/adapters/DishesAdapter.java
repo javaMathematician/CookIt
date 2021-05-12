@@ -30,10 +30,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
-    private String accent;
     private final boolean highlight;
+
+    private String accent;
     private List<Dish> dishes;
     private List<Dish> original;
+
 
     public DishesAdapter(List<Dish> dishes, boolean highlight) {
         this.dishes = dishes;
