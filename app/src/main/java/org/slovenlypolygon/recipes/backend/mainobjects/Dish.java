@@ -39,20 +39,8 @@ public class Dish implements Cloneable {
         this.name = name;
     }
 
-    public String getDishURL() {
-        return dishURL;
-    }
-
-    public void setDishURL(String dishURL) {
-        this.dishURL = dishURL;
-    }
-
     public String getImageURL() {
         return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
     }
 
     public List<Step> getSteps() {

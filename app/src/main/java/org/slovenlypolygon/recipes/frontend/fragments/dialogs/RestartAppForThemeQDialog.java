@@ -17,9 +17,9 @@ public class RestartAppForThemeQDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
                 .setTitle("Перезапустить?")
-                .setMessage("Для измененения темы придётся перезапустить приложение. Перезапустить сейчас или подождать следующего запуска?")
-                .setPositiveButton("Сейчас", (dialog, id) -> ((MainActivity) getActivity()).sureChangeThemeAndRestart())
-                .setNegativeButton("Позже", (dialog, id) -> {
+                .setMessage("Для измененения темы придётся перезапустить приложение. Сделать это сейчас?")
+                .setPositiveButton("да", (dialog, id) -> ((MainActivity) getActivity()).sureChangeThemeAndRestart())
+                .setNegativeButton("нет", (dialog, id) -> {
                 })
                 .setCancelable(true);
 

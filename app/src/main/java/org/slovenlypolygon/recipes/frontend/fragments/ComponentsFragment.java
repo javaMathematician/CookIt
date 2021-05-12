@@ -119,6 +119,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
     public void clearSelectedComponents() {
         componentIDs.clear();
+        dishComponentsAdapter.clearSelected();
         dishComponentsAdapter.notifyDataSetChanged();
     }
 

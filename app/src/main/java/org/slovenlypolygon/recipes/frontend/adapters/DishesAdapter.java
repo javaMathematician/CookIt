@@ -84,7 +84,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             output = output.replace("\n", "");
             dishViewHolder.ingredients.setText(Html.fromHtml(output, Html.FROM_HTML_MODE_LEGACY));
         } else {
-            dishViewHolder.ingredients.setText(Joiner.on(", ").join(dish.getCleanComponents()).toLowerCase());
+            dishViewHolder.ingredients.setText(Joiner.on(", ").join(dish.getCleanComponents().stream().map(Component::getName).sorted().collect(Collectors.toList())).toLowerCase());
         }
 
         dishViewHolder.name.setText(dish.getName());
@@ -151,7 +151,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                dishes = results.values != null ? (List<Dish>) results.values : new ArrayList<Dish>();
+                dishes = results.values != null ? (List<Dish>) results.values : new ArrayList<>();
                 notifyDataSetChanged();
             }
         };

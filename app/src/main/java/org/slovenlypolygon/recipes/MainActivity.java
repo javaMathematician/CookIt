@@ -78,12 +78,6 @@ public class MainActivity extends AppCompatActivity {
             ImageButton themeBtn = findViewById(R.id.themeBtn);
             themeBtn.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, ""), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
             themeBtn.setOnClickListener(item -> {
-                SharedPreferences sharedPreferences1 = getSharedPreferences(THEME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences1.edit();
-
-                editor.putString(THEME, Objects.equals(sharedPreferences1.getString(THEME, "Dark"), "Light") ? "Dark" : "Light");
-                editor.apply();
-
                 new RestartAppForThemeQDialog().show(getSupportFragmentManager(), "restart_q");
                 drawerLayout.closeDrawer(GravityCompat.START);
             });
@@ -104,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void sureClearSelected() {
         componentsFragment.clearSelectedComponents();
-
     }
 
     private void menuItemsActions(int id) {
@@ -149,6 +142,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sureChangeThemeAndRestart() {
+        sharedPreferences.edit()
+                .putString(THEME, Objects.equals(sharedPreferences.getString(THEME, "Dark"), "Light") ? "Dark" : "Light")
+                .apply();
+
         setTheme(Objects.equals(sharedPreferences.getString(THEME, "Dark"), "Dark") ? R.style.Light : R.style.Dark);
 
         Intent intent = getIntent();
