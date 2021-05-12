@@ -29,8 +29,8 @@ import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
-    private List<? extends Component> components = new ArrayList<>();
     private final WeakReference<FragmentAdapterBridge> bridge;
+    private List<Component> components = new ArrayList<>();
     private Set<Integer> selectedIDs = new HashSet<>();
     private int counter;
 
@@ -38,7 +38,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         this.bridge = new WeakReference<>(fragmentAdapterBridge);
     }
 
-    public void setComponents(List<? extends Component> components) {
+    public void setComponents(List<Component> components) {
         this.components = components;
     }
 
@@ -119,6 +119,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                     }
 
                     oReturn.values = results;
+                    oReturn.count = results.size();
                 }
 
                 return oReturn;
@@ -130,6 +131,10 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public void addComponents(List<? extends Component> components) {
+        this.components.addAll(components);
     }
 
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {

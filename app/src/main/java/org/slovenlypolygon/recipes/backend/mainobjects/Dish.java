@@ -13,38 +13,14 @@ public class Dish {
     private String dishURL;
     private String imageURL;
     private List<Step> steps = new ArrayList<>();
-    private Set<Component> components = new HashSet<>();
-    private Set<String> cleanComponents = new HashSet<>();
+    private Set<String> dirtyIngredients = new HashSet<>();
+    private Set<Component> cleanComponents = new HashSet<>();
 
     public Dish(int dishID, String dishName, String dishImageURL, String dishURL) {
         this.id = dishID;
-        this.name = name;
+        this.name = dishName;
         this.dishURL = dishURL;
-        this.imageURL = imageURL;
-    }
-
-    public Set<String> getCleanComponents() {
-        return cleanComponents;
-    }
-
-    public void setCleanComponents(Set<String> cleanComponents) {
-        this.cleanComponents = cleanComponents;
-    }
-
-    public String getDishURL() {
-        return dishURL;
-    }
-
-    public void setDishURL(String dishURL) {
-        this.dishURL = dishURL;
-    }
-
-    public List<Step> getSteps() {
-        return steps;
-    }
-
-    public void setSteps(List<Step> steps) {
-        this.steps = steps;
+        this.imageURL = dishImageURL;
     }
 
     public String getName() {
@@ -55,6 +31,14 @@ public class Dish {
         this.name = name;
     }
 
+    public String getDishURL() {
+        return dishURL;
+    }
+
+    public void setDishURL(String dishURL) {
+        this.dishURL = dishURL;
+    }
+
     public String getImageURL() {
         return imageURL;
     }
@@ -63,12 +47,28 @@ public class Dish {
         this.imageURL = imageURL;
     }
 
-    public Set<Component> getComponents() {
-        return components;
+    public List<Step> getSteps() {
+        return steps;
     }
 
-    public void setComponents(Set<Component> components) {
-        this.components = components;
+    public void setSteps(List<Step> steps) {
+        this.steps = steps;
+    }
+
+    public Set<String> getDirtyIngredients() {
+        return dirtyIngredients;
+    }
+
+    public void setDirtyIngredients(Set<String> dirtyIngredients) {
+        this.dirtyIngredients = dirtyIngredients;
+    }
+
+    public Set<Component> getCleanComponents() {
+        return cleanComponents;
+    }
+
+    public void setCleanComponents(Set<Component> cleanComponents) {
+        this.cleanComponents = cleanComponents;
     }
 
     public int getId() {
@@ -81,7 +81,7 @@ public class Dish {
                 .add("name", name)
                 .add("imageURL", imageURL)
                 .add("steps", steps)
-                .add("components", components)
+                .add("components", dirtyIngredients)
                 .toString();
     }
 }

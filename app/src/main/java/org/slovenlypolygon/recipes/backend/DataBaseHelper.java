@@ -11,22 +11,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.SQLException;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
-    private static String DB_PATH = "/data/data/org.slovenlypolygon.recipes/databases/";
-    private static String DB_NAME = "global.sqlite3";
-    private final Context myContext;
-    private SQLiteDatabase myDataBase;
+    private final Context context;
+    private final String DB_PATH;
+    private final String DB_NAME;
+    private SQLiteDatabase database;
 
     public DataBaseHelper(Context context) {
-        super(context, DB_NAME, null, 1);
-        this.myContext = context;
+        super(context, "global.sqlite3", null, 1);
+        this.context = context;
+
+        DB_NAME = super.getDatabaseName();
+        DB_PATH = context.getDatabasePath(DB_NAME).getPath();
     }
 
-    public void createDataBase() throws IOException {
+    public void createDataBase() {
         if (!checkDataBase()) {
             this.getReadableDatabase();
+
             try {
                 copyDataBase();
             } catch (IOException e) {
@@ -40,8 +43,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase checkDB = null;
 
         try {
-            String myPath = DB_PATH + DB_NAME;
-            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+            checkDB = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException ignored) {
         }
 
@@ -53,20 +55,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     private void copyDataBase() throws IOException {
-        InputStream myInput = myContext.getAssets().open(DB_NAME);
-        OutputStream myOutput = new FileOutputStream(DB_PATH + DB_NAME);
+        InputStream myInput = context.getAssets().open(DB_NAME);
+        OutputStream myOutput = new FileOutputStream(DB_PATH);
         IOUtil.copy(myInput, myOutput);
     }
 
-    public SQLiteDatabase openDataBase() throws SQLException {
-        myDataBase = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READONLY);
-        return myDataBase;
+    public SQLiteDatabase openDataBase() {
+        database = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
+        return database;
     }
 
     @Override
     public synchronized void close() {
-        if (myDataBase != null) {
-            myDataBase.close();
+        if (database != null) {
+            database.close();
         }
 
         super.close();

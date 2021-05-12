@@ -3,7 +3,6 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
@@ -24,13 +23,7 @@ import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Objects;
-
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Dark";
@@ -45,17 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
     void initializeDBAndDAO() {
         DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
-        try {
-            dataBaseHelper.createDataBase();
-            SQLiteDatabase database = dataBaseHelper.openDataBase();
-            daoFacade = new DAOFacade(database);
-            daoFacade.getDishesFromComponentIDs(new HashSet<>(Arrays.asList(1, 2, 3, 4, 5)))
-                    .subscribeOn(Schedulers.newThread())
-                    .subscribe(System.out::println, Throwable::printStackTrace);
+        dataBaseHelper.createDataBase();
 
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-        }
+        daoFacade = new DAOFacade(dataBaseHelper.openDataBase());
     }
 
     @Override
@@ -68,12 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.carcass);
         setFrontend();
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.fragmentHolder, new ComponentsFragment(), "ingredients")
-                .commit();
     }
 
     private void setFrontend() {
@@ -113,6 +92,13 @@ public class MainActivity extends AppCompatActivity {
             menuItemsActions(item.getItemId());
             return false;
         });
+
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragmentHolder, new ComponentsFragment(), "ingredients")
+                .commit();
     }
 
     public void sureClearSelected() {

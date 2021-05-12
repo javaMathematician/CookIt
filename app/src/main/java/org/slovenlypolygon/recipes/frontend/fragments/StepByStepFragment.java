@@ -22,10 +22,10 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Step;
 
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -89,10 +89,9 @@ public class StepByStepFragment extends AbstractFragment {
                 .into((ImageView) rootView.findViewById(R.id.dishStepByStepImage));
 
         String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(
-                dish.getComponents()
+                dish.getDirtyIngredients()
                         .stream()
-                        .map(Component::getName)
-                        .sorted((t, u) -> t.length() - u.length())
+                        .sorted(Comparator.comparing(String::length).reversed())
                         .collect(Collectors.toList())
         ) + ".";
         rootView.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients.replace("---", "").replace("———", ""));

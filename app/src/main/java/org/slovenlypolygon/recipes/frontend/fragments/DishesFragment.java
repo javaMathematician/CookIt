@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DishesFragment extends AbstractFragment {
     private SearchView searchView;
@@ -103,9 +104,10 @@ public class DishesFragment extends AbstractFragment {
         recyclerView.setAdapter(dishesAdapter);
 
         DAOFacade daoFacade = ((MainActivity) getActivity()).getDaoFacade();
-        Observable<Dish> provider = selectedComponents.isEmpty() ? daoFacade.getAllDishes() : daoFacade.getDishesFromComponentIDs(selectedComponents);
+        Observable<Dish> provider = daoFacade.getDishesFromComponentIDs(selectedComponents);
 
-        provider.buffer(200, TimeUnit.MILLISECONDS)
+        provider.subscribeOn(Schedulers.newThread())
+                .buffer(200, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(constructedDish -> {
                     output.addAll(constructedDish);

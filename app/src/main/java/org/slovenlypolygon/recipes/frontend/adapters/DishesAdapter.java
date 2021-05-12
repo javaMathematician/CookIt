@@ -19,6 +19,7 @@ import com.google.common.collect.Sets;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.fragments.StepByStepFragment;
 
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
     private String accent;
@@ -52,7 +54,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     @Override
     public void onBindViewHolder(@NonNull DishViewHolder dishViewHolder, int i) {
         Dish dish = dishes.get(i);
-        Set<String> cleanedDish = dish.getCleanComponents();
+        Set<String> cleanedDish = dish.getCleanComponents().stream().map(Component::getName).collect(Collectors.toSet());
         Set<String> intersection = new HashSet<>(); // TODO: 09.05.2021
 
         if (highlight) {

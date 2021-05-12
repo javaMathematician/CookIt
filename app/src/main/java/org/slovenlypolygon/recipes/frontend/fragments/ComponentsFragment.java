@@ -18,7 +18,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
-import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 
@@ -28,7 +27,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
@@ -118,17 +116,17 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
     public void changeDatasetTo(ComponentType componentType) {
         DAOFacade dao = ((MainActivity) getActivity()).getDaoFacade();
-        Observable<Component> shownContent = dao.getComponentByType(componentType);
 
         dishComponentsAdapter = new DishComponentsAdapter(this);
-        shownContent.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+        dao.getComponentByType(componentType)
+                .subscribeOn(Schedulers.newThread())
                 .buffer(200, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(components -> {
-                    dishComponentsAdapter.setComponents(components);
+                    dishComponentsAdapter.addComponents(components);
                     dishComponentsAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
 
-        recyclerView.swapAdapter(dishComponentsAdapter, true);
+        recyclerView.setAdapter(dishComponentsAdapter);
     }
 }
