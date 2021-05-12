@@ -17,18 +17,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.ComponentType;
-import org.slovenlypolygon.recipes.backend.dao.RoomDAO;
-import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent;
+import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
+import org.slovenlypolygon.recipes.backend.mainobjects.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
@@ -117,14 +117,15 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     }
 
     public void changeDatasetTo(ComponentType componentType) {
-        RoomDAO dao = ((MainActivity) getActivity()).getRoomDAO();
-        Flowable<List<RawComponent>> shownContent = componentType == ComponentType.INGREDIENT ? dao.getAllIngredients() : dao.getAllCategories();
+        DAOFacade dao = ((MainActivity) getActivity()).getDaoFacade();
+        Observable<Component> shownContent = dao.getComponentByType(componentType);
 
         dishComponentsAdapter = new DishComponentsAdapter(this);
         shownContent.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(rawComponents -> {
-                    dishComponentsAdapter.setComponents(rawComponents);
+                .buffer(200, TimeUnit.MILLISECONDS)
+                .subscribe(components -> {
+                    dishComponentsAdapter.setComponents(components);
                     dishComponentsAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
 

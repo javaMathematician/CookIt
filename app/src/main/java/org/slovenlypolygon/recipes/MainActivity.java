@@ -3,6 +3,7 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
@@ -13,23 +14,21 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
 
-import org.slovenlypolygon.recipes.backend.ComponentType;
-import org.slovenlypolygon.recipes.backend.ConstructedDish;
-import org.slovenlypolygon.recipes.backend.GlobalDatabase;
-import org.slovenlypolygon.recipes.backend.dao.PseudoLocalDAO;
-import org.slovenlypolygon.recipes.backend.dao.RoomDAO;
-import org.slovenlypolygon.recipes.backend.mergedpojos.DishWithComponents;
+import org.slovenlypolygon.recipes.backend.DataBaseHelper;
+import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
+import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -37,45 +36,36 @@ public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Dark";
     private ComponentsFragment componentsFragment;
     private SharedPreferences sharedPreferences;
-    private PseudoLocalDAO pseudoLocalDAO;
     private DrawerLayout drawerLayout;
-    private RoomDAO roomDAO;
+    private DAOFacade daoFacade;
 
-    public RoomDAO getRoomDAO() {
-        return roomDAO;
+    public DAOFacade getDaoFacade() {
+        return daoFacade;
     }
 
-    public PseudoLocalDAO getPseudoLocalDAO() {
-        return pseudoLocalDAO;
+    void initializeDBAndDAO() {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+        try {
+            dataBaseHelper.createDataBase();
+            SQLiteDatabase database = dataBaseHelper.openDataBase();
+            daoFacade = new DAOFacade(database);
+            daoFacade.getDishesFromComponentIDs(new HashSet<>(Arrays.asList(1, 2, 3, 4, 5)))
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribe(System.out::println, Throwable::printStackTrace);
+
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
-        roomDAO = Room.databaseBuilder(getApplicationContext(), GlobalDatabase.class, "global")
-                .createFromAsset("global.sqlite3")
-                .build()
-                .getDAO();
-
-        Set<ConstructedDish> set = new HashSet<>();
-        pseudoLocalDAO = new PseudoLocalDAO(set);
-
-        roomDAO.getAllDishWithComponents()
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(dishWithComponents -> {
-                    for (DishWithComponents dish : dishWithComponents) {
-                        ConstructedDish constructedDish = new ConstructedDish();
-                        constructedDish.setDishWithComponents(dish);
-
-                        roomDAO.getDirtyComponentsFromDishID(dish.getDish().getDishID()).subscribe(constructedDish::setRawDirtyComponents, Throwable::printStackTrace);
-                        roomDAO.getStepsFromDishID(dish.getDish().getDishID()).subscribe(constructedDish::setRawSteps, Throwable::printStackTrace);
-
-                        set.add(constructedDish);
-                    }
-                }, Throwable::printStackTrace);
 
         setTheme(Objects.equals(sharedPreferences.getString(THEME, ""), "Dark") ? R.style.Dark : R.style.Light);
+        initializeDBAndDAO();
+
         setContentView(R.layout.carcass);
         setFrontend();
 

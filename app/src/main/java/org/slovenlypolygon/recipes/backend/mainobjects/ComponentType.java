@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.backend;
+package org.slovenlypolygon.recipes.backend.mainobjects;
 
 public enum ComponentType {
     INGREDIENT,

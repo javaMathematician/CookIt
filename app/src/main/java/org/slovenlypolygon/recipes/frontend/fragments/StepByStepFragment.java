@@ -22,25 +22,25 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.ConstructedDish;
-import org.slovenlypolygon.recipes.backend.rawobjects.RawDirtyComponent;
-import org.slovenlypolygon.recipes.backend.rawobjects.RawStep;
+import org.slovenlypolygon.recipes.backend.mainobjects.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.Step;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class StepByStepFragment extends AbstractFragment {
     private LinearLayout linearLayout;
-    private ConstructedDish dish;
+    private Dish dish;
 
-    public void setDish(ConstructedDish dish) {
+    public void setDish(Dish dish) {
         this.dish = dish;
     }
 
     private void addSteps() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        for (RawStep step : dish.getRawSteps()) {
+        for (Step step : dish.getSteps()) {
             CardView cardView = (CardView) inflater.inflate(R.layout.step_by_step_card, linearLayout, false);
 
             Button expandButton = cardView.findViewById(R.id.expandStepButton);
@@ -48,7 +48,7 @@ public class StepByStepFragment extends AbstractFragment {
             ImageView imageView = cardView.findViewById(R.id.stepByStepImage);
             ConstraintLayout constraintLayout = cardView.findViewById(R.id.expandableStep);
 
-            String url = step.getStepImageURL();
+            String url = step.getImageURL();
 
             if (url != null) {
                 Picasso.get()
@@ -71,7 +71,7 @@ public class StepByStepFragment extends AbstractFragment {
                 stepText.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
 
-            stepText.setText(step.getStepText());
+            stepText.setText(step.getText());
             linearLayout.addView(cardView);
         }
     }
@@ -84,14 +84,14 @@ public class StepByStepFragment extends AbstractFragment {
         linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
 
         Picasso.get()
-                .load(dish.getDishWithComponents().getDish().getDishImageURL())
+                .load(dish.getImageURL())
                 .error(R.drawable.ic_error_image)
                 .into((ImageView) rootView.findViewById(R.id.dishStepByStepImage));
 
         String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(
-                dish.getRawDirtyComponents()
+                dish.getComponents()
                         .stream()
-                        .map(RawDirtyComponent::getContent)
+                        .map(Component::getName)
                         .sorted((t, u) -> t.length() - u.length())
                         .collect(Collectors.toList())
         ) + ".";
@@ -113,7 +113,7 @@ public class StepByStepFragment extends AbstractFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         searchView.setVisibility(View.GONE);
-        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(dish.getDishWithComponents().getDish().getDishName());
+        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(dish.getName());
     }
 
     @Override

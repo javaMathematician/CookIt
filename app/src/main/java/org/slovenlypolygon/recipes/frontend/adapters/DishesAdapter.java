@@ -19,23 +19,21 @@ import com.google.common.collect.Sets;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.ConstructedDish;
-import org.slovenlypolygon.recipes.backend.rawobjects.RawComponent;
+import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.fragments.StepByStepFragment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
     private String accent;
     private final boolean highlight;
-    private List<ConstructedDish> dishes;
-    private List<ConstructedDish> original;
+    private List<Dish> dishes;
+    private List<Dish> original;
 
-    public DishesAdapter(List<ConstructedDish> dishes, boolean highlight) {
+    public DishesAdapter(List<Dish> dishes, boolean highlight) {
         this.dishes = dishes;
         this.highlight = highlight;
     }
@@ -53,8 +51,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     @Override
     public void onBindViewHolder(@NonNull DishViewHolder dishViewHolder, int i) {
-        ConstructedDish dish = dishes.get(i);
-        Set<String> cleanedDish = dish.getDishWithComponents().getComponents().parallelStream().map(RawComponent::getComponentName).collect(Collectors.toSet());
+        Dish dish = dishes.get(i);
+        Set<String> cleanedDish = dish.getCleanComponents();
         Set<String> intersection = new HashSet<>(); // TODO: 09.05.2021
 
         if (highlight) {
@@ -76,7 +74,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             dishViewHolder.ingredients.setText(Joiner.on(", ").join(intersection).toLowerCase());
         }
 
-        dishViewHolder.name.setText(dish.getDishWithComponents().getDish().getDishName());
+        dishViewHolder.name.setText(dish.getName());
         dishViewHolder.itemView.setOnClickListener(view -> {
             StepByStepFragment stepByStepFragment = new StepByStepFragment();
             stepByStepFragment.setDish(dish);
@@ -91,7 +89,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         });
 
         Picasso.get()
-                .load(dish.getDishWithComponents().getDish().getDishImageURL())
+                .load(dish.getImageURL())
                 .error(R.drawable.ic_error_image)
                 .fit()
                 .centerCrop()
@@ -109,7 +107,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
-                final List<ConstructedDish> results = new ArrayList<>();
+                final List<Dish> results = new ArrayList<>();
 
                 if (original == null) {
                     original = dishes;
@@ -117,8 +115,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
                 if (constraint != null) {
                     if (original != null && !original.isEmpty()) {
-                        for (ConstructedDish iterate : original) {
-                            String all = iterate.getDishWithComponents().getDish().getDishName().toLowerCase().replace("ё", "е");
+                        for (Dish iterate : original) {
+                            String all = iterate.getName().toLowerCase().replace("ё", "е");
 
                             if (all.contains(constraint.toString())) {
                                 results.add(iterate);
@@ -134,7 +132,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                dishes = (List<ConstructedDish>) results.values;
+                dishes = (List<Dish>) results.values;
                 notifyDataSetChanged();
             }
         };

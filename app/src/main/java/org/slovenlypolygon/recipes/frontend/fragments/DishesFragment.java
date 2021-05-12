@@ -16,8 +16,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.ConstructedDish;
-import org.slovenlypolygon.recipes.backend.dao.PseudoLocalDAO;
+import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
+import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
 import java.util.ArrayList;
@@ -96,14 +96,14 @@ public class DishesFragment extends AbstractFragment {
             recyclerView.smoothScrollToPosition(0);
         });
 
-        List<ConstructedDish> output = new ArrayList<>();
+        List<Dish> output = new ArrayList<>();
         dishesAdapter = new DishesAdapter(output, highlightSelected);
 
         dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
         recyclerView.setAdapter(dishesAdapter);
 
-        PseudoLocalDAO localDAO = ((MainActivity) getActivity()).getPseudoLocalDAO();
-        Observable<ConstructedDish> provider = selectedComponents.isEmpty() ? localDAO.getAllDishes() : localDAO.getDishesFromComponentIDs(selectedComponents);
+        DAOFacade daoFacade = ((MainActivity) getActivity()).getDaoFacade();
+        Observable<Dish> provider = selectedComponents.isEmpty() ? daoFacade.getAllDishes() : daoFacade.getDishesFromComponentIDs(selectedComponents);
 
         provider.buffer(200, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
