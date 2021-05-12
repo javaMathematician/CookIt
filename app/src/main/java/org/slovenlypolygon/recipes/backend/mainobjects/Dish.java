@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Dish {
+public class Dish implements Cloneable {
     private final int id;
     private String name;
     private String dishURL;
@@ -21,6 +21,10 @@ public class Dish {
         this.name = dishName;
         this.dishURL = dishURL;
         this.imageURL = dishImageURL;
+    }
+
+    public Dish(Dish other) {
+        this(other.id, other.name, other.imageURL, other.dishURL);
     }
 
     public String getName() {

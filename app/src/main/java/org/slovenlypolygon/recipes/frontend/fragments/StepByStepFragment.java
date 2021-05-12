@@ -31,7 +31,9 @@ import java.util.stream.Collectors;
 
 public class StepByStepFragment extends AbstractFragment {
     private LinearLayout linearLayout;
+    private ImageView imageView;
     private Dish dish;
+    private TextView dirtyIngredients;
 
     public void setDish(Dish dish) {
         this.dish = dish;
@@ -81,29 +83,9 @@ public class StepByStepFragment extends AbstractFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.step_by_step_fragment, container, false);
 
+        imageView = rootView.findViewById(R.id.dishStepByStepImage);
         linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
-
-        Picasso.get()
-                .load(dish.getImageURL())
-                .error(R.drawable.ic_error_image)
-                .into((ImageView) rootView.findViewById(R.id.dishStepByStepImage));
-
-        String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(
-                dish.getDirtyIngredients()
-                        .stream()
-                        .sorted(Comparator.comparing(String::length).reversed())
-                        .collect(Collectors.toList())
-        ) + ".";
-        rootView.<TextView>findViewById(R.id.stepByStepIngredients).setText(ingredients.replace("---", "").replace("———", ""));
-
-        addSteps();
-
-        View bottomEmptySpace = new View(getContext());
-        bottomEmptySpace.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                Resources.getSystem().getDisplayMetrics().heightPixels / 2
-        ));
-        linearLayout.addView(bottomEmptySpace);
+        dirtyIngredients = rootView.findViewById(R.id.stepByStepIngredients);
 
         return rootView;
     }
@@ -111,8 +93,41 @@ public class StepByStepFragment extends AbstractFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         searchView.setVisibility(View.GONE);
-        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(dish.getName());
+        dish = ((MainActivity) Objects.requireNonNull(getActivity())).getDaoFacade().getRichDish(dish);
+        Objects.requireNonNull(((MainActivity) getActivity()).getSupportActionBar()).setTitle(dish.getName());
+
+        setupPreparedFrontend();
+    }
+
+    private void setupPreparedFrontend() {
+        Picasso.get().load(dish.getImageURL()).error(R.drawable.ic_error_image).into(imageView);
+
+        addDirtyIngredients();
+        addSteps();
+        addEmptySpace();
+    }
+
+    private void addDirtyIngredients() {
+        String ingredients = getResources().getString(R.string.you_will_need) + "\n    " + Joiner.on(",\n    ").join(
+                dish.getDirtyIngredients()
+                        .stream()
+                        .sorted(Comparator.comparing(String::length).reversed())
+                        .collect(Collectors.toList())
+        ) + ".";
+
+        dirtyIngredients.setText(ingredients);
+    }
+
+    private void addEmptySpace() {
+        View bottomEmptySpace = new View(getContext());
+        bottomEmptySpace.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                Resources.getSystem().getDisplayMetrics().heightPixels / 2
+        ));
+
+        linearLayout.addView(bottomEmptySpace);
     }
 
     @Override

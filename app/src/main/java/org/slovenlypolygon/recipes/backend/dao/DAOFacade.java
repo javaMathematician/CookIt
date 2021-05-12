@@ -65,8 +65,8 @@ public class DAOFacade {
             Set<Component> components = new TreeSet<>(Comparator.comparing(Component::getName));
 
             while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndex("id"));
-                String name = cursor.getString(cursor.getColumnIndex("name"));
+                int id = cursor.getInt(cursor.getColumnIndex("componentID"));
+                String name = cursor.getString(cursor.getColumnIndex("componentName"));
                 String imageURL = cursor.getString(cursor.getColumnIndex("componentImageURL"));
 
                 components.add(new Component(id, ComponentType.INGREDIENT, name, imageURL));
@@ -135,7 +135,7 @@ public class DAOFacade {
 
             while (cursor.moveToNext()) {
                 String text = cursor.getString(cursor.getColumnIndex("stepText"));
-                String stepImageUrl = cursor.getString(cursor.getColumnIndex("stepImageUrl"));
+                String stepImageUrl = cursor.getString(cursor.getColumnIndex("stepImageURL"));
 
                 Step step = new Step(text);
                 if (stepImageUrl != null && !stepImageUrl.isEmpty()) {
@@ -147,5 +147,13 @@ public class DAOFacade {
 
             dish.setSteps(steps);
         }
+    }
+
+    public Dish getRichDish(Dish dish) {
+        Dish clone = new Dish(dish);
+
+        fillDirtyIngredients(clone);
+        fillSteps(clone);
+        return clone;
     }
 }
