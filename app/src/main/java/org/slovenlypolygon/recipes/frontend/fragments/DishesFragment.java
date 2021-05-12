@@ -31,12 +31,14 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DishesFragment extends AbstractFragment {
+    private boolean highlightSelected;
+    private boolean initialized;
+
     private SearchView searchView;
     private RecyclerView recyclerView;
+    private DishesAdapter dishesAdapter;
     private FloatingActionButton scrollToTop;
     private Set<Integer> selectedComponents;
-    private DishesAdapter dishesAdapter;
-    private boolean highlightSelected;
 
     public void setSelectedComponentIDs(Set<Integer> selectedComponentIDs) {
         this.selectedComponents = selectedComponentIDs;
@@ -96,11 +98,22 @@ public class DishesFragment extends AbstractFragment {
             recyclerView.smoothScrollToPosition(0);
         });
 
+        if (!initialized) {
+            initializeAdapter();
+            initialized = true;
+        }
+
+        recyclerView.setAdapter(dishesAdapter);
+        return rootView;
+    }
+
+    private void initializeAdapter() {
         List<Dish> output = new ArrayList<>();
         dishesAdapter = new DishesAdapter(output, highlightSelected);
 
         dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
-        recyclerView.setAdapter(dishesAdapter);
+        dishesAdapter.setSelectedIngredients(selectedComponents);
+        dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) DishesFragment.this.getActivity());
 
         DAOFacade daoFacade = ((MainActivity) getActivity()).getDaoFacade();
         Observable<Dish> provider = daoFacade.getDishesFromComponentIDs(selectedComponents);
@@ -113,6 +126,5 @@ public class DishesFragment extends AbstractFragment {
                     dishesAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
 
-        return rootView;
     }
 }

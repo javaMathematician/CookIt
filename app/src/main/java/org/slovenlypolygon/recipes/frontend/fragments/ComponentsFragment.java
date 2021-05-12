@@ -20,6 +20,7 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
+import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBridge;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -30,6 +31,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
+    private boolean initialized;
+
     private RecyclerView recyclerView;
     private Button changeViewIngredient;
     private FloatingActionButton scrollToTop;
@@ -80,7 +83,11 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         recyclerView.setAdapter(dishComponentsAdapter);
         changeViewIngredient.setOnClickListener(t -> goToRecipes(true));
 
-        changeDatasetTo(ComponentType.INGREDIENT);
+        if (!initialized) {
+            changeDatasetTo(ComponentType.INGREDIENT);
+            initialized = true;
+        }
+
         counterChanged(dishComponentsAdapter.getCounter()); // pseudo-initializer
         return rootView;
     }
@@ -112,6 +119,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
     public void clearSelectedComponents() {
         componentIDs.clear();
+        dishComponentsAdapter.notifyDataSetChanged();
     }
 
     public void changeDatasetTo(ComponentType componentType) {

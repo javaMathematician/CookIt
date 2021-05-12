@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
-import org.slovenlypolygon.recipes.frontend.fragments.FragmentAdapterBridge;
+import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBridge;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

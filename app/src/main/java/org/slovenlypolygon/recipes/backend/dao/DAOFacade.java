@@ -3,6 +3,8 @@ package org.slovenlypolygon.recipes.backend.dao;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.common.base.Joiner;
+
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
@@ -29,25 +31,24 @@ public class DAOFacade {
         }
 
         return Observable.create(emitter -> {
-            for (int iterate : componentIDs) { // входим в поле одного ингредиента
-                String query = "SELECT * FROM component " +
-                        "JOIN dishComponentCrossReference " +
-                        "ON component.componentID = dishComponentCrossReference.componentID " +
-                        "JOIN dish ON dish.dishID = dishComponentCrossReference.dishID " +
-                        "WHERE component.componentID = " + iterate; // все блюда на текущий ингредиент
+            String joinedIDs = Joiner.on(", ").join(componentIDs);
+            String query = "SELECT * FROM component " +
+                    "JOIN dishComponentCrossReference " +
+                    "ON component.componentID = dishComponentCrossReference.componentID " +
+                    "JOIN dish ON dish.dishID = dishComponentCrossReference.dishID " +
+                    "WHERE component.componentID IN (" + joinedIDs + ")";
 
-                try (Cursor cursor = database.rawQuery(query, null)) {
-                    while (cursor.moveToNext()) {
-                        int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
-                        String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
-                        String dishImageURL = cursor.getString(cursor.getColumnIndex("dishImageURL"));
-                        String dishURL = cursor.getString(cursor.getColumnIndex("dishURL"));
+            try (Cursor cursor = database.rawQuery(query, null)) {
+                while (cursor.moveToNext()) {
+                    int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
+                    String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
+                    String dishImageURL = cursor.getString(cursor.getColumnIndex("dishImageURL"));
+                    String dishURL = cursor.getString(cursor.getColumnIndex("dishURL"));
 
-                        Dish dish = new Dish(dishID, dishName, dishImageURL, dishURL);
+                    Dish dish = new Dish(dishID, dishName, dishImageURL, dishURL);
 
-                        fillCleanIngredients(dish);
-                        emitter.onNext(dish);
-                    }
+                    fillCleanIngredients(dish);
+                    emitter.onNext(dish);
                 }
             }
 
@@ -59,7 +60,7 @@ public class DAOFacade {
         String query = "SELECT component.componentID, componentName, componentImageURL FROM component " +
                 "JOIN dishComponentCrossReference ON dishComponentCrossReference.componentID = component.componentID " +
                 "JOIN dish ON dishComponentCrossReference.dishID = dish.dishID " +
-                "WHERE dish.dishID = 1 AND qIsIngredient = 1";
+                "WHERE dish.dishID = " + dish.getId() + " AND qIsIngredient = 1";
 
         try (Cursor cursor = database.rawQuery(query, null)) {
             Set<Component> components = new TreeSet<>(Comparator.comparing(Component::getName));
@@ -128,7 +129,7 @@ public class DAOFacade {
     }
 
     private void fillSteps(Dish dish) {
-        String query = "SELECT stepText, stepImageUrl FROM step WHERE dishID = " + dish.getId();
+        String query = "SELECT stepText, stepImageUrl FROM step WHERE dishID = " + dish.getId() + " ORDER BY localOrder";
 
         try (Cursor cursor = database.rawQuery(query, null)) {
             List<Step> steps = new ArrayList<>();
@@ -155,5 +156,14 @@ public class DAOFacade {
         fillDirtyIngredients(clone);
         fillSteps(clone);
         return clone;
+    }
+
+    public String getCleanComponentNameByID(int componentID) {
+        String query = "SELECT componentName FROM component WHERE componentID = " + componentID;
+
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            cursor.moveToFirst();
+            return cursor.getString(0);
+        }
     }
 }

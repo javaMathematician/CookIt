@@ -27,6 +27,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Dark";
+
     private ComponentsFragment componentsFragment;
     private SharedPreferences sharedPreferences;
     private DrawerLayout drawerLayout;
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sureClearSelected() {
         componentsFragment.clearSelectedComponents();
+
     }
 
     private void menuItemsActions(int id) {
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             sureClearSelected();
             changeComponentView(ComponentType.INGREDIENT);
         } else if (id == R.id.toDishes) {
+            sureClearSelected();
             componentsFragment.goToRecipes(false);
         } else if (id == R.id.toCategories) {
             sureClearSelected();

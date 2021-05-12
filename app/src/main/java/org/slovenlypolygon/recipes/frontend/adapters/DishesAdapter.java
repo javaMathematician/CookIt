@@ -22,9 +22,9 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.fragments.StepByStepFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.bridges.ActivityAdapterBridge;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,11 +35,20 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     private String accent;
     private List<Dish> dishes;
     private List<Dish> original;
-
+    private Set<Integer> selectedIngredients;
+    private ActivityAdapterBridge activityAdapterBridge;
 
     public DishesAdapter(List<Dish> dishes, boolean highlight) {
         this.dishes = dishes;
         this.highlight = highlight;
+    }
+
+    public void setActivityAdapterBridge(ActivityAdapterBridge activityAdapterBridge) {
+        this.activityAdapterBridge = activityAdapterBridge;
+    }
+
+    public void setSelectedIngredients(Set<Integer> selectedIngredients) {
+        this.selectedIngredients = selectedIngredients;
     }
 
     @Override
@@ -55,13 +64,13 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     @Override
     public void onBindViewHolder(@NonNull DishViewHolder dishViewHolder, int i) {
-        Dish dish = dishes.get(i);
-        Set<String> cleanedDish = dish.getCleanComponents().stream().map(Component::getName).collect(Collectors.toSet());
-        Set<String> intersection = new HashSet<>(); // TODO: 09.05.2021
+        Dish dish = activityAdapterBridge.getActivity().getDaoFacade().getRichDish(dishes.get(i));
+        Set<Integer> cleanedDish = dish.getCleanComponents().stream().map(Component::getId).collect(Collectors.toSet());
+        Set<Integer> intersection = Sets.intersection(cleanedDish, selectedIngredients);
 
         if (highlight) {
-            String selectedText = Joiner.on(", ").join(intersection).toLowerCase();
-            String text = Joiner.on(", ").join(Sets.difference(cleanedDish, intersection)).toLowerCase();
+            String selectedText = Joiner.on(", ").join(namesFromIDs(intersection));
+            String text = Joiner.on(", ").join(namesFromIDs(Sets.difference(cleanedDish, intersection)));
             String output;
 
             if (selectedText.isEmpty()) {
@@ -75,7 +84,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
             output = output.replace("\n", "");
             dishViewHolder.ingredients.setText(Html.fromHtml(output, Html.FROM_HTML_MODE_LEGACY));
         } else {
-            dishViewHolder.ingredients.setText(Joiner.on(", ").join(intersection).toLowerCase());
+            dishViewHolder.ingredients.setText(Joiner.on(", ").join(dish.getCleanComponents()).toLowerCase());
         }
 
         dishViewHolder.name.setText(dish.getName());
@@ -103,6 +112,12 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    private Set<String> namesFromIDs(Set<Integer> ids) {
+        return ids.stream()
+                .map(t -> activityAdapterBridge.getActivity().getDaoFacade().getCleanComponentNameByID(t).toLowerCase())
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -136,7 +151,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                dishes = (List<Dish>) results.values;
+                dishes = results.values != null ? (List<Dish>) results.values : new ArrayList<Dish>();
                 notifyDataSetChanged();
             }
         };
