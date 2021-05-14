@@ -32,11 +32,12 @@ public class DAOFacade {
 
         return Observable.create(emitter -> {
             String joinedIDs = Joiner.on(", ").join(componentIDs);
-            String query = "SELECT DISTINCT * FROM component " +
+            String query = "SELECT * FROM component " +
                     "JOIN dishComponentCrossReference " +
                     "ON component.componentID = dishComponentCrossReference.componentID " +
                     "JOIN dish ON dish.dishID = dishComponentCrossReference.dishID " +
-                    "WHERE component.componentID IN (" + joinedIDs + ")";
+                    "WHERE component.componentID IN (" + joinedIDs + ") " +
+                    "GROUP BY dish.dishName";
 
             try (Cursor cursor = database.rawQuery(query, null)) {
                 while (cursor.moveToNext()) {
@@ -78,7 +79,7 @@ public class DAOFacade {
     }
 
     private void fillDirtyIngredients(Dish dish) {
-        String query = "SELECT content from rawIngredient where dishID = " + dish.getId();
+        String query = "SELECT content FROM rawIngredient WHERE dishID = " + dish.getId();
         Set<String> dirtyIngredients = new TreeSet<>(Comparator.comparing(String::length));
 
         try (Cursor cursor = database.rawQuery(query, null)) {
@@ -92,7 +93,7 @@ public class DAOFacade {
 
     public Observable<Dish> getAllDishes() {
         return Observable.create(emitter -> {
-            try (Cursor cursor = database.rawQuery("SELECT DISTINCT * FROM dish", null)) {
+            try (Cursor cursor = database.rawQuery("SELECT * FROM dish", null)) {
                 while (cursor.moveToNext()) {
                     int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
                     String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
