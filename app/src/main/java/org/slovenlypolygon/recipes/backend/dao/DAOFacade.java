@@ -32,7 +32,7 @@ public class DAOFacade {
 
         return Observable.create(emitter -> {
             String joinedIDs = Joiner.on(", ").join(componentIDs);
-            String query = "SELECT * FROM component " +
+            String query = "SELECT DISTINCT * FROM component " +
                     "JOIN dishComponentCrossReference " +
                     "ON component.componentID = dishComponentCrossReference.componentID " +
                     "JOIN dish ON dish.dishID = dishComponentCrossReference.dishID " +
@@ -92,7 +92,7 @@ public class DAOFacade {
 
     public Observable<Dish> getAllDishes() {
         return Observable.create(emitter -> {
-            try (Cursor cursor = database.rawQuery("SELECT * FROM dish", null)) {
+            try (Cursor cursor = database.rawQuery("SELECT DISTINCT * FROM dish", null)) {
                 while (cursor.moveToNext()) {
                     int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
                     String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
@@ -114,7 +114,7 @@ public class DAOFacade {
         return Observable.create(emitter -> {
             int booleState = type == ComponentType.CATEGORY ? 0 : 1;
 
-            try (Cursor cursor = database.rawQuery("SELECT * FROM component WHERE qIsIngredient = " + booleState, null)) {
+            try (Cursor cursor = database.rawQuery("SELECT DISTINCT * FROM component WHERE qIsIngredient = " + booleState, null)) {
                 while (cursor.moveToNext()) {
                     int id = cursor.getInt(cursor.getColumnIndex("componentID"));
                     String name = cursor.getString(cursor.getColumnIndex("componentName"));

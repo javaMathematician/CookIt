@@ -7,11 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Dish implements Cloneable {
+public class Dish {
+    private final String imageURL;
+    private final String dishURL;
+    private final String name;
     private final int id;
-    private String name;
-    private String dishURL;
-    private String imageURL;
+
     private List<Step> steps = new ArrayList<>();
     private Set<String> dirtyIngredients = new HashSet<>();
     private Set<Component> cleanComponents = new HashSet<>();
@@ -33,10 +34,6 @@ public class Dish implements Cloneable {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getImageURL() {

@@ -16,12 +16,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +36,7 @@ public class DishesFragment extends AbstractFragment {
     private DishesAdapter dishesAdapter;
     private FloatingActionButton scrollToTop;
     private Set<Integer> selectedComponents;
+    private Observable<Dish> provider;
 
     public void setSelectedComponentIDs(Set<Integer> selectedComponentIDs) {
         this.selectedComponents = selectedComponentIDs;
@@ -100,31 +98,33 @@ public class DishesFragment extends AbstractFragment {
 
         if (!initialized) {
             initializeAdapter();
+            getMatches();
             initialized = true;
         }
 
-        recyclerView.setAdapter(dishesAdapter);
+        recyclerView.swapAdapter(dishesAdapter, true);
+
         return rootView;
     }
 
     private void initializeAdapter() {
-        List<Dish> output = new ArrayList<>();
-        dishesAdapter = new DishesAdapter(output, highlightSelected);
+        dishesAdapter = new DishesAdapter(highlightSelected);
 
         dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
         dishesAdapter.setSelectedIngredients(selectedComponents);
         dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) DishesFragment.this.getActivity());
 
-        DAOFacade daoFacade = ((MainActivity) getActivity()).getDaoFacade();
-        Observable<Dish> provider = daoFacade.getDishesFromComponentIDs(selectedComponents);
+        provider = ((MainActivity) getActivity()).getDaoFacade().getDishesFromComponentIDs(selectedComponents);
+    }
 
+    private void getMatches() {
+        dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
                 .buffer(200, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(constructedDish -> {
-                    output.addAll(constructedDish);
+                    dishesAdapter.getDishes().addAll(constructedDish);
                     dishesAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
-
     }
 }

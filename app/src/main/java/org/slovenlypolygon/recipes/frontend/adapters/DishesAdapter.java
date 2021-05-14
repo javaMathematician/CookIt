@@ -33,14 +33,21 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     private final boolean highlight;
 
     private String accent;
-    private List<Dish> dishes;
-    private List<Dish> original;
+    private List<Dish> dishes = new ArrayList<>();
+    private List<Dish> original = new ArrayList<>();
     private Set<Integer> selectedIngredients;
     private ActivityAdapterBridge activityAdapterBridge;
 
-    public DishesAdapter(List<Dish> dishes, boolean highlight) {
-        this.dishes = dishes;
+    public DishesAdapter(boolean highlight) {
         this.highlight = highlight;
+    }
+
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void clearDataset() {
+        dishes.clear();
     }
 
     public void setActivityAdapterBridge(ActivityAdapterBridge activityAdapterBridge) {
