@@ -47,7 +47,7 @@
         tools:ignore="MissingConstraints" />
 
     <ImageButton
-        android:id="@+id/themeBtn"
+        android:id="@+id/themeButton"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_margin="10dp"
