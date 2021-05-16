@@ -1,23 +1,23 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-        android:width="256dp"
-        android:height="256dp"
-        android:viewportWidth="64"
-        android:viewportHeight="64">
-    <path
-        android:fillColor="?attr/cardBackgroundColor"
-        android:pathData="M0,0h64v64h-64z" />
-    <path
-        android:fillAlpha="0.36"
-        android:fillColor="#FF000000"
-        android:pathData="M32.92,32.5m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
-        android:strokeAlpha="0.36" />
-    <path
-        android:fillColor="?attr/strokeColor"
-        android:pathData="M32,32m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0" />
-    <path
-        android:fillColor="#fff"
-        android:pathData="M31.995,19.31L31.995,19.31A1.695,1.7 0,0 1,33.69 21.01L33.69,33.03A1.695,1.7 0,0 1,31.995 34.73L31.995,34.73A1.695,1.7 0,0 1,30.3 33.03L30.3,21.01A1.695,1.7 0,0 1,31.995 19.31z" />
-    <path
-        android:fillColor="#fff"
-        android:pathData="M30.3,39.48a1.7,1.56 0,1 0,3.4 0a1.7,1.56 0,1 0,-3.4 0z" />
+    android:width="256dp"
+    android:height="256dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+  <path
+      android:fillColor="?attr/cardBackgroundColor"
+      android:pathData="M0,0h64v64h-64z" />
+  <path
+      android:fillAlpha="0.36"
+      android:fillColor="#FF000000"
+      android:pathData="M32.92,32.5m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
+      android:strokeAlpha="0.36" />
+  <path
+      android:fillColor="?attr/strokeColor"
+      android:pathData="M32,32m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0" />
+  <path
+      android:fillColor="#fff"
+      android:pathData="M31.995,19.31L31.995,19.31A1.695,1.7 0,0 1,33.69 21.01L33.69,33.03A1.695,1.7 0,0 1,31.995 34.73L31.995,34.73A1.695,1.7 0,0 1,30.3 33.03L30.3,21.01A1.695,1.7 0,0 1,31.995 19.31z" />
+  <path
+      android:fillColor="#fff"
+      android:pathData="M30.3,39.48a1.7,1.56 0,1 0,3.4 0a1.7,1.56 0,1 0,-3.4 0z" />
 </vector>

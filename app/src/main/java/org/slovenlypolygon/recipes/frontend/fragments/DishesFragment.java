@@ -111,7 +111,7 @@ public class DishesFragment extends AbstractFragment {
         List<Dish> output = new ArrayList<>();
         dishesAdapter = new DishesAdapter(output, highlightSelected);
 
-        dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
+        dishesAdapter.setAccent(Objects.requireNonNull(getActivity()).getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "").equals("Dark") ? "#04B97F" : "#BB86FC");
         dishesAdapter.setSelectedIngredients(selectedComponents);
         dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) DishesFragment.this.getActivity());
 

@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
@@ -86,12 +88,28 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
             bridge.get().counterChanged(counter);
         });
 
-        Picasso.get()
-                .load(ingredient.getImageURL())
-                .error(R.drawable.ic_error_image)
+        Picasso picasso = Picasso.get();
+        picasso.setIndicatorsEnabled(false);
+        picasso.load(ingredient.getImageURL())
+                .networkPolicy(NetworkPolicy.OFFLINE)
                 .fit()
                 .centerCrop()
-                .into(ingredientViewHolder.imageView);
+                .into(ingredientViewHolder.imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        picasso.setIndicatorsEnabled(false);
+                        picasso.load(ingredient.getImageURL())
+                                .error(R.drawable.ic_error_image)
+                                .fit()
+                                .centerCrop()
+                                .into(ingredientViewHolder.imageView);
+                    }
+                });
     }
 
     @Override

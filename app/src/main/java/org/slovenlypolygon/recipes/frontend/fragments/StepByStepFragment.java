@@ -18,6 +18,8 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.common.base.Joiner;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.MainActivity;
@@ -53,10 +55,28 @@ public class StepByStepFragment extends AbstractFragment {
             String url = step.getImageURL();
 
             if (url != null) {
-                Picasso.get()
-                        .load(url)
-                        .error(R.drawable.ic_error_image)
-                        .into(imageView);
+                Picasso picasso = Picasso.get();
+                picasso.setIndicatorsEnabled(false);
+                picasso.load(url)
+                        .networkPolicy(NetworkPolicy.OFFLINE)
+                        .fit()
+                        .centerCrop()
+                        .into(imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                picasso.setIndicatorsEnabled(false);
+                                picasso.load(url)
+                                        .error(R.drawable.ic_error_image)
+                                        .fit()
+                                        .centerCrop()
+                                        .into(imageView);
+                            }
+                        });
 
                 expandButton.setVisibility(View.VISIBLE);
                 cardView.setOnClickListener(v -> {
@@ -102,8 +122,28 @@ public class StepByStepFragment extends AbstractFragment {
     }
 
     private void setupPreparedFrontend() {
-        Picasso.get().load(dish.getImageURL()).error(R.drawable.ic_error_image).into(imageView);
+        Picasso picasso = Picasso.get();
+        picasso.setIndicatorsEnabled(false);
+        picasso.load(dish.getImageURL())
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .fit()
+                .centerCrop()
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
 
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        picasso.setIndicatorsEnabled(false);
+                        picasso.load(dish.getImageURL())
+                                .error(R.drawable.ic_error_image)
+                                .fit()
+                                .centerCrop()
+                                .into(imageView);
+                    }
+                });
         addDirtyIngredients();
         addSteps();
         addEmptySpace();
