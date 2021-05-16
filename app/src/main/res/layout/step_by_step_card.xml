@@ -55,7 +55,7 @@
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="TODO"
-                android:src="@mipmap/logo_tamperone_main_foreground"
+                android:src="@mipmap/logo_cook_it_main_foreground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
