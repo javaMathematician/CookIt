@@ -26,7 +26,7 @@ import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQ
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private final static String THEME = "Dark";
+    private final static String THEME = "Theme";
 
     private ComponentsFragment componentsFragment;
     private SharedPreferences sharedPreferences;
@@ -75,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout.addDrawerListener(toggle);
         drawerLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            ImageButton themeBtn = findViewById(R.id.themeBtn);
-            themeBtn.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, ""), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
-            themeBtn.setOnClickListener(item -> {
+            ImageButton themeButton = findViewById(R.id.themeButton);
+            themeButton.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, ""), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
+            themeButton.setOnClickListener(item -> {
                 new RestartAppForThemeQDialog().show(getSupportFragmentManager(), "restart_q");
                 drawerLayout.closeDrawer(GravityCompat.START);
             });
