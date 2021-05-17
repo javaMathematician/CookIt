@@ -23,7 +23,6 @@ import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBridge;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -48,7 +47,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         scrollToTop = rootView.findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
-            if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
+            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
                 recyclerView.scrollToPosition(15);
             }
 
@@ -99,8 +98,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         dishesFragment.setHighlightSelected(highlight);
         dishesFragment.setSelectedComponentIDs(dishComponentsAdapter.getSelectedIDs());
 
-        Objects.requireNonNull(getActivity())
-                .getSupportFragmentManager()
+        getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragmentHolder, dishesFragment, "dishes")
@@ -114,7 +112,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         changeViewIngredient.setEnabled(counter != 0);
         changeViewIngredient.setFocusable(counter == 0);
         changeViewIngredient.setElevation(counter == 0 ? 0 : 16);
-        changeViewIngredient.setBackground(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), counter == 0 ? R.drawable.to_recipes_btn_disabled : R.drawable.to_recipes_button_enabled_with_mask));
+        changeViewIngredient.setBackground(AppCompatResources.getDrawable(getContext(), counter == 0 ? R.drawable.to_recipes_btn_disabled : R.drawable.to_recipes_button_enabled_with_mask));
     }
 
     public void clearSelectedComponents() {

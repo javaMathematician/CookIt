@@ -9,13 +9,11 @@ import androidx.fragment.app.DialogFragment;
 
 import org.slovenlypolygon.recipes.MainActivity;
 
-import java.util.Objects;
-
 public class RestartAppForThemeQDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle("Перезапустить?")
                 .setMessage("Для измененения темы придётся перезапустить приложение. Сделать это сейчас?")
                 .setPositiveButton("да", (dialog, id) -> ((MainActivity) getActivity()).sureChangeThemeAndRestart())

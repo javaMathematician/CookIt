@@ -98,7 +98,6 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                 .into(ingredientViewHolder.imageView, new Callback() {
                     @Override
                     public void onSuccess() {
-
                     }
 
                     @Override

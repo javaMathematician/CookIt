@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         toggle.setDrawerIndicatorEnabled(true);
 
         toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         navigationView.setItemIconTintList(null);
 
         drawerLayout.addDrawerListener(toggle);

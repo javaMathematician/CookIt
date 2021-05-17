@@ -9,8 +9,6 @@ import androidx.fragment.app.DialogFragment;
 
 import org.slovenlypolygon.recipes.MainActivity;
 
-import java.util.Objects;
-
 public class SureClearSelectedQDialog extends DialogFragment {
     @NonNull
     @Override
@@ -20,7 +18,7 @@ public class SureClearSelectedQDialog extends DialogFragment {
         String accept = "Да, хочу сбросить";
         String decline = "Нет, я передумал";
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title);
         builder.setMessage(message);
 

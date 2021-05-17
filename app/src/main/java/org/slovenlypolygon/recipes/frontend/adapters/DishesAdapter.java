@@ -120,7 +120,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 .into(dishViewHolder.imageView, new Callback() {
                     @Override
                     public void onSuccess() {
-
                     }
 
                     @Override

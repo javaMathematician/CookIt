@@ -51,12 +51,12 @@ public class DishesFragment extends AbstractFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        searchView = Objects.requireNonNull(getActivity()).findViewById(R.id.searchView);
+        searchView = getActivity().findViewById(R.id.searchView);
         searchView.setOnClickListener(view -> searchView.setIconified(false));
 
         scrollToTop = rootView.findViewById(R.id.floatingActionButtonInRecipes);
         scrollToTop.setOnClickListener(view -> {
-            if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
+            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
                 recyclerView.scrollToPosition(15);
             }
 
@@ -89,7 +89,7 @@ public class DishesFragment extends AbstractFragment {
         initializeVariablesForDishes(rootView);
 
         scrollToTop.setOnClickListener(view -> {
-            if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
+            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
                 recyclerView.scrollToPosition(15);
             }
 
@@ -110,7 +110,7 @@ public class DishesFragment extends AbstractFragment {
     private void initializeAdapter() {
         dishesAdapter = new DishesAdapter(highlightSelected);
 
-        dishesAdapter.setAccent(Objects.requireNonNull(getActivity()).getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "").equals("Dark") ? "#04B97F" : "#BB86FC");
+        dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#BB86FC");
         dishesAdapter.setSelectedIngredients(selectedComponents);
         dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) DishesFragment.this.getActivity());
 

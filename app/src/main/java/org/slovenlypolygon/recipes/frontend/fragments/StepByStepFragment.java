@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -28,7 +29,6 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Step;
 
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class StepByStepFragment extends AbstractFragment {
@@ -54,7 +54,7 @@ public class StepByStepFragment extends AbstractFragment {
 
             String url = step.getImageURL();
 
-            if (url != null) {
+            if (url != null && !url.isEmpty()) {
                 Picasso picasso = Picasso.get();
                 picasso.setIndicatorsEnabled(false);
                 picasso.load(url)
@@ -65,7 +65,6 @@ public class StepByStepFragment extends AbstractFragment {
                         .into(imageView, new Callback() {
                             @Override
                             public void onSuccess() {
-
                             }
 
                             @Override
@@ -117,8 +116,8 @@ public class StepByStepFragment extends AbstractFragment {
         super.onActivityCreated(savedInstanceState);
 
         searchView.setVisibility(View.GONE);
-        dish = ((MainActivity) Objects.requireNonNull(getActivity())).getDaoFacade().getRichDish(dish);
-        Objects.requireNonNull(((MainActivity) getActivity()).getSupportActionBar()).setTitle(dish.getName());
+        dish = ((MainActivity) getActivity()).getDaoFacade().getRichDish(dish);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(dish.getName());
 
         setupPreparedFrontend();
     }
@@ -134,7 +133,6 @@ public class StepByStepFragment extends AbstractFragment {
                 .into(imageView, new Callback() {
                     @Override
                     public void onSuccess() {
-
                     }
 
                     @Override
@@ -148,6 +146,7 @@ public class StepByStepFragment extends AbstractFragment {
                                 .into(imageView);
                     }
                 });
+
         addDirtyIngredients();
         addSteps();
         addEmptySpace();

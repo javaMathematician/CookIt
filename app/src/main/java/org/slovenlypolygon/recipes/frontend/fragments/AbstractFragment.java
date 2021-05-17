@@ -13,15 +13,13 @@ import androidx.fragment.app.Fragment;
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 
-import java.util.Objects;
-
 public abstract class AbstractFragment extends Fragment {
     protected SearchView searchView;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(R.string.app_name);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
 
         searchView = getActivity().findViewById(R.id.searchView);
 
