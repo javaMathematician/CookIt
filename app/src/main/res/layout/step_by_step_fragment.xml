@@ -31,7 +31,7 @@
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="?attr/textCardColor"
+                android:background="?attr/cardBackgroundColor"
                 android:contentDescription="@string/dish_image_step_by_step"
                 android:src="@android:mipmap/sym_def_app_icon" />
 

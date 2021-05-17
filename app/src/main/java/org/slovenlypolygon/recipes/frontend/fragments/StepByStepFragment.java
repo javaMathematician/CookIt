@@ -58,6 +58,7 @@ public class StepByStepFragment extends AbstractFragment {
                 Picasso picasso = Picasso.get();
                 picasso.setIndicatorsEnabled(false);
                 picasso.load(url)
+                        .placeholder(R.drawable.loading_animation)
                         .networkPolicy(NetworkPolicy.OFFLINE)
                         .fit()
                         .centerCrop()
@@ -71,7 +72,8 @@ public class StepByStepFragment extends AbstractFragment {
                             public void onError(Exception e) {
                                 picasso.setIndicatorsEnabled(false);
                                 picasso.load(url)
-                                        .error(R.drawable.ic_error_image)
+                                        .placeholder(R.drawable.loading_animation)
+                                        .error(R.drawable.error_image)
                                         .fit()
                                         .centerCrop()
                                         .into(imageView);
@@ -125,6 +127,7 @@ public class StepByStepFragment extends AbstractFragment {
         Picasso picasso = Picasso.get();
         picasso.setIndicatorsEnabled(false);
         picasso.load(dish.getImageURL())
+                .placeholder(R.drawable.loading_animation)
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .fit()
                 .centerCrop()
@@ -138,7 +141,8 @@ public class StepByStepFragment extends AbstractFragment {
                     public void onError(Exception e) {
                         picasso.setIndicatorsEnabled(false);
                         picasso.load(dish.getImageURL())
-                                .error(R.drawable.ic_error_image)
+                                .placeholder(R.drawable.loading_animation)
+                                .error(R.drawable.error_image)
                                 .fit()
                                 .centerCrop()
                                 .into(imageView);

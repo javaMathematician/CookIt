@@ -91,6 +91,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         Picasso picasso = Picasso.get();
         picasso.setIndicatorsEnabled(false);
         picasso.load(ingredient.getImageURL())
+                .placeholder(R.drawable.loading_animation)
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .fit()
                 .centerCrop()
@@ -104,7 +105,8 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                     public void onError(Exception e) {
                         picasso.setIndicatorsEnabled(false);
                         picasso.load(ingredient.getImageURL())
-                                .error(R.drawable.ic_error_image)
+                                .placeholder(R.drawable.loading_animation)
+                                .error(R.drawable.error_image)
                                 .fit()
                                 .centerCrop()
                                 .into(ingredientViewHolder.imageView);
