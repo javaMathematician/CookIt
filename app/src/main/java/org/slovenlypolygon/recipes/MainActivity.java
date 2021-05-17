@@ -146,8 +146,6 @@ public class MainActivity extends AppCompatActivity {
                 .putString(THEME, Objects.equals(sharedPreferences.getString(THEME, "Dark"), "Light") ? "Dark" : "Light")
                 .apply();
 
-        setTheme(Objects.equals(sharedPreferences.getString(THEME, "Dark"), "Dark") ? R.style.Light : R.style.Dark);
-
         Intent intent = getIntent();
         finish();
         startActivity(intent);
