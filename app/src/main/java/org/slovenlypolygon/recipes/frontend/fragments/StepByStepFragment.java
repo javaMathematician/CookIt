@@ -32,9 +32,9 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class StepByStepFragment extends AbstractFragment {
-    private LinearLayout linearLayout;
-    private ImageView imageView;
     private Dish dish;
+    private ImageView imageView;
+    private LinearLayout linearLayout;
     private TextView dirtyIngredients;
 
     public void setDish(Dish dish) {
