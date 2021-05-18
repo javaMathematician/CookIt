@@ -4,61 +4,61 @@
     android:viewportWidth="368.5"
     android:viewportHeight="368.5">
     <path
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M184.25,2.83L184.25,2.83A18.39,18.39 0,0 1,202.64 21.22L202.64,60.58A18.39,18.39 0,0 1,184.25 78.97L184.25,78.97A18.39,18.39 0,0 1,165.86 60.58L165.86,21.22A18.39,18.39 0,0 1,184.25 2.83z" />
     <path
         android:fillAlpha="0.64"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M184.25,289.53L184.25,289.53A18.39,18.39 0,0 1,202.64 307.92L202.64,347.28A18.39,18.39 0,0 1,184.25 365.67L184.25,365.67A18.39,18.39 0,0 1,165.86 347.28L165.86,307.92A18.39,18.39 0,0 1,184.25 289.53z"
         android:strokeAlpha="0.64" />
     <path
         android:fillAlpha="0.46"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M2.83,184.26L2.83,184.26A18.39,18.39 0,0 1,21.22 165.87L60.58,165.87A18.39,18.39 0,0 1,78.97 184.26L78.97,184.26A18.39,18.39 0,0 1,60.58 202.65L21.22,202.65A18.39,18.39 0,0 1,2.83 184.26z"
         android:strokeAlpha="0.46" />
     <path
         android:fillAlpha="0.82"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M289.53,184.25L289.53,184.25A18.39,18.39 0,0 1,307.92 165.86L347.28,165.86A18.39,18.39 0,0 1,365.67 184.25L365.67,184.25A18.39,18.39 0,0 1,347.28 202.64L307.92,202.64A18.39,18.39 0,0 1,289.53 184.25z"
         android:strokeAlpha="0.82" />
     <path
         android:fillAlpha="0.88"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M341.357,93.539L341.357,93.539A18.39,18.39 105,0 1,334.626 118.66L300.539,138.34A18.39,18.39 105,0 1,275.418 131.609L275.418,131.609A18.39,18.39 105,0 1,282.149 106.487L316.236,86.807A18.39,18.39 105,0 1,341.357 93.539z"
         android:strokeAlpha="0.88" />
     <path
         android:fillAlpha="0.52"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M93.081,236.892L93.081,236.892A18.39,18.39 105,0 1,86.35 262.013L52.263,281.693A18.39,18.39 105,0 1,27.142 274.962L27.142,274.962A18.39,18.39 105,0 1,33.873 249.841L67.96,230.161A18.39,18.39 105,0 1,93.081 236.892z"
         android:strokeAlpha="0.52" />
     <path
         android:fillAlpha="0.4"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M27.143,93.548L27.143,93.548A18.39,18.39 75,0 1,52.264 86.817L86.351,106.497A18.39,18.39 75,0 1,93.082 131.618L93.082,131.618A18.39,18.39 75,0 1,67.961 138.349L33.874,118.669A18.39,18.39 75,0 1,27.143 93.548z"
         android:strokeAlpha="0.4" />
     <path
         android:fillAlpha="0.76"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M275.419,236.891L275.419,236.891A18.39,18.39 75,0 1,300.54 230.16L334.627,249.84A18.39,18.39 75,0 1,341.358 274.961L341.358,274.961A18.39,18.39 75,0 1,316.237 281.693L282.15,262.013A18.39,18.39 75,0 1,275.419 236.891z"
         android:strokeAlpha="0.76" />
     <path
         android:fillAlpha="0.94"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M275.97,27.225L275.97,27.225A18.453,18.453 74.887,0 1,282.775 52.419L263.095,86.662A18.453,18.453 74.886,0 1,237.9 93.467L237.9,93.467A18.453,18.453 74.886,0 1,231.096 68.272L250.776,34.029A18.453,18.453 74.887,0 1,275.97 27.225z"
         android:strokeAlpha="0.94" />
     <path
         android:fillAlpha="0.58"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M131.617,275.424L131.617,275.424A18.39,18.39 75,0 1,138.348 300.545L118.668,334.632A18.39,18.39 75,0 1,93.547 341.363L93.547,341.363A18.39,18.39 75,0 1,86.816 316.242L106.496,282.155A18.39,18.39 75,0 1,131.617 275.424z"
         android:strokeAlpha="0.58" />
     <path
         android:fillAlpha="0.36"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M93.547,27.137L93.547,27.137A18.39,18.39 105,0 1,118.668 33.868L138.348,67.955A18.39,18.39 105,0 1,131.617 93.076L131.617,93.076A18.39,18.39 105,0 1,106.496 86.345L86.816,52.258A18.39,18.39 105,0 1,93.547 27.137z"
         android:strokeAlpha="0.36" />
     <path
         android:fillAlpha="0.7"
-        android:fillColor="@color/loadingColor"
+        android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M237.9,276.498L237.9,276.498A18.453,18.453 105.113,0 1,263.095 283.303L282.775,317.546A18.453,18.453 105.113,0 1,275.97 342.74L275.97,342.74A18.453,18.453 105.113,0 1,250.776 335.936L231.096,301.693A18.453,18.453 105.113,0 1,237.9 276.498z"
         android:strokeAlpha="0.7" />
 </vector>
