@@ -32,12 +32,15 @@ public class DAOFacade {
 
         return Observable.create(emitter -> {
             String joinedIDs = Joiner.on(", ").join(componentIDs);
-            String query = "SELECT * FROM component " +
-                    "JOIN dishComponentCrossReference " +
-                    "ON component.componentID = dishComponentCrossReference.componentID " +
-                    "JOIN dish ON dish.dishID = dishComponentCrossReference.dishID " +
+            String counter = "SELECT count(*) FROM dishComponentCrossReference AS ref " +
+                    "WHERE ref.dishID = dish.dishID AND ref.componentID IN (" + joinedIDs + ")";
+
+            String query = "SELECT *, (" + counter + ") AS counter FROM dish " +
+                    "JOIN dishComponentCrossReference AS ref ON dish.dishID = ref.dishID " +
+                    "JOIN component ON component.componentID = ref.componentID " +
                     "WHERE component.componentID IN (" + joinedIDs + ") " +
-                    "GROUP BY dish.dishName";
+                    "GROUP BY dish.dishName " +
+                    "ORDER BY counter DESC";
 
             try (Cursor cursor = database.rawQuery(query, null)) {
                 while (cursor.moveToNext()) {
