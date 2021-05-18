@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="loadingColor">#F7A943</color>
+    <color name="recipesAndLoadingColor">#5C5C5C</color>
     <color name="greenAccentColor">#04B97F</color>
     <color name="purpleAccentColor">#BB86FC</color>
     <color name="darkThemeTextColor">#FFFFFF</color>

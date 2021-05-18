@@ -18,10 +18,12 @@
             android:layout_height="wrap_content"
             android:background="?attr/toolbarBackgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/app_name"
             app:titleTextColor="?attr/textCardColor">
+
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchView"
@@ -36,23 +38,31 @@
                 app:queryHint="@string/search_hint"
                 app:searchIcon="@drawable/search_icon"
                 app:theme="@style/SearchViewStyle" />
+
+            <Button
+                android:id="@+id/sortingButton"
+                android:visibility="visible"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="end"
+                android:background="@drawable/sort_image" />
         </androidx.appcompat.widget.Toolbar>
 
-    <FrameLayout
-        android:id="@+id/fragmentHolder"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-        <fragment
-            android:id="@+id/mainFragment"
-            android:name="org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment"
+        <FrameLayout
+            android:id="@+id/fragmentHolder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <fragment
+                android:id="@+id/mainFragment"
+                android:name="org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 <com.google.android.material.navigation.NavigationView

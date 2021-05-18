@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
         toggle.setDrawerIndicatorEnabled(true);
 
+
         toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         navigationView.setItemIconTintList(null);
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.fragmentHolder, new ComponentsFragment(), "ingredients")
                 .commit();
     }
@@ -127,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setCustomAnimations(R.animator.to_left_in, R.animator.to_left_out, R.animator.to_right_in, R.animator.to_right_out)
                 .replace(R.id.fragmentHolder, componentsFragment, "ingredients")
                 .commit();
     }

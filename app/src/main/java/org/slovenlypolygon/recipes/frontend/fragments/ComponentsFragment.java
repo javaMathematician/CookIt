@@ -100,7 +100,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setCustomAnimations(R.animator.to_left_in, R.animator.to_left_out, R.animator.to_right_in, R.animator.to_right_out)
                 .replace(R.id.fragmentHolder, dishesFragment, "dishes")
                 .addToBackStack(null)
                 .commit();
@@ -135,5 +135,11 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
                 }, Throwable::printStackTrace);
 
         recyclerView.setAdapter(dishComponentsAdapter);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().findViewById(R.id.sortingButton).setVisibility(View.INVISIBLE);
     }
 }
