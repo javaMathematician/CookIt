@@ -115,7 +115,6 @@ public class StepByStepFragment extends AbstractFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getActivity().findViewById(R.id.sortingButton).setVisibility(View.INVISIBLE);
         searchView.setVisibility(View.GONE);
         dish = ((MainActivity) getActivity()).getDaoFacade().getRichDish(dish);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(dish.getName());

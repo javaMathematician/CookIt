@@ -9,7 +9,6 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -135,11 +134,5 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
                 }, Throwable::printStackTrace);
 
         recyclerView.setAdapter(dishComponentsAdapter);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getActivity().findViewById(R.id.sortingButton).setVisibility(View.INVISIBLE);
     }
 }

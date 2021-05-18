@@ -4,7 +4,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Joiner;
@@ -178,7 +176,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                dishes = results.values != null ? (List<Dish>) results.values : new ArrayList<>();
+                dishes = results.values != null ? (List<Dish>) results.values : original;
                 notifyDataSetChanged();
             }
         };

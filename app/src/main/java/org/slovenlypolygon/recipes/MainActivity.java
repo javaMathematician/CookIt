@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -70,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
         toggle.setDrawerIndicatorEnabled(true);
-
 
         toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);

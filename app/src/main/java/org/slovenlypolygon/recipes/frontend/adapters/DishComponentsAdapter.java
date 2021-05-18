@@ -150,7 +150,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                components = (List<Component>) results.values;
+                components = results.values != null ? (List<Component>) results.values : original;
                 notifyDataSetChanged();
             }
         };
