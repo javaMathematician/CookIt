@@ -71,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
         toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
         toggle.setDrawerIndicatorEnabled(true);
 
+
         toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         navigationView.setItemIconTintList(null);
-
-        findViewById(R.id.sortingButton).setVisibility(View.INVISIBLE);
 
         drawerLayout.addDrawerListener(toggle);
         drawerLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {

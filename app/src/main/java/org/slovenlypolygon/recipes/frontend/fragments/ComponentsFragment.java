@@ -136,4 +136,10 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         recyclerView.setAdapter(dishComponentsAdapter);
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().findViewById(R.id.sortingButton).setVisibility(View.INVISIBLE);
+    }
 }

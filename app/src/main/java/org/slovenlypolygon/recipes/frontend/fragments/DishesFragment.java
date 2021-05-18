@@ -128,4 +128,10 @@ public class DishesFragment extends AbstractFragment {
                     dishesAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().findViewById(R.id.sortingButton).setVisibility(View.VISIBLE);
+    }
 }
