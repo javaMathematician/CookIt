@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="368.5dp"
+    android:height="368.5dp"
+    android:viewportWidth="368.5"
+    android:viewportHeight="368.5">
+    <path
+        android:fillColor="@color/recipesAndLoadingColor"
+        android:pathData="M183.4,82.2L185.1,82.2A6.76,6.76 0,0 1,191.86 88.96L191.86,118.27A6.76,6.76 0,0 1,185.1 125.03L183.4,125.03A6.76,6.76 0,0 1,176.64 118.27L176.64,88.96A6.76,6.76 0,0 1,183.4 82.2z" />
+    <path
+        android:fillAlpha="0.9"
+        android:fillColor="@color/recipesAndLoadingColor"
+        android:pathData="M142.983,141.785L141.781,142.987A6.76,6.76 0,0 1,132.221 142.987L111.495,122.262A6.76,6.76 90,0 1,111.495 112.702L112.697,111.5A6.76,6.76 0,0 1,122.257 111.5L142.983,132.225A6.76,6.76 90,0 1,142.983 141.785z" />
+    <path
+        android:fillAlpha="0.8"
+        android:fillColor="@color/recipesAndLoadingColor"
+        android:pathData="M125.03,183.4L125.03,185.1A6.76,6.76 0,0 1,118.27 191.86L88.96,191.86A6.76,6.76 0,0 1,82.2 185.1L82.2,183.4A6.76,6.76 0,0 1,88.96 176.64L118.27,176.64A6.76,6.76 0,0 1,125.03 183.4z"/>
+    <path
+        android:fillAlpha="0.7"
+        android:fillColor="@color/recipesAndLoadingColor"
+        android:pathData="M141.784,225.529L142.986,226.731A6.76,6.76 90,0 1,142.986 236.291L122.261,257.016A6.76,6.76 90,0 1,112.7 257.016L111.498,255.814A6.76,6.76 90,0 1,111.498 246.254L132.224,225.529A6.76,6.76 90,0 1,141.784 225.529z" />
+    <path
+        android:fillAlpha="0.6"
+        android:fillColor="@color/recipesAndLoadingColor"
+        android:pathData="M183.4,243.47L185.1,243.47A6.76,6.76 0,0 1,191.86 250.23L191.86,279.54A6.76,6.76 0,0 1,185.1 286.3L183.4,286.3A6.76,6.76 0,0 1,176.64 279.54L176.64,250.23A6.76,6.76 0,0 1,183.4 243.47z"/>
+    <path
+        android:fillAlpha="0.5"
+        android:fillColor="@color/recipesAndLoadingColor"
+        android:pathData="M257.01,255.815L255.808,257.017A6.76,6.76 90,0 1,246.248 257.017L225.522,236.292A6.76,6.76 90,0 1,225.522 226.732L226.725,225.53A6.76,6.76 0,0 1,236.285 225.53L257.01,246.255A6.76,6.76 90,0 1,257.01 255.815z" />
+    <path
+        android:fillAlpha="0.4"
+        android:fillColor="@color/recipesAndLoadingColor"
+        android:pathData="M286.3,183.41L286.3,185.11A6.76,6.76 0,0 1,279.54 191.87L250.23,191.87A6.76,6.76 0,0 1,243.47 185.11L243.47,183.41A6.76,6.76 0,0 1,250.23 176.65L279.54,176.65A6.76,6.76 0,0 1,286.3 183.41z" />
+    <path
+        android:fillAlpha="0.3"
+        android:fillColor="@color/recipesAndLoadingColor"
+        android:pathData="M255.817,111.489L257.019,112.691A6.76,6.76 90,0 1,257.019 122.251L236.293,142.976A6.76,6.76 90,0 1,226.733 142.976L225.531,141.774A6.76,6.76 90,0 1,225.531 132.214L246.256,111.489A6.76,6.76 0,0 1,255.817 111.489z" />
+
+</vector>
