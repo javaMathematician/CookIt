@@ -153,7 +153,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 final FilterResults oReturn = new FilterResults();
                 final List<Dish> results = new ArrayList<>();
 
-                if (original == null) {
+                if (original.isEmpty()) {
                     original = dishes;
                 }
 

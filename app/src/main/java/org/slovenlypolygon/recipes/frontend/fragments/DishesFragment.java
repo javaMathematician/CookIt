@@ -120,7 +120,7 @@ public class DishesFragment extends AbstractFragment {
     private void getMatches() {
         dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
-                .buffer(200, TimeUnit.MILLISECONDS)
+                .buffer(750, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(constructedDish -> {
                     dishesAdapter.getDishes().addAll(constructedDish);
