@@ -10,12 +10,12 @@
         <item name="android:itemTextAppearance">@style/TextAppearanceLight</item>
         <item name="android:statusBarColor">@color/toolbarBackgroundLightColor</item>
 
-        <item name="android:fontFamily">@font/montserrat_font</item>
         <item name="alertDialogTheme">@style/LightDialog</item>
+        <item name="android:fontFamily">@font/montserrat_font</item>
 
         <item name="logo">@drawable/magenta_logo</item>
-        <item name="strokeColor">@color/purpleAccentColor</item>
         <item name="gradient">@color/purpleAccentColor</item>
+        <item name="strokeColor">@color/purpleAccentColor</item>
         <item name="searchViewColor">@android:color/black</item>
         <item name="textCardColor">@color/lightThemeTextColor</item>
         <item name="separatorColor">@color/separatorLightColor</item>
@@ -24,8 +24,6 @@
         <item name="cardBackgroundColor">@color/lightThemeBackgroundCardColor</item>
         <item name="toolbarBackgroundColor">@color/toolbarBackgroundLightColor</item>
     </style>
-
-
 
     <style name="Dark" parent="Theme.AppCompat">
         <item name="windowNoTitle">true</item>
@@ -88,26 +86,26 @@
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="defaultQueryHint">"Поиск"</item>
-        <item name="android:textColor">?attr/searchViewColor</item>
+        <item name="hintAnimationEnabled">false</item>
         <item name="closeIcon">@drawable/close_icon</item>
-        <item name="hintTextColor">?attr/searchViewColor</item>
+        <item name="background">?attr/searchViewColor</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="hintTextColor">?attr/searchViewColor</item>
+        <item name="searchHintIcon">@drawable/search_icon</item>
+        <item name="backgroundTint">?attr/searchViewColor</item>
         <item name="queryBackground">?attr/searchViewColor</item>
         <item name="android:queryHint">@string/search_hint</item>
-        <item name="android:textColorHint">?attr/searchViewColor</item>
+        <item name="backgroundColor">?attr/searchViewColor</item>
         <item name="android:closeIcon">@drawable/close_icon</item>
+        <item name="android:textColor">?attr/searchViewColor</item>
+        <item name="android:searchIcon">@drawable/search_icon</item>
+        <item name="android:textColorHint">?attr/searchViewColor</item>
         <item name="android:editTextColor">?attr/searchViewColor</item>
         <item name="colorControlActivated">?attr/searchViewColor</item>
         <item name="android:queryBackground">?attr/searchViewColor</item>
-        <item name="android:searchIcon">@drawable/search_icon</item>
-        <item name="searchHintIcon">@drawable/search_icon</item>
-        <item name="android:focusableInTouchMode">false</item>
         <item name="android:submitBackground">?attr/searchViewColor</item>
-        <item name="background">?attr/searchViewColor</item>
-        <item name="backgroundTint">?attr/searchViewColor</item>
-        <item name="backgroundColor">?attr/searchViewColor</item>
         <item name="android:backgroundTint">?attr/toolbarBackgroundColor</item>
-        <item name="hintAnimationEnabled">false</item>
     </style>
 
     <style name="checkBoxStyle" parent="Theme.AppCompat.Light">

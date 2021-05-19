@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)

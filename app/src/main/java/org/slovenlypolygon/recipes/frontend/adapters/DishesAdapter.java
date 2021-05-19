@@ -158,7 +158,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 }
 
                 if (constraint != null) {
-                    if (original != null && !original.isEmpty()) {
+                    if (!original.isEmpty()) {
                         for (Dish iterate : original) {
                             String all = iterate.getName().toLowerCase().replace("ё", "е");
 
