@@ -8,7 +8,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         applicationId "org.slovenlypolygon.recipes"
         targetSdkVersion 30
-        minSdkVersion ы24
+        minSdkVersion 24
         versionName "1.0"
         versionCode 1
     }

@@ -99,7 +99,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.animator.fragment_enter, R.animator.fragment_pop_exit, R.animator.fragment_pop_enter, R.animator.fragment_pop_exit)
+                .setCustomAnimations(R.animator.to_left_in, R.animator.to_left_out, R.animator.to_right_in, R.animator.to_right_out)
                 .replace(R.id.fragmentHolder, dishesFragment, "dishes")
                 .addToBackStack(null)
                 .commit();
