@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 public class StepByStepFragment extends AbstractFragment {
     private Dish dish;
     private ImageView imageView;
+    private ScrollView scrollView;
     private LinearLayout linearLayout;
     private TextView dirtyIngredients;
 
@@ -84,9 +86,11 @@ public class StepByStepFragment extends AbstractFragment {
                     if (constraintLayout.getVisibility() == View.GONE) {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                         constraintLayout.setVisibility(View.VISIBLE);
+                        if (scrollView.getY() < cardView.getBottom()) scrollView.scrollTo(0, cardView.getBottom());
                         expandButton.setBackgroundResource(R.drawable.expandable_arrow_up);
                     } else {
                         constraintLayout.setVisibility(View.GONE);
+                        if (scrollView.getY() > cardView.getTop()) scrollView.scrollTo(0, cardView.getTop());
                         expandButton.setBackgroundResource(R.drawable.expandable_arrow_down);
                     }
                 });
@@ -105,6 +109,7 @@ public class StepByStepFragment extends AbstractFragment {
         View rootView = inflater.inflate(R.layout.step_by_step_fragment, container, false);
 
         imageView = rootView.findViewById(R.id.dishStepByStepImage);
+        scrollView = rootView.findViewById(R.id.stepByStepScrollView);
         linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
         dirtyIngredients = rootView.findViewById(R.id.stepByStepIngredients);
 
