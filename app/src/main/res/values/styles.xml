@@ -10,6 +10,7 @@
         <item name="android:itemTextAppearance">@style/TextAppearanceLight</item>
         <item name="android:statusBarColor">@color/toolbarBackgroundLightColor</item>
 
+        <item name="android:fontFamily">@font/montserrat_font</item>
         <item name="alertDialogTheme">@style/LightDialog</item>
 
         <item name="logo">@drawable/magenta_logo</item>
@@ -37,6 +38,7 @@
         <item name="android:statusBarColor">@color/toolbarBackgroundDarkColor</item>
 
         <item name="alertDialogTheme">@style/DarkDialog</item>
+        <item name="android:fontFamily">@font/montserrat_font</item>
 
         <item name="logo">@drawable/green_logo</item>
         <item name="gradient">@color/greenAccentColor</item>
