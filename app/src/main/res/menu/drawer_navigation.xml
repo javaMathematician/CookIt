@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/clearSelected"
-        android:icon="@drawable/color_close"
+        android:icon="@drawable/clear_selected_ingredient"
         android:title="@string/clearSelected" />
 
 </menu>

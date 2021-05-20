@@ -19,6 +19,7 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
+import org.slovenlypolygon.recipes.frontend.adapters.ComponentSelectedAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBridge;
 
 import java.util.HashSet;
@@ -31,18 +32,23 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class ComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
     private boolean initialized;
 
+    private RecyclerView selectIngredients;
+    private ComponentSelectedAdapter componentSelectedAdapter;
     private RecyclerView recyclerView;
-    private Button changeViewIngredient;
+    private Button changeViewComponent;
     private FloatingActionButton scrollToTop;
     private DishComponentsAdapter dishComponentsAdapter;
     private Set<Integer> componentIDs = new HashSet<>();
 
     private void initializeVariablesForComponents(View rootView) {
+        selectIngredients = rootView.findViewById(R.id.selectedIngredientsRecyclerView);
+        selectIngredients.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
         recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        changeViewIngredient = rootView.findViewById(R.id.changeView);
+        changeViewComponent = rootView.findViewById(R.id.changeView);
 
         scrollToTop = rootView.findViewById(R.id.floatingActionButton);
         scrollToTop.setOnClickListener(view -> {
@@ -78,15 +84,16 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         initializeVariablesForComponents(rootView);
 
+        selectIngredients.setAdapter(componentSelectedAdapter);
         recyclerView.setAdapter(dishComponentsAdapter);
-        changeViewIngredient.setOnClickListener(t -> goToRecipes(true));
+        changeViewComponent.setOnClickListener(t -> goToRecipes(true));
 
         if (!initialized) {
             changeDatasetTo(ComponentType.INGREDIENT);
             initialized = true;
         }
 
-        counterChanged(dishComponentsAdapter.getCounter()); // pseudo-initializer
+        counterChanged(dishComponentsAdapter.getSelectedIDs().size()); // pseudo-initializer
         return rootView;
     }
 
@@ -107,22 +114,25 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
     @Override
     public void counterChanged(int counter) {
-        changeViewIngredient.setActivated(counter != 0);
-        changeViewIngredient.setEnabled(counter != 0);
-        changeViewIngredient.setFocusable(counter == 0);
-        changeViewIngredient.setElevation(counter == 0 ? 0 : 16);
-        changeViewIngredient.setBackground(AppCompatResources.getDrawable(getContext(), counter == 0 ? R.drawable.to_recipes_btn_disabled : R.drawable.to_recipes_button_enabled_with_mask));
+        changeViewComponent.setActivated(counter != 0);
+        changeViewComponent.setEnabled(counter != 0);
+        changeViewComponent.setFocusable(counter == 0);
+        changeViewComponent.setElevation(counter == 0 ? 0 : 16);
+        changeViewComponent.setBackground(AppCompatResources.getDrawable(getContext(), counter == 0 ? R.drawable.to_recipes_btn_disabled : R.drawable.to_recipes_button_enabled_with_mask));
     }
 
     public void clearSelectedComponents() {
         componentIDs.clear();
         dishComponentsAdapter.clearSelected();
+        componentSelectedAdapter.clearSelected();
         dishComponentsAdapter.notifyDataSetChanged();
+        componentSelectedAdapter.notifyDataSetChanged();
     }
 
     public void changeDatasetTo(ComponentType componentType) {
         DAOFacade dao = ((MainActivity) getActivity()).getDaoFacade();
 
+        componentSelectedAdapter = new ComponentSelectedAdapter();
         dishComponentsAdapter = new DishComponentsAdapter(this);
         dao.getComponentByType(componentType)
                 .subscribeOn(Schedulers.newThread())
@@ -133,6 +143,10 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
                     dishComponentsAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
 
+        componentSelectedAdapter.setDishComponentsAdapter(dishComponentsAdapter);
+        dishComponentsAdapter.setIngredientSelectedAdapter(componentSelectedAdapter);
+
+        selectIngredients.setAdapter(componentSelectedAdapter);
         recyclerView.setAdapter(dishComponentsAdapter);
     }
 }

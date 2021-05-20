@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sureClearSelected() {
         componentsFragment.clearSelectedComponents();
+
     }
 
     private void menuItemsActions(int id) {

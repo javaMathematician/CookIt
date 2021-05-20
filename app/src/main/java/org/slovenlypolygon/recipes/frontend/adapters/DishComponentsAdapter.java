@@ -34,6 +34,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     private final WeakReference<FragmentAdapterBridge> bridge;
     private final Set<Integer> selectedIDs = new HashSet<>();
 
+    private ComponentSelectedAdapter componentSelectedAdapter;
     private List<Component> components = new ArrayList<>();
     private List<Component> original;
 
@@ -49,6 +50,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
     public void clearSelected() {
         selectedIDs.clear();
+        bridge.get().counterChanged(0);
     }
 
     @Override
@@ -68,20 +70,25 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
     @Override
     public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
-        Component ingredient = components.get(i);
+        Component component = components.get(i);
 
-        ingredientViewHolder.checkBox.setChecked(selectedIDs.contains(ingredient.getId()));
-        ingredientViewHolder.layout.setBackground(selectedIDs.contains(ingredient.getId()) ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
-        ingredientViewHolder.textView.setText(ingredient.getName());
+        ingredientViewHolder.checkBox.setChecked(selectedIDs.contains(component.getId()));
+        ingredientViewHolder.layout.setBackground(selectedIDs.contains(component.getId()) ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
+        ingredientViewHolder.textView.setText(component.getName());
 
         ingredientViewHolder.itemView.setOnClickListener(view -> {
             ingredientViewHolder.checkBox.setChecked(!ingredientViewHolder.checkBox.isChecked());
             ingredientViewHolder.layout.setBackground(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
 
-            if (selectedIDs.contains(ingredient.getId())) {
-                selectedIDs.remove(ingredient.getId());
+
+            if (selectedIDs.contains(component.getId())) {
+                selectedIDs.remove(component.getId());
+                componentSelectedAdapter.removeComponent(component);
+                componentSelectedAdapter.notifyDataSetChanged();
             } else {
-                selectedIDs.add(ingredient.getId());
+                selectedIDs.add(component.getId());
+                componentSelectedAdapter.addComponent(component);
+                componentSelectedAdapter.notifyDataSetChanged();
             }
 
             counter = selectedIDs.size();
@@ -90,7 +97,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
         Picasso picasso = Picasso.get();
         picasso.setIndicatorsEnabled(false);
-        picasso.load(ingredient.getImageURL())
+        picasso.load(component.getImageURL())
                 .placeholder(R.drawable.loading_animation)
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .fit()
@@ -103,12 +110,22 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                     @Override
                     public void onError(Exception e) {
                         picasso.setIndicatorsEnabled(false);
-                        picasso.load(ingredient.getImageURL())
+                        picasso.load(component.getImageURL())
                                 .placeholder(R.drawable.loading_animation)
                                 .error(R.drawable.error_image)
                                 .fit()
                                 .centerCrop()
-                                .into(ingredientViewHolder.imageView);
+                                .into(ingredientViewHolder.imageView, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                      }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        System.out.println(component.getName());
+                                    }
+                                });
                     }
                 });
     }
@@ -159,6 +176,17 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     public void addComponents(List<? extends Component> components) {
         this.components.addAll(components);
     }
+
+    public void clearComponent(Component component) {
+        selectedIDs.remove(component.getId());
+        bridge.get().counterChanged(selectedIDs.size());
+        notifyDataSetChanged();
+    }
+
+    public void setIngredientSelectedAdapter(ComponentSelectedAdapter componentSelectedAdapter) {
+        this.componentSelectedAdapter = componentSelectedAdapter;
+    }
+
 
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
