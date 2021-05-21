@@ -111,13 +111,11 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.clearSelected && componentsFragment.isVisible()) {
             new SureClearSelectedQDialog().show(getSupportFragmentManager(), "sure_clear_selected_q");
         } else if (id == R.id.toIngredients) {
-            sureClearSelected();
             changeComponentView(ComponentType.INGREDIENT);
         } else if (id == R.id.toDishes) {
             sureClearSelected();
             componentsFragment.goToRecipes(false);
         } else if (id == R.id.toCategories) {
-            sureClearSelected();
             changeComponentView(ComponentType.CATEGORY);
         }
     }

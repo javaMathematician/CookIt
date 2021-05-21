@@ -82,15 +82,15 @@ public class StepByStepFragment extends AbstractFragment {
                         });
 
                 expandButton.setVisibility(View.VISIBLE);
-                cardView.setOnClickListener(v -> {
+                cardView.setOnClickListener(view -> {
                     if (constraintLayout.getVisibility() == View.GONE) {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                         constraintLayout.setVisibility(View.VISIBLE);
-                        if (scrollView.getY() < cardView.getBottom()) scrollView.scrollTo(0, cardView.getBottom());
+                        scrollView.smoothScrollTo(0, view.getTop());
                         expandButton.setBackgroundResource(R.drawable.expandable_arrow_up);
                     } else {
                         constraintLayout.setVisibility(View.GONE);
-                        if (scrollView.getY() > cardView.getTop()) scrollView.scrollTo(0, cardView.getTop());
+                        scrollView.smoothScrollBy(0, -view.getHeight());
                         expandButton.setBackgroundResource(R.drawable.expandable_arrow_down);
                     }
                 });

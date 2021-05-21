@@ -18,8 +18,8 @@ import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
-import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 import org.slovenlypolygon.recipes.frontend.adapters.ComponentSelectedAdapter;
+import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBridge;
 
 import java.util.HashSet;
@@ -37,6 +37,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     private RecyclerView recyclerView;
     private Button changeViewComponent;
     private FloatingActionButton scrollToTop;
+    private ComponentType currentComponentType;
     private DishComponentsAdapter dishComponentsAdapter;
     private Set<Integer> componentIDs = new HashSet<>();
 
@@ -130,23 +131,26 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     }
 
     public void changeDatasetTo(ComponentType componentType) {
-        DAOFacade dao = ((MainActivity) getActivity()).getDaoFacade();
+        if (componentType != currentComponentType) {
+            DAOFacade dao = ((MainActivity) getActivity()).getDaoFacade();
 
-        componentSelectedAdapter = new ComponentSelectedAdapter();
-        dishComponentsAdapter = new DishComponentsAdapter(this);
-        dao.getComponentByType(componentType)
-                .subscribeOn(Schedulers.newThread())
-                .buffer(200, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(components -> {
-                    dishComponentsAdapter.addComponents(components);
-                    dishComponentsAdapter.notifyDataSetChanged();
-                }, Throwable::printStackTrace);
+            componentSelectedAdapter = new ComponentSelectedAdapter();
+            dishComponentsAdapter = new DishComponentsAdapter(this);
+            dao.getComponentByType(componentType)
+                    .subscribeOn(Schedulers.newThread())
+                    .buffer(200, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(components -> {
+                        dishComponentsAdapter.addComponents(components);
+                        dishComponentsAdapter.notifyDataSetChanged();
+                    }, Throwable::printStackTrace);
 
-        componentSelectedAdapter.setDishComponentsAdapter(dishComponentsAdapter);
-        dishComponentsAdapter.setIngredientSelectedAdapter(componentSelectedAdapter);
+            componentSelectedAdapter.setDishComponentsAdapter(dishComponentsAdapter);
+            dishComponentsAdapter.setIngredientSelectedAdapter(componentSelectedAdapter);
 
-        selectIngredients.setAdapter(componentSelectedAdapter);
-        recyclerView.setAdapter(dishComponentsAdapter);
+            selectIngredients.setAdapter(componentSelectedAdapter);
+            recyclerView.setAdapter(dishComponentsAdapter);
+            currentComponentType = componentType;
+        }
     }
 }
