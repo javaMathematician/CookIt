@@ -1,0 +1,13 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/color_categories"
+        android:shortcutId="categoriesShortcut"
+        android:shortcutShortLabel="@string/dish_categories">
+
+        <intent
+            android:action="org.slovenlypolygon.recipes.TOCATEGORIES"
+            android:targetClass="org.slovenlypolygon.recipes.MainActivity"
+            android:targetPackage="org.slovenlypolygon.recipes" />
+    </shortcut>
+</shortcuts>

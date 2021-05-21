@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.carcass);
         setFrontend();
+
+        if ("org.slovenlypolygon.recipes.TOCATEGORIES".equals(getIntent().getAction())) {
+            menuItemsActions(R.id.toCategories);
+        }
     }
 
     private void setFrontend() {
@@ -93,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.fragmentHolder, new ComponentsFragment(), "ingredients")
                 .commit();
+
+        componentsFragment = (ComponentsFragment) getSupportFragmentManager().findFragmentByTag("ingredients");
     }
 
     public void sureClearSelected() {
@@ -102,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void menuItemsActions(int id) {
         drawerLayout.closeDrawer(GravityCompat.START);
-        componentsFragment = (ComponentsFragment) getSupportFragmentManager().findFragmentByTag("ingredients");
 
         if (componentsFragment == null) {
             componentsFragment = new ComponentsFragment();

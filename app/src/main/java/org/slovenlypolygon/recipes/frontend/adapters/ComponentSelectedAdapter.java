@@ -3,6 +3,7 @@ package org.slovenlypolygon.recipes.frontend.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,13 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ComponentSelectedAdapter extends RecyclerView.Adapter<ComponentSelectedAdapter.ViewHolder> {
-    private final List<Component> components = new ArrayList<>();
     private DishComponentsAdapter dishComponentsAdapter;
+    private final List<Component> components = new ArrayList<>();
 
     public void setDishComponentsAdapter(DishComponentsAdapter dishComponentsAdapter) {
         this.dishComponentsAdapter = dishComponentsAdapter;
     }
-
 
     public void clearSelected() {
         components.clear();
@@ -44,7 +44,7 @@ public class ComponentSelectedAdapter extends RecyclerView.Adapter<ComponentSele
         Component component = components.get(i);
 
         viewHolder.text.setText(component.getName());
-        viewHolder.cardView.setOnClickListener(v -> {
+        viewHolder.deleteButton.setOnClickListener(v -> {
             dishComponentsAdapter.clearComponent(component);
             components.remove(component);
             notifyDataSetChanged();
@@ -58,17 +58,20 @@ public class ComponentSelectedAdapter extends RecyclerView.Adapter<ComponentSele
     }
 
     public void removeComponent(Component component) {
-        this.components.remove(component);
+        components.remove(component);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final Button deleteButton;
         private final CardView cardView;
         private final TextView text;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            cardView = itemView.findViewById(R.id.selectedIngredientCard);
+
             text = itemView.findViewById(R.id.textOnSelectedIngredient);
+            cardView = itemView.findViewById(R.id.selectedIngredientCard);
+            deleteButton = cardView.findViewById(R.id.buttonOnSelectedIngredient);
         }
     }
 }

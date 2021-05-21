@@ -64,10 +64,6 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         return new IngredientViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_card, viewGroup, false));
     }
 
-    public int getCounter() {
-        return counter;
-    }
-
     @Override
     public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
         Component component = components.get(i);
@@ -80,17 +76,15 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
             ingredientViewHolder.checkBox.setChecked(!ingredientViewHolder.checkBox.isChecked());
             ingredientViewHolder.layout.setBackground(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
 
-
             if (selectedIDs.contains(component.getId())) {
                 selectedIDs.remove(component.getId());
                 componentSelectedAdapter.removeComponent(component);
-                componentSelectedAdapter.notifyDataSetChanged();
             } else {
                 selectedIDs.add(component.getId());
                 componentSelectedAdapter.addComponent(component);
-                componentSelectedAdapter.notifyDataSetChanged();
             }
 
+            componentSelectedAdapter.notifyDataSetChanged();
             counter = selectedIDs.size();
             bridge.get().counterChanged(counter);
         });
@@ -186,7 +180,6 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     public void setIngredientSelectedAdapter(ComponentSelectedAdapter componentSelectedAdapter) {
         this.componentSelectedAdapter = componentSelectedAdapter;
     }
-
 
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
