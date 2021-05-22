@@ -25,6 +25,7 @@ import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBri
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,8 +39,6 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     private List<Component> components = new ArrayList<>();
     private List<Component> original;
 
-    private int counter;
-
     public DishComponentsAdapter(FragmentAdapterBridge fragmentAdapterBridge) {
         this.bridge = new WeakReference<>(fragmentAdapterBridge);
     }
@@ -50,7 +49,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
     public void clearSelected() {
         selectedIDs.clear();
-        bridge.get().counterChanged(0);
+        bridge.get().componentsChanged(Collections.emptySet());
     }
 
     @Override
@@ -85,8 +84,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
             }
 
             componentSelectedAdapter.notifyDataSetChanged();
-            counter = selectedIDs.size();
-            bridge.get().counterChanged(counter);
+            bridge.get().componentsChanged(selectedIDs);
         });
 
         Picasso picasso = Picasso.get();
@@ -127,7 +125,6 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        counter = selectedIDs.size();
     }
 
     @Override
@@ -171,9 +168,9 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         this.components.addAll(components);
     }
 
-    public void clearComponent(Component component) {
+    public void removeComponent(Component component) {
         selectedIDs.remove(component.getId());
-        bridge.get().counterChanged(selectedIDs.size());
+        bridge.get().componentsChanged(selectedIDs);
         notifyDataSetChanged();
     }
 

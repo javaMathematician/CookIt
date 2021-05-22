@@ -14,14 +14,18 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ComponentSelectedAdapter extends RecyclerView.Adapter<ComponentSelectedAdapter.ViewHolder> {
-    private DishComponentsAdapter dishComponentsAdapter;
     private final List<Component> components = new ArrayList<>();
+    private DishComponentsAdapter dishComponentsAdapter;
+    private RecyclerView ownerRecyclerView;
 
-    public void setDishComponentsAdapter(DishComponentsAdapter dishComponentsAdapter) {
-        this.dishComponentsAdapter = dishComponentsAdapter;
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.ownerRecyclerView = recyclerView;
     }
 
     public void clearSelected() {
@@ -31,6 +35,10 @@ public class ComponentSelectedAdapter extends RecyclerView.Adapter<ComponentSele
     @Override
     public int getItemCount() {
         return components.size();
+    }
+
+    public void setDishComponentsAdapter(DishComponentsAdapter dishComponentsAdapter) {
+        this.dishComponentsAdapter = dishComponentsAdapter;
     }
 
     @Override
@@ -45,7 +53,7 @@ public class ComponentSelectedAdapter extends RecyclerView.Adapter<ComponentSele
 
         viewHolder.text.setText(component.getName());
         viewHolder.deleteButton.setOnClickListener(v -> {
-            dishComponentsAdapter.clearComponent(component);
+            dishComponentsAdapter.removeComponent(component);
             components.remove(component);
             notifyDataSetChanged();
         });
@@ -53,8 +61,12 @@ public class ComponentSelectedAdapter extends RecyclerView.Adapter<ComponentSele
 
     public void addComponent(Component component) {
         components.add(component);
-        components.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
+        components.sort(Comparator.comparing(Component::getName));
         notifyDataSetChanged();
+
+        if (components.size() > 4) {
+            ownerRecyclerView.smoothScrollToPosition(components.size() - 1);
+        }
     }
 
     public void removeComponent(Component component) {
@@ -63,15 +75,13 @@ public class ComponentSelectedAdapter extends RecyclerView.Adapter<ComponentSele
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final Button deleteButton;
-        private final CardView cardView;
         private final TextView text;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             text = itemView.findViewById(R.id.textOnSelectedIngredient);
-            cardView = itemView.findViewById(R.id.selectedIngredientCard);
-            deleteButton = cardView.findViewById(R.id.buttonOnSelectedIngredient);
+            deleteButton = itemView.<CardView>findViewById(R.id.selectedIngredientCard).findViewById(R.id.buttonOnSelectedIngredient);
         }
     }
 }

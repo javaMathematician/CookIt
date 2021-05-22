@@ -94,7 +94,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
             initialized = true;
         }
 
-        counterChanged(dishComponentsAdapter.getSelectedIDs().size()); // pseudo-initializer
+        componentsChanged(dishComponentsAdapter.getSelectedIDs()); // pseudo-initializer
         return rootView;
     }
 
@@ -114,12 +114,14 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     }
 
     @Override
-    public void counterChanged(int counter) {
-        changeViewComponent.setActivated(counter != 0);
-        changeViewComponent.setEnabled(counter != 0);
-        changeViewComponent.setFocusable(counter == 0);
-        changeViewComponent.setElevation(counter == 0 ? 0 : 16);
-        changeViewComponent.setBackground(AppCompatResources.getDrawable(getContext(), counter == 0 ? R.drawable.to_recipes_btn_disabled : R.drawable.to_recipes_button_enabled_with_mask));
+    public void componentsChanged(Set<Integer> selectedIDs) {
+        boolean isEmpty = selectedIDs.isEmpty();
+
+        changeViewComponent.setActivated(!isEmpty);
+        changeViewComponent.setEnabled(!isEmpty);
+        changeViewComponent.setFocusable(isEmpty);
+        changeViewComponent.setElevation(isEmpty ? 0 : 16);
+        changeViewComponent.setBackground(AppCompatResources.getDrawable(getContext(), isEmpty ? R.drawable.to_recipes_btn_disabled : R.drawable.to_recipes_button_enabled_with_mask));
     }
 
     public void clearSelectedComponents() {
@@ -134,8 +136,8 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         if (componentType != currentComponentType) {
             DAOFacade dao = ((MainActivity) getActivity()).getDaoFacade();
 
-            componentSelectedAdapter = new ComponentSelectedAdapter();
             dishComponentsAdapter = new DishComponentsAdapter(this);
+
             dao.getComponentByType(componentType)
                     .subscribeOn(Schedulers.newThread())
                     .buffer(200, TimeUnit.MILLISECONDS)
@@ -145,6 +147,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
                         dishComponentsAdapter.notifyDataSetChanged();
                     }, Throwable::printStackTrace);
 
+            componentSelectedAdapter = new ComponentSelectedAdapter();
             componentSelectedAdapter.setDishComponentsAdapter(dishComponentsAdapter);
             dishComponentsAdapter.setIngredientSelectedAdapter(componentSelectedAdapter);
 

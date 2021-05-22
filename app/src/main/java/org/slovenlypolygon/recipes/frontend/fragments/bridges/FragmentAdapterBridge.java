@@ -1,5 +1,7 @@
 package org.slovenlypolygon.recipes.frontend.fragments.bridges;
 
+import java.util.Set;
+
 public interface FragmentAdapterBridge {
-    void counterChanged(int counter);
+    void componentsChanged(Set<Integer> counter);
 }
