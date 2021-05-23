@@ -30,6 +30,10 @@ android {
             assets.srcDirs = ["/src/main/assets/database"]
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
