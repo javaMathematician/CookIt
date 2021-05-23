@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
 
-        setTheme(Objects.equals(sharedPreferences.getString(THEME, ""), "Dark") ? R.style.Dark : R.style.Light);
+        setTheme(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.style.Dark : R.style.Light);
         initializeDBAndDAO();
 
         setContentView(R.layout.carcass);
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         drawerLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             ImageButton themeButton = findViewById(R.id.themeButton);
-            themeButton.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, ""), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
+            themeButton.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
             themeButton.setOnClickListener(item -> {
                 new RestartAppForThemeQDialog().show(getSupportFragmentManager(), "restart_q");
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sureChangeThemeAndRestart() {
         sharedPreferences.edit()
-                .putString(THEME, Objects.equals(sharedPreferences.getString(THEME, "Dark"), "Light") ? "Dark" : "Light")
+                .putString(THEME, Objects.equals(sharedPreferences.getString(THEME, "Light"), "Light") ? "Dark" : "Light")
                 .apply();
 
         Intent intent = getIntent();
