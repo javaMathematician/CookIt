@@ -111,7 +111,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                                     @Override
                                     public void onSuccess() {
 
-                                      }
+                                    }
 
                                     @Override
                                     public void onError(Exception e) {

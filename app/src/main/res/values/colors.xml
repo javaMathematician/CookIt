@@ -14,4 +14,6 @@
     <color name="toolbarBackgroundLightColor">#EEEFF1</color>
     <color name="darkThemeBackgroundCardColor">#1D1D1D</color>
     <color name="lightThemeBackgroundCardColor">#FFFFFF</color>
+    <color name="selectedDarkCardBackgroundColor">#252525</color>
+    <color name="selectedLightCardBackgroundColor">#EEEFF1</color>
 </resources>

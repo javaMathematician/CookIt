@@ -1,7 +1,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="?attr/cardBackgroundColor" />
+            <solid android:color="?attr/selectedCardBackgroundColor" />
             <padding android:top="1dp"
                 android:left="2dp"
                 android:right="2dp"
@@ -10,7 +10,7 @@
     </item>
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="?attr/cardBackgroundColor" />
+            <solid android:color="?attr/selectedCardBackgroundColor" />
             <stroke
                 android:width="2dp"
                 android:color="?attr/strokeColor" />

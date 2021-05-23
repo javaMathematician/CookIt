@@ -58,17 +58,18 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
             }
 
             recyclerView.smoothScrollToPosition(0);
+            scrollToTop.hide();
         });
 
         scrollToTop.hide();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    scrollToTop.hide();
-                } else if (dy < 0) {
-                    scrollToTop.show();
-                }
+                    if (dy > 0 || ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() < 5) {
+                        scrollToTop.hide();
+                    } else if (dy < 0) {
+                        scrollToTop.show();
+                    }
             }
         });
     }

@@ -23,6 +23,7 @@
         <item name="mainBackgroundColor">@color/lightThemeBackgroundColor</item>
         <item name="cardBackgroundColor">@color/lightThemeBackgroundCardColor</item>
         <item name="toolbarBackgroundColor">@color/toolbarBackgroundLightColor</item>
+        <item name="selectedCardBackgroundColor">@color/selectedLightCardBackgroundColor</item>
     </style>
 
     <style name="Dark" parent="Theme.AppCompat">
@@ -48,6 +49,7 @@
         <item name="mainBackgroundColor">@color/darkThemeBackgroundColor</item>
         <item name="cardBackgroundColor">@color/darkThemeBackgroundCardColor</item>
         <item name="toolbarBackgroundColor">@color/toolbarBackgroundDarkColor</item>
+        <item name="selectedCardBackgroundColor">@color/selectedDarkCardBackgroundColor</item>
     </style>
 
     <style name="LightDialog" parent="Theme.AppCompat.Light.Dialog">
