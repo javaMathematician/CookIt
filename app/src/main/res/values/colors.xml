@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="greenAccentColor">#04B97F</color>
-    <color name="purpleAccentColor">#BB86FC</color>
+    <color name="blueAccentColor">#2787F5</color>
     <color name="darkThemeTextColor">#FFFFFF</color>
     <color name="separatorDarkColor">#121212</color>
     <color name="lightThemeTextColor">#282930</color>
