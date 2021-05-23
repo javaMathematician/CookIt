@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void sureClearSelected() {
         componentsFragment.clearSelectedComponents();
-
     }
 
     private void menuItemsActions(int id) {
@@ -113,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.toIngredients) {
             changeComponentView(ComponentType.INGREDIENT);
         } else if (id == R.id.toDishes) {
+            sureClearSelected();
             componentsFragment.goToRecipes(false);
         } else if (id == R.id.toCategories) {
             changeComponentView(ComponentType.CATEGORY);

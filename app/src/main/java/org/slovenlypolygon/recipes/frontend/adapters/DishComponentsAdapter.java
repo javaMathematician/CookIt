@@ -35,7 +35,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     private final WeakReference<FragmentAdapterBridge> bridge;
     private final Set<Integer> selectedIDs = new HashSet<>();
 
-    private ComponentSelectedAdapter componentSelectedAdapter;
+    private ComponentTabAdapter componentTabAdapter;
     private List<Component> components = new ArrayList<>();
     private List<Component> original;
 
@@ -77,13 +77,13 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
             if (selectedIDs.contains(component.getId())) {
                 selectedIDs.remove(component.getId());
-                componentSelectedAdapter.removeComponent(component);
+                componentTabAdapter.removeComponent(component);
             } else {
                 selectedIDs.add(component.getId());
-                componentSelectedAdapter.addComponent(component);
+                componentTabAdapter.addComponent(component);
             }
 
-            componentSelectedAdapter.notifyDataSetChanged();
+            componentTabAdapter.notifyDataSetChanged();
             bridge.get().componentsChanged(selectedIDs);
         });
 
@@ -174,8 +174,8 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         notifyDataSetChanged();
     }
 
-    public void setIngredientSelectedAdapter(ComponentSelectedAdapter componentSelectedAdapter) {
-        this.componentSelectedAdapter = componentSelectedAdapter;
+    public void setIngredientSelectedAdapter(ComponentTabAdapter componentTabAdapter) {
+        this.componentTabAdapter = componentTabAdapter;
     }
 
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {

@@ -18,7 +18,7 @@ import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
-import org.slovenlypolygon.recipes.frontend.adapters.ComponentSelectedAdapter;
+import org.slovenlypolygon.recipes.frontend.adapters.ComponentTabAdapter;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBridge;
 
@@ -33,7 +33,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     private boolean initialized;
 
     private RecyclerView selectIngredients;
-    private ComponentSelectedAdapter componentSelectedAdapter;
+    private ComponentTabAdapter componentTabAdapter;
     private RecyclerView recyclerView;
     private Button changeViewComponent;
     private FloatingActionButton scrollToTop;
@@ -86,7 +86,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         initializeVariablesForComponents(rootView);
 
-        selectIngredients.setAdapter(componentSelectedAdapter);
+        selectIngredients.setAdapter(componentTabAdapter);
         recyclerView.setAdapter(dishComponentsAdapter);
         changeViewComponent.setOnClickListener(t -> goToRecipes(true));
 
@@ -128,9 +128,9 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     public void clearSelectedComponents() {
         componentIDs.clear();
         dishComponentsAdapter.clearSelected();
-        componentSelectedAdapter.clearSelected();
+        componentTabAdapter.clearSelected();
         dishComponentsAdapter.notifyDataSetChanged();
-        componentSelectedAdapter.notifyDataSetChanged();
+        componentTabAdapter.notifyDataSetChanged();
     }
 
     public void changeDatasetTo(ComponentType componentType) {
@@ -148,11 +148,11 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
                         dishComponentsAdapter.notifyDataSetChanged();
                     }, Throwable::printStackTrace);
 
-            componentSelectedAdapter = new ComponentSelectedAdapter();
-            componentSelectedAdapter.setDishComponentsAdapter(dishComponentsAdapter);
-            dishComponentsAdapter.setIngredientSelectedAdapter(componentSelectedAdapter);
+            componentTabAdapter = new ComponentTabAdapter();
+            componentTabAdapter.setDishComponentsAdapter(dishComponentsAdapter);
+            dishComponentsAdapter.setIngredientSelectedAdapter(componentTabAdapter);
 
-            selectIngredients.setAdapter(componentSelectedAdapter);
+            selectIngredients.setAdapter(componentTabAdapter);
             recyclerView.setAdapter(dishComponentsAdapter);
             currentComponentType = componentType;
         }
