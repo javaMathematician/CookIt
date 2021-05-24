@@ -8,28 +8,19 @@
     android:background="?attr/gradient"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_margin="10dp"
-        android:background="?attr/gradient"
-        app:cardCornerRadius="100dp"
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:background="?attr/logo"
+        android:contentDescription="img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="78dp"
-            android:layout_height="78dp"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:background="?attr/logo"
-            android:contentDescription="img"
-            tools:ignore="MissingConstraints" />
-    </androidx.cardview.widget.CardView>
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textView"
@@ -42,7 +33,7 @@
         android:textSize="24sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
