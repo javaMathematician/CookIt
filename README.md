@@ -1,4 +1,4 @@
-# CookIt!: лучшие рецепты
+# CookIt! — лучшие рецепты
 CookIt! — приложение, которое подберет для Вас рецепты по заданным фильтрам.
 
 Реализована возможность выбирать категории (различные кухни, типы рецептов), ингредиенты.
@@ -20,7 +20,7 @@ CookIt! — приложение, которое подберет для Вас 
 
 Дополнительные материалы
 ------------------------
-[Здесь](https://docs.google.com/presentation/d/1FZTXho6n1ZGT4v0Jj_Zoge-rPRDOJFGpTgEtpkwiUfM/edit?usp=sharing) Вы можете ознакомиться с презентацией, а [тут](https://youtu.be/3iFVjcT_f_o) — с видео.
+[Здесь](https://docs.google.com/presentation/d/1FZTXho6n1ZGT4v0Jj_Zoge-rPRDOJFGpTgEtpkwiUfM/edit?usp=sharing) Вы можете ознакомиться с презентацией, а [тут](https://youtu.be/NK2-osBXeN8) — с видео.
 
 Скриншоты
 ---------
