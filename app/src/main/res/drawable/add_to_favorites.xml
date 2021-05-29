@@ -13,12 +13,15 @@
       android:pathData="M360.82,333.71m-105.18,0a105.18,105.18 0,1 1,210.36 0a105.18,105.18 0,1 1,-210.36 0"
       android:fillColor="#1fb79a"/>
   <path
-      android:pathData="M360.82,228.53a105.18,105.18 0,1 1,0 210.36"
-      android:fillColor="#00a683"/>
-  <path
+
       android:pathData="M360.82,413.27l0,-159.12l-13.39,0l0,66.17l-66.17,0l0,26.78l66.17,0l0,66.17l13.39,0z"
       android:fillColor="#eee"/>
   <path
       android:pathData="M360.82,413.27l0,-159.12l13.38,0l0,66.17l66.18,0l0,26.78l-66.18,0l0,66.17l-13.38,0z"
-      android:fillColor="#d0d4d7"/>
+      android:fillColor="#eee"/>
+  <path
+      android:pathData="M360.82,227.36a105.19,105.19 0,0 1,0 210.37"
+      android:strokeAlpha="0.15"
+      android:fillColor="#0f0f0f"
+      android:fillAlpha="0.15"/>
 </vector>

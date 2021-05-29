@@ -118,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
             changeComponentView(ComponentType.CATEGORY);
         } else if (id == R.id.toFavorites) {
             componentsFragment.goToRecipes(false, true);
+        } else if (id == R.id.toSettings) {
+            componentsFragment.goToSetting();
         }
     }
 

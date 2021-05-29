@@ -114,6 +114,15 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
                 .commit();
     }
 
+    public void goToSetting() {
+        SettingsFragment settingsFragment = new SettingsFragment();
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.animator.to_left_in, R.animator.to_left_out, R.animator.to_right_in, R.animator.to_right_out)
+                .replace(R.id.fragmentHolder, settingsFragment, "settings")
+                .addToBackStack(null)
+                .commit();
+    }
     @Override
     public void componentsChanged(Set<Integer> selectedIDs) {
         boolean isEmpty = selectedIDs.isEmpty();
