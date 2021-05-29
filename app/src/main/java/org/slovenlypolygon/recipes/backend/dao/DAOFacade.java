@@ -168,4 +168,21 @@ public class DAOFacade {
             return cursor.getString(0);
         }
     }
+
+    public void addToFavorites(Dish dish) {
+        database.execSQL("INSERT INTO favorites (dishID) VALUES " + dish.getId());
+    }
+
+    public void removeFromFavorites(Dish dish) {
+        database.execSQL("DELETE FROM favorites WHERE dishID = " + dish.getId());
+    }
+
+    public boolean containsFavorites(Dish dish) {
+        String query = "SELECT count(*) FROM favorites WHERE dishID = " + dish.getId();
+
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            cursor.moveToFirst();
+            return cursor.getInt(0) > 0;
+        }
+    }
 }
