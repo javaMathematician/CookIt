@@ -29,13 +29,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <ImageSwitcher
+                <ImageButton
                     android:id="@+id/favoritesSwitcher"
                     android:layout_width="70dp"
                     android:layout_height="75dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/add_to_favorites"
-                    android:foreground="?android:attr/selectableItemBackground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:elevation="20dp"/>

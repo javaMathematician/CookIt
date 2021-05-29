@@ -113,9 +113,11 @@ public class MainActivity extends AppCompatActivity {
             changeComponentView(ComponentType.INGREDIENT);
         } else if (id == R.id.toDishes) {
             sureClearSelected();
-            componentsFragment.goToRecipes(false);
+            componentsFragment.goToRecipes(false, false);
         } else if (id == R.id.toCategories) {
             changeComponentView(ComponentType.CATEGORY);
+        } else if (id == R.id.toFavorites) {
+            componentsFragment.goToRecipes(false, true);
         }
     }
 

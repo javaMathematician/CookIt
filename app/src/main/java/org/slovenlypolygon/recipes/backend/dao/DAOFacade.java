@@ -12,6 +12,7 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Step;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -23,6 +24,28 @@ public class DAOFacade {
 
     public DAOFacade(SQLiteDatabase database) {
         this.database = database;
+    }
+
+    public Observable<Dish> getDishesByIDs(Set<Integer> dishesIDs) {
+        return Observable.create(emitter -> {
+            String joinedIDs = Joiner.on(", ").join(dishesIDs);
+            String query = "SELECT * FROM dish WHERE dishID IN (" + joinedIDs + ")";
+
+            try (Cursor cursor = database.rawQuery(query, null)) {
+                while (cursor.moveToNext()) {
+                    int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
+                    String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
+                    String dishImageURL = cursor.getString(cursor.getColumnIndex("dishImageURL"));
+                    String dishURL = cursor.getString(cursor.getColumnIndex("dishURL"));
+
+                    Dish dish = new Dish(dishID, dishName, dishImageURL, dishURL);
+
+                    fillCleanIngredients(dish);
+                    emitter.onNext(dish);
+                }
+            }
+            emitter.onComplete();
+        });
     }
 
     public Observable<Dish> getDishesFromComponentIDs(Set<Integer> componentIDs) {
@@ -175,6 +198,19 @@ public class DAOFacade {
 
     public void removeFromFavorites(Dish dish) {
         database.execSQL("DELETE FROM favorites WHERE dishID = " + dish.getId());
+    }
+
+    public Set<Integer> getFavoritesIDs() {
+        String query = "SELECT dishID FROM favorites";
+        Set<Integer> ids = new HashSet<>();
+
+
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            while (cursor.moveToNext()) {
+                ids.add(cursor.getInt(0));
+            }
+        }
+        return ids;
     }
 
     public boolean containsFavorites(Dish dish) {

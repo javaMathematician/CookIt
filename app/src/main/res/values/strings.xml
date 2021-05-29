@@ -25,4 +25,5 @@
     <string name="none_selected_category">At least one item should be selected</string>
     <string name="toSettings">К настройкам</string>
     <string name="toFavorites">К избранным</string>
+    <string name="endText">Конец страницы</string>
 </resources>

@@ -11,5 +11,5 @@
     <attr name="selectedCardBackgroundColor" format="color" />
 
     <attr name="logo" format="reference" />
-    <attr name="gradient" format="reference" />
+    <attr name="toRecipeButtonColor" format="reference" />
 </resources>

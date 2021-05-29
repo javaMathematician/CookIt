@@ -14,7 +14,7 @@
         <item name="android:fontFamily">@font/montserrat_font</item>
 
         <item name="logo">@drawable/blue_logo</item>
-        <item name="gradient">@color/blueAccentColor</item>
+        <item name="toRecipeButtonColor">@color/blueAccentColor</item>
         <item name="strokeColor">@color/blueAccentColor</item>
         <item name="searchViewColor">@android:color/black</item>
         <item name="textCardColor">@color/lightThemeTextColor</item>
@@ -40,7 +40,7 @@
         <item name="android:fontFamily">@font/montserrat_font</item>
 
         <item name="logo">@drawable/green_logo</item>
-        <item name="gradient">@color/greenAccentColor</item>
+        <item name="toRecipeButtonColor">@color/greenAccentColor</item>
         <item name="strokeColor">@color/greenAccentColor</item>
         <item name="searchViewColor">@android:color/white</item>
         <item name="textCardColor">@color/darkThemeTextColor</item>

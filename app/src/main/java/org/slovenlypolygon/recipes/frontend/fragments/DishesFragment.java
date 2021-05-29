@@ -1,6 +1,7 @@
 package org.slovenlypolygon.recipes.frontend.fragments;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
@@ -30,6 +32,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class DishesFragment extends AbstractFragment {
     private boolean highlightSelected;
     private boolean initialized;
+    private boolean isFavorites;
 
     private SearchView searchView;
     private RecyclerView recyclerView;
@@ -37,6 +40,10 @@ public class DishesFragment extends AbstractFragment {
     private FloatingActionButton scrollToTop;
     private Set<Integer> selectedComponents;
     private Observable<Dish> provider;
+
+    public DishesFragment(boolean isFavorites) {
+        this.isFavorites = isFavorites;
+    }
 
     public void setSelectedComponentIDs(Set<Integer> selectedComponentIDs) {
         this.selectedComponents = selectedComponentIDs;
@@ -70,7 +77,7 @@ public class DishesFragment extends AbstractFragment {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0 || ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() < 5) {
                     scrollToTop.hide();
-                } else if (dy < 0 ) {
+                } else if (dy < 0) {
                     scrollToTop.show();
                 }
             }
@@ -115,7 +122,12 @@ public class DishesFragment extends AbstractFragment {
         dishesAdapter.setSelectedIngredients(selectedComponents);
         dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) DishesFragment.this.getActivity());
 
-        provider = ((MainActivity) getActivity()).getDaoFacade().getDishesFromComponentIDs(selectedComponents);
+        DAOFacade facade = ((MainActivity) getActivity()).getDaoFacade();
+        if (isFavorites) {
+            provider = facade.getDishesByIDs(facade.getFavoritesIDs());
+        } else {
+            provider = facade.getDishesFromComponentIDs(selectedComponents);
+        }
     }
 
     private void getMatches() {

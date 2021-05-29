@@ -65,11 +65,11 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                    if (dy > 0 || ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() < 5) {
-                        scrollToTop.hide();
-                    } else if (dy < 0) {
-                        scrollToTop.show();
-                    }
+                if (dy > 0 || ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() < 5) {
+                    scrollToTop.hide();
+                } else if (dy < 0) {
+                    scrollToTop.show();
+                }
             }
         });
     }
@@ -88,7 +88,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         selectIngredients.setAdapter(componentTabAdapter);
         recyclerView.setAdapter(dishComponentsAdapter);
-        changeViewComponent.setOnClickListener(t -> goToRecipes(true));
+        changeViewComponent.setOnClickListener(t -> goToRecipes(true, false));
 
         if (!initialized) {
             changeDatasetTo(ComponentType.INGREDIENT);
@@ -99,10 +99,10 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         return rootView;
     }
 
-    public void goToRecipes(boolean highlight) {
+    public void goToRecipes(boolean highlight, boolean isFavorites) {
         componentIDs = dishComponentsAdapter.getSelectedIDs();
 
-        DishesFragment dishesFragment = new DishesFragment();
+        DishesFragment dishesFragment = new DishesFragment(isFavorites);
         dishesFragment.setHighlightSelected(highlight);
         dishesFragment.setSelectedComponentIDs(dishComponentsAdapter.getSelectedIDs());
 

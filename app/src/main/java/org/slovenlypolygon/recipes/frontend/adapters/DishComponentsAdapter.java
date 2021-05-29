@@ -178,6 +178,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         this.componentTabAdapter = componentTabAdapter;
     }
 
+
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final ImageView imageView;

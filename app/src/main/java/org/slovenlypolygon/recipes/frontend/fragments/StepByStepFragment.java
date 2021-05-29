@@ -1,18 +1,22 @@
 package org.slovenlypolygon.recipes.frontend.fragments;
 
 import android.content.res.Resources;
+import android.media.Image;
 import android.os.Bundle;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +44,7 @@ public class StepByStepFragment extends AbstractFragment {
     private ScrollView scrollView;
     private LinearLayout linearLayout;
     private TextView dirtyIngredients;
-    private ImageSwitcher favoritesButton;
+    private ImageButton favoritesButton;
 
     public void setDish(Dish dish) {
         this.dish = dish;
@@ -162,9 +166,13 @@ public class StepByStepFragment extends AbstractFragment {
             if (facade.containsFavorites(dish)) {
                 facade.removeFromFavorites(dish);
                 favoritesButton.setBackground(getResources().getDrawable(R.drawable.add_to_favorites));
+                favoritesButton.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scale));
+                Toast.makeText(getContext(), "Удалено из избранного", Toast.LENGTH_SHORT).show();
             } else {
                 facade.addToFavorites(dish);
                 favoritesButton.setBackground(getResources().getDrawable(R.drawable.in_favorites));
+                favoritesButton.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scale));
+                Toast.makeText(getContext(), "Добавлено в избранное", Toast.LENGTH_SHORT).show();
 
             }
         });
