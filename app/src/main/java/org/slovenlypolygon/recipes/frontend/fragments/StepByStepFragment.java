@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -26,6 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Step;
 
@@ -38,6 +40,7 @@ public class StepByStepFragment extends AbstractFragment {
     private ScrollView scrollView;
     private LinearLayout linearLayout;
     private TextView dirtyIngredients;
+    private ImageSwitcher favoritesButton;
 
     public void setDish(Dish dish) {
         this.dish = dish;
@@ -112,6 +115,7 @@ public class StepByStepFragment extends AbstractFragment {
         scrollView = rootView.findViewById(R.id.stepByStepScrollView);
         linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
         dirtyIngredients = rootView.findViewById(R.id.stepByStepIngredients);
+        favoritesButton = rootView.findViewById(R.id.favoritesSwitcher);
 
         return rootView;
     }
@@ -151,6 +155,19 @@ public class StepByStepFragment extends AbstractFragment {
                                 .into(imageView);
                     }
                 });
+
+        DAOFacade facade = ((MainActivity) getActivity()).getDaoFacade();
+        favoritesButton.setBackground(facade.containsFavorites(dish) ? getResources().getDrawable(R.drawable.in_favorites) :getResources().getDrawable(R.drawable.add_to_favorites));
+        favoritesButton.setOnClickListener(v -> {
+            if (facade.containsFavorites(dish)) {
+                facade.removeFromFavorites(dish);
+                favoritesButton.setBackground(getResources().getDrawable(R.drawable.add_to_favorites));
+            } else {
+                facade.addToFavorites(dish);
+                favoritesButton.setBackground(getResources().getDrawable(R.drawable.in_favorites));
+
+            }
+        });
 
         addDirtyIngredients();
         addSteps();
