@@ -170,7 +170,7 @@ public class DAOFacade {
     }
 
     public void addToFavorites(Dish dish) {
-        database.execSQL("INSERT INTO favorites (dishID) VALUES " + dish.getId());
+        database.execSQL("INSERT INTO favorites (dishID) VALUES (" + dish.getId() + ")");
     }
 
     public void removeFromFavorites(Dish dish) {

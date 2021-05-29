@@ -28,7 +28,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void createDataBase() {
         if (!checkDataBase()) {
-            this.getReadableDatabase();
+            this.getWritableDatabase();
 
             try {
                 copyDataBase();
@@ -61,7 +61,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public SQLiteDatabase openDataBase() {
-        database = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
+        database = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READWRITE);
         return database;
     }
 
