@@ -3,7 +3,11 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Picture;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -17,12 +21,15 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.DataBaseHelper;
+import org.slovenlypolygon.recipes.backend.computervision.OCR;
 import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.carcass);
         setFrontend();
+
+        OCR.getTextFromImage(BitmapFactory.decodeStream(getResources().openRawResource(R.raw.image)));
     }
 
     private void setFrontend() {

@@ -33,19 +33,24 @@ public class DAOFacade {
 
             try (Cursor cursor = database.rawQuery(query, null)) {
                 while (cursor.moveToNext()) {
-                    int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
-                    String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
-                    String dishImageURL = cursor.getString(cursor.getColumnIndex("dishImageURL"));
-                    String dishURL = cursor.getString(cursor.getColumnIndex("dishURL"));
-
-                    Dish dish = new Dish(dishID, dishName, dishImageURL, dishURL);
+                    Dish dish = getDishFromCursor(cursor);
 
                     fillCleanIngredients(dish);
                     emitter.onNext(dish);
                 }
             }
+
             emitter.onComplete();
         });
+    }
+
+    private Dish getDishFromCursor(Cursor cursor) {
+        int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
+        String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
+        String dishImageURL = cursor.getString(cursor.getColumnIndex("dishImageURL"));
+        String dishURL = cursor.getString(cursor.getColumnIndex("dishURL"));
+
+        return new Dish(dishID, dishName, dishImageURL, dishURL);
     }
 
     public Observable<Dish> getDishesFromComponentIDs(Set<Integer> componentIDs) {
@@ -65,12 +70,7 @@ public class DAOFacade {
 
             try (Cursor cursor = database.rawQuery(query, null)) {
                 while (cursor.moveToNext()) {
-                    int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
-                    String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
-                    String dishImageURL = cursor.getString(cursor.getColumnIndex("dishImageURL"));
-                    String dishURL = cursor.getString(cursor.getColumnIndex("dishURL"));
-
-                    Dish dish = new Dish(dishID, dishName, dishImageURL, dishURL);
+                    Dish dish = getDishFromCursor(cursor);
 
                     fillCleanIngredients(dish);
                     emitter.onNext(dish);
@@ -119,12 +119,7 @@ public class DAOFacade {
         return Observable.create(emitter -> {
             try (Cursor cursor = database.rawQuery("SELECT * FROM dish", null)) {
                 while (cursor.moveToNext()) {
-                    int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
-                    String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
-                    String dishImageURL = cursor.getString(cursor.getColumnIndex("dishImageURL"));
-                    String dishURL = cursor.getString(cursor.getColumnIndex("dishURL"));
-
-                    Dish dish = new Dish(dishID, dishName, dishImageURL, dishURL);
+                    Dish dish = getDishFromCursor(cursor);
 
                     fillCleanIngredients(dish);
                     emitter.onNext(dish);
@@ -204,12 +199,12 @@ public class DAOFacade {
         String query = "SELECT dishID FROM favorites";
         Set<Integer> ids = new HashSet<>();
 
-
         try (Cursor cursor = database.rawQuery(query, null)) {
             while (cursor.moveToNext()) {
                 ids.add(cursor.getInt(0));
             }
         }
+
         return ids;
     }
 
