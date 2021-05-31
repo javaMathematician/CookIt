@@ -3,12 +3,10 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Picture;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,18 +19,17 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.DataBaseHelper;
-import org.slovenlypolygon.recipes.backend.computervision.OCR;
+import org.slovenlypolygon.recipes.backend.computervision.IOCRCallBack;
+import org.slovenlypolygon.recipes.backend.computervision.OCRAsyncTask;
 import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IOCRCallBack{
     private final static String THEME = "Theme";
 
     private ComponentsFragment componentsFragment;
@@ -62,7 +59,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.carcass);
         setFrontend();
 
-        OCR.getTextFromImage(BitmapFactory.decodeStream(getResources().openRawResource(R.raw.image)));
+        test();
+    }
+
+    private void test() {
+        String mAPiKey = "e9525e2a8b88957"; //TODO Add your own Registered API key
+        boolean isOverlayRequired;
+        String mImageUrl;
+        String mLanguage;
+        TextView mTxtResult;
+        IOCRCallBack mIOCRCallBack;
+        mIOCRCallBack = (IOCRCallBack) this;
+        mImageUrl = "http://kbdp.ru/upload/medialibrary/0b8/0b8d761e41dfa8e9439f6ecd214f0946.JPG"; // Image url to apply OCR API
+        mLanguage = "rus"; //Language
+        isOverlayRequired = true;
+
+        OCRAsyncTask oCRAsyncTask = new OCRAsyncTask(MainActivity.this, mAPiKey, isOverlayRequired, mImageUrl, mLanguage,mIOCRCallBack);
+        oCRAsyncTask.execute();
+    }
+
+    @Override
+    public void getOCRCallBackResult(String response) {
+        System.out.println(response);
     }
 
     private void setFrontend() {
@@ -127,8 +145,6 @@ public class MainActivity extends AppCompatActivity {
             changeComponentView(ComponentType.CATEGORY);
         } else if (id == R.id.toFavorites) {
             componentsFragment.goToRecipes(false, true);
-        } else if (id == R.id.toSettings) {
-            componentsFragment.goToSetting();
         }
     }
 

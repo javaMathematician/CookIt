@@ -22,11 +22,6 @@
         android:title="@string/toFavorites" />
 
     <item
-        android:id="@+id/toSettings"
-        android:icon="@drawable/settings"
-        android:title="@string/toSettings" />
-
-    <item
         android:id="@+id/clearSelected"
         android:icon="@drawable/clear_selected_ingredient"
         android:title="@string/clearSelected" />
