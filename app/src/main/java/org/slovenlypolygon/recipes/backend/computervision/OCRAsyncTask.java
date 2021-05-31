@@ -80,9 +80,9 @@ public class OCRAsyncTask extends AsyncTask {
 
         JSONObject postDataParams = new JSONObject();
 
-        postDataParams.put("apikey", apiKey);//TODO Add your Registered API key
+        postDataParams.put("apikey", apiKey);
         postDataParams.put("isOverlayRequired", isOverlayRequired);
-        postDataParams.put("url", imageUrl);
+        postDataParams.put("base64Image", imageUrl);
         postDataParams.put("language", language);
 
 

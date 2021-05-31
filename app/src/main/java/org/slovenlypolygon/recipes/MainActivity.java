@@ -3,8 +3,10 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements IOCRCallBack{
@@ -63,14 +66,17 @@ public class MainActivity extends AppCompatActivity implements IOCRCallBack{
     }
 
     private void test() {
-        String mAPiKey = "e9525e2a8b88957"; //TODO Add your own Registered API key
+        String mAPiKey = "e9525e2a8b88957";
         boolean isOverlayRequired;
         String mImageUrl;
         String mLanguage;
         TextView mTxtResult;
         IOCRCallBack mIOCRCallBack;
         mIOCRCallBack = (IOCRCallBack) this;
-        mImageUrl = "http://kbdp.ru/upload/medialibrary/0b8/0b8d761e41dfa8e9439f6ecd214f0946.JPG"; // Image url to apply OCR API
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Bitmap image = BitmapFactory.decodeStream(getResources().openRawResource(R.raw.image));
+        image.compress(Bitmap.CompressFormat.JPEG, 75, outputStream);
+        mImageUrl = "data:image/png;base64," + Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
         mLanguage = "rus"; //Language
         isOverlayRequired = true;
 
