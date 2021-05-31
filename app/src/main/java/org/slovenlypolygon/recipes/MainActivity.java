@@ -3,12 +3,8 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,34 +17,31 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.DataBaseHelper;
-import org.slovenlypolygon.recipes.backend.computervision.IOCRCallBack;
-import org.slovenlypolygon.recipes.backend.computervision.OCRAsyncTask;
-import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
+import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 
-import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements IOCRCallBack{
+public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Theme";
 
     private ComponentsFragment componentsFragment;
     private SharedPreferences sharedPreferences;
     private DrawerLayout drawerLayout;
-    private DAOFacade daoFacade;
+    private DishComponentDAO dishComponentDao;
 
-    public DAOFacade getDaoFacade() {
-        return daoFacade;
+    public DishComponentDAO getDishComponentDAO() {
+        return dishComponentDao;
     }
 
     void initializeDBAndDAO() {
         DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
         dataBaseHelper.createDataBase();
 
-        daoFacade = new DAOFacade(dataBaseHelper.openDataBase());
+        dishComponentDao = new DishComponentDAO(dataBaseHelper.openDataBase());
     }
 
     @Override
@@ -61,31 +54,6 @@ public class MainActivity extends AppCompatActivity implements IOCRCallBack{
 
         setContentView(R.layout.carcass);
         setFrontend();
-
-        //test();
-    }
-
-    private void test() {
-        String mAPiKey = "e9525e2a8b88957";
-        boolean isOverlayRequired;
-        String mImageUrl;
-        String mLanguage;
-        IOCRCallBack mIOCRCallBack;
-        mIOCRCallBack = this;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Bitmap image = BitmapFactory.decodeStream(getResources().openRawResource(R.raw.text));
-        image.compress(Bitmap.CompressFormat.JPEG, 75, outputStream);
-        mImageUrl = "data:image/png;base64," + Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
-        mLanguage = "rus"; //Language
-        isOverlayRequired = true;
-
-        OCRAsyncTask oCRAsyncTask = new OCRAsyncTask(MainActivity.this, mAPiKey, isOverlayRequired, mImageUrl, mLanguage,mIOCRCallBack);
-        oCRAsyncTask.execute();
-    }
-
-    @Override
-    public void getOCRCallBackResult(String response) {
-        System.out.println(response);
     }
 
     private void setFrontend() {
@@ -145,13 +113,11 @@ public class MainActivity extends AppCompatActivity implements IOCRCallBack{
             changeComponentView(ComponentType.INGREDIENT);
         } else if (id == R.id.toDishes) {
             sureClearSelected();
-            componentsFragment.goToRecipes(false, false, false);
+            componentsFragment.goToRecipes(false);
         } else if (id == R.id.toCategories) {
             changeComponentView(ComponentType.CATEGORY);
         } else if (id == R.id.toFavorites) {
-            componentsFragment.goToRecipes(false, true, false);
-        } else if (id == R.id.toRecommendations) {
-            componentsFragment.goToRecipes(false, false, true);
+            componentsFragment.goToRecipes(false);
         }
     }
 

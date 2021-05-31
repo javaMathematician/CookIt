@@ -1,7 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.fragments;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
+import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
@@ -33,8 +31,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class DishesFragment extends AbstractFragment {
     private boolean highlightSelected;
     private boolean initialized;
-    private final boolean isFavorites;
-    private final boolean isRecommended;
 
     private SearchView searchView;
     private RecyclerView recyclerView;
@@ -42,11 +38,6 @@ public class DishesFragment extends AbstractFragment {
     private FloatingActionButton scrollToTop;
     private Set<Integer> selectedComponents;
     private Observable<Dish> provider;
-
-    public DishesFragment(boolean isFavorites, boolean isRecommended) {
-        this.isFavorites = isFavorites;
-        this.isRecommended = isRecommended;
-    }
 
     public void setSelectedComponentIDs(Set<Integer> selectedComponentIDs) {
         this.selectedComponents = selectedComponentIDs;
@@ -125,14 +116,14 @@ public class DishesFragment extends AbstractFragment {
         dishesAdapter.setSelectedIngredients(selectedComponents);
         dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) DishesFragment.this.getActivity());
 
-        DAOFacade facade = ((MainActivity) getActivity()).getDaoFacade();
-        if (isFavorites) {
-            provider = facade.getDishesByIDs(facade.getFavoritesIDs());
-        } else if (isRecommended) {
-            provider = facade.getRecommendedDishes();
-        } else {
-            provider = facade.getDishesFromComponentIDs(selectedComponents);
-        }
+        DishComponentDAO facade = ((MainActivity) getActivity()).getDishComponentDAO();
+//        if (isFavorites) {
+//            provider = facade.getDishesByIDs(facade.getFavoritesIDs());
+//        } else if (isRecommended) {
+//            provider = facade.getRecommendedDishes();
+//        } else {
+//            provider = facade.getDishesFromComponentIDs(selectedComponents);
+//        }
     }
 
     private void getMatches() {

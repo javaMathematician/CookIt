@@ -72,7 +72,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     @Override
     public void onBindViewHolder(@NonNull DishViewHolder dishViewHolder, int i) {
-        Dish dish = activityAdapterBridge.getActivity().getDaoFacade().getRichDish(dishes.get(i));
+        Dish dish = activityAdapterBridge.getActivity().getDishComponentDAO().getRichDish(dishes.get(i));
         Set<Integer> cleanedDish = dish.getCleanComponents().stream().map(Component::getId).collect(Collectors.toSet());
         Set<Integer> intersection = Sets.intersection(cleanedDish, selectedIngredients);
 
@@ -141,7 +141,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     private Set<String> namesFromIDs(Set<Integer> ids) {
         return ids.stream()
-                .map(t -> activityAdapterBridge.getActivity().getDaoFacade().getCleanComponentNameByID(t).toLowerCase())
+                .map(t -> activityAdapterBridge.getActivity().getDishComponentDAO().getCleanComponentNameByID(t).toLowerCase())
                 .collect(Collectors.toSet());
     }
 

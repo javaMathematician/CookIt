@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.dao.DAOFacade;
+import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.adapters.ComponentTabAdapter;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
@@ -88,7 +88,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         selectIngredients.setAdapter(componentTabAdapter);
         recyclerView.setAdapter(dishComponentsAdapter);
-        changeViewComponent.setOnClickListener(t -> goToRecipes(true, false, false));
+        changeViewComponent.setOnClickListener(t -> goToRecipes(false));
 
         if (!initialized) {
             changeDatasetTo(ComponentType.INGREDIENT);
@@ -99,10 +99,10 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         return rootView;
     }
 
-    public void goToRecipes(boolean highlight, boolean isFavorites, boolean isRecommended) {
+    public void goToRecipes(boolean highlight) {
         componentIDs = dishComponentsAdapter.getSelectedIDs();
 
-        DishesFragment dishesFragment = new DishesFragment(isFavorites, isRecommended);
+        DishesFragment dishesFragment = new DishesFragment();
         dishesFragment.setHighlightSelected(highlight);
         dishesFragment.setSelectedComponentIDs(dishComponentsAdapter.getSelectedIDs());
 
@@ -135,7 +135,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
     public void changeDatasetTo(ComponentType componentType) {
         if (componentType != currentComponentType) {
-            DAOFacade dao = ((MainActivity) getActivity()).getDaoFacade();
+            DishComponentDAO dao = ((MainActivity) getActivity()).getDishComponentDAO();
 
             dishComponentsAdapter = new DishComponentsAdapter(this);
 

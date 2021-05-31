@@ -18,11 +18,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class DAOFacade {
+public class DishComponentDAO {
     private final SQLiteDatabase database;
 
-    public DAOFacade(SQLiteDatabase database) {
+    public DishComponentDAO(SQLiteDatabase database) {
         this.database = database;
     }
 
@@ -221,35 +222,39 @@ public class DAOFacade {
         Set<Integer> dishesIDs = getFavoritesIDs();
 
         if (dishesIDs.isEmpty()) {
-            return this.getAllDishes();
+            return getAllDishes();
         }
 
-        Set<Integer> componentsIDs = new HashSet<>();
-        String joinedDishesIDs = Joiner.on(", ").join(dishesIDs);
+        return Observable.create(emitter -> {
+            Set<Integer> componentsIDs = new HashSet<>();
+            String joinedDishesIDs = Joiner.on(", ").join(dishesIDs);
 
-        String queryForComponents = "SELECT componentID FROM dishComponentCrossReference " +
-                "WHERE dishID IN (" + joinedDishesIDs + ")";
+            String queryForComponents = "SELECT componentID FROM dishComponentCrossReference " +
+                    "WHERE dishID IN (" + joinedDishesIDs + ")";
 
-        try (Cursor cursor = database.rawQuery(queryForComponents, null)) {
-            while (cursor.moveToNext()) {
-                componentsIDs.add(cursor.getInt(0));
+            try (Cursor cursor = database.rawQuery(queryForComponents, null)) {
+                while (cursor.moveToNext()) {
+                    componentsIDs.add(cursor.getInt(0));
+                }
             }
-        }
 
+            String joinedComponentsIDs = Joiner.on(", ").join(componentsIDs);
+            Set<Integer> recommendedCategoriesIDs = new HashSet<>();
 
-        String joinedComponentsIDs = Joiner.on(", ").join(componentsIDs);
-        Set<Integer> recommendedCategoriesIDs = new HashSet<>();
+            String query = "SELECT componentID FROM component " +
+                    "WHERE qIsIngredient = 0 AND componentID IN (" + joinedComponentsIDs + ")";
 
-        queryForComponents = "SELECT componentID FROM component " +
-                "WHERE qIsIngredient = 0 AND " +
-                "componentID IN (" + joinedComponentsIDs + ")";
-
-        try (Cursor cursor = database.rawQuery(queryForComponents, null)) {
-            while (cursor.moveToNext()) {
-                recommendedCategoriesIDs.add(cursor.getInt(0));
+            try (Cursor cursor = database.rawQuery(query, null)) {
+                while (cursor.moveToNext()) {
+                    recommendedCategoriesIDs.add(cursor.getInt(0));
+                }
             }
-        }
 
-        return getDishesFromComponentIDs(recommendedCategoriesIDs).take(10 + dishesIDs.size()).skip(dishesIDs.size());
+            getDishesFromComponentIDs(recommendedCategoriesIDs)
+                    .subscribeOn(Schedulers.newThread())
+                    .skip(dishesIDs.size())
+                    .take(10)
+                    .subscribe(emitter::onNext, Throwable::printStackTrace);
+        });
     }
 }
