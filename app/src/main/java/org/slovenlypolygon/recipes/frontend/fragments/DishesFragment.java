@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +33,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class DishesFragment extends AbstractFragment {
     private boolean highlightSelected;
     private boolean initialized;
-    private boolean isFavorites;
+    private final boolean isFavorites;
+    private final boolean isRecommended;
 
     private SearchView searchView;
     private RecyclerView recyclerView;
@@ -41,8 +43,9 @@ public class DishesFragment extends AbstractFragment {
     private Set<Integer> selectedComponents;
     private Observable<Dish> provider;
 
-    public DishesFragment(boolean isFavorites) {
+    public DishesFragment(boolean isFavorites, boolean isRecommended) {
         this.isFavorites = isFavorites;
+        this.isRecommended = isRecommended;
     }
 
     public void setSelectedComponentIDs(Set<Integer> selectedComponentIDs) {
@@ -125,6 +128,8 @@ public class DishesFragment extends AbstractFragment {
         DAOFacade facade = ((MainActivity) getActivity()).getDaoFacade();
         if (isFavorites) {
             provider = facade.getDishesByIDs(facade.getFavoritesIDs());
+        } else if (isRecommended) {
+            provider = facade.getRecommendedDishes();
         } else {
             provider = facade.getDishesFromComponentIDs(selectedComponents);
         }

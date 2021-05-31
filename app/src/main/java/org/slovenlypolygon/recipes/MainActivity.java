@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements IOCRCallBack{
         setContentView(R.layout.carcass);
         setFrontend();
 
-        test();
+        //test();
     }
 
     private void test() {
@@ -70,11 +70,10 @@ public class MainActivity extends AppCompatActivity implements IOCRCallBack{
         boolean isOverlayRequired;
         String mImageUrl;
         String mLanguage;
-        TextView mTxtResult;
         IOCRCallBack mIOCRCallBack;
-        mIOCRCallBack = (IOCRCallBack) this;
+        mIOCRCallBack = this;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Bitmap image = BitmapFactory.decodeStream(getResources().openRawResource(R.raw.image));
+        Bitmap image = BitmapFactory.decodeStream(getResources().openRawResource(R.raw.text));
         image.compress(Bitmap.CompressFormat.JPEG, 75, outputStream);
         mImageUrl = "data:image/png;base64," + Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
         mLanguage = "rus"; //Language
@@ -146,11 +145,13 @@ public class MainActivity extends AppCompatActivity implements IOCRCallBack{
             changeComponentView(ComponentType.INGREDIENT);
         } else if (id == R.id.toDishes) {
             sureClearSelected();
-            componentsFragment.goToRecipes(false, false);
+            componentsFragment.goToRecipes(false, false, false);
         } else if (id == R.id.toCategories) {
             changeComponentView(ComponentType.CATEGORY);
         } else if (id == R.id.toFavorites) {
-            componentsFragment.goToRecipes(false, true);
+            componentsFragment.goToRecipes(false, true, false);
+        } else if (id == R.id.toRecommendations) {
+            componentsFragment.goToRecipes(false, false, true);
         }
     }
 

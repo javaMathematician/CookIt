@@ -22,6 +22,21 @@
         android:title="@string/toFavorites" />
 
     <item
+        android:id="@+id/toRecommendations"
+        android:icon="@drawable/recommendations"
+        android:title="@string/recommendations" />
+
+    <item
+        android:id="@+id/toShoppingLists"
+        android:icon="@drawable/shopping_list"
+        android:title="@string/shoppingLists" />
+
+    <item
+        android:id="@+id/toReceiptScan"
+        android:icon="@drawable/receipt_scan"
+        android:title="@string/recepitScan" />
+
+    <item
         android:id="@+id/clearSelected"
         android:icon="@drawable/clear_selected_ingredient"
         android:title="@string/clearSelected" />

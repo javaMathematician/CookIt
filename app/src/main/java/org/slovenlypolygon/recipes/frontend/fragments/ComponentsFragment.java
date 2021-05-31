@@ -88,7 +88,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         selectIngredients.setAdapter(componentTabAdapter);
         recyclerView.setAdapter(dishComponentsAdapter);
-        changeViewComponent.setOnClickListener(t -> goToRecipes(true, false));
+        changeViewComponent.setOnClickListener(t -> goToRecipes(true, false, false));
 
         if (!initialized) {
             changeDatasetTo(ComponentType.INGREDIENT);
@@ -99,10 +99,10 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         return rootView;
     }
 
-    public void goToRecipes(boolean highlight, boolean isFavorites) {
+    public void goToRecipes(boolean highlight, boolean isFavorites, boolean isRecommended) {
         componentIDs = dishComponentsAdapter.getSelectedIDs();
 
-        DishesFragment dishesFragment = new DishesFragment(isFavorites);
+        DishesFragment dishesFragment = new DishesFragment(isFavorites, isRecommended);
         dishesFragment.setHighlightSelected(highlight);
         dishesFragment.setSelectedComponentIDs(dishComponentsAdapter.getSelectedIDs());
 

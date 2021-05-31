@@ -55,7 +55,7 @@ public class DAOFacade {
 
     public Observable<Dish> getDishesFromComponentIDs(Set<Integer> componentIDs) {
         if (componentIDs.isEmpty()) {
-            return this.getAllDishes();
+            return getAllDishes();
         }
 
         return Observable.create(emitter -> {
@@ -215,5 +215,41 @@ public class DAOFacade {
             cursor.moveToFirst();
             return cursor.getInt(0) > 0;
         }
+    }
+
+    public Observable<Dish> getRecommendedDishes() {
+        Set<Integer> dishesIDs = getFavoritesIDs();
+
+        if (dishesIDs.isEmpty()) {
+            return this.getAllDishes();
+        }
+
+        Set<Integer> componentsIDs = new HashSet<>();
+        String joinedDishesIDs = Joiner.on(", ").join(dishesIDs);
+
+        String queryForComponents = "SELECT componentID FROM dishComponentCrossReference " +
+                "WHERE dishID IN (" + joinedDishesIDs + ")";
+
+        try (Cursor cursor = database.rawQuery(queryForComponents, null)) {
+            while (cursor.moveToNext()) {
+                componentsIDs.add(cursor.getInt(0));
+            }
+        }
+
+
+        String joinedComponentsIDs = Joiner.on(", ").join(componentsIDs);
+        Set<Integer> recommendedCategoriesIDs = new HashSet<>();
+
+        queryForComponents = "SELECT componentID FROM component " +
+                "WHERE qIsIngredient = 0 AND " +
+                "componentID IN (" + joinedComponentsIDs + ")";
+
+        try (Cursor cursor = database.rawQuery(queryForComponents, null)) {
+            while (cursor.moveToNext()) {
+                recommendedCategoriesIDs.add(cursor.getInt(0));
+            }
+        }
+
+        return getDishesFromComponentIDs(recommendedCategoriesIDs).take(10 + dishesIDs.size()).skip(dishesIDs.size());
     }
 }

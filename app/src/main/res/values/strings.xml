@@ -26,4 +26,7 @@
     <string name="toSettings">К настройкам</string>
     <string name="toFavorites">К избранным</string>
     <string name="endText">Конец страницы</string>
+    <string name="recommendations">Вам могут понравиться</string>
+    <string name="shoppingLists">К спискам покупок</string>
+    <string name="recepitScan">Сканировать чек</string>
 </resources>
