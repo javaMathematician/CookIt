@@ -3,42 +3,42 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/toIngredients"
-        android:icon="@drawable/color_ingredients"
+        android:icon="@drawable/to_ingredients_icon"
         android:title="@string/ingredients" />
 
     <item
         android:id="@+id/toCategories"
-        android:icon="@drawable/color_categories"
+        android:icon="@drawable/to_categories_icon"
         android:title="@string/categories" />
 
     <item
         android:id="@+id/toDishes"
-        android:icon="@drawable/color_dishes"
+        android:icon="@drawable/to_all_dishes_icon"
         android:title="@string/dishes" />
 
     <item
         android:id="@+id/toFavorites"
-        android:icon="@drawable/favorites"
+        android:icon="@drawable/to_favorites_icon"
         android:title="@string/favorites" />
 
     <item
         android:id="@+id/toRecommendations"
-        android:icon="@drawable/recommendations"
+        android:icon="@drawable/to_recommendations_icon"
         android:title="@string/recommendations" />
 
     <item
         android:id="@+id/toShoppingLists"
-        android:icon="@drawable/shopping_list"
+        android:icon="@drawable/to_shopping_lists_icon"
         android:title="@string/shopping_lists" />
 
     <item
         android:id="@+id/toReceiptScan"
-        android:icon="@drawable/receipt_scan"
+        android:icon="@drawable/to_bill_scan_icon"
         android:title="@string/bill_scan" />
 
     <item
         android:id="@+id/clearSelected"
-        android:icon="@drawable/clear_selected_ingredient"
+        android:icon="@drawable/clear_selected_ingredient_icon"
         android:title="@string/clear_selected" />
 
 </menu>
