@@ -1,7 +1,7 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/color_categories"
+        android:icon="@drawable/to_categories_icon"
         android:shortcutId="categoriesShortcut"
         android:shortcutShortLabel="@string/categories">
 
