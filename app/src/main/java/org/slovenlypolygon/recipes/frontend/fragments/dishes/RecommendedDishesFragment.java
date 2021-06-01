@@ -1,5 +1,7 @@
 package org.slovenlypolygon.recipes.frontend.fragments.dishes;
 
+import android.view.View;
+
 public class RecommendedDishesFragment extends DishesFragment {
     @Override
     protected void initializeDataProvider() {
@@ -13,5 +15,11 @@ public class RecommendedDishesFragment extends DishesFragment {
         if (!initialized) {
             getMatches();
         }
+    }
+
+    @Override
+    protected void initializeVariablesForDishes(View rootView) {
+        super.initializeVariablesForDishes(rootView);
+        swipeRefreshLayout.setEnabled(true);
     }
 }

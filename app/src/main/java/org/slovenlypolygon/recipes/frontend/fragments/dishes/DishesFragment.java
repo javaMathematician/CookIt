@@ -85,6 +85,7 @@ public class DishesFragment extends AbstractFragment {
         });
 
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setEnabled(false);
     }
 
     @Override

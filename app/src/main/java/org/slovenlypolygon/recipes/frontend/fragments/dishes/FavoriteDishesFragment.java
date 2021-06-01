@@ -57,6 +57,8 @@ public class FavoriteDishesFragment extends DishesFragment {
                         });
 
         recyclerView.addOnItemTouchListener(swipeTouchListener);
+
+        swipeRefreshLayout.setEnabled(true);
     }
 
     @Override
