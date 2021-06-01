@@ -35,6 +35,7 @@ public class DishesFragment extends AbstractFragment {
     private FragmentType type;
 
     private SearchView searchView;
+    private DishComponentDAO facade;
     private RecyclerView recyclerView;
     private DishesAdapter dishesAdapter;
     private FloatingActionButton scrollToTop;
@@ -54,6 +55,8 @@ public class DishesFragment extends AbstractFragment {
     }
 
     private void initializeVariablesForDishes(View rootView) {
+        facade = ((MainActivity) getActivity()).getDishComponentDAO();
+
         recyclerView = rootView.findViewById(R.id.dishesRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -122,7 +125,6 @@ public class DishesFragment extends AbstractFragment {
         dishesAdapter.setSelectedIngredients(selectedComponents);
         dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) DishesFragment.this.getActivity());
 
-        DishComponentDAO facade = ((MainActivity) getActivity()).getDishComponentDAO();
         if (type.equals(FragmentType.FAVORITES)) {
             provider = facade.getDishesByIDs(facade.getFavoritesIDs());
         } else if (type.equals(FragmentType.RECOMMENDED)) {
@@ -141,5 +143,11 @@ public class DishesFragment extends AbstractFragment {
                     dishesAdapter.getDishes().addAll(constructedDish);
                     dishesAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // обновлять адаптер если в фароритах
     }
 }

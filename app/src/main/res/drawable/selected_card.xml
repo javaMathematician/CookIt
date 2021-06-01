@@ -13,7 +13,7 @@
             <solid android:color="?attr/selectedCardBackgroundColor" />
             <stroke
                 android:width="2dp"
-                android:color="?attr/strokeColor" />
+                android:color="?attr/accentColor" />
         </shape>
     </item>
 </layer-list>

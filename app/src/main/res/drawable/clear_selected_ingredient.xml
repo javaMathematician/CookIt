@@ -4,10 +4,10 @@
     android:viewportWidth="64"
     android:viewportHeight="64">
     <path
-        android:fillColor="?attr/strokeColor"
+        android:fillColor="?attr/accentColor"
         android:pathData="M4.354,4.3551L4.354,4.3551A6.16,6.16 90,0 1,13.0656 4.3551L59.6568,50.9463A6.16,6.16 90,0 1,59.6568 59.6579L59.6569,59.6579A6.16,6.16 90,0 1,50.9453 59.6579L4.354,13.0666A6.16,6.16 90,0 1,4.354 4.3551z" />
     <path
-        android:fillColor="?attr/strokeColor"
+        android:fillColor="?attr/accentColor"
         android:pathData="M4.3551,59.666L4.3551,59.666A6.16,6.16 90,0 1,4.3551 50.9544L50.9463,4.3632A6.16,6.16 90,0 1,59.6579 4.3631L59.6579,4.3631A6.16,6.16 90,0 1,59.6579 13.0747L13.0666,59.666A6.16,6.16 90,0 1,4.3551 59.666z" />
     <path
         android:fillColor="?attr/toRecipeTextColor"
