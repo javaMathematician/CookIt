@@ -243,7 +243,7 @@ public class DishComponentDAO {
 
             getDishesFromComponentIDs(componentsIDs)
                     .skip(dishesIDs.size())
-                    .take(100)
+                    .take(15)
                     .subscribe(emitter::onNext, Throwable::printStackTrace);
         });
     }
