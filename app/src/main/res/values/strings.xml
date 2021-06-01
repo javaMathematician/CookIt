@@ -1,21 +1,30 @@
 <resources>
+    <string name="agree">да</string>
+    <string name="disagree">нет</string>
     <string name="recipes">Рецепты</string>
     <string name="app_name">CookIt!</string>
-    <string name="dishes">Все блюда</string>
     <string name="search_hint">Поиск</string>
+    <string name="dishes">Все рецепты</string>
     <string name="settings">Настройки</string>
+    <string name="resources">Сбросить?</string>
     <string name="categories">Категории</string>
     <string name="search_hint_text">Искать</string>
     <string name="ingredients">Ингредиенты</string>
     <string name="page_end">Конец страницы</string>
+    <string name="restart_q">Перезапустить?</string>
     <string name="favorites">Избранные блюда</string>
     <string name="bill_scan">Сканировать чек</string>
     <string name="shopping_lists">Списки покупок</string>
+    <string name="reset_agree">Да, хочу сбросить</string>
     <string name="you_will_need">Вам понадобятся:</string>
+    <string name="reset_disagree">Нет, я передумал</string>
+    <string name="go_to_recipes_button">К рецептам</string>
     <string name="step_by_step_toolbar">Рецепт по шагам</string>
     <string name="recommendations">Вам могут понравиться</string>
     <string name="dish_image_step_by_step">Изображение блюда</string>
     <string name="shuffle_ingredients">Перемешать ингредиенты</string>
     <string name="clear_selected">Сбросить выделенные ингредиенты</string>
     <string name="select_at_least_one">Выберите хотя бы один ингредиент</string>
+    <string name="restart_theme_q">Для измененения темы придётся перезапустить приложение. Сделать это сейчас?</string>
+    <string name="sure_reset_q">Вы действительно хотите сбросить выбранные компоненты? Это действие нельзя будет отменить.</string>
 </resources>

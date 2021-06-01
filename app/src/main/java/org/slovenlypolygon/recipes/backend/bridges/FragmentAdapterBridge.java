@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.frontend.fragments.bridges;
+package org.slovenlypolygon.recipes.backend.bridges;
 
 import java.util.Set;
 

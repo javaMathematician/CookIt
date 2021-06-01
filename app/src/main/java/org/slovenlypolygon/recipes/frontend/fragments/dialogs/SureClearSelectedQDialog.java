@@ -8,15 +8,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import org.slovenlypolygon.recipes.MainActivity;
+import org.slovenlypolygon.recipes.R;
 
 public class SureClearSelectedQDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String title = "Сбросить?";
-        String message = "Вы действительно хотите сбросить выбранные компоненты? Это действие нельзя будет отменить.";
-        String accept = "Да, хочу сбросить";
-        String decline = "Нет, я передумал";
+        String title = getString(R.string.resources);
+        String message = getString(R.string.sure_reset_q);
+        String accept = getString(R.string.reset_agree);
+        String decline = getString(R.string.reset_disagree);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title);

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dishCardView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="?attr/cardBackgroundColor"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="6dp"
-    android:elevation="6dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   xmlns:tools="http://schemas.android.com/tools"
+                                   android:id="@+id/dishCardView"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:elevation="6dp"
+                                   android:foreground="?android:attr/selectableItemBackground"
+                                   app:cardBackgroundColor="?attr/cardBackgroundColor"
+                                   app:cardCornerRadius="0dp"
+                                   app:cardElevation="6dp"
+                                   app:layout_constraintStart_toStartOf="parent"
+                                   app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout
         android:id="@+id/dishLinearLayout"
@@ -58,11 +58,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/dishName" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
     <View
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="30dp"
         android:background="?attr/separatorColor"
-        tools:ignore="MissingConstraints"
-        android:layout_marginHorizontal="30dp"/>
+        tools:ignore="MissingConstraints" />
 </androidx.cardview.widget.CardView>

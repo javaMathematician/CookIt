@@ -16,10 +16,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 
-import org.slovenlypolygon.recipes.backend.DataBaseHelper;
-import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.database.DataBaseHelper;
+import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.ShoppingListFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dishes.DishesFragment;
@@ -118,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(new FavoriteDishesFragment(), "favorites");
         } else if (id == R.id.toRecommendations) {
             changeFragment(new RecommendedDishesFragment(), "recommended");
+        } else if (id == R.id.toShoppingLists) {
+            changeFragment(new ShoppingListFragment(), "shopping_list");
         }
     }
 

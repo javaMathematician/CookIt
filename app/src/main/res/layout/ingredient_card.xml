@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ingredientCard"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="?attr/cardBackgroundColor"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="6dp"
-    android:elevation="6dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   android:id="@+id/ingredientCard"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:elevation="6dp"
+                                   android:foreground="?android:attr/selectableItemBackground"
+                                   app:cardBackgroundColor="?attr/cardBackgroundColor"
+                                   app:cardCornerRadius="0dp"
+                                   app:cardElevation="6dp"
+                                   app:layout_constraintStart_toStartOf="parent"
+                                   app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout
         android:id="@+id/linearLayoutOnIngredient"
@@ -47,11 +47,12 @@
             android:gravity="center"
             android:theme="@style/checkBoxStyle" />
     </LinearLayout>
+
     <View
         android:id="@+id/separator"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?attr/separatorColor"
-        android:layout_marginHorizontal="30dp"/>
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="30dp"
+        android:background="?attr/separatorColor" />
 </androidx.cardview.widget.CardView>

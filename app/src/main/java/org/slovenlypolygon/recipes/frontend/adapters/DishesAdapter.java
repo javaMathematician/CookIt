@@ -20,10 +20,10 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.bridges.ActivityAdapterBridge;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.fragments.StepByStepFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.bridges.ActivityAdapterBridge;
 
 import java.util.ArrayList;
 import java.util.List;

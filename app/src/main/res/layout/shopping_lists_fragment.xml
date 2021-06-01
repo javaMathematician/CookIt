@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/mainBackgroundColor">
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:background="?attr/mainBackgroundColor">
 
     <LinearLayout
-        android:id="@+id/frameLayoutInIngredientsFragment"
+        android:id="@+id/shoppingListLinearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -16,9 +15,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints">
-
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shoppingListsRecyclerView"
@@ -28,12 +25,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:textSize="18sp"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:text="@string/page_end"
-            android:textColor="?attr/textCardColor"
             android:textAlignment="center"
-            android:layout_gravity="center"/>
+            android:textColor="?attr/textCardColor"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -42,11 +39,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:clickable="true"
-        android:contentDescription="scroll"
         android:focusable="true"
         app:backgroundTint="?attr/toolbarBackgroundColor"
-        app:layout_constraintBottom_toBottomOf="@+id/frameLayoutInIngredientsFragment"
-        app:layout_constraintEnd_toEndOf="@+id/frameLayoutInIngredientsFragment"
+        app:layout_constraintBottom_toBottomOf="@+id/shoppingListLinearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/shoppingListLinearLayout"
         app:srcCompat="@drawable/up_arrow" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

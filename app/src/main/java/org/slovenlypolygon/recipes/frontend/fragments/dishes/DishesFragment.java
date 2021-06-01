@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
@@ -33,17 +33,15 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DishesFragment extends AbstractFragment {
-    private boolean highlightSelected;
     protected boolean initialized;
-
     protected SearchView searchView;
     protected RecyclerView recyclerView;
     protected DishesAdapter dishesAdapter;
     protected SwipeRefreshLayout swipeRefreshLayout;
-
-    private FloatingActionButton scrollToTop;
     protected Observable<Dish> provider;
     protected DishComponentDAO facade;
+    private boolean highlightSelected;
+    private FloatingActionButton scrollToTop;
     private Set<Integer> selectedComponents = new HashSet<>();
 
     public void setSelectedComponentIDs(Set<Integer> selectedComponentIDs) {

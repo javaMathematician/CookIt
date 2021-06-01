@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/selectedIngredientCard"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:elevation="6dp"
-    app:cardCornerRadius="0dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="?attr/toolbarBackgroundColor"
-    app:cardElevation="2dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   android:id="@+id/selectedIngredientCard"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:elevation="6dp"
+                                   android:foreground="?android:attr/selectableItemBackground"
+                                   app:cardBackgroundColor="?attr/toolbarBackgroundColor"
+                                   app:cardCornerRadius="0dp"
+                                   app:cardElevation="2dp"
+                                   app:layout_constraintStart_toStartOf="parent"
+                                   app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="30dp">
 
-
         <TextView
             android:id="@+id/textOnSelectedIngredient"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:gravity="center_vertical"
             android:layout_marginStart="5dp"
+            android:gravity="center_vertical"
             android:textColor="?attr/textCardColor"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -35,10 +34,10 @@
             android:id="@+id/buttonOnSelectedIngredient"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_marginStart="10dp"
             android:background="@drawable/clear_selected_ingredient"
             android:clickable="false"
             android:focusable="false"
-            android:layout_marginStart="10dp"
             android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

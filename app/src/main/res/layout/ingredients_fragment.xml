@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerMain"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/mainBackgroundColor">
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:id="@+id/drawerMain"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:background="?attr/mainBackgroundColor">
 
     <FrameLayout
-        android:id="@+id/frameLayoutInIngredientsFragment"
+        android:id="@+id/shoppingListLinearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,13 +28,12 @@
                 android:id="@+id/selectedIngredientsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layoutAnimation="@anim/layout_animation"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layoutAnimation="@anim/layout_animation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-            </androidx.recyclerview.widget.RecyclerView>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ingredientsRecyclerView"
@@ -48,12 +47,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:textSize="18sp"
+                android:layout_gravity="center"
                 android:layout_marginTop="12dp"
                 android:text="@string/page_end"
-                android:textColor="?attr/textCardColor"
                 android:textAlignment="center"
-                android:layout_gravity="center"/>
+                android:textColor="?attr/textCardColor"
+                android:textSize="18sp" />
         </LinearLayout>
     </FrameLayout>
 
@@ -66,7 +65,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/to_recipes_button_enabled_with_mask"
         android:elevation="16dp"
-        android:text="@string/recipes"
+        android:text="@string/go_to_recipes_button"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +83,7 @@
         android:focusable="true"
         app:backgroundTint="?attr/toolbarBackgroundColor"
         app:layout_constraintBottom_toBottomOf="@+id/changeView"
-        app:layout_constraintEnd_toEndOf="@+id/frameLayoutInIngredientsFragment"
+        app:layout_constraintEnd_toEndOf="@+id/shoppingListLinearLayout"
         app:layout_constraintStart_toEndOf="@+id/changeView"
         app:layout_constraintTop_toTopOf="@+id/changeView"
         app:srcCompat="@drawable/up_arrow" />

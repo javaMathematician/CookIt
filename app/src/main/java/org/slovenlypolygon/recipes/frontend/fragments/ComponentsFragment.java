@@ -16,11 +16,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.bridges.FragmentAdapterBridge;
+import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.adapters.ComponentTabAdapter;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
-import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBridge;
 import org.slovenlypolygon.recipes.frontend.fragments.dishes.DishesFragment;
 
 import java.util.HashSet;

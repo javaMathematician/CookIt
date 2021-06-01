@@ -2,10 +2,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:gravity="center">
         <animated-rotate
-            android:fromDegrees="0"
-            android:toDegrees="1080"
             android:drawable="@drawable/loading_v2"
+            android:fromDegrees="0"
             android:pivotX="50%"
-            android:pivotY="50%" />
+            android:pivotY="50%"
+            android:toDegrees="1080" />
     </item>
 </layer-list>

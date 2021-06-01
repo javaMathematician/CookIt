@@ -20,8 +20,8 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.bridges.FragmentAdapterBridge;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
-import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBridge;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -177,7 +177,6 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     public void setIngredientSelectedAdapter(ComponentTabAdapter componentTabAdapter) {
         this.componentTabAdapter = componentTabAdapter;
     }
-
 
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;

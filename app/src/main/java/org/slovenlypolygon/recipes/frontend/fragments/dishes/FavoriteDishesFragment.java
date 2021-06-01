@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.brnunes.swipeablerecyclerview.SwipeableRecyclerViewTouchListener;
 
 import org.slovenlypolygon.recipes.MainActivity;
-import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 
 public class FavoriteDishesFragment extends DishesFragment {
     @Override
@@ -35,11 +35,11 @@ public class FavoriteDishesFragment extends DishesFragment {
                             }
 
                             private void delete(int[] reverseSortedPositions) {
-
                                 for (int position : reverseSortedPositions) {
-                                    dishComponentDAO.deleteFavoriteDish(dishesAdapter.getDishes().get(position));
                                     dishesAdapter.getDishes().remove(position);
                                     dishesAdapter.notifyItemRemoved(position);
+
+                                    dishComponentDAO.deleteFavoriteDish(dishesAdapter.getDishes().get(position));
                                 }
 
                                 dishesAdapter.notifyDataSetChanged();

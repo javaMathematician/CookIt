@@ -1,8 +1,8 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="368.5dp"
-    android:height="368.5dp"
-    android:viewportWidth="368.5"
-    android:viewportHeight="368.5">
+        android:width="368.5dp"
+        android:height="368.5dp"
+        android:viewportWidth="368.5"
+        android:viewportHeight="368.5">
     <path
         android:fillColor="@color/recipesAndLoadingColor"
         android:pathData="M183.4,82.2L185.1,82.2A6.76,6.76 0,0 1,191.86 88.96L191.86,118.27A6.76,6.76 0,0 1,185.1 125.03L183.4,125.03A6.76,6.76 0,0 1,176.64 118.27L176.64,88.96A6.76,6.76 0,0 1,183.4 82.2z" />
@@ -13,7 +13,7 @@
     <path
         android:fillAlpha="0.8"
         android:fillColor="@color/recipesAndLoadingColor"
-        android:pathData="M125.03,183.4L125.03,185.1A6.76,6.76 0,0 1,118.27 191.86L88.96,191.86A6.76,6.76 0,0 1,82.2 185.1L82.2,183.4A6.76,6.76 0,0 1,88.96 176.64L118.27,176.64A6.76,6.76 0,0 1,125.03 183.4z"/>
+        android:pathData="M125.03,183.4L125.03,185.1A6.76,6.76 0,0 1,118.27 191.86L88.96,191.86A6.76,6.76 0,0 1,82.2 185.1L82.2,183.4A6.76,6.76 0,0 1,88.96 176.64L118.27,176.64A6.76,6.76 0,0 1,125.03 183.4z" />
     <path
         android:fillAlpha="0.7"
         android:fillColor="@color/recipesAndLoadingColor"
@@ -21,7 +21,7 @@
     <path
         android:fillAlpha="0.6"
         android:fillColor="@color/recipesAndLoadingColor"
-        android:pathData="M183.4,243.47L185.1,243.47A6.76,6.76 0,0 1,191.86 250.23L191.86,279.54A6.76,6.76 0,0 1,185.1 286.3L183.4,286.3A6.76,6.76 0,0 1,176.64 279.54L176.64,250.23A6.76,6.76 0,0 1,183.4 243.47z"/>
+        android:pathData="M183.4,243.47L185.1,243.47A6.76,6.76 0,0 1,191.86 250.23L191.86,279.54A6.76,6.76 0,0 1,185.1 286.3L183.4,286.3A6.76,6.76 0,0 1,176.64 279.54L176.64,250.23A6.76,6.76 0,0 1,183.4 243.47z" />
     <path
         android:fillAlpha="0.5"
         android:fillColor="@color/recipesAndLoadingColor"
