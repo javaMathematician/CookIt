@@ -208,7 +208,9 @@ public class DishComponentDAO {
     }
 
     public Observable<Dish> getFavoriteDishes() {
-        return Observable.create(emitter -> getDishesByIDs(getFavoritesIDs()).subscribe(emitter::onNext, Throwable::printStackTrace));
+        return Observable.create(emitter -> {
+            getDishesByIDs(getFavoritesIDs()).subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete);
+        });
     }
 
     public boolean containsFavorites(Dish dish) {
@@ -244,7 +246,7 @@ public class DishComponentDAO {
             getDishesFromComponentIDs(componentsIDs)
                     .skip(dishesIDs.size())
                     .take(15)
-                    .subscribe(emitter::onNext, Throwable::printStackTrace);
+                    .subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete);
         });
     }
 
