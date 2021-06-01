@@ -32,7 +32,7 @@
         android:title="@string/shopping_lists" />
 
     <item
-        android:id="@+id/toReceiptScan"
+        android:id="@+id/scan_bill"
         android:icon="@drawable/to_bill_scan_icon"
         android:title="@string/bill_scan" />
 

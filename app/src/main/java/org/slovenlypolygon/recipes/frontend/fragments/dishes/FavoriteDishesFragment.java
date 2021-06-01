@@ -1,11 +1,10 @@
 package org.slovenlypolygon.recipes.frontend.fragments.dishes;
 
-import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,7 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -37,55 +36,55 @@ public class FavoriteDishesFragment extends DishesFragment {
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             private final DishComponentDAO dishComponentDAO = ((MainActivity) getActivity()).getDishComponentDAO();
-            private Drawable icon;
-            private ColorDrawable background;
 
             @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                super.onChildDraw(c, recyclerView, viewHolder, dX,
-                        dY, actionState, isCurrentlyActive);
+            public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
-                View itemView = viewHolder.itemView;
                 int backgroundCornerOffset = 20;
-                icon = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.delete_icon);
-                background = new ColorDrawable(Color.RED);
 
-                int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+                Rect boundRect = new Rect();
+                View itemView = viewHolder.itemView;
+                Drawable icon = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.delete_icon);
+                ColorDrawable background = new ColorDrawable(Color.RED);
+
+                int iconMargin = (itemView.getHeight() - Objects.requireNonNull(icon).getIntrinsicHeight()) / 2;
                 int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
                 int iconBottom = iconTop + icon.getIntrinsicHeight();
 
+                if (dX != 0) {
+                    int iconLeft;
+                    int iconRight;
 
-                if (dX > 0) { // Swiping to the right
-                    int iconLeft = itemView.getLeft() + iconMargin - icon.getIntrinsicWidth();
-                    int iconRight = itemView.getLeft() + iconMargin;
+                    if (dX > 0) {
+                        iconLeft = itemView.getLeft() + iconMargin - icon.getIntrinsicWidth();
+                        iconRight = itemView.getLeft() + iconMargin;
+                        boundRect = new Rect(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + ((int) dX) + backgroundCornerOffset, itemView.getBottom());
+                    } else {
+                        iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
+                        iconRight = itemView.getRight() - iconMargin;
+                        boundRect = new Rect(itemView.getRight() + ((int) dX) - backgroundCornerOffset, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                    }
+
                     icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-
-                    background.setBounds(itemView.getLeft(), itemView.getTop(),
-                            itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
-                            itemView.getBottom());
-                } else if (dX < 0) { // Swiping to the left
-                    int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
-                    int iconRight = itemView.getRight() - iconMargin;
-                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-
-                    background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
-                            itemView.getTop(), itemView.getRight(), itemView.getBottom());
-                } else { // view is unSwiped
-                    background.setBounds(0, 0, 0, 0);
+                } else {
+                    boundRect = new Rect(0, 0, 0, 0);
                 }
 
-                background.draw(c);
-                icon.draw(c);
+                background.setBounds(boundRect);
+                background.draw(canvas);
+                icon.draw(canvas);
             }
 
             @Override
-            public boolean onMove(@NonNull @org.jetbrains.annotations.NotNull RecyclerView recyclerView, @NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder, @NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
-            public void onSwiped(@NonNull @org.jetbrains.annotations.NotNull RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getBindingAdapterPosition();
+
                 dishComponentDAO.deleteFavoriteDish(dishesAdapter.getDishes().get(position));
                 dishesAdapter.getDishes().remove(position);
                 dishesAdapter.notifyDataSetChanged();
@@ -108,7 +107,9 @@ public class FavoriteDishesFragment extends DishesFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(constructedDish -> {
                     for (Dish dish : constructedDish) {
-                        if (!dishesAdapter.getDishes().contains(dish)) dishesAdapter.getDishes().add(dish);
+                        if (!dishesAdapter.getDishes().contains(dish)) {
+                            dishesAdapter.getDishes().add(dish);
+                        }
                     }
                     dishesAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);

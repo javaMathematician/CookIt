@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.frontend.fragments;
+package org.slovenlypolygon.recipes.frontend.fragments.shoppinglists;
 
 import androidx.fragment.app.Fragment;
 
