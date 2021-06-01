@@ -12,17 +12,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.DataBaseHelper;
 import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
-import org.slovenlypolygon.recipes.backend.mainobjects.FragmentType;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
+import org.slovenlypolygon.recipes.frontend.fragments.dishes.DishesFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.dishes.FavoriteDishesFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.dishes.RecommendedDishesFragment;
 
 import java.util.Objects;
 
@@ -89,11 +91,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.fragmentHolder, new ComponentsFragment(), "ingredients")
-                .commit();
+        changeFragment(new ComponentsFragment(), "ingredients");
     }
 
     public void sureClearSelected() {
@@ -113,24 +111,27 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.toIngredients) {
             changeComponentView(ComponentType.INGREDIENT);
         } else if (id == R.id.toDishes) {
-            sureClearSelected();
-            componentsFragment.goToRecipes(false, FragmentType.DISHES);
+            changeFragment(new DishesFragment(), "all_dishes");
         } else if (id == R.id.toCategories) {
             changeComponentView(ComponentType.CATEGORY);
         } else if (id == R.id.toFavorites) {
-            componentsFragment.goToRecipes(false, FragmentType.FAVORITES);
+            changeFragment(new FavoriteDishesFragment(), "favorites");
         } else if (id == R.id.toRecommendations) {
-            componentsFragment.goToRecipes(false, FragmentType.RECOMMENDED);
+            changeFragment(new RecommendedDishesFragment(), "recommended");
         }
     }
 
     private void changeComponentView(ComponentType componentType) {
         componentsFragment.changeDatasetTo(componentType);
+        changeFragment(componentsFragment, "ingredients");
+    }
 
+    private void changeFragment(Fragment fragment, String tag) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.animator.to_left_in, R.animator.to_left_out, R.animator.to_right_in, R.animator.to_right_out)
-                .replace(R.id.fragmentHolder, componentsFragment, "ingredients")
+                .replace(R.id.fragmentHolder, fragment, tag)
+                .addToBackStack(null)
                 .commit();
     }
 

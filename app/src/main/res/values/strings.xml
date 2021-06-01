@@ -1,32 +1,21 @@
 <resources>
     <string name="recipes">Рецепты</string>
     <string name="app_name">CookIt!</string>
+    <string name="dishes">Все блюда</string>
     <string name="search_hint">Поиск</string>
-    <string name="dishes_with">Блюда</string>
     <string name="settings">Настройки</string>
-    <string name="searchPromote">Искать</string>
-    <string name="to_recipes">К рецептам</string>
-    <string name="open_recipe">К рецепту</string>
-    <string name="dishes">Ко всем блюдам</string>
-    <string name="back_to_main_scene">Назад</string>
-    <string name="dish_categories">Категории</string>
-    <string name="recipeScan">Сканировать чек</string>
-    <string name="categories">К выбору категорий</string>
+    <string name="categories">Категории</string>
+    <string name="search_hint_text">Искать</string>
+    <string name="ingredients">Ингредиенты</string>
+    <string name="page_end">Конец страницы</string>
+    <string name="favorites">Избранные блюда</string>
+    <string name="bill_scan">Сканировать чек</string>
+    <string name="shopping_lists">Списки покупок</string>
     <string name="you_will_need">Вам понадобятся:</string>
-    <string name="ingredients">К выбору ингрединтов</string>
+    <string name="step_by_step_toolbar">Рецепт по шагам</string>
+    <string name="recommendations">Вам могут понравиться</string>
     <string name="dish_image_step_by_step">Изображение блюда</string>
     <string name="shuffle_ingredients">Перемешать ингредиенты</string>
-    <string name="step_by_step_toolbar_string">Рецепт по шагам</string>
-    <string name="reset_selected">Сбросить выбранные ингредиенты</string>
-    <string name="clearSelected">Сбросить выделенные ингредиенты</string>
-    <string name="hello_world" translatable="false">Hello Square World!</string>
-    <string name="title_activity_main" translatable="false">MainActivity</string>
-    <string name="none_selected_ingredient">Выберите хотя бы один ингредиент</string>
-    <string name="none_selected_category">At least one item should be selected</string>
-    <string name="toSettings">К настройкам</string>
-    <string name="toFavorites">К избранным</string>
-    <string name="endText">Конец страницы</string>
-    <string name="recommendations">Вам могут понравиться</string>
-    <string name="shoppingLists">К спискам покупок</string>
-    <string name="recepitScan">Сканировать чек</string>
+    <string name="clear_selected">Сбросить выделенные ингредиенты</string>
+    <string name="select_at_least_one">Выберите хотя бы один ингредиент</string>
 </resources>

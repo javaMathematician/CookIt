@@ -3,7 +3,7 @@
         android:enabled="true"
         android:icon="@drawable/color_categories"
         android:shortcutId="categoriesShortcut"
-        android:shortcutShortLabel="@string/dish_categories">
+        android:shortcutShortLabel="@string/categories">
 
         <intent
             android:action="org.slovenlypolygon.recipes.TOCATEGORIES"

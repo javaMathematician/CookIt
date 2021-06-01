@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.frontend.fragments;
+package org.slovenlypolygon.recipes.frontend.fragments.dishes;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -18,9 +19,11 @@ import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.FragmentType;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
+import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -31,20 +34,17 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DishesFragment extends AbstractFragment {
     private boolean highlightSelected;
-    private boolean initialized;
-    private FragmentType type;
+    protected boolean initialized;
 
-    private SearchView searchView;
-    private DishComponentDAO facade;
-    private RecyclerView recyclerView;
-    private DishesAdapter dishesAdapter;
+    protected SearchView searchView;
+    protected RecyclerView recyclerView;
+    protected DishesAdapter dishesAdapter;
+    protected SwipeRefreshLayout swipeRefreshLayout;
+
     private FloatingActionButton scrollToTop;
-    private Set<Integer> selectedComponents;
-    private Observable<Dish> provider;
-
-    public DishesFragment(FragmentType type) {
-        this.type = type;
-    }
+    protected Observable<Dish> provider;
+    protected DishComponentDAO facade;
+    private Set<Integer> selectedComponents = new HashSet<>();
 
     public void setSelectedComponentIDs(Set<Integer> selectedComponentIDs) {
         this.selectedComponents = selectedComponentIDs;
@@ -54,7 +54,7 @@ public class DishesFragment extends AbstractFragment {
         this.highlightSelected = highlightSelected;
     }
 
-    private void initializeVariablesForDishes(View rootView) {
+    protected void initializeVariablesForDishes(View rootView) {
         facade = ((MainActivity) getActivity()).getDishComponentDAO();
 
         recyclerView = rootView.findViewById(R.id.dishesRecyclerView);
@@ -85,6 +85,8 @@ public class DishesFragment extends AbstractFragment {
                 }
             }
         });
+
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefresh);
     }
 
     @Override
@@ -108,33 +110,37 @@ public class DishesFragment extends AbstractFragment {
         });
 
         if (!initialized) {
-            initializeAdapter();
-            getMatches();
             initialized = true;
+
+            dishesAdapter = new DishesAdapter(highlightSelected);
+
+            dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#2787F5");
+            dishesAdapter.setSelectedIngredients(selectedComponents);
+            dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) this.getActivity());
+
+            initializeDataProvider();
+            getMatches();
         }
 
         recyclerView.swapAdapter(dishesAdapter, true);
 
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+
+            Collections.shuffle(dishesAdapter.getDishes());
+            dishesAdapter.notifyDataSetChanged();
+
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
         return rootView;
     }
 
-    private void initializeAdapter() {
-        dishesAdapter = new DishesAdapter(highlightSelected);
-
-        dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#2787F5");
-        dishesAdapter.setSelectedIngredients(selectedComponents);
-        dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) DishesFragment.this.getActivity());
-
-        if (type.equals(FragmentType.FAVORITES)) {
-            provider = facade.getDishesByIDs(facade.getFavoritesIDs());
-        } else if (type.equals(FragmentType.RECOMMENDED)) {
-            provider = facade.getRecommendedDishes();
-        } else {
-            provider = facade.getDishesFromComponentIDs(selectedComponents);
-        }
+    protected void initializeDataProvider() {
+        provider = facade.getDishesFromComponentIDs(selectedComponents);
     }
 
-    private void getMatches() {
+    protected void getMatches() {
         dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
                 .buffer(750, TimeUnit.MILLISECONDS)
@@ -143,11 +149,5 @@ public class DishesFragment extends AbstractFragment {
                     dishesAdapter.getDishes().addAll(constructedDish);
                     dishesAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // обновлять адаптер если в фароритах
     }
 }

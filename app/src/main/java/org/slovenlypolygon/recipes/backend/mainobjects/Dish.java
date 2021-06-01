@@ -1,6 +1,7 @@
 package org.slovenlypolygon.recipes.backend.mainobjects;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -76,5 +77,30 @@ public class Dish {
                 .add("steps", steps)
                 .add("components", dirtyIngredients)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Dish dish = (Dish) o;
+        return id == dish.id &&
+                Objects.equal(imageURL, dish.imageURL) &&
+                Objects.equal(dishURL, dish.dishURL) &&
+                Objects.equal(name, dish.name) &&
+                Objects.equal(steps, dish.steps) &&
+                Objects.equal(dirtyIngredients, dish.dirtyIngredients) &&
+                Objects.equal(cleanComponents, dish.cleanComponents);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(imageURL, dishURL, name, id, steps, dirtyIngredients, cleanComponents);
     }
 }

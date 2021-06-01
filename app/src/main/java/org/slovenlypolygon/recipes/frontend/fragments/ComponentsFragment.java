@@ -18,10 +18,10 @@ import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
-import org.slovenlypolygon.recipes.backend.mainobjects.FragmentType;
 import org.slovenlypolygon.recipes.frontend.adapters.ComponentTabAdapter;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBridge;
+import org.slovenlypolygon.recipes.frontend.fragments.dishes.DishesFragment;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,15 +32,18 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
     private boolean initialized;
-
-    private RecyclerView selectIngredients;
-    private ComponentTabAdapter componentTabAdapter;
-    private RecyclerView recyclerView;
-    private Button changeViewComponent;
-    private FloatingActionButton scrollToTop;
     private ComponentType currentComponentType;
-    private DishComponentsAdapter dishComponentsAdapter;
+
+    private Button changeViewComponent;
     private Set<Integer> componentIDs = new HashSet<>();
+
+    private RecyclerView recyclerView;
+    private RecyclerView selectIngredients;
+
+    private FloatingActionButton scrollToTop;
+
+    private ComponentTabAdapter componentTabAdapter;
+    private DishComponentsAdapter dishComponentsAdapter;
 
     private void initializeVariablesForComponents(View rootView) {
         selectIngredients = rootView.findViewById(R.id.selectedIngredientsRecyclerView);
@@ -89,7 +92,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         selectIngredients.setAdapter(componentTabAdapter);
         recyclerView.setAdapter(dishComponentsAdapter);
-        changeViewComponent.setOnClickListener(t -> goToRecipes(false, FragmentType.DISHES));
+        changeViewComponent.setOnClickListener(t -> goToRecipes());
 
         if (!initialized) {
             changeDatasetTo(ComponentType.INGREDIENT);
@@ -100,11 +103,11 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         return rootView;
     }
 
-    public void goToRecipes(boolean highlight, FragmentType type) {
+    public void goToRecipes() {
         componentIDs = dishComponentsAdapter.getSelectedIDs();
 
-        DishesFragment dishesFragment = new DishesFragment(type);
-        dishesFragment.setHighlightSelected(highlight);
+        DishesFragment dishesFragment = new DishesFragment();
+        dishesFragment.setHighlightSelected(true);
         dishesFragment.setSelectedComponentIDs(dishComponentsAdapter.getSelectedIDs());
 
         getActivity().getSupportFragmentManager()

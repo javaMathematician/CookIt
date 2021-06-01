@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DishComponentDAO {
     private final SQLiteDatabase database;
@@ -196,17 +195,20 @@ public class DishComponentDAO {
         database.execSQL("DELETE FROM favorites WHERE dishID = " + dish.getId());
     }
 
-    public Set<Integer> getFavoritesIDs() {
-        String query = "SELECT dishID FROM favorites";
+    private Set<Integer> getFavoritesIDs() {
         Set<Integer> ids = new HashSet<>();
 
-        try (Cursor cursor = database.rawQuery(query, null)) {
+        try (Cursor cursor = database.rawQuery("SELECT dishID FROM favorites", null)) {
             while (cursor.moveToNext()) {
                 ids.add(cursor.getInt(0));
             }
         }
 
         return ids;
+    }
+
+    public Observable<Dish> getFavoriteDishes() {
+        return Observable.create(emitter -> getDishesByIDs(getFavoritesIDs()).subscribe(emitter::onNext, Throwable::printStackTrace));
     }
 
     public boolean containsFavorites(Dish dish) {
@@ -229,8 +231,9 @@ public class DishComponentDAO {
             Set<Integer> componentsIDs = new HashSet<>();
             String joinedDishesIDs = Joiner.on(", ").join(dishesIDs);
 
-            String queryForComponents = "SELECT componentID FROM dishComponentCrossReference " +
-                    "WHERE dishID IN (" + joinedDishesIDs + ")";
+            String queryForComponents = "SELECT component.componentID FROM component, dishComponentCrossReference " +
+                    "WHERE dishID IN (" + joinedDishesIDs + ") AND qIsIngredient = 0 " +
+                    "GROUP BY component.componentID";
 
             try (Cursor cursor = database.rawQuery(queryForComponents, null)) {
                 while (cursor.moveToNext()) {
@@ -238,23 +241,14 @@ public class DishComponentDAO {
                 }
             }
 
-            String joinedComponentsIDs = Joiner.on(", ").join(componentsIDs);
-            Set<Integer> recommendedCategoriesIDs = new HashSet<>();
-
-            String query = "SELECT componentID FROM component " +
-                    "WHERE qIsIngredient = 0 AND componentID IN (" + joinedComponentsIDs + ")";
-
-            try (Cursor cursor = database.rawQuery(query, null)) {
-                while (cursor.moveToNext()) {
-                    recommendedCategoriesIDs.add(cursor.getInt(0));
-                }
-            }
-
-            getDishesFromComponentIDs(recommendedCategoriesIDs)
-                    .subscribeOn(Schedulers.newThread())
+            getDishesFromComponentIDs(componentsIDs)
                     .skip(dishesIDs.size())
-                    .take(10)
+                    .take(100)
                     .subscribe(emitter::onNext, Throwable::printStackTrace);
         });
+    }
+
+    public void deleteFavoriteDish(Dish dish) {
+        database.execSQL("DELETE FROM favorites WHERE dishID = " + dish.getId());
     }
 }
