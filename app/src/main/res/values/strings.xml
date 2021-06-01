@@ -16,6 +16,7 @@
     <string name="bill_scan">Сканировать чек</string>
     <string name="shopping_lists">Списки покупок</string>
     <string name="reset_agree">Да, хочу сбросить</string>
+    <string name="empty_search">Ничего не нашлось</string>
     <string name="you_will_need">Вам понадобятся:</string>
     <string name="reset_disagree">Нет, я передумал</string>
     <string name="go_to_recipes_button">К рецептам</string>
