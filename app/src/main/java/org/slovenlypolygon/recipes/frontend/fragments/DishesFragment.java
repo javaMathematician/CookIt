@@ -18,6 +18,7 @@ import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.FragmentType;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 
 import java.util.Objects;
@@ -31,6 +32,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class DishesFragment extends AbstractFragment {
     private boolean highlightSelected;
     private boolean initialized;
+    private FragmentType type;
 
     private SearchView searchView;
     private RecyclerView recyclerView;
@@ -38,6 +40,10 @@ public class DishesFragment extends AbstractFragment {
     private FloatingActionButton scrollToTop;
     private Set<Integer> selectedComponents;
     private Observable<Dish> provider;
+
+    public DishesFragment(FragmentType type) {
+        this.type = type;
+    }
 
     public void setSelectedComponentIDs(Set<Integer> selectedComponentIDs) {
         this.selectedComponents = selectedComponentIDs;
@@ -117,13 +123,13 @@ public class DishesFragment extends AbstractFragment {
         dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) DishesFragment.this.getActivity());
 
         DishComponentDAO facade = ((MainActivity) getActivity()).getDishComponentDAO();
-//        if (isFavorites) {
-//            provider = facade.getDishesByIDs(facade.getFavoritesIDs());
-//        } else if (isRecommended) {
-//            provider = facade.getRecommendedDishes();
-//        } else {
-//            provider = facade.getDishesFromComponentIDs(selectedComponents);
-//        }
+        if (type.equals(FragmentType.FAVORITES)) {
+            provider = facade.getDishesByIDs(facade.getFavoritesIDs());
+        } else if (type.equals(FragmentType.RECOMMENDED)) {
+            provider = facade.getRecommendedDishes();
+        } else {
+            provider = facade.getDishesFromComponentIDs(selectedComponents);
+        }
     }
 
     private void getMatches() {

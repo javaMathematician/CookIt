@@ -19,6 +19,7 @@ import com.google.android.material.navigation.NavigationView;
 import org.slovenlypolygon.recipes.backend.DataBaseHelper;
 import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
+import org.slovenlypolygon.recipes.backend.mainobjects.FragmentType;
 import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
@@ -113,11 +114,13 @@ public class MainActivity extends AppCompatActivity {
             changeComponentView(ComponentType.INGREDIENT);
         } else if (id == R.id.toDishes) {
             sureClearSelected();
-            componentsFragment.goToRecipes(false);
+            componentsFragment.goToRecipes(false, FragmentType.DISHES);
         } else if (id == R.id.toCategories) {
             changeComponentView(ComponentType.CATEGORY);
         } else if (id == R.id.toFavorites) {
-            componentsFragment.goToRecipes(false);
+            componentsFragment.goToRecipes(false, FragmentType.FAVORITES);
+        } else if (id == R.id.toRecommendations) {
+            componentsFragment.goToRecipes(false, FragmentType.RECOMMENDED);
         }
     }
 

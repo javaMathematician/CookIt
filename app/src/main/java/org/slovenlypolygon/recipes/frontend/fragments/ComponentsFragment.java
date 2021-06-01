@@ -18,6 +18,7 @@ import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.dao.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
+import org.slovenlypolygon.recipes.backend.mainobjects.FragmentType;
 import org.slovenlypolygon.recipes.frontend.adapters.ComponentTabAdapter;
 import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.bridges.FragmentAdapterBridge;
@@ -88,7 +89,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
 
         selectIngredients.setAdapter(componentTabAdapter);
         recyclerView.setAdapter(dishComponentsAdapter);
-        changeViewComponent.setOnClickListener(t -> goToRecipes(false));
+        changeViewComponent.setOnClickListener(t -> goToRecipes(false, FragmentType.DISHES));
 
         if (!initialized) {
             changeDatasetTo(ComponentType.INGREDIENT);
@@ -99,10 +100,10 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         return rootView;
     }
 
-    public void goToRecipes(boolean highlight) {
+    public void goToRecipes(boolean highlight, FragmentType type) {
         componentIDs = dishComponentsAdapter.getSelectedIDs();
 
-        DishesFragment dishesFragment = new DishesFragment();
+        DishesFragment dishesFragment = new DishesFragment(type);
         dishesFragment.setHighlightSelected(highlight);
         dishesFragment.setSelectedComponentIDs(dishComponentsAdapter.getSelectedIDs());
 
