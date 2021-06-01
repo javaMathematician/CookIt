@@ -100,14 +100,6 @@ public class DishesFragment extends AbstractFragment {
 
         initializeVariablesForDishes(rootView);
 
-        scrollToTop.setOnClickListener(view -> {
-            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
-                recyclerView.scrollToPosition(15);
-            }
-
-            recyclerView.smoothScrollToPosition(0);
-        });
-
         if (!initialized) {
             initialized = true;
 
