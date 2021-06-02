@@ -188,17 +188,17 @@ public class DishComponentDAO {
     }
 
     public void addToFavorites(Dish dish) {
-        database.execSQL("INSERT INTO favorites (dishID) VALUES (" + dish.getId() + ")");
+        database.execSQL("INSERT INTO favoriteDishes (dishID) VALUES (" + dish.getId() + ")");
     }
 
     public void removeFromFavorites(Dish dish) {
-        database.execSQL("DELETE FROM favorites WHERE dishID = " + dish.getId());
+        database.execSQL("DELETE FROM favoriteDishes WHERE dishID = " + dish.getId());
     }
 
-    private Set<Integer> getFavoritesIDs() {
+    private Set<Integer> getFavoriteDishIDs() {
         Set<Integer> ids = new HashSet<>();
 
-        try (Cursor cursor = database.rawQuery("SELECT dishID FROM favorites", null)) {
+        try (Cursor cursor = database.rawQuery("SELECT dishID FROM favoriteDishes", null)) {
             while (cursor.moveToNext()) {
                 ids.add(cursor.getInt(0));
             }
@@ -209,12 +209,12 @@ public class DishComponentDAO {
 
     public Observable<Dish> getFavoriteDishes() {
         return Observable.create(emitter -> {
-            getDishesByIDs(getFavoritesIDs()).subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete);
+            getDishesByIDs(getFavoriteDishIDs()).subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete);
         });
     }
 
     public boolean containsFavorites(Dish dish) {
-        String query = "SELECT count(*) FROM favorites WHERE dishID = " + dish.getId();
+        String query = "SELECT count(*) FROM favoriteDishes WHERE dishID = " + dish.getId();
 
         try (Cursor cursor = database.rawQuery(query, null)) {
             cursor.moveToFirst();
@@ -223,7 +223,7 @@ public class DishComponentDAO {
     }
 
     public Observable<Dish> getRecommendedDishes() {
-        Set<Integer> dishesIDs = getFavoritesIDs();
+        Set<Integer> dishesIDs = getFavoriteDishIDs();
 
         if (dishesIDs.isEmpty()) {
             return getAllDishes();
@@ -250,7 +250,46 @@ public class DishComponentDAO {
         });
     }
 
-    public void deleteFavoriteDish(Dish dish) {
-        database.execSQL("DELETE FROM favorites WHERE dishID = " + dish.getId());
+    public void deleteFavorite(Dish dish) {
+        database.execSQL("DELETE FROM favoriteDishes WHERE dishID = " + dish.getId());
+    }
+
+    public void addToFavorites(Component component) {
+        database.execSQL("INSERT INTO favoriteComponents (componentID) VALUES (" + component.getId() + ")");
+    }
+
+    public void removeFromFavorites(Component component) {
+        database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
+    }
+
+    private Set<Integer> getFavoriteComponentIDs() {
+        Set<Integer> ids = new HashSet<>();
+
+        try (Cursor cursor = database.rawQuery("SELECT componentID FROM favoriteComponents", null)) {
+            while (cursor.moveToNext()) {
+                ids.add(cursor.getInt(0));
+            }
+        }
+
+        return ids;
+    }
+
+    public Observable<Dish> getFavoriteComponents() {
+        return Observable.create(emitter -> {
+            getDishesByIDs(getFavoriteComponentIDs()).subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete);
+        });
+    }
+
+    public boolean containsFavorites(Component component) {
+        String query = "SELECT count(*) FROM favoriteComponents WHERE componentID = " + component.getId();
+
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            cursor.moveToFirst();
+            return cursor.getInt(0) > 0;
+        }
+    }
+
+    public void deleteFavorite(Component component) {
+        database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
     }
 }

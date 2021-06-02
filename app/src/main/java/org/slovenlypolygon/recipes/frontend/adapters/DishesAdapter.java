@@ -23,7 +23,7 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.bridges.ActivityAdapterBridge;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.frontend.fragments.StepByStepFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.StepByStepFragment;
 
 import java.util.ArrayList;
 import java.util.List;

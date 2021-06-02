@@ -49,7 +49,7 @@
 
             <fragment
                 android:id="@+id/mainFragment"
-                android:name="org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment"
+                android:name="org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.ComponentsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>

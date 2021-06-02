@@ -26,13 +26,13 @@ import org.slovenlypolygon.recipes.backend.computervision.OCR;
 import org.slovenlypolygon.recipes.backend.database.DataBaseHelper;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
-import org.slovenlypolygon.recipes.frontend.fragments.ComponentsFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.shoppinglists.ShoppingListFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.ComponentsFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.FavoriteDishesFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.RecommendedDishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
-import org.slovenlypolygon.recipes.frontend.fragments.dishes.DishesFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.dishes.FavoriteDishesFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.dishes.RecommendedDishesFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.shoppinglists.ShoppingListFragment;
 
 import java.util.Objects;
 
