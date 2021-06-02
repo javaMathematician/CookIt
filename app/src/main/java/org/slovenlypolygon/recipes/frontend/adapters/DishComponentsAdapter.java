@@ -146,16 +146,15 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         DishComponentDAO facade = activityAdapterBridge.getActivity().getDishComponentDAO();
 
         CharSequence[] options = new CharSequence[]{"Добавить в избранное", "Отмена"};
-        View view = LayoutInflater.from(itemView.getContext()).inflate(R.layout.alert_dialog_layout, null);
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(itemView.getContext(), R.layout.item_dialog, R.id.tv1, options) {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
 
-                TextView text = v.findViewById(R.id.tv1);
                 ImageView image = v.findViewById(R.id.iv1);
 
                 if (facade.containsFavorites(component)) options[0] = "Удалить из избранного";
+                else options[0] = "Добавить в избранное";
 
                 if (position == 0)
                     image.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.to_favorites_icon));
@@ -180,11 +179,12 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
             dialog.show();
 
             dialog.getListView().setOnItemClickListener((parent, view1, position, id) -> {
+                System.out.println(facade.containsFavorites(component));
                 if (position == 0 && facade.containsFavorites(component)) {
-                    System.out.println("component was removed to favorites");
+                    System.out.println("component was removed from favorites");
                     facade.removeFromFavorites(component);
                     dialog.hide();
-                } else if (position == 0) {
+                } else if (position == 0 && !facade.containsFavorites(component)) {
                     System.out.println("component was added to favorites");
                     facade.addToFavorites(component);
                     dialog.hide();
