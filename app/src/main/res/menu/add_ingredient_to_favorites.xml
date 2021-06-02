@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/addIngredientToFavorites"
+        android:icon="@drawable/to_favorites_icon"
+        android:title="Добавить в избранное" />
+
+    <item
+        android:id="@+id/cancel"
+        android:icon="@drawable/clear_selected_ingredient_icon"
+        android:title="Отмена" />
+</menu>

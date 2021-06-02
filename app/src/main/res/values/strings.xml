@@ -28,4 +28,9 @@
     <string name="select_at_least_one">Выберите хотя бы один ингредиент</string>
     <string name="restart_theme_q">Для измененения темы придётся перезапустить приложение. Сделать это сейчас?</string>
     <string name="sure_reset_q">Вы действительно хотите сбросить выбранные компоненты? Это действие нельзя будет отменить.</string>
+
+    <string-array name="material_dialog">
+        <item>Добавить в избранное</item>
+        <item>Отмена</item>
+    </string-array>
 </resources>

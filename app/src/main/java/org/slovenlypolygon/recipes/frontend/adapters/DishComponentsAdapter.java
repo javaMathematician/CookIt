@@ -1,7 +1,12 @@
 package org.slovenlypolygon.recipes.frontend.adapters;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
+import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -9,12 +14,16 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -24,7 +33,10 @@ import org.slovenlypolygon.recipes.backend.bridges.FragmentAdapterBridge;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -181,6 +193,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final ImageView imageView;
+        private final CardView cardView;
         private final CheckBox checkBox;
         private final LinearLayout layout;
         private final Drawable regularCard;
@@ -189,12 +202,24 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         public IngredientViewHolder(View itemView) {
             super(itemView);
 
+            cardView = itemView.findViewById(R.id.ingredientCard);
             textView = itemView.findViewById(R.id.textOnIngredient);
             imageView = itemView.findViewById(R.id.imageOnIngredient);
             checkBox = itemView.findViewById(R.id.checkBoxOnIngredient);
             layout = itemView.findViewById(R.id.linearLayoutOnIngredient);
             regularCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.regular_card);
             selectedCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.selected_card);
+
+            itemView.setOnLongClickListener(v -> {
+
+                new MaterialAlertDialogBuilder(itemView.getContext())
+                        .setItems(R.array.material_dialog, (dialog, which) -> {
+
+                        })
+                        .show();
+                return false;
+            });
         }
+
     }
 }
