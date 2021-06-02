@@ -134,8 +134,10 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(new DishesFragment(), "all_dishes");
         } else if (id == R.id.toCategories) {
             changeComponentView(ComponentType.CATEGORY);
-        } else if (id == R.id.toFavorites) {
+        } else if (id == R.id.toFavoritesDishes) {
             changeFragment(new FavoriteDishesFragment(), "favorites");
+        } else if (id == R.id.toFavoritesIngredients) {
+            changeComponentView(ComponentType.INGREDIENT);
         } else if (id == R.id.toRecommendations) {
             changeFragment(new RecommendedDishesFragment(), "recommended");
         } else if (id == R.id.toShoppingLists) {

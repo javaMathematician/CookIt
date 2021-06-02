@@ -12,7 +12,7 @@
     <string name="ingredients">Ингредиенты</string>
     <string name="page_end">Конец страницы</string>
     <string name="restart_q">Перезапустить?</string>
-    <string name="favorites">Избранные блюда</string>
+    <string name="favorites_dishes">Избранные блюда</string>
     <string name="bill_scan">Сканировать чек</string>
     <string name="shopping_lists">Списки покупок</string>
     <string name="reset_agree">Да, хочу сбросить</string>
