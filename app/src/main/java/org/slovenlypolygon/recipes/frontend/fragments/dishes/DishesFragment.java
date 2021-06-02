@@ -97,17 +97,17 @@ public class DishesFragment extends AbstractFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.dishes_fragment, container, false);
+        setRetainInstance(true);
 
         initializeVariablesForDishes(rootView);
 
         if (!initialized) {
-            initialized = true;
-
             dishesAdapter = new DishesAdapter(highlightSelected);
 
             dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#2787F5");
             dishesAdapter.setSelectedIngredients(selectedComponents);
             dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) this.getActivity());
+            dishesAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
 
             initializeDataProvider();
             getMatches();
@@ -137,8 +137,10 @@ public class DishesFragment extends AbstractFragment {
                 .buffer(750, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(constructedDish -> {
-                    dishesAdapter.getDishes().addAll(constructedDish);
+                    dishesAdapter.addDishes(constructedDish);
                     dishesAdapter.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
+
+        initialized = true;
     }
 }

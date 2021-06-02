@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private DishComponentDAO dishComponentDao;
     private DrawerLayout drawerLayout;
     private EasyImage easyImage;
-    private OCR ocr;
 
     public DishComponentDAO getDishComponentDAO() {
         return dishComponentDao;
@@ -75,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.carcass);
         setFrontend();
+
+        if (savedInstanceState == null) {
+            changeFragment(new ComponentsFragment(), "ingredients");
+        }
     }
 
     private void setFrontend() {
@@ -108,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
             menuItemsActions(item.getItemId());
             return false;
         });
-
-        changeFragment(new ComponentsFragment(), "ingredients");
     }
 
     public void sureClearSelected() {
@@ -153,23 +155,26 @@ public class MainActivity extends AppCompatActivity {
                 .allowMultiple(true)
                 .build();
 
-        easyImage.openCameraForImage(this);
+        easyImage.openGallery(this);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (easyImage == null) {
+            easyImage = new EasyImage.Builder(getApplicationContext())
+                    .setCopyImagesToPublicGalleryFolder(false)
+                    .allowMultiple(true)
+                    .build();
+        }
+
         easyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
             @Override
             public void onMediaFilesPicked(@NotNull MediaFile[] mediaFiles, @NotNull MediaSource mediaSource) {
                 Bitmap bitmap = BitmapFactory.decodeFile(mediaFiles[0].getFile().getAbsolutePath());
 
-                if (ocr == null) {
-                    ocr = new OCR();
-                }
-
-                ocr.parseImage(bitmap)
+                OCR.parseImage(bitmap)
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(System.out::println, Throwable::printStackTrace);
@@ -184,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
             public void onCanceled(@NonNull MediaSource source) {
             }
         });
-
     }
 
     private void changeComponentView(ComponentType componentType) {
@@ -218,5 +222,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState, @androidx.annotation.NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 }

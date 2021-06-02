@@ -26,15 +26,15 @@ import javax.net.ssl.HttpsURLConnection;
 import io.reactivex.rxjava3.core.Observable;
 
 public class OCR {
-    public Observable<Set<String>> parseImage(Bitmap bitmap) {
+    public static Observable<Set<String>> parseImage(Bitmap bitmap) {
         return Observable.create(emitter -> {
-            HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.ocr.space/parse/image").openConnection();
-
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            connection.setDoOutput(true);
-
             for (int degrees : new int[]{0, 90, 180, 270}) {
+                HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.ocr.space/parse/image").openConnection();
+
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+                connection.setDoOutput(true);
+
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 scaleBitmap(rotate(bitmap, degrees)).compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
 
@@ -56,7 +56,7 @@ public class OCR {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                     JSONObject object = (JSONObject) new JSONObject(IOUtil.toString(reader)).getJSONArray("ParsedResults").get(0);
                     String parsedRaw = object.getString("ParsedText").toLowerCase();
-                    String regex = "[а-я]{2,}|[nutela]{3,}";
+                    String regex = "[а-я]{4,}|[nutela]{4,}";
 
                     Set<String> parsedWords = new HashSet<>();
                     Pattern pattern = Pattern.compile(regex);
@@ -72,12 +72,12 @@ public class OCR {
         });
     }
 
-    private Bitmap scaleBitmap(Bitmap input) {
+    private static Bitmap scaleBitmap(Bitmap input) {
         final int currentWidth = input.getWidth();
         final int currentHeight = input.getHeight();
         final int currentPixels = currentWidth * currentHeight;
 
-        final long maxPixels = (1024 * 1024) / 4;
+        final long maxPixels = 1024 * 1024 * 4;
 
         if (currentPixels <= maxPixels) {
             return input;
@@ -90,7 +90,7 @@ public class OCR {
         return Bitmap.createScaledBitmap(input, newWidthPx, newHeightPx, true);
     }
 
-    private Bitmap rotate(Bitmap source, int degrees) {
+    private static Bitmap rotate(Bitmap source, int degrees) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degrees);
 

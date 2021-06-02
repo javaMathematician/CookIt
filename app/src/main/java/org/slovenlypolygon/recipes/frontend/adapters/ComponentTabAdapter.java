@@ -14,7 +14,6 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class ComponentTabAdapter extends RecyclerView.Adapter<ComponentTabAdapter.ViewHolder> {
@@ -61,8 +60,7 @@ public class ComponentTabAdapter extends RecyclerView.Adapter<ComponentTabAdapte
 
     public void addComponent(Component component) {
         components.add(component);
-        components.sort(Comparator.comparing(Component::getName));
-        notifyDataSetChanged();
+        notifyItemInserted(components.size() - 1);
 
         if (components.size() > 4) {
             ownerRecyclerView.smoothScrollToPosition(components.size() - 1);

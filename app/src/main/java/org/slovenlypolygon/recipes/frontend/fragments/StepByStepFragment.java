@@ -112,6 +112,7 @@ public class StepByStepFragment extends AbstractFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.step_by_step_fragment, container, false);
+        setRetainInstance(true);
 
         imageView = rootView.findViewById(R.id.dishStepByStepImage);
         scrollView = rootView.findViewById(R.id.stepByStepScrollView);

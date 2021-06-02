@@ -15,13 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FavoriteDishesFragment extends DishesFragment {
 
@@ -97,22 +92,12 @@ public class FavoriteDishesFragment extends DishesFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getMatches();
-    }
 
-    protected void getMatches() {
-        dishesAdapter.clearDataset();
-        provider.subscribeOn(Schedulers.newThread())
-                .buffer(750, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(constructedDish -> {
-                    for (Dish dish : constructedDish) {
-                        if (!dishesAdapter.getDishes().contains(dish)) {
-                            dishesAdapter.getDishes().add(dish);
-                        }
-                    }
-                    dishesAdapter.notifyDataSetChanged();
-                }, Throwable::printStackTrace);
+        if (initialized) {
+            getMatches();
+        } else {
+            initialized = true;
+        }
     }
 }
 

@@ -87,6 +87,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
+        setRetainInstance(true);
 
         initializeVariablesForComponents(rootView);
 

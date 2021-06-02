@@ -49,6 +49,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     public void clearDataset() {
         dishes.clear();
+        original.clear();
+    }
+
+    public void addDish(Dish dish) {
+        dishes.add(dish);
     }
 
     public void setActivityAdapterBridge(ActivityAdapterBridge activityAdapterBridge) {
@@ -185,6 +190,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     public void setAccent(String accent) {
         this.accent = accent;
+    }
+
+    public void addDishes(List<Dish> constructedDish) {
+        dishes.addAll(constructedDish);
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {
