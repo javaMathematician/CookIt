@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="accentColor" format="color" />
+    <attr name="colorSurface" format="color" />
     <attr name="textCardColor" format="color" />
     <attr name="separatorColor" format="color" />
     <attr name="searchViewColor" format="color" />
