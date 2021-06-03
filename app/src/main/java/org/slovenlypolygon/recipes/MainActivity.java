@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState != null ? savedInstanceState : getIntent().getBundleExtra("saved_state"));
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
 
         setTheme(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.style.Dark : R.style.Light);
@@ -98,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
             ImageButton themeButton = findViewById(R.id.themeButton);
             themeButton.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
             themeButton.setOnClickListener(item -> {
-                sureChangeThemeAndRestart(); });
+                changeTheme();
+            });
         });
 
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -209,15 +210,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void sureChangeThemeAndRestart() {
+    public void changeTheme() {
         sharedPreferences.edit()
                 .putString(THEME, Objects.equals(sharedPreferences.getString(THEME, "Light"), "Light") ? "Dark" : "Light")
                 .apply();
+
         this.recreate();
 
-//        Intent intent = getIntent();
-//        finish();
-//        startActivity(intent);
     }
 
     @Override
