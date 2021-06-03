@@ -2,24 +2,20 @@ package org.slovenlypolygon.recipes.frontend.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +23,6 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.bridges.ActivityAdapterBridge;
 import org.slovenlypolygon.recipes.backend.bridges.FragmentAdapterBridge;
@@ -45,8 +40,7 @@ import java.util.Set;
 public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
     private final WeakReference<FragmentAdapterBridge> bridge;
     private final Set<Integer> selectedIDs = new HashSet<>();
-
-    private ActivityAdapterBridge activityAdapterBridge;
+    private WeakReference<ActivityAdapterBridge> activityAdapterBridge;
     private ComponentTabAdapter componentTabAdapter;
     private List<Component> components = new ArrayList<>();
     private List<Component> original;
@@ -65,7 +59,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     }
 
     public void setActivityAdapterBridge(ActivityAdapterBridge activityAdapterBridge) {
-        this.activityAdapterBridge = activityAdapterBridge;
+        this.activityAdapterBridge = new WeakReference<>(activityAdapterBridge);
     }
 
     @Override
@@ -143,31 +137,34 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     }
 
     private void createDialog(View itemView, Component component) {
-        DishComponentDAO facade = activityAdapterBridge.getActivity().getDishComponentDAO();
+        DishComponentDAO facade = activityAdapterBridge.get().getActivity().getDishComponentDAO();
 
-        CharSequence[] options = new CharSequence[]{"Добавить в избранное", "Отмена"};
+        CharSequence[] options = {"Добавить в избранное", "Отмена"};
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(itemView.getContext(), R.layout.item_dialog, R.id.tv1, options) {
+        ArrayAdapter<CharSequence> arrayAdapter = new ArrayAdapter<CharSequence>(itemView.getContext(), R.layout.item_dialog, R.id.tv1, options) {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
 
                 ImageView image = v.findViewById(R.id.iv1);
 
-                if (facade.containsFavorites(component)) options[0] = "Удалить из избранного";
-                else options[0] = "Добавить в избранное";
+                if (facade.containsFavorites(component)) {
+                    options[0] = "Удалить из избранного";
+                } else {
+                    options[0] = "Добавить в избранное";
+                }
 
-                if (position == 0)
+                if (position == 0) {
                     image.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.to_favorites_icon));
-                else if (position == 1)
+                } else if (position == 1) {
                     image.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.cancel_close_clear_icon));
-
+                }
 
                 return v;
             }
         };
 
         itemView.setOnLongClickListener(v -> {
-            AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(itemView.getContext(), activityAdapterBridge.getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "Light").equals("Dark") ? R.style.DarkDialog : R.style.LightDialog))
+            AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(itemView.getContext(), activityAdapterBridge.get().getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "Light").equals("Dark") ? R.style.DarkDialog : R.style.LightDialog))
                     .setAdapter(arrayAdapter, (dialog1, which) -> {
                         if (which == 0) {
                             System.out.println("0");
@@ -272,6 +269,5 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
             regularCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.regular_card);
             selectedCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.selected_card);
         }
-
     }
 }

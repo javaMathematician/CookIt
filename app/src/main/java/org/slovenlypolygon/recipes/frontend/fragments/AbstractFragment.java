@@ -15,13 +15,15 @@ import org.slovenlypolygon.recipes.R;
 
 public abstract class AbstractFragment extends Fragment {
     protected SearchView searchView;
+    protected MainActivity activity;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
+        activity = (MainActivity) getActivity();
 
-        searchView = getActivity().findViewById(R.id.searchView);
+        activity.getSupportActionBar().setTitle(R.string.app_name);
+        searchView = activity.findViewById(R.id.searchView);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -35,6 +37,7 @@ public abstract class AbstractFragment extends Fragment {
                 return false;
             }
         });
+
     }
 
     protected abstract void searchTextChanged(String newText);

@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 
@@ -30,7 +29,7 @@ public class FavoriteDishesFragment extends DishesFragment {
         super.initializeVariablesForDishes(rootView);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            private final DishComponentDAO dishComponentDAO = ((MainActivity) getActivity()).getDishComponentDAO();
+            private final DishComponentDAO dishComponentDAO = activity.getDishComponentDAO();
 
             @Override
             public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -40,7 +39,7 @@ public class FavoriteDishesFragment extends DishesFragment {
 
                 Rect boundRect;
                 View itemView = viewHolder.itemView;
-                Drawable icon = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.delete_icon);
+                Drawable icon = ContextCompat.getDrawable(activity, R.drawable.delete_icon);
                 ColorDrawable background = new ColorDrawable(Color.RED);
 
                 int iconMargin = (itemView.getHeight() - Objects.requireNonNull(icon).getIntrinsicHeight()) / 2;

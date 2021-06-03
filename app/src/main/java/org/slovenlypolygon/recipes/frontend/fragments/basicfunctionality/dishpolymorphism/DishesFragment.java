@@ -15,7 +15,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
@@ -53,14 +52,9 @@ public class DishesFragment extends AbstractFragment {
     }
 
     protected void initializeVariablesForDishes(View rootView) {
-        facade = ((MainActivity) getActivity()).getDishComponentDAO();
-
         recyclerView = rootView.findViewById(R.id.dishesRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        searchView = getActivity().findViewById(R.id.searchView);
-        searchView.setOnClickListener(view -> searchView.setIconified(false));
 
         scrollToTop = rootView.findViewById(R.id.floatingActionButtonInRecipes);
         scrollToTop.setOnClickListener(view -> {
@@ -104,13 +98,8 @@ public class DishesFragment extends AbstractFragment {
         if (!initialized) {
             dishesAdapter = new DishesAdapter(highlightSelected);
 
-            dishesAdapter.setAccent(Objects.equals(getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#2787F5");
             dishesAdapter.setSelectedIngredients(selectedComponents);
-            dishesAdapter.setActivityAdapterBridge(() -> (MainActivity) this.getActivity());
             dishesAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
-
-            initializeDataProvider();
-            getMatches();
         }
 
         recyclerView.swapAdapter(dishesAdapter, true);
@@ -142,5 +131,30 @@ public class DishesFragment extends AbstractFragment {
                 }, Throwable::printStackTrace);
 
         initialized = true;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (facade == null) {
+            facade = activity.getDishComponentDAO();
+        }
+
+        if (searchView == null) {
+            searchView = activity.findViewById(R.id.searchView);
+            searchView.setOnClickListener(view -> searchView.setIconified(false));
+        }
+
+        dishesAdapter.setAccent(Objects.equals(activity.getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#2787F5");
+        dishesAdapter.setActivityAdapterBridge(() -> activity);
+
+        if (provider == null) {
+            initializeDataProvider();
+        }
+
+        if (dishesAdapter.getItemCount() == 0) {
+            getMatches();
+        }
     }
 }

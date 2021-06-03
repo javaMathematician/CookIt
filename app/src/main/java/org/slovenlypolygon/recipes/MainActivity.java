@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -25,9 +24,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.recipes.backend.computervision.OCR;
 import org.slovenlypolygon.recipes.backend.database.DataBaseHelper;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.shoppinglists.ShoppingListFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.ComponentsFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.CategoriesFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.IngredientsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.FavoriteDishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.RecommendedDishesFragment;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int CAMERA_REQUEST_CODE = 19248;
     private final static String THEME = "Theme";
 
-    private ComponentsFragment componentsFragment;
+    private IngredientsFragment ingredientsFragment;
     private SharedPreferences sharedPreferences;
     private DishComponentDAO dishComponentDao;
     private DrawerLayout drawerLayout;
@@ -57,20 +56,17 @@ public class MainActivity extends AppCompatActivity {
         return dishComponentDao;
     }
 
-    void initializeDBAndDAO() {
+    @Override
+    protected void onCreate(final @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState != null ? savedInstanceState : getIntent().getBundleExtra("saved_state"));
+
+        sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
+        setTheme(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.style.Dark : R.style.Light);
+
         DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
         dataBaseHelper.createDataBase();
 
         dishComponentDao = new DishComponentDAO(dataBaseHelper.openDataBase());
-    }
-
-    @Override
-    protected void onCreate(final @Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState != null ? savedInstanceState : getIntent().getBundleExtra("saved_state"));
-        sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
-
-        setTheme(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.style.Dark : R.style.Light);
-        initializeDBAndDAO();
 
         setContentView(R.layout.carcass);
         setFrontend();
@@ -103,39 +99,48 @@ public class MainActivity extends AppCompatActivity {
         });
 
         navigationView.setNavigationItemSelectedListener(item -> {
-            menuItemsActions(item.getItemId());
+            try {
+                menuItemsActions(item.getItemId());
+            } catch (IllegalAccessException | InstantiationException e) {
+                e.printStackTrace();
+            }
             return false;
         });
     }
 
     public void sureClearSelected() {
-        componentsFragment.clearSelectedComponents();
+        if (ingredientsFragment != null) {
+            ingredientsFragment.clearSelectedComponents();
+        }
     }
 
-    private void menuItemsActions(int id) {
+    private void menuItemsActions(int id) throws IllegalAccessException, InstantiationException {
         drawerLayout.closeDrawer(GravityCompat.START);
-        componentsFragment = (ComponentsFragment) getSupportFragmentManager().findFragmentByTag("ingredients");
 
-        if (componentsFragment == null) {
-            componentsFragment = new ComponentsFragment();
-        }
+        String ingredients = "ingredients";
+        ingredientsFragment = findOrGetFragment(ingredients, IngredientsFragment.class);
 
-        if (id == R.id.clearSelected && componentsFragment.isVisible()) {
+        if (id == R.id.clearSelected && ingredientsFragment.isVisible()) {
             new SureClearSelectedQDialog().show(getSupportFragmentManager(), "sure_clear_selected_q");
         } else if (id == R.id.toIngredients) {
-            changeComponentView(ComponentType.INGREDIENT);
+            changeFragment(findOrGetFragment(ingredients, IngredientsFragment.class), ingredients);
         } else if (id == R.id.toDishes) {
             changeFragment(new DishesFragment(), "all_dishes");
         } else if (id == R.id.toCategories) {
-            changeComponentView(ComponentType.CATEGORY);
+            String categories = "categories";
+            changeFragment(findOrGetFragment(categories, CategoriesFragment.class), categories);
         } else if (id == R.id.toFavoritesDishes) {
-            changeFragment(new FavoriteDishesFragment(), "favorites");
+            String favorites = "favorite_dishes";
+            changeFragment(findOrGetFragment(favorites, FavoriteDishesFragment.class), favorites);
         } else if (id == R.id.toFavoritesIngredients) {
-            changeComponentView(ComponentType.INGREDIENT);
+            String favorites = "favorite_ingredients";
+            changeFragment(findOrGetFragment(favorites, FavoriteDishesFragment.class), favorites);
         } else if (id == R.id.toRecommendations) {
-            changeFragment(new RecommendedDishesFragment(), "recommended");
+            String recommended = "recommended";
+            changeFragment(findOrGetFragment(recommended, RecommendedDishesFragment.class), recommended);
         } else if (id == R.id.toShoppingLists) {
-            changeFragment(new ShoppingListFragment(), "shopping_list");
+            String shopping_list = "shopping_list";
+            changeFragment(findOrGetFragment(shopping_list, ShoppingListFragment.class), shopping_list);
         } else if (id == R.id.scan_bill) {
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
@@ -143,6 +148,16 @@ public class MainActivity extends AppCompatActivity {
 
             runOCR();
         }
+    }
+
+    private <T> T findOrGetFragment(String tag, Class<T> fragmentClass) throws InstantiationException, IllegalAccessException {
+        T found = (T) getSupportFragmentManager().findFragmentByTag(tag);
+
+        if (found == null) {
+            return fragmentClass.newInstance();
+        }
+
+        return found;
     }
 
     private void runOCR() {
@@ -187,11 +202,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void changeComponentView(ComponentType componentType) {
-        componentsFragment.changeDatasetTo(componentType);
-        changeFragment(componentsFragment, "ingredients");
-    }
-
     private void changeFragment(Fragment fragment, String tag) {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -215,12 +225,6 @@ public class MainActivity extends AppCompatActivity {
                 .putString(THEME, Objects.equals(sharedPreferences.getString(THEME, "Light"), "Light") ? "Dark" : "Light")
                 .apply();
 
-        this.recreate();
-
-    }
-
-    @Override
-    public void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState, @androidx.annotation.NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+        recreate();
     }
 }
