@@ -1,6 +1,7 @@
 package org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -54,7 +56,7 @@ public class DishesFragment extends AbstractFragment {
     protected void initializeVariablesForDishes(View rootView) {
         recyclerView = rootView.findViewById(R.id.dishesRecyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(activity, getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
 
         scrollToTop = rootView.findViewById(R.id.floatingActionButtonInRecipes);
         scrollToTop.setOnClickListener(view -> {
@@ -155,6 +157,15 @@ public class DishesFragment extends AbstractFragment {
 
         if (dishesAdapter.getItemCount() == 0) {
             getMatches();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!initialized) {
+            initialized = true;
         }
     }
 }

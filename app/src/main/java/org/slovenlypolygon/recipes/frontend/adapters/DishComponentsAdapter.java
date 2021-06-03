@@ -40,7 +40,7 @@ import java.util.Set;
 public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
     private final WeakReference<FragmentAdapterBridge> bridge;
     private final Set<Integer> selectedIDs = new HashSet<>();
-    private WeakReference<ActivityAdapterBridge> activityAdapterBridge;
+    private ActivityAdapterBridge activityAdapterBridge;
     private ComponentTabAdapter componentTabAdapter;
     private List<Component> components = new ArrayList<>();
     private List<Component> original;
@@ -59,7 +59,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     }
 
     public void setActivityAdapterBridge(ActivityAdapterBridge activityAdapterBridge) {
-        this.activityAdapterBridge = new WeakReference<>(activityAdapterBridge);
+        this.activityAdapterBridge = activityAdapterBridge;
     }
 
     @Override
@@ -137,34 +137,23 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     }
 
     private void createDialog(View itemView, Component component) {
-        DishComponentDAO facade = activityAdapterBridge.get().getActivity().getDishComponentDAO();
+        DishComponentDAO facade = activityAdapterBridge.getActivity().getDishComponentDAO();
 
-        CharSequence[] options = {"Добавить в избранное", "Отмена"};
-
-        ArrayAdapter<CharSequence> arrayAdapter = new ArrayAdapter<CharSequence>(itemView.getContext(), R.layout.item_dialog, R.id.tv1, options) {
+        String[] options = {"Добавить в избранное", "Отмена"};
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(itemView.getContext(), R.layout.item_dialog, R.id.tv1, options) {
             public View getView(int position, View convertView, ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
+                View view = super.getView(position, convertView, parent);
+                ImageView image = view.findViewById(R.id.iv1);
 
-                ImageView image = v.findViewById(R.id.iv1);
+                options[0] = facade.containsFavorites(component) ? "Удалить из избранного" : "Добавить в избранное";
+                image.setBackground(ContextCompat.getDrawable(itemView.getContext(), position == 0 ? R.drawable.to_favorites_icon : R.drawable.cancel_close_clear_icon));
 
-                if (facade.containsFavorites(component)) {
-                    options[0] = "Удалить из избранного";
-                } else {
-                    options[0] = "Добавить в избранное";
-                }
-
-                if (position == 0) {
-                    image.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.to_favorites_icon));
-                } else if (position == 1) {
-                    image.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.cancel_close_clear_icon));
-                }
-
-                return v;
+                return view;
             }
         };
 
         itemView.setOnLongClickListener(v -> {
-            AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(itemView.getContext(), activityAdapterBridge.get().getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "Light").equals("Dark") ? R.style.DarkDialog : R.style.LightDialog))
+            AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(itemView.getContext(), activityAdapterBridge.getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "Light").equals("Dark") ? R.style.DarkDialog : R.style.LightDialog))
                     .setAdapter(arrayAdapter, (dialog1, which) -> {
                         if (which == 0) {
                             System.out.println("0");
@@ -192,7 +181,6 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
             return false;
         });
-
     }
 
     @Override

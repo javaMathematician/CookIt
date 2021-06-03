@@ -91,15 +91,19 @@ public class DishComponentDAO {
             Set<Component> components = new TreeSet<>(Comparator.comparing(Component::getName));
 
             while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndex("componentID"));
-                String name = cursor.getString(cursor.getColumnIndex("componentName"));
-                String imageURL = cursor.getString(cursor.getColumnIndex("componentImageURL"));
-
-                components.add(new Component(id, ComponentType.INGREDIENT, name, imageURL));
+                components.add(getComponentFromCursor(cursor));
             }
 
             dish.setCleanComponents(components);
         }
+    }
+
+    private Component getComponentFromCursor(Cursor cursor) {
+        int id = cursor.getInt(cursor.getColumnIndex("componentID"));
+        String name = cursor.getString(cursor.getColumnIndex("componentName"));
+        String imageURL = cursor.getString(cursor.getColumnIndex("componentImageURL"));
+
+        return new Component(id, ComponentType.INGREDIENT, name, imageURL);
     }
 
     private void fillDirtyIngredients(Dish dish) {
@@ -262,21 +266,19 @@ public class DishComponentDAO {
         database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
     }
 
-    private Set<Integer> getFavoriteComponentIDs() {
-        Set<Integer> ids = new HashSet<>();
-
-        try (Cursor cursor = database.rawQuery("SELECT componentID FROM favoriteComponents", null)) {
-            while (cursor.moveToNext()) {
-                ids.add(cursor.getInt(0));
-            }
-        }
-
-        return ids;
-    }
-
-    public Observable<Dish> getFavoriteComponents() {
+    public Observable<Component> getFavoriteComponents() {
         return Observable.create(emitter -> {
-            getDishesByIDs(getFavoriteComponentIDs()).subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete);
+            String query = "SELECT * FROM component, favoriteComponents " +
+                    "WHERE component.componentID = favoriteComponents.componentID " +
+                    "GROUP BY component.componentID";
+
+            try (Cursor cursor = database.rawQuery(query, null)) {
+                while (cursor.moveToNext()) {
+                    emitter.onNext(getComponentFromCursor(cursor));
+                }
+            }
+
+            emitter.onComplete();
         });
     }
 

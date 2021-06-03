@@ -24,10 +24,9 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/mainFragment"
-                android:name="org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.ComponentsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout="@layout/ingredients_fragment" />
+                android:name="org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.IngredientsFragment"
+                android:layout_height="match_parent" />
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

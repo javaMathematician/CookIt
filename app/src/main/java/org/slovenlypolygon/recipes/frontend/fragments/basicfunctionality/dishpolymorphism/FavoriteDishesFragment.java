@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +20,6 @@ import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import java.util.Objects;
 
 public class FavoriteDishesFragment extends DishesFragment {
-
     @Override
     protected void initializeDataProvider() {
         provider = facade.getFavoriteDishes();
@@ -27,6 +28,12 @@ public class FavoriteDishesFragment extends DishesFragment {
     @Override
     protected void initializeVariablesForDishes(View rootView) {
         super.initializeVariablesForDishes(rootView);
+        swipeRefreshLayout.setEnabled(false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             private final DishComponentDAO dishComponentDAO = activity.getDishComponentDAO();
@@ -85,18 +92,6 @@ public class FavoriteDishesFragment extends DishesFragment {
             }
         };
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-        swipeRefreshLayout.setEnabled(false);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (initialized) {
-            getMatches();
-        } else {
-            initialized = true;
-        }
     }
 }
 

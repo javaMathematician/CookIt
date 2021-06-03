@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality;
 
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.transition.AutoTransition;
@@ -178,7 +179,10 @@ public class StepByStepFragment extends AbstractFragment {
 
         addDirtyIngredients();
         addSteps();
-        addEmptySpace();
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            addEmptySpace();
+        }
     }
 
     private void addDirtyIngredients() {
@@ -196,7 +200,7 @@ public class StepByStepFragment extends AbstractFragment {
         View bottomEmptySpace = new View(getContext());
         bottomEmptySpace.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                Resources.getSystem().getDisplayMetrics().heightPixels / 2
+                Resources.getSystem().getDisplayMetrics().heightPixels / 3
         ));
 
         linearLayout.addView(bottomEmptySpace);

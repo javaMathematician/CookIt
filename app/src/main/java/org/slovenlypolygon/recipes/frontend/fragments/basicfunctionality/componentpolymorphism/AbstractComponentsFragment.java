@@ -10,6 +10,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,7 +53,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
 
         recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setLayoutManager(new GridLayoutManager(activity, getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
 
         changeViewComponent = rootView.findViewById(R.id.changeView);
 
@@ -82,7 +83,6 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
         recyclerView.setAdapter(dishComponentsAdapter);
 
         changeViewComponent.setOnClickListener(view -> goToRecipes());
-        changeViewComponent.setVisibility(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? View.INVISIBLE : View.VISIBLE);
 
         return rootView;
     }
@@ -133,18 +133,20 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
     protected void addData() {
         dao = activity.getDishComponentDAO();
 
-        dishComponentsAdapter = new DishComponentsAdapter(this);
-        dishComponentsAdapter.setActivityAdapterBridge(() -> activity);
+        if (dishComponentsAdapter == null || componentTabAdapter == null) {
+            dishComponentsAdapter = new DishComponentsAdapter(this);
+            dishComponentsAdapter.setActivityAdapterBridge(() -> activity);
 
-        componentTabAdapter = new ComponentTabAdapter();
-        componentTabAdapter.setDishComponentsAdapter(dishComponentsAdapter);
-        dishComponentsAdapter.setIngredientSelectedAdapter(componentTabAdapter);
+            componentTabAdapter = new ComponentTabAdapter();
+            componentTabAdapter.setDishComponentsAdapter(dishComponentsAdapter);
 
-        selectedAsTabs.setAdapter(componentTabAdapter);
-        recyclerView.setAdapter(dishComponentsAdapter);
+            dishComponentsAdapter.setIngredientSelectedAdapter(componentTabAdapter);
+            dishComponentsAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
 
-        componentsChanged(dishComponentsAdapter.getSelectedIDs()); // pseudo-initializer
+            selectedAsTabs.setAdapter(componentTabAdapter);
+            recyclerView.setAdapter(dishComponentsAdapter);
+
+            componentsChanged(dishComponentsAdapter.getSelectedIDs()); // pseudo-initializer
+        }
     }
-
-    ;
 }

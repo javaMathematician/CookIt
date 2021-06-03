@@ -1,10 +1,8 @@
 package org.slovenlypolygon.recipes;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -26,6 +24,7 @@ import org.slovenlypolygon.recipes.backend.database.DataBaseHelper;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.shoppinglists.ShoppingListFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.CategoriesFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.FavoriteIngredientsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.IngredientsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.FavoriteDishesFragment;
@@ -43,7 +42,6 @@ import pl.aprilapps.easyphotopicker.MediaFile;
 import pl.aprilapps.easyphotopicker.MediaSource;
 
 public class MainActivity extends AppCompatActivity {
-    private final static int CAMERA_REQUEST_CODE = 19248;
     private final static String THEME = "Theme";
 
     private IngredientsFragment ingredientsFragment;
@@ -134,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(findOrGetFragment(favorites, FavoriteDishesFragment.class), favorites);
         } else if (id == R.id.toFavoritesIngredients) {
             String favorites = "favorite_ingredients";
-            changeFragment(findOrGetFragment(favorites, FavoriteDishesFragment.class), favorites);
+            changeFragment(findOrGetFragment(favorites, FavoriteIngredientsFragment.class), favorites);
         } else if (id == R.id.toRecommendations) {
             String recommended = "recommended";
             changeFragment(findOrGetFragment(recommended, RecommendedDishesFragment.class), recommended);
@@ -142,10 +140,6 @@ public class MainActivity extends AppCompatActivity {
             String shopping_list = "shopping_list";
             changeFragment(findOrGetFragment(shopping_list, ShoppingListFragment.class), shopping_list);
         } else if (id == R.id.scan_bill) {
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
-            }
-
             runOCR();
         }
     }
@@ -183,12 +177,14 @@ public class MainActivity extends AppCompatActivity {
         easyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
             @Override
             public void onMediaFilesPicked(@NotNull MediaFile[] mediaFiles, @NotNull MediaSource mediaSource) {
-                Bitmap bitmap = BitmapFactory.decodeFile(mediaFiles[0].getFile().getAbsolutePath());
+                for (MediaFile file : mediaFiles) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getFile().getAbsolutePath());
 
-                OCR.parseImage(bitmap)
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(System.out::println, Throwable::printStackTrace);
+                    OCR.parseImage(bitmap)
+                            .subscribeOn(Schedulers.newThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(System.out::println, Throwable::printStackTrace);
+                }
             }
 
             @Override
