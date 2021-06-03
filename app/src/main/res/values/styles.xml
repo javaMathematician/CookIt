@@ -58,6 +58,11 @@
         <item name="android:background">@color/lightThemeBackgroundCardColor</item>
     </style>
 
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
     <style name="DarkDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/greenAccentColor</item>
         <item name="android:textColorPrimary">@color/darkThemeTextColor</item>

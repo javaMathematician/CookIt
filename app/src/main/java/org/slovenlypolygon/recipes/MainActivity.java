@@ -31,7 +31,6 @@ import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.Compone
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.FavoriteDishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.RecommendedDishesFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.dialogs.RestartAppForThemeQDialog;
 import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 
 import java.util.Objects;
@@ -99,9 +98,7 @@ public class MainActivity extends AppCompatActivity {
             ImageButton themeButton = findViewById(R.id.themeButton);
             themeButton.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
             themeButton.setOnClickListener(item -> {
-                new RestartAppForThemeQDialog().show(getSupportFragmentManager(), "restart_q");
-                drawerLayout.closeDrawer(GravityCompat.START);
-            });
+                sureChangeThemeAndRestart(); });
         });
 
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -216,10 +213,11 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences.edit()
                 .putString(THEME, Objects.equals(sharedPreferences.getString(THEME, "Light"), "Light") ? "Dark" : "Light")
                 .apply();
+        this.recreate();
 
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+//        Intent intent = getIntent();
+//        finish();
+//        startActivity(intent);
     }
 
     @Override
