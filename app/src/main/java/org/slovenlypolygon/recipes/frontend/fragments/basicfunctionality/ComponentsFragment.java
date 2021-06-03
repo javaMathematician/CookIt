@@ -150,6 +150,7 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
             DishComponentDAO dao = ((MainActivity) getActivity()).getDishComponentDAO();
 
             dishComponentsAdapter = new DishComponentsAdapter(this);
+            dishComponentsAdapter.setActivityAdapterBridge(() -> (MainActivity) this.getActivity());
 
             dao.getComponentByType(componentType)
                     .subscribeOn(Schedulers.newThread())
