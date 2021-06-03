@@ -294,4 +294,18 @@ public class DishComponentDAO {
     public void deleteFavorite(Component component) {
         database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
     }
+
+    public Observable<Component> getAllComponents() {
+        return Observable.create(emitter -> {
+            String query = "SELECT * FROM component";
+
+            try (Cursor cursor = database.rawQuery(query, null)) {
+                while (cursor.moveToNext()) {
+                    emitter.onNext(getComponentFromCursor(cursor));
+                }
+            }
+
+            emitter.onComplete();
+        });
+    }
 }

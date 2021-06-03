@@ -1,10 +1,7 @@
 package org.slovenlypolygon.recipes;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
@@ -18,10 +15,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 
-import org.jetbrains.annotations.NotNull;
-import org.slovenlypolygon.recipes.backend.computervision.OCR;
 import org.slovenlypolygon.recipes.backend.database.DataBaseHelper;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.shoppinglists.BillScanFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.shoppinglists.ShoppingListFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.CategoriesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.FavoriteIngredientsFragment;
@@ -33,14 +29,6 @@ import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQ
 
 import java.util.Objects;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import pl.aprilapps.easyphotopicker.DefaultCallback;
-import pl.aprilapps.easyphotopicker.EasyImage;
-import pl.aprilapps.easyphotopicker.MediaFile;
-import pl.aprilapps.easyphotopicker.MediaSource;
-
 public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Theme";
 
@@ -48,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private DishComponentDAO dishComponentDao;
     private DrawerLayout drawerLayout;
-    private EasyImage easyImage;
 
     public DishComponentDAO getDishComponentDAO() {
         return dishComponentDao;
@@ -140,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
             String shopping_list = "shopping_list";
             changeFragment(findOrGetFragment(shopping_list, ShoppingListFragment.class), shopping_list);
         } else if (id == R.id.scan_bill) {
-            runOCR();
+            String billScan = "bill_scan";
+            changeFragment(findOrGetFragment(billScan, BillScanFragment.class), billScan);
         }
     }
 
@@ -152,50 +140,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return found;
-    }
-
-    private void runOCR() {
-        easyImage = new EasyImage.Builder(getApplicationContext())
-                .setCopyImagesToPublicGalleryFolder(false)
-                .allowMultiple(true)
-                .build();
-
-        easyImage.openGallery(this);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (easyImage == null) {
-            easyImage = new EasyImage.Builder(getApplicationContext())
-                    .setCopyImagesToPublicGalleryFolder(false)
-                    .allowMultiple(true)
-                    .build();
-        }
-
-        easyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
-            @Override
-            public void onMediaFilesPicked(@NotNull MediaFile[] mediaFiles, @NotNull MediaSource mediaSource) {
-                for (MediaFile file : mediaFiles) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getFile().getAbsolutePath());
-
-                    OCR.parseImage(bitmap)
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(System.out::println, Throwable::printStackTrace);
-                }
-            }
-
-            @Override
-            public void onImagePickerError(@NonNull Throwable error, @NonNull MediaSource source) {
-                error.printStackTrace();
-            }
-
-            @Override
-            public void onCanceled(@NonNull MediaSource source) {
-            }
-        });
     }
 
     private void changeFragment(Fragment fragment, String tag) {

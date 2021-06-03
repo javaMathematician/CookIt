@@ -33,4 +33,17 @@
         <item>Добавить в избранное</item>
         <item>Отмена</item>
     </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bill_select_prompt">Выберите / сделайте четкую и контрастную фотографию Вашего чека</string>
+    <string name="open_camera">Открыть камеру</string>
+    <string name="open_gallery">Открыть галерею</string>
+    <string name="open_file_manager">Открыть документы (файлы)</string>
+    <string name="incorrect_photo">Выберите фотографию</string>
+    <string name="parsing">Распознавание изображения…</string>
+    <string name="searching_ingredients">Ищем ингредиенты…</string>
+    <string name="parsed_successfull">Найдены результаты</string>
+    <string name="found_following_strings">Найдены следующие слова:</string>
+    <string name="continueString">Продолжить</string>
+    <string name="dismiss">Отмена</string>
 </resources>

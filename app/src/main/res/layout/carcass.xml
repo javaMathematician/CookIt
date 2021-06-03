@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-            <androidx.fragment.app.FragmentContainerView
+            <fragment
                 android:id="@+id/mainFragment"
                 android:layout_width="match_parent"
                 android:name="org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.IngredientsFragment"

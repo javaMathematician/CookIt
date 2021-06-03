@@ -69,6 +69,8 @@ public class OCR {
                     emitter.onNext(parsedWords);
                 }
             }
+
+            emitter.onComplete();
         });
     }
 
