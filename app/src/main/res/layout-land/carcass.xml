@@ -13,10 +13,11 @@
 
         <include layout="@layout/toolbar" />
 
-        <FrameLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/fragmentHolder"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,10 +26,19 @@
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/mainFragment"
                 android:name="org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.ComponentsFragment"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="2"
                 tools:layout="@layout/ingredients_fragment" />
-        </FrameLayout>
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/secondFragment"
+                android:name="org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                tools:layout="@layout/dishes_fragment" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include layout="@layout/navigation_view" />

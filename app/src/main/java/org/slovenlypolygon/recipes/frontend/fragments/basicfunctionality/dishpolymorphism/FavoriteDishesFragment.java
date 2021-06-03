@@ -38,7 +38,7 @@ public class FavoriteDishesFragment extends DishesFragment {
 
                 int backgroundCornerOffset = 20;
 
-                Rect boundRect = new Rect();
+                Rect boundRect;
                 View itemView = viewHolder.itemView;
                 Drawable icon = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.delete_icon);
                 ColorDrawable background = new ColorDrawable(Color.RED);

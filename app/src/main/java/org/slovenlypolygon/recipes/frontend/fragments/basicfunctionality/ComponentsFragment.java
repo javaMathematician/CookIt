@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,6 +103,11 @@ public class ComponentsFragment extends AbstractFragment implements FragmentAdap
         }
 
         componentsChanged(dishComponentsAdapter.getSelectedIDs()); // pseudo-initializer
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            changeViewComponent.setVisibility(View.INVISIBLE);
+        }
+
         return rootView;
     }
 

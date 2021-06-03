@@ -75,10 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.carcass);
         setFrontend();
-
-        if (savedInstanceState == null) {
-            changeFragment(new ComponentsFragment(), "ingredients");
-        }
     }
 
     private void setFrontend() {
