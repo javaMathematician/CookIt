@@ -20,7 +20,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.bridges.ActivityAdapterBridge;
+import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.StepByStepFragment;
@@ -37,7 +37,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     private List<Dish> dishes = new ArrayList<>();
     private List<Dish> original = new ArrayList<>();
     private Set<Integer> selectedIngredients;
-    private ActivityAdapterBridge activityAdapterBridge;
+    private DishComponentDAO dao;
 
     public DishesAdapter(boolean highlight) {
         this.highlight = highlight;
@@ -54,10 +54,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     public void addDish(Dish dish) {
         dishes.add(dish);
-    }
-
-    public void setActivityAdapterBridge(ActivityAdapterBridge activityAdapterBridge) {
-        this.activityAdapterBridge = activityAdapterBridge;
     }
 
     public void setSelectedIngredients(Set<Integer> selectedIngredients) {
@@ -77,7 +73,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     @Override
     public void onBindViewHolder(@NonNull DishViewHolder dishViewHolder, int i) {
-        Dish dish = activityAdapterBridge.getActivity().getDishComponentDAO().getRichDish(dishes.get(i));
+        Dish dish = dao.getRichDish(dishes.get(i));
 
         if (highlight) {
             Set<Integer> cleanedDish = dish.getCleanComponents().stream().map(Component::getId).collect(Collectors.toSet());
@@ -147,7 +143,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     private Set<String> namesFromIDs(Set<Integer> ids) {
         return ids.stream()
-                .map(t -> activityAdapterBridge.getActivity().getDishComponentDAO().getCleanComponentNameByID(t).toLowerCase())
+                .map(t -> dao.getCleanComponentNameByID(t).toLowerCase())
                 .collect(Collectors.toSet());
     }
 
@@ -192,8 +188,12 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         this.accent = accent;
     }
 
-    public void addDishes(List<Dish> constructedDish) {
+    public void addDishes(List<? extends Dish> constructedDish) {
         dishes.addAll(constructedDish);
+    }
+
+    public void setDAO(DishComponentDAO dao) {
+        this.dao = dao;
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {

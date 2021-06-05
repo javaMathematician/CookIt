@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,10 +42,12 @@ import java.util.Set;
 public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
     private final WeakReference<FragmentAdapterBridge> bridge;
     private final Set<Integer> selectedIDs = new HashSet<>();
-    private ActivityAdapterBridge activityAdapterBridge;
-    private ComponentTabAdapter componentTabAdapter;
     private List<Component> components = new ArrayList<>();
+
+    private DishComponentDAO dao;
     private List<Component> original;
+    private ComponentTabAdapter componentTabAdapter;
+    private ActivityAdapterBridge activityAdapterBridge;
 
     public DishComponentsAdapter(FragmentAdapterBridge fragmentAdapterBridge) {
         this.bridge = new WeakReference<>(fragmentAdapterBridge);
@@ -59,6 +60,10 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     public void clearSelected() {
         selectedIDs.clear();
         bridge.get().componentsChanged(Collections.emptySet());
+    }
+
+    public void setDAO(DishComponentDAO dao) {
+        this.dao = dao;
     }
 
     public void setActivityAdapterBridge(ActivityAdapterBridge activityAdapterBridge) {
@@ -142,15 +147,14 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     }
 
     private void createDialog(View itemView, Component component) {
-        DishComponentDAO facade = activityAdapterBridge.getActivity().getDishComponentDAO();
-
         String[] options = {"Добавить в избранное", "Отмена"};
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(itemView.getContext(), R.layout.item_dialog, R.id.tv1, options) {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 ImageView image = view.findViewById(R.id.iv1);
 
-                options[0] = facade.containsFavorites(component) ? "Удалить из избранного" : "Добавить в избранное";
+                options[0] = dao.containsFavorites(component) ? "Удалить из избранного" : "Добавить в избранное";
                 image.setBackground(ContextCompat.getDrawable(itemView.getContext(), position == 0 ? R.drawable.to_favorites_icon : R.drawable.cancel_close_clear_icon));
 
                 return view;
@@ -160,31 +164,24 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         itemView.setOnLongClickListener(v -> {
             AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(itemView.getContext(), activityAdapterBridge.getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "Light").equals("Dark") ? R.style.DarkDialog : R.style.LightDialog))
                     .setAdapter(arrayAdapter, (dialog1, which) -> {
-                        if (which == 0) {
-                            System.out.println("0");
-                        } else {
-                            System.out.println("1");
-                        }
                     })
                     .create();
-            dialog.show();
 
+            dialog.show();
             dialog.getListView().setOnItemClickListener((parent, view1, position, id) -> {
-                System.out.println(facade.containsFavorites(component));
-                if (position == 0 && facade.containsFavorites(component)) {
+                System.out.println(dao.containsFavorites(component));
+                if (position == 0 && dao.containsFavorites(component)) {
+                    dao.removeFromFavorites(component);
                     System.out.println("component was removed from favorites");
-                    facade.removeFromFavorites(component);
-                    dialog.hide();
-                } else if (position == 0 && !facade.containsFavorites(component)) {
+                } else if (position == 0 && !dao.containsFavorites(component)) {
+                    dao.addToFavorites(component);
                     System.out.println("component was added to favorites");
-                    facade.addToFavorites(component);
-                    dialog.hide();
-                } else {
-                    dialog.hide();
                 }
+
+                dialog.hide();
             });
 
-            return false;
+            return true;
         });
     }
 

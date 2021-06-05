@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.Step;
@@ -43,9 +45,17 @@ public class StepByStepFragment extends AbstractFragment {
     private LinearLayout linearLayout;
     private TextView dirtyIngredients;
     private ImageButton favoritesButton;
+    private DishComponentDAO dao;
 
     public void setDish(Dish dish) {
         this.dish = dish;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
     }
 
     private void addSteps() {
@@ -128,7 +138,7 @@ public class StepByStepFragment extends AbstractFragment {
         super.onActivityCreated(savedInstanceState);
 
         searchView.setVisibility(View.GONE);
-        dish = activity.getDishComponentDAO().getRichDish(dish);
+        dish = dao.getRichDish(dish);
         activity.getSupportActionBar().setTitle(dish.getName());
 
         setupPreparedFrontend();
@@ -159,17 +169,15 @@ public class StepByStepFragment extends AbstractFragment {
                     }
                 });
 
-        DishComponentDAO dishComponentDAO = activity.getDishComponentDAO();
-
-        favoritesButton.setBackground(dishComponentDAO.containsFavorites(dish) ? getResources().getDrawable(R.drawable.in_favorites) : getResources().getDrawable(R.drawable.add_to_favorites));
+        favoritesButton.setBackground(dao.containsFavorites(dish) ? getResources().getDrawable(R.drawable.in_favorites) : getResources().getDrawable(R.drawable.add_to_favorites));
         favoritesButton.setOnClickListener(v -> {
-            if (dishComponentDAO.containsFavorites(dish)) {
-                dishComponentDAO.removeFromFavorites(dish);
+            if (dao.containsFavorites(dish)) {
+                dao.removeFromFavorites(dish);
                 favoritesButton.setBackground(getResources().getDrawable(R.drawable.add_to_favorites));
                 favoritesButton.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.scale));
                 Toast.makeText(getContext(), "Удалено из избранного", Toast.LENGTH_SHORT).show();
             } else {
-                dishComponentDAO.addToFavorites(dish);
+                dao.addToFavorites(dish);
                 favoritesButton.setBackground(getResources().getDrawable(R.drawable.in_favorites));
                 favoritesButton.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.scale));
                 Toast.makeText(getContext(), "Добавлено в избранное", Toast.LENGTH_SHORT).show();

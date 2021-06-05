@@ -100,10 +100,12 @@ public class DishComponentDAO {
 
     private Component getComponentFromCursor(Cursor cursor) {
         int id = cursor.getInt(cursor.getColumnIndex("componentID"));
+        int qIsIngredient = cursor.getInt(cursor.getColumnIndex("qIsIngredient"));
+
         String name = cursor.getString(cursor.getColumnIndex("componentName"));
         String imageURL = cursor.getString(cursor.getColumnIndex("componentImageURL"));
 
-        return new Component(id, ComponentType.INGREDIENT, name, imageURL);
+        return new Component(id, qIsIngredient == 1 ? ComponentType.INGREDIENT : ComponentType.CATEGORY, name, imageURL);
     }
 
     private void fillDirtyIngredients(Dish dish) {

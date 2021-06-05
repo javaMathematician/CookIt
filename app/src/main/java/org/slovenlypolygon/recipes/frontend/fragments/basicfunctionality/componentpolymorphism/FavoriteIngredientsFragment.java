@@ -15,9 +15,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.frontend.adapters.ComponentTabAdapter;
-import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -26,42 +23,24 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FavoriteIngredientsFragment extends IngredientsFragment {
+    private boolean first;
+
     @Override
     protected void addData() {
-        dao = activity.getDishComponentDAO();
-
-        if (dishComponentsAdapter == null || componentTabAdapter == null) {
-            dishComponentsAdapter = new DishComponentsAdapter(this);
-            dishComponentsAdapter.setActivityAdapterBridge(() -> activity);
-
-            componentTabAdapter = new ComponentTabAdapter();
-            componentTabAdapter.setDishComponentsAdapter(dishComponentsAdapter);
-
-            dishComponentsAdapter.setIngredientSelectedAdapter(componentTabAdapter);
-            dishComponentsAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
-
-            selectedAsTabs.setAdapter(componentTabAdapter);
-            recyclerView.setAdapter(dishComponentsAdapter);
-
-            componentsChanged(dishComponentsAdapter.getSelectedIDs()); // pseudo-initializer
-
-            dao.getFavoriteComponents()
-                    .subscribeOn(Schedulers.newThread())
-                    .buffer(200, TimeUnit.MILLISECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(components -> {
-                        dishComponentsAdapter.addComponents(components);
-                        dishComponentsAdapter.notifyDataSetChanged();
-                    }, Throwable::printStackTrace);
-        }
+        dao.getFavoriteComponents()
+                .subscribeOn(Schedulers.newThread())
+                .buffer(200, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(components -> {
+                    dishComponentsAdapter.addComponents(components);
+                    dishComponentsAdapter.notifyDataSetChanged();
+                }, Throwable::printStackTrace);
     }
 
     @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            private final DishComponentDAO dishComponentDAO = activity.getDishComponentDAO();
-
             @Override
             public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
@@ -110,12 +89,19 @@ public class FavoriteIngredientsFragment extends IngredientsFragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getBindingAdapterPosition();
 
-                dishComponentDAO.deleteFavorite(dishComponentsAdapter.getComponents().get(position));
+                dao.deleteFavorite(dishComponentsAdapter.getComponents().get(position));
                 dishComponentsAdapter.removeComponent(dishComponentsAdapter.getComponents().get(position));
                 dishComponentsAdapter.notifyDataSetChanged();
             }
         };
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!first) first = true;
     }
 }

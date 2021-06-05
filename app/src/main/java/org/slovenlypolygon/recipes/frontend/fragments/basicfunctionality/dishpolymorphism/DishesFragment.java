@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
@@ -40,10 +41,16 @@ public class DishesFragment extends AbstractFragment {
     protected DishesAdapter dishesAdapter;
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected Observable<Dish> provider;
-    protected DishComponentDAO facade;
+    protected DishComponentDAO dao;
     private boolean highlightSelected;
     private FloatingActionButton scrollToTop;
     private Set<Integer> selectedComponents = new HashSet<>();
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
+    }
 
     public void setSelectedComponentIDs(Set<Integer> selectedComponentIDs) {
         this.selectedComponents = selectedComponentIDs;
@@ -100,12 +107,13 @@ public class DishesFragment extends AbstractFragment {
         if (!initialized) {
             dishesAdapter = new DishesAdapter(highlightSelected);
 
+            dishesAdapter.setDAO(dao);
             dishesAdapter.setSelectedIngredients(selectedComponents);
             dishesAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
         }
 
         recyclerView.swapAdapter(dishesAdapter, true);
-
+//        recyclerView.
         swipeRefreshLayout.setOnRefreshListener(() -> {
             swipeRefreshLayout.setRefreshing(true);
 
@@ -119,7 +127,7 @@ public class DishesFragment extends AbstractFragment {
     }
 
     protected void initializeDataProvider() {
-        provider = facade.getDishesFromComponentIDs(selectedComponents);
+        provider = dao.getDishesFromComponentIDs(selectedComponents);
     }
 
     protected void getMatches() {
@@ -139,17 +147,12 @@ public class DishesFragment extends AbstractFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (facade == null) {
-            facade = activity.getDishComponentDAO();
-        }
-
         if (searchView == null) {
             searchView = activity.findViewById(R.id.searchView);
             searchView.setOnClickListener(view -> searchView.setIconified(false));
         }
 
         dishesAdapter.setAccent(Objects.equals(activity.getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#04B97F" : "#2787F5");
-        dishesAdapter.setActivityAdapterBridge(() -> activity);
 
         if (provider == null) {
             initializeDataProvider();

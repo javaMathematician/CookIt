@@ -5,7 +5,7 @@ import android.view.View;
 public class RecommendedDishesFragment extends DishesFragment {
     @Override
     protected void initializeDataProvider() {
-        provider = facade.getRecommendedDishes();
+        provider = dao.getRecommendedDishes();
     }
 
     @Override

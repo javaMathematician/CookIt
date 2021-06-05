@@ -15,14 +15,17 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 
 import java.util.Objects;
 
 public class FavoriteDishesFragment extends DishesFragment {
+    private boolean first;
+
     @Override
     protected void initializeDataProvider() {
-        provider = facade.getFavoriteDishes();
+        provider = dao.getFavoriteDishes();
     }
 
     @Override
@@ -32,11 +35,11 @@ public class FavoriteDishesFragment extends DishesFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            private final DishComponentDAO dishComponentDAO = activity.getDishComponentDAO();
+            private final DishComponentDAO dishComponentDAO = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
 
             @Override
             public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -91,7 +94,19 @@ public class FavoriteDishesFragment extends DishesFragment {
                 dishesAdapter.notifyDataSetChanged();
             }
         };
+
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!first) {
+            first = true;
+        } else {
+            getMatches();
+        }
     }
 }
 

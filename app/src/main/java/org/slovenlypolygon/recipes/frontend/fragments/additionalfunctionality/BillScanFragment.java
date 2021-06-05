@@ -1,29 +1,26 @@
-package org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.shoppinglists;
+package org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import androidx.appcompat.widget.SearchView;
-
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
 import com.google.common.base.Joiner;
 
 import org.jetbrains.annotations.NotNull;
-import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.computervision.OCR;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
@@ -42,10 +39,11 @@ import pl.aprilapps.easyphotopicker.MediaSource;
 public class BillScanFragment extends Fragment {
     private Set<String> parsed = new HashSet<>();
     private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
     private EasyImage easyImage;
 
     @Override
-    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         easyImage = new EasyImage.Builder(getContext())
@@ -75,43 +73,45 @@ public class BillScanFragment extends Fragment {
         easyImage.handleActivityResult(requestCode, resultCode, data, getActivity(), new DefaultCallback() {
             @Override
             public void onMediaFilesPicked(@NotNull MediaFile[] mediaFiles, @NotNull MediaSource mediaSource) {
+                Bitmap bitmap = BitmapFactory.decodeFile(mediaFiles[0].getFile().getAbsolutePath());
+                parsed = new HashSet<>();
 
-                for (MediaFile file : mediaFiles) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getFile().getAbsolutePath());
-                    parsed = new HashSet<>();
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.setTitle(getString(R.string.parsing));
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setMax(4);
+                progressDialog.show();
 
-                    progressDialog = new ProgressDialog(getContext());
-                    progressDialog.setTitle(getString(R.string.parsing));
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    progressDialog.setMax(4);
-                    progressDialog.show();
+                OCR.parseImage(bitmap)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(strings -> {
+                            progressDialog.incrementProgressBy(1);
+                            parsed.addAll(strings);
+                        }, Throwable::printStackTrace, () -> {
+                            progressDialog.dismiss();
 
-                    OCR.parseImage(bitmap)
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(strings -> {
-                                progressDialog.incrementProgressBy(1);
-                                parsed.addAll(strings);
-                            }, Throwable::printStackTrace, () -> {
-                                progressDialog.dismiss();
+                            String title = getString(R.string.parsed_successfull);
+                            String message = getString(R.string.found_following_strings) + " " + Joiner.on(", ").join(parsed);
+                            String accept = getString(R.string.continueString);
+                            String decline = getString(R.string.dismiss);
 
-                                String title = getString(R.string.parsed_successfull);
-                                String message = getString(R.string.found_following_strings) + " " + Joiner.on(", ").join(parsed);
-                                String accept = getString(R.string.continueString);
-                                String decline = getString(R.string.dismiss);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle(title);
+                            builder.setMessage(message);
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                builder.setTitle(title);
-                                builder.setMessage(message);
-
-                                builder.setPositiveButton(accept, (dialog, id) -> sureStartSearching());
-                                builder.setNegativeButton(decline, (dialog, id) -> {
-                                });
-
-                                builder.setCancelable(true);
-                                builder.create().show();
+                            builder.setPositiveButton(accept, (dialog, id) -> {
+                                sureStartSearching();
+                                alertDialog = null;
                             });
-                }
+
+                            builder.setNegativeButton(decline, (dialog, id) -> alertDialog = null);
+
+                            builder.setCancelable(true);
+                            alertDialog = builder.create();
+                            alertDialog.show();
+                            progressDialog = null;
+                        });
             }
 
             @Override
@@ -127,7 +127,7 @@ public class BillScanFragment extends Fragment {
     }
 
     private void sureStartSearching() {
-        DishComponentDAO dishComponentDAO = ((MainActivity) getActivity()).getDishComponentDAO();
+        DishComponentDAO dishComponentDAO = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
         Set<Integer> foundComponentIDs = new HashSet<>();
 
         progressDialog = new ProgressDialog(getContext());
@@ -162,9 +162,35 @@ public class BillScanFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         SearchView searchView = getActivity().findViewById(R.id.searchView);
         searchView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (progressDialog != null) {
+            progressDialog.show();
+        }
+
+        if (alertDialog != null) {
+            alertDialog.show();
+        }
     }
 }

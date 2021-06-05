@@ -66,7 +66,6 @@ dependencies {
 
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.13-RC4'
-    implementation 'org.jetbrains:annotations:15.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.android.material:material:1.4.0-beta01'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'

@@ -3,10 +3,6 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -17,54 +13,60 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import org.slovenlypolygon.recipes.backend.database.DataBaseHelper;
-import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.shoppinglists.BillScanFragment;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.BillScanFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.shoppinglists.ShoppingListFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.AbstractComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.CategoriesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.FavoriteIngredientsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.IngredientsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.FavoriteDishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.RecommendedDishesFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.dialogs.SureClearSelectedQDialog;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Theme";
 
-    private IngredientsFragment ingredientsFragment;
     private SharedPreferences sharedPreferences;
-    private DishComponentDAO dishComponentDao;
     private DrawerLayout drawerLayout;
-    private Toolbar toolbar;
-
-    public DishComponentDAO getDishComponentDAO() {
-        return dishComponentDao;
-    }
 
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState != null ? savedInstanceState : getIntent().getBundleExtra("saved_state"));
+        super.onCreate(savedInstanceState);
 
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
         setTheme(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.style.Dark : R.style.Light);
 
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
-        dataBaseHelper.createDataBase();
+        try {
+            DatabaseFragment fragment = findOrGetFragment("databaseFragment", DatabaseFragment.class);
 
-        dishComponentDao = new DishComponentDAO(dataBaseHelper.openDataBase());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(fragment, "databaseFragment")
+                    .commitNow();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            System.out.println(findOrGetFragment("databaseFragment", DatabaseFragment.class));
+            System.out.println(findOrGetFragment("databaseFragment", DatabaseFragment.class));
+            System.out.println(findOrGetFragment("databaseFragment", DatabaseFragment.class));
+            System.out.println(findOrGetFragment("databaseFragment", DatabaseFragment.class));
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
         setContentView(R.layout.carcass);
         setFrontend();
     }
 
     private void setFrontend() {
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setLogo(null);
         toolbar.setElevation(0);
         setSupportActionBar(toolbar);
@@ -99,29 +101,29 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
-
-    }
-
-    public void sureClearSelected() {
-        if (ingredientsFragment != null) {
-            ingredientsFragment.clearSelectedComponents();
-        }
     }
 
     private void menuItemsActions(int id) throws IllegalAccessException, InstantiationException {
         drawerLayout.closeDrawer(GravityCompat.START);
 
         String ingredients = "ingredients";
-        ingredientsFragment = findOrGetFragment(ingredients, IngredientsFragment.class);
+        String categories = "categories";
 
-        if (id == R.id.clearSelected && ingredientsFragment.isVisible()) {
-            new SureClearSelectedQDialog().show(getSupportFragmentManager(), "sure_clear_selected_q");
+        if (id == R.id.clearSelected) {
+            AbstractComponentsFragment abstractComponentsFragment = findOrGetFragment(ingredients, IngredientsFragment.class);
+
+            if (!abstractComponentsFragment.isVisible()) {
+                abstractComponentsFragment = findOrGetFragment(categories, IngredientsFragment.class);
+            }
+
+            if (abstractComponentsFragment.isVisible()) {
+                abstractComponentsFragment.clearSelected();
+            }
         } else if (id == R.id.toIngredients) {
             changeFragment(findOrGetFragment(ingredients, IngredientsFragment.class), ingredients);
         } else if (id == R.id.toDishes) {
             changeFragment(new DishesFragment(), "all_dishes");
         } else if (id == R.id.toCategories) {
-            String categories = "categories";
             changeFragment(findOrGetFragment(categories, CategoriesFragment.class), categories);
         } else if (id == R.id.toFavoritesDishes) {
             String favorites = "favorite_dishes";

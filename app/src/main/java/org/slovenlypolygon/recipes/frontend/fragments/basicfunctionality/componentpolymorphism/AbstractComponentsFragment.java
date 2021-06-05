@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,8 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.bridges.FragmentAdapterBridge;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.frontend.adapters.ComponentTabAdapter;
@@ -30,14 +33,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
+    protected DishComponentDAO dao;
     protected RecyclerView recyclerView;
     protected RecyclerView selectedAsTabs;
-    protected DishComponentDAO dao;
     protected ComponentTabAdapter componentTabAdapter;
     protected DishComponentsAdapter dishComponentsAdapter;
-    private Button changeViewComponent;
-    private FloatingActionButton scrollToTop;
+
     private Set<Integer> componentIDs = new HashSet<>();
+    private FloatingActionButton scrollToTop;
+    private Button changeViewComponent;
+    private AlertDialog alertDialog;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
+    }
 
     @Override
     protected void searchTextChanged(String newText) {
@@ -81,7 +92,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
             }
         });
 
-        recyclerView.setOnScrollListener(new HidingScrollListener() {
+        recyclerView.addOnScrollListener(new HidingScrollListener() {
             @Override
             public void onHide() {
                 changeViewComponent.animate().translationY(changeViewComponent.getBottom()).setInterpolator(new AccelerateInterpolator(1)).start();
@@ -127,29 +138,22 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
         changeViewComponent.setBackground(AppCompatResources.getDrawable(activity, isEmpty ? R.drawable.to_recipes_btn_disabled : R.drawable.to_recipes_button_enabled_with_mask));
     }
 
-    public void clearSelectedComponents() {
-        componentIDs.clear();
-
-        dishComponentsAdapter.clearSelected();
-        componentTabAdapter.clearSelected();
-
-        dishComponentsAdapter.notifyDataSetChanged();
-        componentTabAdapter.notifyDataSetChanged();
-    }
-
     @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         addData();
     }
 
     protected void addData() {
-        dao = activity.getDishComponentDAO();
+        if (dao == null) {
+            dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
+        }
 
         if (dishComponentsAdapter == null || componentTabAdapter == null) {
             dishComponentsAdapter = new DishComponentsAdapter(this);
             dishComponentsAdapter.setActivityAdapterBridge(() -> activity);
+            dishComponentsAdapter.setDAO(dao);
 
             componentTabAdapter = new ComponentTabAdapter();
             componentTabAdapter.setDishComponentsAdapter(dishComponentsAdapter);
@@ -162,5 +166,58 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
 
             componentsChanged(dishComponentsAdapter.getSelectedIDs()); // pseudo-initializer
         }
+    }
+
+    public void clearSelected() {
+        String title = getString(R.string.resources);
+        String message = getString(R.string.sure_reset_q);
+        String accept = getString(R.string.reset_agree);
+        String decline = getString(R.string.reset_disagree);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setPositiveButton(accept, (dialog, temp) -> {
+            sureClearSelected();
+            alertDialog = null;
+        });
+        builder.setNegativeButton(decline, (dialog, temp) -> {
+            alertDialog = null;
+        });
+
+        builder.setCancelable(true);
+
+        alertDialog = builder.create();
+
+        if (!dishComponentsAdapter.getSelectedIDs().isEmpty()) {
+            alertDialog.show();
+        } else {
+            Toast.makeText(getContext(), R.string.nothing_selected_to_reset, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void sureClearSelected() {
+        componentIDs.clear();
+
+        dishComponentsAdapter.clearSelected();
+        componentTabAdapter.clearSelected();
+
+        dishComponentsAdapter.notifyDataSetChanged();
+        componentTabAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (alertDialog != null) alertDialog.dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (alertDialog != null) alertDialog.show();
     }
 }
