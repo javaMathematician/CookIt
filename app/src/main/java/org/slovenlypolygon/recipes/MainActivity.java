@@ -44,10 +44,9 @@ public class MainActivity extends AppCompatActivity {
         try {
             DatabaseFragment fragment = findOrGetFragment("databaseFragment", DatabaseFragment.class);
 
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(fragment, "databaseFragment")
-                    .commitNow();
+            if (!fragment.isAdded()) {
+                getSupportFragmentManager().beginTransaction().add(fragment, "databaseFragment").commitNow();
+            }
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }

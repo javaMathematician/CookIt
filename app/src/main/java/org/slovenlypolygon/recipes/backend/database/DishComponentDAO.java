@@ -82,7 +82,7 @@ public class DishComponentDAO {
     }
 
     private void fillCleanIngredients(Dish dish) {
-        String query = "SELECT component.componentID, componentName, componentImageURL FROM component " +
+        String query = "SELECT qIsIngredient, component.componentID, componentName, componentImageURL FROM component " +
                 "JOIN dishComponentCrossReference ON dishComponentCrossReference.componentID = component.componentID " +
                 "JOIN dish ON dishComponentCrossReference.dishID = dish.dishID " +
                 "WHERE dish.dishID = " + dish.getId() + " AND qIsIngredient = 1";
