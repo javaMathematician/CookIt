@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="greenAccentColor">#04B97F</color>
+    <color name="greenAccentColor">#17D0B7</color>
     <color name="blueAccentColor">#2787F5</color>
     <color name="darkThemeTextColor">#FFFFFF</color>
     <color name="separatorDarkColor">#121212</color>
-    <color name="lightThemeTextColor">#282930</color>
+    <color name="lightThemeTextColor">#121212</color>
     <color name="separatorLightColor">#E6E0E0</color>
     <color name="searchViewColorWhite">#FFFFFF</color>
     <color name="recipesAndLoadingColor">#5C5C5C</color>
     <color name="darkThemeBackgroundColor">#121212</color>
     <color name="lightThemeBackgroundColor">#FFFFFF</color>
-    <color name="toolbarBackgroundDarkColor">#1F1F1F</color>
-    <color name="toolbarBackgroundLightColor">#EEEFF1</color>
-    <color name="darkThemeBackgroundCardColor">#1D1D1D</color>
+    <color name="toolbarBackgroundDarkColor">#121212</color>
+    <color name="toolbarBackgroundLightColor">#FFFFFF</color>
+    <color name="darkThemeBackgroundCardColor">#232323</color>
     <color name="lightThemeBackgroundCardColor">#FFFFFF</color>
-    <color name="selectedDarkCardBackgroundColor">#252525</color>
-    <color name="selectedLightCardBackgroundColor">#EEEFF1</color>
+    <color name="selectedDarkCardBackgroundColor">#FF9B30</color>
+    <color name="selectedLightCardBackgroundColor">#FF9B30</color>
 </resources>

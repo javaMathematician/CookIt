@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.bridges.FragmentAdapterBridge;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
@@ -34,8 +36,8 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
     protected ComponentTabAdapter componentTabAdapter;
     protected DishComponentsAdapter dishComponentsAdapter;
     private Button changeViewComponent;
-    private Set<Integer> componentIDs = new HashSet<>();
     private FloatingActionButton scrollToTop;
+    private Set<Integer> componentIDs = new HashSet<>();
 
     @Override
     protected void searchTextChanged(String newText) {
@@ -57,7 +59,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
 
         changeViewComponent = rootView.findViewById(R.id.changeView);
 
-        scrollToTop = rootView.findViewById(R.id.floatingActionButton);
+        scrollToTop = rootView.findViewById(R.id.scrollToTop);
         scrollToTop.setOnClickListener(view -> {
             if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
                 recyclerView.scrollToPosition(15);
@@ -76,6 +78,18 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
                 } else if (dy < 0) {
                     scrollToTop.show();
                 }
+            }
+        });
+
+        recyclerView.setOnScrollListener(new HidingScrollListener() {
+            @Override
+            public void onHide() {
+                changeViewComponent.animate().translationY(changeViewComponent.getBottom()).setInterpolator(new AccelerateInterpolator(1)).start();
+            }
+
+            @Override
+            public void onShow() {
+                changeViewComponent.animate().translationY(0).setInterpolator(new AccelerateInterpolator(2)).start();
             }
         });
 

@@ -2,7 +2,9 @@ package org.slovenlypolygon.recipes.frontend.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,6 +82,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
         ingredientViewHolder.checkBox.setChecked(selectedIDs.contains(component.getId()));
         ingredientViewHolder.layout.setBackground(selectedIDs.contains(component.getId()) ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
+        ingredientViewHolder.textView.setTextColor(selectedIDs.contains(component.getId()) ? ingredientViewHolder.selectedColor : ingredientViewHolder.regularColor);
         ingredientViewHolder.textView.setText(component.getName());
 
         ingredientViewHolder.itemView.setOnLongClickListener(view -> {
@@ -88,6 +92,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         ingredientViewHolder.itemView.setOnClickListener(view -> {
             ingredientViewHolder.checkBox.setChecked(!ingredientViewHolder.checkBox.isChecked());
             ingredientViewHolder.layout.setBackground(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
+            ingredientViewHolder.textView.setTextColor(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedColor : ingredientViewHolder.regularColor);
 
             if (selectedIDs.contains(component.getId())) {
                 selectedIDs.remove(component.getId());
@@ -229,6 +234,10 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         this.components.addAll(components);
     }
 
+    public List<Component> getComponents() {
+        return components;
+    }
+
     public void removeComponent(Component component) {
         selectedIDs.remove(component.getId());
         bridge.get().componentsChanged(selectedIDs);
@@ -246,6 +255,8 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         private final LinearLayout layout;
         private final Drawable regularCard;
         private final Drawable selectedCard;
+        private final int selectedColor;
+        private final int regularColor;
 
         public IngredientViewHolder(View itemView) {
             super(itemView);
@@ -253,9 +264,18 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
             textView = itemView.findViewById(R.id.textOnIngredient);
             imageView = itemView.findViewById(R.id.imageOnIngredient);
             checkBox = itemView.findViewById(R.id.checkBoxOnIngredient);
-            layout = itemView.findViewById(R.id.linearLayoutOnIngredient);
+            layout = itemView.findViewById(R.id.cardViewBackground);
             regularCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.regular_card);
             selectedCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.selected_card);
+
+            Resources.Theme theme = itemView.getContext().getTheme();
+            TypedValue typedValue = new TypedValue();
+
+            theme.resolveAttribute(R.attr.textCardColor, typedValue, true);
+            regularColor = typedValue.data;
+
+            theme.resolveAttribute(R.attr.selectedTextCardColor, typedValue, true);
+            selectedColor = typedValue.data;
         }
     }
 }

@@ -8,6 +8,7 @@
     <attr name="toRecipeTextColor" format="color" />
     <attr name="mainBackgroundColor" format="color" />
     <attr name="cardBackgroundColor" format="color" />
+    <attr name="selectedTextCardColor" format="color" />
     <attr name="toolbarBackgroundColor" format="color" />
     <attr name="selectedCardBackgroundColor" format="color" />
 

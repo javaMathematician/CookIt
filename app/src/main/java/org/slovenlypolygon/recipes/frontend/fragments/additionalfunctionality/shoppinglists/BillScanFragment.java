@@ -4,11 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import androidx.appcompat.widget.SearchView;
+
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -36,7 +40,7 @@ import pl.aprilapps.easyphotopicker.MediaFile;
 import pl.aprilapps.easyphotopicker.MediaSource;
 
 public class BillScanFragment extends Fragment {
-    private final Set<String> parsed = new HashSet<>();
+    private Set<String> parsed = new HashSet<>();
     private ProgressDialog progressDialog;
     private EasyImage easyImage;
 
@@ -55,8 +59,8 @@ public class BillScanFragment extends Fragment {
         View inflate = inflater.inflate(R.layout.bill_scan_fragment, container, false);
         setRetainInstance(true);
 
-        Button camera = inflate.findViewById(R.id.cameraOpener);
-        Button gallery = inflate.findViewById(R.id.galleryOpener);
+        ImageView camera = inflate.findViewById(R.id.cameraOpener);
+        ImageView gallery = inflate.findViewById(R.id.galleryOpener);
 
         camera.setOnClickListener(t -> easyImage.openCameraForImage(this));
         gallery.setOnClickListener(t -> easyImage.openGallery(this));
@@ -74,6 +78,7 @@ public class BillScanFragment extends Fragment {
 
                 for (MediaFile file : mediaFiles) {
                     Bitmap bitmap = BitmapFactory.decodeFile(file.getFile().getAbsolutePath());
+                    parsed = new HashSet<>();
 
                     progressDialog = new ProgressDialog(getContext());
                     progressDialog.setTitle(getString(R.string.parsing));
@@ -154,5 +159,12 @@ public class BillScanFragment extends Fragment {
                             .addToBackStack(null)
                             .commit();
                 });
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        SearchView searchView = getActivity().findViewById(R.id.searchView);
+        searchView.setVisibility(View.INVISIBLE);
     }
 }

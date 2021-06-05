@@ -3,6 +3,10 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -13,6 +17,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.database.DataBaseHelper;
@@ -36,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private DishComponentDAO dishComponentDao;
     private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
 
     public DishComponentDAO getDishComponentDAO() {
         return dishComponentDao;
@@ -58,8 +64,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFrontend() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setLogo(null);
+        toolbar.setElevation(0);
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         toggle.setDrawerIndicatorEnabled(true);
 
         toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         navigationView.setItemIconTintList(null);
 
@@ -91,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
     }
 
     public void sureClearSelected() {

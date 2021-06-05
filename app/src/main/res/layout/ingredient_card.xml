@@ -1,58 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   android:id="@+id/ingredientCard"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="wrap_content"
-                                   android:elevation="6dp"
-                                   android:foreground="?android:attr/selectableItemBackground"
-                                   app:cardBackgroundColor="?attr/cardBackgroundColor"
-                                   app:cardCornerRadius="0dp"
-                                   app:cardElevation="6dp"
-                                   app:layout_constraintStart_toStartOf="parent"
-                                   app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutOnIngredient"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/regular_card"
-        android:orientation="horizontal">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ingredientCard"
+    android:background="@android:color/transparent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imageOnIngredient"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:src="@android:color/white" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageOnIngredient"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="12dp"
+        android:elevation="5dp"
+        android:src="?attr/cardBackgroundColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textOnIngredient"
-            android:layout_width="0dp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="6dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:id="@+id/cardViewBackground"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center_vertical"
-            android:textColor="?attr/textCardColor"
-            android:textSize="18sp" />
+            android:background="@drawable/regular_card">
 
-        <CheckBox
-            android:id="@+id/checkBoxOnIngredient"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".5"
-            android:clickable="false"
-            android:focusable="false"
-            android:gravity="center"
-            android:theme="@style/checkBoxStyle" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textOnIngredient"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="80dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:text="231231312321321313123123123123123123vvghfghcbvcbcbvcbcbccvbccvcvbccbcbbcccbvbvvbvbvv"
+                android:textColor="?attr/textCardColor"
+                android:textSize="20sp" />
 
-    <View
-        android:id="@+id/separator"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="bottom"
-        android:layout_marginHorizontal="30dp"
-        android:background="?attr/separatorColor" />
-</androidx.cardview.widget.CardView>
+            <CheckBox
+                android:id="@+id/checkBoxOnIngredient"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:theme="@style/checkBoxStyle"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

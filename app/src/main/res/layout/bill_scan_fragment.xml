@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".frontend.fragments.additionalfunctionality.shoppinglists.BillScanFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/cardBackgroundColor"
+    tools:context=".frontend.fragments.additionalfunctionality.shoppinglists.BillScanFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -12,40 +13,89 @@
         android:layout_margin="4dp">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textOnBillFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_margin="16dp"
             android:text="@string/bill_select_prompt"
-            android:textSize="27sp"
+            android:textAlignment="center"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical"
+            android:weightSum="100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView4">
+            app:layout_constraintTop_toBottomOf="@id/textOnBillFragment">
 
-            <Button
-                android:id="@+id/cameraOpener"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="@string/open_camera"
-                android:textSize="30sp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="80">
 
-            <Button
-                android:id="@+id/galleryOpener"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="@string/open_gallery"
-                android:textSize="30sp" />
+                <ImageView
+                    android:elevation="24dp"
+                    android:id="@+id/cameraOpener"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/photo_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="200dp"
+                    android:elevation="24dp"
+                    android:text="@string/open_camera"
+                    android:textColor="?textCardColor"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@id/cameraOpener"
+                    app:layout_constraintEnd_toEndOf="@id/cameraOpener"
+                    app:layout_constraintHorizontal_bias="0.762"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/cameraOpener" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="80">
+
+                <ImageView
+                    android:elevation="24dp"
+                    android:id="@+id/galleryOpener"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/gallery_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:elevation="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/open_camera"
+                    android:textColor="?textCardColor"
+                    android:textSize="20sp"
+                    app:layout_constraintHorizontal_bias="0.762"
+                    android:layout_marginStart="200dp"
+                    app:layout_constraintBottom_toBottomOf="@id/galleryOpener"
+                    app:layout_constraintEnd_toEndOf="@id/galleryOpener"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/galleryOpener" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

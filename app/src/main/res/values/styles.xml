@@ -11,6 +11,7 @@
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="alertDialogTheme">@style/LightDialog</item>
+        <item name="android:dialogTheme">@style/LightDialog</item>
         <item name="android:fontFamily">@font/montserrat_font</item>
 
         <item name="logo">@drawable/blue_logo</item>
@@ -20,6 +21,7 @@
         <item name="textCardColor">@color/lightThemeTextColor</item>
         <item name="separatorColor">@color/separatorLightColor</item>
         <item name="toRecipeTextColor">@color/darkThemeTextColor</item>
+        <item name="selectedTextCardColor">@color/darkThemeTextColor</item>
         <item name="mainBackgroundColor">@color/lightThemeBackgroundColor</item>
         <item name="cardBackgroundColor">@color/lightThemeBackgroundCardColor</item>
         <item name="toolbarBackgroundColor">@color/toolbarBackgroundLightColor</item>
@@ -38,6 +40,7 @@
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="alertDialogTheme">@style/DarkDialog</item>
+        <item name="android:dialogTheme">@style/DarkDialog</item>
         <item name="android:fontFamily">@font/montserrat_font</item>
 
         <item name="logo">@drawable/green_logo</item>
@@ -47,6 +50,7 @@
         <item name="textCardColor">@color/darkThemeTextColor</item>
         <item name="separatorColor">@color/separatorDarkColor</item>
         <item name="toRecipeTextColor">@color/darkThemeTextColor</item>
+        <item name="selectedTextCardColor">@color/lightThemeTextColor</item>
         <item name="mainBackgroundColor">@color/darkThemeBackgroundColor</item>
         <item name="cardBackgroundColor">@color/darkThemeBackgroundCardColor</item>
         <item name="toolbarBackgroundColor">@color/toolbarBackgroundDarkColor</item>
