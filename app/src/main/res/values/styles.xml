@@ -1,5 +1,5 @@
 <resources>
-    <style name="Light" parent="Theme.AppCompat.Light">
+    <style name="Light" parent="Theme.AppCompat.NoActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -18,17 +18,16 @@
         <item name="toRecipeButtonColor">@color/blueAccentColor</item>
         <item name="accentColor">@color/blueAccentColor</item>
         <item name="searchViewColor">@android:color/black</item>
-        <item name="textCardColor">@color/lightThemeTextColor</item>
-        <item name="separatorColor">@color/separatorLightColor</item>
-        <item name="toRecipeTextColor">@color/darkThemeTextColor</item>
-        <item name="selectedTextCardColor">@color/darkThemeTextColor</item>
+        <item name="textCardColor">@color/textDarkColor</item>
+        <item name="toRecipeTextColor">@color/textLightColor</item>
+        <item name="selectedTextCardColor">@color/textLightColor</item>
         <item name="mainBackgroundColor">@color/lightThemeBackgroundColor</item>
         <item name="cardBackgroundColor">@color/lightThemeBackgroundCardColor</item>
         <item name="toolbarBackgroundColor">@color/toolbarBackgroundLightColor</item>
         <item name="selectedCardBackgroundColor">@color/selectedLightCardBackgroundColor</item>
     </style>
 
-    <style name="Dark" parent="Theme.AppCompat">
+    <style name="Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowLightStatusBar">false</item>
@@ -47,10 +46,9 @@
         <item name="toRecipeButtonColor">@color/greenAccentColor</item>
         <item name="accentColor">@color/greenAccentColor</item>
         <item name="searchViewColor">@android:color/white</item>
-        <item name="textCardColor">@color/darkThemeTextColor</item>
-        <item name="separatorColor">@color/separatorDarkColor</item>
-        <item name="toRecipeTextColor">@color/darkThemeTextColor</item>
-        <item name="selectedTextCardColor">@color/lightThemeTextColor</item>
+        <item name="textCardColor">@color/textLightColor</item>
+        <item name="toRecipeTextColor">@color/textDarkColor</item>
+        <item name="selectedTextCardColor">@color/textLightColor</item>
         <item name="mainBackgroundColor">@color/darkThemeBackgroundColor</item>
         <item name="cardBackgroundColor">@color/darkThemeBackgroundCardColor</item>
         <item name="toolbarBackgroundColor">@color/toolbarBackgroundDarkColor</item>
@@ -64,14 +62,14 @@
 
     <style name="LightDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/blueAccentColor</item>
-        <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
+        <item name="android:textColorPrimary">@color/textDarkColor</item>
         <item name="android:background">@color/lightThemeBackgroundCardColor</item>
     </style>
 
 
     <style name="DarkDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/greenAccentColor</item>
-        <item name="android:textColorPrimary">@color/darkThemeTextColor</item>
+        <item name="android:textColorPrimary">@color/textLightColor</item>
         <item name="android:background">@color/darkThemeBackgroundCardColor</item>
     </style>
 

@@ -58,14 +58,15 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/changeView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="65dp"
+        android:layout_marginEnd="65dp"
         android:layout_marginBottom="68dp"
         android:background="@drawable/to_recipes_button_enabled_with_mask"
         android:elevation="16dp"
-        android:paddingHorizontal="50dp"
         android:text="@string/go_to_recipes_button"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/toRecipeTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

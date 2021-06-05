@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     android:background="?attr/mainBackgroundColor">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:elevation="-1dp"
-        android:gravity="center"
-        android:text="@string/empty_search"
-        android:textAlignment="center"
-        android:textColor="?attr/textCardColor"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/DishesLinearLayout" />
-
     <LinearLayout
         android:id="@+id/DishesLinearLayout"
         android:layout_width="match_parent"
@@ -39,8 +26,23 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dishesRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:elevation="-2dp" />
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <TextView
+                android:id="@+id/endTextInDishFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:elevation="8dp"
+                android:gravity="center"
+                android:text="@string/empty_search"
+                android:textAlignment="center"
+                android:textColor="?attr/textCardColor"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/DishesLinearLayout" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

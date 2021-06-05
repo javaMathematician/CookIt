@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +45,7 @@ public class DishesFragment extends AbstractFragment {
     protected DishComponentDAO dao;
     private boolean highlightSelected;
     private FloatingActionButton scrollToTop;
+    TextView textView;
     private Set<Integer> selectedComponents = new HashSet<>();
 
     @Override
@@ -64,6 +66,7 @@ public class DishesFragment extends AbstractFragment {
         recyclerView = rootView.findViewById(R.id.dishesRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(activity, getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
+        textView = rootView.findViewById(R.id.endTextInDishFragment);
 
         scrollToTop = rootView.findViewById(R.id.floatingActionButtonInRecipes);
         scrollToTop.setOnClickListener(view -> {
@@ -111,7 +114,6 @@ public class DishesFragment extends AbstractFragment {
             dishesAdapter.setSelectedIngredients(selectedComponents);
             dishesAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
         }
-
         recyclerView.swapAdapter(dishesAdapter, true);
 //        recyclerView.
         swipeRefreshLayout.setOnRefreshListener(() -> {

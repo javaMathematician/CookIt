@@ -22,7 +22,8 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
+        android:minHeight="150dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="12dp"
@@ -38,6 +39,8 @@
             android:id="@+id/cardViewBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:minHeight="150dp"
+            android:layout_gravity="center"
             android:background="@drawable/regular_card">
 
             <TextView
@@ -48,7 +51,7 @@
                 android:layout_marginEnd="12dp"
                 android:layout_weight="2"
                 android:gravity="center_vertical"
-                android:text="231231312321321313123123123123123123vvghfghcbvcbcbvcbcbccvbccvcvbccbcbbcccbvbvvbvbvv"
+                android:text=""
                 android:textColor="?attr/textCardColor"
                 android:textSize="20sp" />
 
