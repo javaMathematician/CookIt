@@ -207,6 +207,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
     @Override
     public void onResume() {
         super.onResume();
+        componentsChanged(dishComponentsAdapter.getSelectedIDs());
 
         if (alertDialog != null) alertDialog.show();
     }
