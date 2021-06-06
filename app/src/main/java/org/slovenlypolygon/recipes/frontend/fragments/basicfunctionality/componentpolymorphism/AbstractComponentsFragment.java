@@ -35,13 +35,13 @@ import java.util.Set;
 public abstract class AbstractComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
     protected DishComponentDAO dao;
     protected RecyclerView recyclerView;
+    protected Button changeViewComponent;
     protected RecyclerView selectedAsTabs;
     protected ComponentTabAdapter componentTabAdapter;
     protected DishComponentsAdapter dishComponentsAdapter;
 
     private Set<Integer> componentIDs = new HashSet<>();
     private FloatingActionButton scrollToTop;
-    private Button changeViewComponent;
     private AlertDialog alertDialog;
 
     @Override

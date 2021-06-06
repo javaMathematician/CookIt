@@ -62,6 +62,10 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         bridge.get().componentsChanged(Collections.emptySet());
     }
 
+    public void clearComponents() {
+        components.clear();
+    }
+
     public void setDAO(DishComponentDAO dao) {
         this.dao = dao;
     }

@@ -28,17 +28,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical"
-            android:weightSum="100"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textOnBillFragment">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="80">
+                android:layout_weight="1">
 
                 <ImageView
                     android:id="@+id/cameraOpener"
@@ -53,22 +52,20 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="200dp"
+                    android:layout_marginEnd="30dp"
                     android:elevation="24dp"
                     android:text="@string/open_camera"
                     android:textColor="?textCardColor"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@id/cameraOpener"
-                    app:layout_constraintEnd_toEndOf="@id/cameraOpener"
-                    app:layout_constraintHorizontal_bias="0.762"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/cameraOpener" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/cameraOpener" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="80">
+                android:layout_weight="1">
 
                 <ImageView
                     android:id="@+id/galleryOpener"
@@ -83,16 +80,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="200dp"
+                    android:layout_marginEnd="30dp"
                     android:elevation="24dp"
                     android:text="@string/open_gallery"
                     android:textColor="?textCardColor"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@id/galleryOpener"
-                    app:layout_constraintEnd_toEndOf="@id/galleryOpener"
-                    app:layout_constraintHorizontal_bias="0.762"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/galleryOpener" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/galleryOpener"
+                    app:layout_constraintTop_toTopOf="@+id/galleryOpener" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

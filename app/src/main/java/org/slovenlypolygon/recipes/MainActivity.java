@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .setCustomAnimations(R.animator.to_left_in, R.animator.to_left_out, R.animator.to_right_in, R.animator.to_right_out)
                 .replace(R.id.fragmentHolder, fragment, tag)
-                .addToBackStack(null)
+                .addToBackStack(tag)
                 .commit();
     }
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.slovenlypolygon.recipes.R;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +28,9 @@ public class FavoriteIngredientsFragment extends IngredientsFragment {
 
     @Override
     protected void addData() {
+        super.addData();
+
+        dishComponentsAdapter.clearComponents();
         dao.getFavoriteComponents()
                 .subscribeOn(Schedulers.newThread())
                 .buffer(200, TimeUnit.MILLISECONDS)
@@ -40,6 +44,7 @@ public class FavoriteIngredientsFragment extends IngredientsFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -96,6 +101,7 @@ public class FavoriteIngredientsFragment extends IngredientsFragment {
         };
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+        componentsChanged(Collections.emptySet());
     }
 
     @Override

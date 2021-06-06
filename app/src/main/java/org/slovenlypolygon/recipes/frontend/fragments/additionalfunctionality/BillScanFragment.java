@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,10 +24,13 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.computervision.OCR;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -90,27 +94,8 @@ public class BillScanFragment extends Fragment {
                             parsed.addAll(strings);
                         }, Throwable::printStackTrace, () -> {
                             progressDialog.dismiss();
-
-                            String title = getString(R.string.parsed_successfull);
-                            String message = getString(R.string.found_following_strings) + " " + Joiner.on(", ").join(parsed);
-                            String accept = getString(R.string.continueString);
-                            String decline = getString(R.string.dismiss);
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setTitle(title);
-                            builder.setMessage(message);
-
-                            builder.setPositiveButton(accept, (dialog, id) -> {
-                                sureStartSearching();
-                                alertDialog = null;
-                            });
-
-                            builder.setNegativeButton(decline, (dialog, id) -> alertDialog = null);
-
-                            builder.setCancelable(true);
-                            alertDialog = builder.create();
-                            alertDialog.show();
-                            progressDialog = null;
+                            alertDialog = null;
+                            startSearching();
                         });
             }
 
@@ -126,9 +111,9 @@ public class BillScanFragment extends Fragment {
         });
     }
 
-    private void sureStartSearching() {
+    private void startSearching() {
         DishComponentDAO dishComponentDAO = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
-        Set<Integer> foundComponentIDs = new HashSet<>();
+        Set<Component> foundComponents = new HashSet<>();
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setTitle(getString(R.string.searching_ingredients));
@@ -143,21 +128,47 @@ public class BillScanFragment extends Fragment {
                     progressDialog.incrementProgressBy(1);
 
                     if (parsed.stream().anyMatch(string -> component.getName().toLowerCase().contains(string))) {
-                        foundComponentIDs.add(component.getId());
+                        foundComponents.add(component);
                     }
                 }, Throwable::printStackTrace, () -> {
                     progressDialog.dismiss();
+                    progressDialog = null;
 
-                    DishesFragment dishesFragment = new DishesFragment();
-                    dishesFragment.setSelectedComponentIDs(foundComponentIDs);
-                    dishesFragment.setHighlightSelected(true);
+                    if (foundComponents.isEmpty()) {
+                        Toast.makeText(getContext(), R.string.nothing_found, Toast.LENGTH_SHORT).show();
+                    } else {
+                        String title = getString(R.string.parsed_successfull);
+                        String message = getString(R.string.found_following_componenets) + " " +
+                                Joiner.on(", ").join(foundComponents.parallelStream().map(Component::getName).collect(Collectors.toSet()));
 
-                    getParentFragmentManager()
-                            .beginTransaction()
-                            .setCustomAnimations(R.animator.to_left_in, R.animator.to_left_out, R.animator.to_right_in, R.animator.to_right_out)
-                            .replace(R.id.fragmentHolder, dishesFragment, "dishes")
-                            .addToBackStack(null)
-                            .commit();
+                        String accept = getString(R.string.continueString);
+                        String decline = getString(R.string.dismiss);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle(title);
+                        builder.setMessage(message);
+
+                        builder.setPositiveButton(accept, (dialog, id) -> {
+                            DishesFragment dishesFragment = new DishesFragment();
+                            dishesFragment.setSelectedComponentIDs(foundComponents.parallelStream().map(Component::getId).collect(Collectors.toSet()));
+                            dishesFragment.setHighlightSelected(true);
+
+                            getParentFragmentManager()
+                                    .beginTransaction()
+                                    .setCustomAnimations(R.animator.to_left_in, R.animator.to_left_out, R.animator.to_right_in, R.animator.to_right_out)
+                                    .replace(R.id.fragmentHolder, dishesFragment, "dishes")
+                                    .addToBackStack(null)
+                                    .commit();
+
+                            alertDialog = null;
+                        });
+
+                        builder.setNegativeButton(decline, (dialog, id) -> alertDialog = null);
+
+                        builder.setCancelable(true);
+                        alertDialog = builder.create();
+                        alertDialog.show();
+                    }
                 });
     }
 
@@ -172,12 +183,10 @@ public class BillScanFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
-
-        if (alertDialog != null) {
-            alertDialog.dismiss();
+        for (Dialog dialog : Arrays.asList(progressDialog, alertDialog)) {
+            if (dialog != null) {
+                dialog.dismiss();
+            }
         }
     }
 
@@ -185,12 +194,10 @@ public class BillScanFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (progressDialog != null) {
-            progressDialog.show();
-        }
-
-        if (alertDialog != null) {
-            alertDialog.show();
+        for (Dialog dialog : Arrays.asList(progressDialog, alertDialog)) {
+            if (dialog != null) {
+                dialog.show();
+            }
         }
     }
 }

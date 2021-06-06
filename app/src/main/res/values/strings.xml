@@ -43,8 +43,11 @@
     <string name="parsing">Распознавание изображения…</string>
     <string name="searching_ingredients">Ищем ингредиенты…</string>
     <string name="parsed_successfull">Найдены результаты</string>
-    <string name="found_following_strings">Найдены следующие слова:</string>
+    <string name="found_following_componenets">Найдены следующие ингредиенты:</string>
     <string name="continueString">Продолжить</string>
     <string name="dismiss">Отмена</string>
     <string name="nothing_selected_to_reset">Вы не выбрали ни одного компонента.</string>
+    <string name="deleted_from_favorites">Удалено из избранного</string>
+    <string name="added_to_favorites">Добавлено в избранное</string>
+    <string name="nothing_found">Не найдено ни единого ингредиента.</string>
 </resources>

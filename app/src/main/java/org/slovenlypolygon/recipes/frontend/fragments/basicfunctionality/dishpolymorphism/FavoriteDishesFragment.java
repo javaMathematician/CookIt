@@ -6,7 +6,9 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,11 +19,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FavoriteDishesFragment extends DishesFragment {
     private boolean first;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        first = false;
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
     @Override
     protected void initializeDataProvider() {
@@ -101,12 +115,26 @@ public class FavoriteDishesFragment extends DishesFragment {
     @Override
     public void onResume() {
         super.onResume();
+        getMatches();
+    }
 
-        if (!first) {
-            first = true;
-        } else {
-            getMatches();
-        }
+    @Override
+    protected void getMatches() {
+        dishesAdapter.clearDataset();
+        provider.subscribeOn(Schedulers.newThread())
+                .buffer(750, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(dishes -> {
+                    for (Dish dish : dishes) {
+                        if (!dishesAdapter.getDishes().contains(dish)) {
+                            dishesAdapter.addDish(dish); // TODO: 06.06.2021 ОТВРАТИТЕЛЬНЫЙ КОСТЫЛЬ, СОРРИ
+                        }
+                    }
+
+                    dishesAdapter.notifyDataSetChanged();
+                }, Throwable::printStackTrace);
+
+        initialized = true;
     }
 }
 

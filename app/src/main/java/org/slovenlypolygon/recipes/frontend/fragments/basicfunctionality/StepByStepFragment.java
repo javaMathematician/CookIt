@@ -175,13 +175,12 @@ public class StepByStepFragment extends AbstractFragment {
                 dao.removeFromFavorites(dish);
                 favoritesButton.setBackground(getResources().getDrawable(R.drawable.add_to_favorites));
                 favoritesButton.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.scale));
-                Toast.makeText(getContext(), "Удалено из избранного", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.deleted_from_favorites, Toast.LENGTH_SHORT).show();
             } else {
                 dao.addToFavorites(dish);
                 favoritesButton.setBackground(getResources().getDrawable(R.drawable.in_favorites));
                 favoritesButton.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.scale));
-                Toast.makeText(getContext(), "Добавлено в избранное", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(getContext(), R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
             }
         });
 
