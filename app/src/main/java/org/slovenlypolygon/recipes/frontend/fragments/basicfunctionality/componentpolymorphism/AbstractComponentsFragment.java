@@ -69,6 +69,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
         recyclerView.setLayoutManager(new GridLayoutManager(activity, getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
 
         changeViewComponent = rootView.findViewById(R.id.changeView);
+        changeViewComponent.setVisibility(View.INVISIBLE);
 
         scrollToTop = rootView.findViewById(R.id.scrollToTop);
         scrollToTop.setOnClickListener(view -> {
@@ -89,18 +90,6 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
                 } else if (dy < 0) {
                     scrollToTop.show();
                 }
-            }
-        });
-
-        recyclerView.addOnScrollListener(new HidingScrollListener() {
-            @Override
-            public void onHide() {
-                changeViewComponent.animate().translationY(changeViewComponent.getBottom()).setInterpolator(new AccelerateInterpolator(1)).start();
-            }
-
-            @Override
-            public void onShow() {
-                changeViewComponent.animate().translationY(0).setInterpolator(new AccelerateInterpolator(2)).start();
             }
         });
 
@@ -131,6 +120,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
     public void componentsChanged(Set<Integer> selectedIDs) {
         boolean isEmpty = selectedIDs.isEmpty();
 
+        changeViewComponent.setVisibility(isEmpty ? View.INVISIBLE : View.VISIBLE);
         changeViewComponent.setActivated(!isEmpty);
         changeViewComponent.setEnabled(!isEmpty);
         changeViewComponent.setFocusable(isEmpty);

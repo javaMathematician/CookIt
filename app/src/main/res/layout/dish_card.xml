@@ -23,6 +23,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/dishCardView"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="150dp"

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,11 +91,11 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         ingredientViewHolder.textView.setTextColor(selectedIDs.contains(component.getId()) ? ingredientViewHolder.selectedColor : ingredientViewHolder.regularColor);
         ingredientViewHolder.textView.setText(component.getName());
 
-        ingredientViewHolder.itemView.setOnLongClickListener(view -> {
-            createDialog(ingredientViewHolder.itemView, component);
+        ingredientViewHolder.cardView.setOnLongClickListener(view -> {
+            createDialog(ingredientViewHolder.cardView, component);
             return false;
         });
-        ingredientViewHolder.itemView.setOnClickListener(view -> {
+        ingredientViewHolder.cardView.setOnClickListener(view -> {
             ingredientViewHolder.checkBox.setChecked(!ingredientViewHolder.checkBox.isChecked());
             ingredientViewHolder.layout.setBackground(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
             ingredientViewHolder.textView.setTextColor(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedColor : ingredientViewHolder.regularColor);
@@ -250,6 +251,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         private final ImageView imageView;
         private final CheckBox checkBox;
         private final LinearLayout layout;
+        private final CardView cardView;
         private final Drawable regularCard;
         private final Drawable selectedCard;
         private final int selectedColor;
@@ -262,6 +264,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
             imageView = itemView.findViewById(R.id.imageOnIngredient);
             checkBox = itemView.findViewById(R.id.checkBoxOnIngredient);
             layout = itemView.findViewById(R.id.cardViewBackground);
+            cardView = itemView.findViewById(R.id.componentCardView);
             regularCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.regular_card);
             selectedCard = ContextCompat.getDrawable(itemView.getContext(), R.drawable.selected_card);
 

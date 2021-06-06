@@ -20,6 +20,7 @@
             android:text="@string/bill_select_prompt"
             android:textAlignment="center"
             android:textSize="24sp"
+            android:textColor="?attr/textCardColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,65 +36,76 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textOnBillFragment">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cameraOpener"
+                android:foreground="?android:selectableItemBackground"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="80">
+                app:cardElevation="4dp"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="?attr/cardBackgroundColor">
 
-                <ImageView
-                    android:elevation="24dp"
-                    android:id="@+id/cameraOpener"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/photo_background"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="200dp"
-                    android:elevation="24dp"
-                    android:text="@string/open_camera"
-                    android:textColor="?textCardColor"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@id/cameraOpener"
-                    app:layout_constraintEnd_toEndOf="@id/cameraOpener"
-                    app:layout_constraintHorizontal_bias="0.762"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/cameraOpener" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <LinearLayout
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:background="@drawable/bill_background">
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:src="@drawable/camera_image" />
+                    </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/open_camera"
+                        android:gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:textSize="24sp"
+                        android:textColor="?attr/textCardColor" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/galleryOpener"
+                android:foreground="?android:selectableItemBackground"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="80">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/cardBackgroundColor">
 
-                <ImageView
-                    android:elevation="24dp"
-                    android:id="@+id/galleryOpener"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/gallery_background"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <TextView
-                    android:elevation="24dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/open_camera"
-                    android:textColor="?textCardColor"
-                    android:textSize="20sp"
-                    app:layout_constraintHorizontal_bias="0.762"
-                    android:layout_marginStart="200dp"
-                    app:layout_constraintBottom_toBottomOf="@id/galleryOpener"
-                    app:layout_constraintEnd_toEndOf="@id/galleryOpener"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/galleryOpener" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
+                    <LinearLayout
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:background="@drawable/bill_background">
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:src="@drawable/gallery_image" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/open_gallery"
+                        android:gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:textSize="24sp"
+                        android:textColor="?attr/textCardColor" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
 
