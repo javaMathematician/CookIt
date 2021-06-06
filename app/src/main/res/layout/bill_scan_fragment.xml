@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="?attr/cardBackgroundColor"
-             tools:context=".frontend.fragments.additionalfunctionality.BillScanFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/cardBackgroundColor"
+    tools:context=".frontend.fragments.additionalfunctionality.BillScanFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="?attr/mainBackgroundColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp">
@@ -78,6 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardElevation="4dp"
+                android:layout_marginBottom="24dp"
                 app:cardBackgroundColor="?attr/cardBackgroundColor">
 
                 <LinearLayout
