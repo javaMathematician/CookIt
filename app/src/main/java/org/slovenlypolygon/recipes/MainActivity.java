@@ -51,17 +51,16 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        try {
-            System.out.println(findOrGetFragment("databaseFragment", DatabaseFragment.class));
-            System.out.println(findOrGetFragment("databaseFragment", DatabaseFragment.class));
-            System.out.println(findOrGetFragment("databaseFragment", DatabaseFragment.class));
-            System.out.println(findOrGetFragment("databaseFragment", DatabaseFragment.class));
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
         setContentView(R.layout.carcass);
         setFrontend();
+
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            try {
+                menuItemsActions(R.id.toIngredients);
+            } catch (IllegalAccessException | InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setFrontend() {

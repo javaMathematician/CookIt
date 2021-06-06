@@ -1,7 +1,6 @@
 package org.slovenlypolygon.recipes.backend.computervision;
 
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.util.Base64;
 
@@ -36,7 +35,7 @@ public class OCR {
                 connection.setDoOutput(true);
 
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                scaleBitmap(rotate(bitmap, degrees)).compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+                BitmapUtils.scaleBitmap(BitmapUtils.rotate(bitmap, degrees)).compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
 
                 String string = "data:image/png;base64," + Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
                 String encodedQuery = new Uri.Builder()
@@ -72,30 +71,5 @@ public class OCR {
 
             emitter.onComplete();
         });
-    }
-
-    private static Bitmap scaleBitmap(Bitmap input) {
-        final int currentWidth = input.getWidth();
-        final int currentHeight = input.getHeight();
-        final int currentPixels = currentWidth * currentHeight;
-
-        final long maxPixels = 1024 * 1024 * 4;
-
-        if (currentPixels <= maxPixels) {
-            return input;
-        }
-
-        final double scaleFactor = Math.sqrt(maxPixels / (double) currentPixels);
-        final int newWidthPx = (int) Math.floor(currentWidth * scaleFactor);
-        final int newHeightPx = (int) Math.floor(currentHeight * scaleFactor);
-
-        return Bitmap.createScaledBitmap(input, newWidthPx, newHeightPx, true);
-    }
-
-    private static Bitmap rotate(Bitmap source, int degrees) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degrees);
-
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, false);
     }
 }

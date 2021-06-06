@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -185,6 +184,8 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
         } else {
             Toast.makeText(getContext(), R.string.nothing_selected_to_reset, Toast.LENGTH_SHORT).show();
         }
+
+        alertDialog = null;
     }
 
     private void sureClearSelected() {
