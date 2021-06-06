@@ -43,6 +43,5 @@
                 android:layout_height="match_parent" />
         </FrameLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
     <include layout="@layout/navigation_view" />
 </androidx.drawerlayout.widget.DrawerLayout>

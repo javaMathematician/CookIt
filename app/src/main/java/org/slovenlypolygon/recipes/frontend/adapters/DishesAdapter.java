@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Joiner;
@@ -98,7 +99,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         }
 
         dishViewHolder.name.setText(dish.getName());
-        dishViewHolder.itemView.setOnClickListener(view -> {
+        dishViewHolder.cardView.setOnClickListener(view -> {
             StepByStepFragment stepByStepFragment = new StepByStepFragment();
             stepByStepFragment.setDish(dish);
 
@@ -200,12 +201,14 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         private final TextView name;
         private final TextView ingredients;
         private final ImageView imageView;
+        private final CardView cardView;
 
         public DishViewHolder(View itemView) {
             super(itemView);
 
             ingredients = itemView.findViewById(R.id.dishIngredients);
             imageView = itemView.findViewById(R.id.dishImage);
+            cardView = itemView.findViewById(R.id.dishCardView);
             name = itemView.findViewById(R.id.dishName);
         }
     }

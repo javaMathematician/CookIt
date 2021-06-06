@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.google.common.base.Joiner;
@@ -61,8 +62,8 @@ public class BillScanFragment extends Fragment {
         View inflate = inflater.inflate(R.layout.bill_scan_fragment, container, false);
         setRetainInstance(true);
 
-        ImageView camera = inflate.findViewById(R.id.cameraOpener);
-        ImageView gallery = inflate.findViewById(R.id.galleryOpener);
+        CardView camera = inflate.findViewById(R.id.cameraOpener);
+        CardView gallery = inflate.findViewById(R.id.galleryOpener);
 
         camera.setOnClickListener(t -> easyImage.openCameraForImage(this));
         gallery.setOnClickListener(t -> easyImage.openGallery(this));
