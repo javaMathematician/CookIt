@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -27,7 +28,7 @@ import io.reactivex.rxjava3.core.Observable;
 public class OCR {
     public static Observable<Set<String>> parseImage(Bitmap bitmap) {
         return Observable.create(emitter -> {
-            for (int degrees : new int[]{0, 90, 180, 270}) {
+            for (int degrees : Arrays.asList(0, 90, 180, 270)) {
                 HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.ocr.space/parse/image").openConnection();
 
                 connection.setRequestMethod("POST");

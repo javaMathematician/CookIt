@@ -37,7 +37,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     private String accent;
     private List<Dish> dishes = new ArrayList<>();
     private List<Dish> original = new ArrayList<>();
-    private Set<Integer> selectedIngredients;
+    private Set<Component> selectedIngredients;
     private DishComponentDAO dao;
 
     public DishesAdapter(boolean highlight) {
@@ -57,7 +57,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         dishes.add(dish);
     }
 
-    public void setSelectedIngredients(Set<Integer> selectedIngredients) {
+    public void setSelectedIngredients(Set<Component> selectedIngredients) {
         this.selectedIngredients = selectedIngredients;
     }
 

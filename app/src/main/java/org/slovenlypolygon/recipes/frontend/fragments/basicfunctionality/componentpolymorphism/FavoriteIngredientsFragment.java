@@ -16,29 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
 
-import java.util.Collections;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
-public class FavoriteIngredientsFragment extends IngredientsFragment {
-    private boolean first;
-
+public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
     @Override
-    protected void addData() {
-        super.addData();
-
-        dao.getFavoriteComponents()
-                .subscribeOn(Schedulers.newThread())
-                .buffer(200, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(components -> {
-                    dishComponentsAdapter.addComponents(components);
-                    dishComponentsAdapter.notifyDataSetChanged();
-                }, Throwable::printStackTrace);
+    protected ComponentType setDataSource() {
+        return ComponentType.FAVORITE_COMPONENT;
     }
 
     @Override
@@ -93,25 +78,27 @@ public class FavoriteIngredientsFragment extends IngredientsFragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getBindingAdapterPosition();
-                Component component = dishComponentsAdapter.getComponents().get(position);
+                Component component = componentAdapter.getComponents().get(position);
+                component.setSelected(false);
 
-                dao.deleteFavorite(component);
-                dishComponentsAdapter.removeComponent(component);
-                componentTabAdapter.removeComponent(component);
-
-                dishComponentsAdapter.notifyDataSetChanged();
-                componentTabAdapter.notifyDataSetChanged();
+                onFavoriteComponentDeleted(component);
             }
         };
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-        componentsChanged(Collections.emptySet());
     }
 
     @Override
     public void onResume() {
         super.onResume();
+    }
 
-        if (!first) first = true;
+    @Override
+    protected void onFavoriteComponentDeleted(Component component) {
+        super.onFavoriteComponentDeleted(component);
+
+        dao.deleteFavorite(component);
+        componentAdapter.deleteComponent(component);
+        tabComponentAdapter.updateComponent(component);
     }
 }

@@ -1,7 +1,5 @@
 package org.slovenlypolygon.recipes.frontend.adapters;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
@@ -9,7 +7,6 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -27,48 +24,34 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.bridges.ActivityAdapterBridge;
-import org.slovenlypolygon.recipes.backend.bridges.FragmentAdapterBridge;
-import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.function.Consumer;
 
 @SuppressWarnings("unchecked")
-public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAdapter.IngredientViewHolder> implements Filterable {
-    private final WeakReference<FragmentAdapterBridge> bridge;
-    private final Set<Integer> selectedIDs = new HashSet<>();
+public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.IngredientViewHolder> implements Filterable {
     private List<Component> components = new ArrayList<>();
 
-    private DishComponentDAO dao;
     private List<Component> original;
-    private ComponentTabAdapter componentTabAdapter;
-    private ActivityAdapterBridge activityAdapterBridge;
+    private ContextThemeWrapper contextThemeWrapper;
 
-    public DishComponentsAdapter(FragmentAdapterBridge fragmentAdapterBridge) {
-        this.bridge = new WeakReference<>(fragmentAdapterBridge);
-    }
-
-    public Set<Integer> getSelectedIDs() {
-        return selectedIDs;
-    }
+    private Consumer<Component> longClickListenerCallback;
+    private Consumer<Component> itemClickedCallback;
 
     public void clearSelected() {
-        selectedIDs.clear();
-        bridge.get().componentsChanged(Collections.emptySet());
+        components.forEach(t -> t.setSelected(false));
+        notifyDataSetChanged();
     }
 
-    public void setDAO(DishComponentDAO dao) {
-        this.dao = dao;
+    public void deleteComponent(Component component) {
+        components.remove(component);
+        notifyDataSetChanged();
     }
 
-    public void setActivityAdapterBridge(ActivityAdapterBridge activityAdapterBridge) {
-        this.activityAdapterBridge = activityAdapterBridge;
+    public void setItemClickCallback(Consumer<Component> callback) {
+        itemClickedCallback = callback;
     }
 
     @Override
@@ -86,30 +69,23 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     public void onBindViewHolder(IngredientViewHolder ingredientViewHolder, int i) {
         Component component = components.get(i);
 
-        ingredientViewHolder.checkBox.setChecked(selectedIDs.contains(component.getId()));
-        ingredientViewHolder.layout.setBackground(selectedIDs.contains(component.getId()) ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
-        ingredientViewHolder.textView.setTextColor(selectedIDs.contains(component.getId()) ? ingredientViewHolder.selectedColor : ingredientViewHolder.regularColor);
+        ingredientViewHolder.checkBox.setChecked(component.isSelected());
+        ingredientViewHolder.layout.setBackground(component.isSelected() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
+        ingredientViewHolder.textView.setTextColor(component.isSelected() ? ingredientViewHolder.selectedColor : ingredientViewHolder.regularColor);
         ingredientViewHolder.textView.setText(component.getName());
 
         ingredientViewHolder.cardView.setOnLongClickListener(view -> {
-            createDialog(ingredientViewHolder.cardView, component);
+            longClickListenerCallback.accept(component);
             return false;
         });
+
         ingredientViewHolder.cardView.setOnClickListener(view -> {
             ingredientViewHolder.checkBox.setChecked(!ingredientViewHolder.checkBox.isChecked());
             ingredientViewHolder.layout.setBackground(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedCard : ingredientViewHolder.regularCard);
             ingredientViewHolder.textView.setTextColor(ingredientViewHolder.checkBox.isChecked() ? ingredientViewHolder.selectedColor : ingredientViewHolder.regularColor);
 
-            if (selectedIDs.contains(component.getId())) {
-                selectedIDs.remove(component.getId());
-                componentTabAdapter.removeComponent(component);
-            } else {
-                selectedIDs.add(component.getId());
-                componentTabAdapter.addComponent(component);
-            }
-
-            componentTabAdapter.notifyDataSetChanged();
-            bridge.get().componentsChanged(selectedIDs);
+            component.setSelected(!component.isSelected());
+            itemClickedCallback.accept(component);
         });
 
         Picasso picasso = Picasso.get();
@@ -135,7 +111,6 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                                 .into(ingredientViewHolder.imageView, new Callback() {
                                     @Override
                                     public void onSuccess() {
-
                                     }
 
                                     @Override
@@ -145,42 +120,6 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
                                 });
                     }
                 });
-    }
-
-    private void createDialog(View itemView, Component component) {
-        String[] options = {"Добавить в избранное", "Отмена"};
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(itemView.getContext(), R.layout.item_dialog, R.id.tv1, options) {
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                ImageView image = view.findViewById(R.id.iv1);
-
-                options[0] = dao.containsFavorites(component) ? "Удалить из избранного" : "Добавить в избранное";
-                image.setBackground(ContextCompat.getDrawable(itemView.getContext(), position == 0 ? R.drawable.to_favorites_icon : R.drawable.cancel_close_clear_icon));
-
-                return view;
-            }
-        };
-
-        itemView.setOnLongClickListener(v -> {
-            AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(itemView.getContext(), activityAdapterBridge.getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "Light").equals("Dark") ? R.style.DarkDialog : R.style.LightDialog))
-                    .setAdapter(arrayAdapter, (dialog1, which) -> {
-                    })
-                    .create();
-
-            dialog.show();
-            dialog.getListView().setOnItemClickListener((parent, view1, position, id) -> {
-                if (position == 0 && dao.containsFavorites(component)) {
-                    dao.removeFromFavorites(component);
-                } else if (position == 0 && !dao.containsFavorites(component)) {
-                    dao.addToFavorites(component);
-                }
-
-                dialog.hide();
-            });
-
-            return true;
-        });
     }
 
     @Override
@@ -227,21 +166,38 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
     public void addComponents(List<? extends Component> components) {
         this.components.addAll(components);
+        notifyDataSetChanged();
     }
 
     public List<Component> getComponents() {
         return components;
     }
 
-    public void removeComponent(Component component) {
-        components.remove(component);
-        selectedIDs.remove(component.getId());
-        bridge.get().componentsChanged(selectedIDs);
-        notifyDataSetChanged();
+    public ContextThemeWrapper getContextThemeWrapper() {
+        return contextThemeWrapper;
     }
 
-    public void setIngredientSelectedAdapter(ComponentTabAdapter componentTabAdapter) {
-        this.componentTabAdapter = componentTabAdapter;
+    public void setContextThemeWrapper(ContextThemeWrapper contextThemeWrapper) {
+        this.contextThemeWrapper = contextThemeWrapper;
+    }
+
+    public void clearItemLongClickCallback() {
+        longClickListenerCallback = component -> {
+        };
+    }
+
+    public void updateComponent(Component component) {
+        components.replaceAll(iterator -> {
+            if (component.equals(iterator)) { // КОМПОНЕНТЫ РАВНЫ В СЛУЧАЕ РАВЕНСТВА ИХ АЙДИ (НЕ РАВНО ==)
+                return component;
+            }
+
+            return iterator;
+        });
+    }
+
+    public void setLongClickListenerCallback(Consumer<Component> longClickListenerCallback) {
+        this.longClickListenerCallback = longClickListenerCallback;
     }
 
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {

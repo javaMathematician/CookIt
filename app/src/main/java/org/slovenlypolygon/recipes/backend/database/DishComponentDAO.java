@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -53,11 +54,15 @@ public class DishComponentDAO {
         return new Dish(dishID, dishName, dishImageURL, dishURL);
     }
 
-    public Observable<Dish> getDishesFromComponentIDs(Set<Integer> componentIDs) {
-        if (componentIDs.isEmpty()) {
+    public Observable<Dish> getDishesFromComponents(Set<Component> components) {
+        if (components.isEmpty()) {
             return getAllDishes();
         }
 
+        return getDishesFromComponentIDs(components.stream().map(Component::getId).collect(Collectors.toSet()));
+    }
+
+    private Observable<Dish> getDishesFromComponentIDs(Set<Integer> componentIDs) {
         return Observable.create(emitter -> {
             String joinedIDs = Joiner.on(", ").join(componentIDs);
 
@@ -137,6 +142,10 @@ public class DishComponentDAO {
     }
 
     public Observable<Component> getComponentByType(ComponentType type) {
+        if (type == ComponentType.FAVORITE_COMPONENT) {
+            return getFavoriteComponents();
+        }
+
         return Observable.create(emitter -> {
             int booleState = type == ComponentType.CATEGORY ? 0 : 1;
 

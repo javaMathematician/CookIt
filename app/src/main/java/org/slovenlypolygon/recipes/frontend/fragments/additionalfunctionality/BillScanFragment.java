@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -151,7 +150,7 @@ public class BillScanFragment extends Fragment {
 
                         builder.setPositiveButton(accept, (dialog, id) -> {
                             DishesFragment dishesFragment = new DishesFragment();
-                            dishesFragment.setSelectedComponentIDs(foundComponents.parallelStream().map(Component::getId).collect(Collectors.toSet()));
+                            dishesFragment.setSelectedComponents(foundComponents);
                             dishesFragment.setHighlightSelected(true);
 
                             getParentFragmentManager()

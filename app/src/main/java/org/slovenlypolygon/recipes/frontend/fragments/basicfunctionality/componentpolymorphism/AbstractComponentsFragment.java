@@ -3,16 +3,21 @@ package org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.compon
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,37 +26,43 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
-import org.slovenlypolygon.recipes.backend.bridges.FragmentAdapterBridge;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.frontend.adapters.ComponentTabAdapter;
-import org.slovenlypolygon.recipes.frontend.adapters.DishComponentsAdapter;
+import org.slovenlypolygon.recipes.backend.mainobjects.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
+import org.slovenlypolygon.recipes.frontend.adapters.ComponentAdapter;
+import org.slovenlypolygon.recipes.frontend.adapters.TabComponentAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
-public abstract class AbstractComponentsFragment extends AbstractFragment implements FragmentAdapterBridge {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public abstract class AbstractComponentsFragment extends AbstractFragment {
     protected DishComponentDAO dao;
     protected RecyclerView recyclerView;
     protected Button changeViewComponent;
     protected RecyclerView selectedAsTabs;
-    protected ComponentTabAdapter componentTabAdapter;
-    protected DishComponentsAdapter dishComponentsAdapter;
+    protected ComponentAdapter componentAdapter;
+    protected TabComponentAdapter tabComponentAdapter;
+    protected Set<Component> selectedComponents = new HashSet<>();
 
-    private Set<Integer> componentIDs = new HashSet<>();
-    private FloatingActionButton scrollToTop;
     private AlertDialog alertDialog;
+    private FloatingActionButton scrollToTop;
+    private ContextThemeWrapper contextThemeWrapper;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
     }
 
     @Override
     protected void searchTextChanged(String newText) {
-        dishComponentsAdapter.getFilter().filter(newText);
+        componentAdapter.getFilter().filter(newText);
     }
 
     @Nullable
@@ -92,20 +103,26 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
             }
         });
 
-        selectedAsTabs.setAdapter(componentTabAdapter);
-        recyclerView.setAdapter(dishComponentsAdapter);
+        selectedAsTabs.setAdapter(tabComponentAdapter);
+        recyclerView.setAdapter(componentAdapter);
 
         changeViewComponent.setOnClickListener(view -> goToRecipes());
+
+        initializeAdapters();
+        addCallbacks();
 
         return rootView;
     }
 
-    public void goToRecipes() {
-        componentIDs = dishComponentsAdapter.getSelectedIDs();
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
 
+    public void goToRecipes() {
         DishesFragment dishesFragment = new DishesFragment();
         dishesFragment.setHighlightSelected(true);
-        dishesFragment.setSelectedComponentIDs(componentIDs);
+        dishesFragment.setSelectedComponents(selectedComponents);
 
         getParentFragmentManager()
                 .beginTransaction()
@@ -115,9 +132,18 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
                 .commit();
     }
 
-    @Override
-    public void componentsChanged(Set<Integer> selectedIDs) {
-        boolean isEmpty = selectedIDs.isEmpty();
+    public void componentsChanged(Component component) {
+        if (component.isSelected()) {
+            selectedComponents.add(component);
+        } else {
+            selectedComponents.remove(component);
+        }
+
+        updateButton();
+    }
+
+    private void updateButton() {
+        boolean isEmpty = selectedComponents.isEmpty();
 
         changeViewComponent.setVisibility(isEmpty ? View.INVISIBLE : View.VISIBLE);
         changeViewComponent.setActivated(!isEmpty);
@@ -130,29 +156,110 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        addData();
+
+        contextThemeWrapper = new ContextThemeWrapper(getContext(), getActivity()
+                .getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "Light")
+                .equals("Dark") ? R.style.DarkDialog : R.style.LightDialog);
+
+        initializeDatabase();
+        addDataSource();
     }
 
-    protected void addData() {
+    private void addDataSource() {
+        dao.getComponentByType(setDataSource())
+                .subscribeOn(Schedulers.newThread())
+                .buffer(200, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(components -> {
+                    componentAdapter.addComponents(components);
+                    componentAdapter.notifyDataSetChanged();
+                }, Throwable::printStackTrace);
+    }
+
+    protected abstract ComponentType setDataSource();
+
+    protected void addCallbacks() {
+        tabComponentAdapter.setCrossClickedCallback(component -> {
+            component.setSelected(false);
+
+            tabComponentAdapter.updateComponent(component);
+            componentAdapter.updateComponent(component);
+
+            componentsChanged(component);
+        });
+
+        componentAdapter.setItemClickCallback(component -> {
+            componentAdapter.updateComponent(component);
+            tabComponentAdapter.updateComponent(component);
+
+            componentsChanged(component);
+        });
+
+        componentAdapter.setLongClickListenerCallback(new Consumer<Component>() {
+            @Override
+            public void accept(Component component) {
+                String[] options = {"Добавить в избранное", "Отмена"};
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.item_dialog, R.id.tv1, options) {
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        View view = super.getView(position, convertView, parent);
+                        ImageView image = view.findViewById(R.id.iv1);
+
+                        options[0] = dao.containsFavorites(component) ? getString(R.string.delete_from_favorites_suggestion) : getString(R.string.add_to_favorites_suggestion);
+                        image.setBackground(ContextCompat.getDrawable(getContext(), position == 0 ? R.drawable.to_favorites_icon : R.drawable.cancel_close_clear_icon));
+
+                        return view;
+                    }
+                };
+
+                AlertDialog alertDialog = new AlertDialog.Builder(contextThemeWrapper)
+                        .setTitle(R.string.ingredient_actions)
+                        .setAdapter(arrayAdapter, (dialog1, which) -> {
+                        }).create();
+
+                alertDialog.show();
+
+                AdapterView.OnItemClickListener onItemClickListener = (parent, view1, position, id) -> {
+                    if (position == 0 && dao.containsFavorites(component)) {
+                        dao.removeFromFavorites(component);
+                        Toast.makeText(getContext(), R.string.deleted_from_favorites, Toast.LENGTH_SHORT).show();
+                        onFavoriteComponentDeleted(component);
+                    } else if (position == 0 && !dao.containsFavorites(component)) {
+                        dao.addToFavorites(component);
+                        Toast.makeText(getContext(), R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
+                    }
+
+                    alertDialog.dismiss();
+                };
+
+                alertDialog.getListView().setOnItemClickListener(onItemClickListener);
+            }
+        });
+    }
+
+    protected void onFavoriteComponentDeleted(Component component) {
+    }
+
+    protected void setAlertDialogLogic() {
+
+    }
+
+    protected void initializeDatabase() {
         if (dao == null) {
             dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
         }
+    }
 
-        if (dishComponentsAdapter == null || componentTabAdapter == null) {
-            dishComponentsAdapter = new DishComponentsAdapter(this);
-            dishComponentsAdapter.setActivityAdapterBridge(() -> activity);
-            dishComponentsAdapter.setDAO(dao);
+    private void initializeAdapters() {
+        if (componentAdapter == null || tabComponentAdapter == null) {
+            componentAdapter = new ComponentAdapter();
+            componentAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
 
-            componentTabAdapter = new ComponentTabAdapter();
-            componentTabAdapter.setDishComponentsAdapter(dishComponentsAdapter);
+            tabComponentAdapter = new TabComponentAdapter();
+            componentAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
 
-            dishComponentsAdapter.setIngredientSelectedAdapter(componentTabAdapter);
-            dishComponentsAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
-
-            selectedAsTabs.setAdapter(componentTabAdapter);
-            recyclerView.setAdapter(dishComponentsAdapter);
-
-            componentsChanged(dishComponentsAdapter.getSelectedIDs()); // pseudo-initializer
+            selectedAsTabs.setAdapter(tabComponentAdapter);
+            recyclerView.setAdapter(componentAdapter);
         }
     }
 
@@ -178,7 +285,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
 
         alertDialog = builder.create();
 
-        if (!dishComponentsAdapter.getSelectedIDs().isEmpty()) {
+        if (!selectedComponents.isEmpty()) {
             alertDialog.show();
         } else {
             Toast.makeText(getContext(), R.string.nothing_selected_to_reset, Toast.LENGTH_SHORT).show();
@@ -188,13 +295,12 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
     }
 
     private void sureClearSelected() {
-        componentIDs.clear();
+        selectedComponents.clear();
 
-        dishComponentsAdapter.clearSelected();
-        componentTabAdapter.clearSelected();
+        componentAdapter.clearSelected();
+        tabComponentAdapter.clearSelected();
 
-        dishComponentsAdapter.notifyDataSetChanged();
-        componentTabAdapter.notifyDataSetChanged();
+        updateButton();
     }
 
     @Override
@@ -207,7 +313,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
     @Override
     public void onResume() {
         super.onResume();
-        componentsChanged(dishComponentsAdapter.getSelectedIDs());
+        updateButton();
 
         if (alertDialog != null) alertDialog.show();
     }

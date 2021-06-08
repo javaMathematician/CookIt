@@ -15,29 +15,16 @@ import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class ComponentTabAdapter extends RecyclerView.Adapter<ComponentTabAdapter.ViewHolder> {
+public class TabComponentAdapter extends RecyclerView.Adapter<TabComponentAdapter.ViewHolder> {
     private final List<Component> components = new ArrayList<>();
-    private DishComponentsAdapter dishComponentsAdapter;
-    private RecyclerView ownerRecyclerView;
-
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        this.ownerRecyclerView = recyclerView;
-    }
-
-    public void clearSelected() {
-        components.clear();
-    }
+    private Consumer<Component> crossCallback;
+    private RecyclerView recyclerView;
 
     @Override
     public int getItemCount() {
         return components.size();
-    }
-
-    public void setDishComponentsAdapter(DishComponentsAdapter dishComponentsAdapter) {
-        this.dishComponentsAdapter = dishComponentsAdapter;
     }
 
     @Override
@@ -47,28 +34,50 @@ public class ComponentTabAdapter extends RecyclerView.Adapter<ComponentTabAdapte
     }
 
     @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
+    }
+
+    @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Component component = components.get(i);
 
         viewHolder.text.setText(component.getName());
-        viewHolder.deleteButton.setOnClickListener(v -> {
-            dishComponentsAdapter.removeComponent(component);
-            components.remove(component);
-            notifyDataSetChanged();
-        });
-    }
-
-    public void addComponent(Component component) {
-        components.add(component);
-        notifyItemInserted(components.size() - 1);
-
-        if (components.size() > 4) {
-            ownerRecyclerView.smoothScrollToPosition(components.size() - 1);
-        }
+        viewHolder.deleteButton.setOnClickListener(v -> crossCallback.accept(component));
     }
 
     public void removeComponent(Component component) {
         components.remove(component);
+        notifyDataSetChanged();
+    }
+
+    public void updateComponent(Component component) {
+        if (component.isSelected()) {
+            addComponent(component);
+        } else {
+            removeComponent(component);
+        }
+    }
+
+    public void clearSelected() {
+        components.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addComponent(Component component) {
+        components.add(component);
+        notifyDataSetChanged();
+
+        if (components.size() > 5) {
+            recyclerView.smoothScrollToPosition(components.size() - 1); // ПОТОМУ ЧТО БАГАНЫЙ АНДРОИД
+        } else {
+            recyclerView.scrollToPosition(components.size() - 1);
+        }
+    }
+
+    public void setCrossClickedCallback(Consumer<Component> crossClickedCallback) {
+        this.crossCallback = crossClickedCallback;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

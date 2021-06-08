@@ -20,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
@@ -36,15 +37,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DishesFragment extends AbstractFragment {
     protected boolean initialized;
-    protected SearchView searchView;
-    protected RecyclerView recyclerView;
-    protected DishesAdapter dishesAdapter;
-    protected SwipeRefreshLayout swipeRefreshLayout;
-    protected Observable<Dish> provider;
     protected DishComponentDAO dao;
-    private boolean highlightSelected;
+    protected SearchView searchView;
+    protected DishesAdapter dishesAdapter;
+    protected RecyclerView recyclerView;
+    protected Observable<Dish> provider;
+    protected SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton scrollToTop;
-    private Set<Integer> selectedComponents = new HashSet<>();
+    private boolean highlightSelected;
+    private Set<Component> selectedComponents = new HashSet<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -52,7 +53,7 @@ public class DishesFragment extends AbstractFragment {
         dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
     }
 
-    public void setSelectedComponentIDs(Set<Integer> selectedComponentIDs) {
+    public void setSelectedComponents(Set<Component> selectedComponentIDs) {
         this.selectedComponents = selectedComponentIDs;
     }
 
@@ -126,7 +127,7 @@ public class DishesFragment extends AbstractFragment {
     }
 
     protected void initializeDataProvider() {
-        provider = dao.getDishesFromComponentIDs(selectedComponents);
+        provider = dao.getDishesFromComponents(selectedComponents);
     }
 
     protected void getMatches() {
