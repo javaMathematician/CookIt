@@ -9,6 +9,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="?attr/toolbarBackgroundColor"
     app:cardCornerRadius="8dp"
+    android:layout_margin="4dp"
     app:cardElevation="2dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
