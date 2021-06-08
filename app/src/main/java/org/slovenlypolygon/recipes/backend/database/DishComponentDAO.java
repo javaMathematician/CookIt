@@ -271,8 +271,7 @@ public class DishComponentDAO {
     public Observable<Component> getFavoriteComponents() {
         return Observable.create(emitter -> {
             String query = "SELECT * FROM component, favoriteComponents " +
-                    "WHERE component.componentID = favoriteComponents.componentID " +
-                    "GROUP BY component.componentID";
+                    "WHERE component.componentID = favoriteComponents.componentID";
 
             try (Cursor cursor = database.rawQuery(query, null)) {
                 while (cursor.moveToNext()) {

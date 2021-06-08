@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.backend.mainobjects.Component;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -30,7 +31,6 @@ public class FavoriteIngredientsFragment extends IngredientsFragment {
     protected void addData() {
         super.addData();
 
-        dishComponentsAdapter.clearComponents();
         dao.getFavoriteComponents()
                 .subscribeOn(Schedulers.newThread())
                 .buffer(200, TimeUnit.MILLISECONDS)
@@ -93,10 +93,14 @@ public class FavoriteIngredientsFragment extends IngredientsFragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getBindingAdapterPosition();
+                Component component = dishComponentsAdapter.getComponents().get(position);
 
-                dao.deleteFavorite(dishComponentsAdapter.getComponents().get(position));
-                dishComponentsAdapter.removeComponent(dishComponentsAdapter.getComponents().get(position));
+                dao.deleteFavorite(component);
+                dishComponentsAdapter.removeComponent(component);
+                componentTabAdapter.removeComponent(component);
+
                 dishComponentsAdapter.notifyDataSetChanged();
+                componentTabAdapter.notifyDataSetChanged();
             }
         };
 

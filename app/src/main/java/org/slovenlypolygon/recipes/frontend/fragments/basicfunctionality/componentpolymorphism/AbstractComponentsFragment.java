@@ -130,7 +130,6 @@ public abstract class AbstractComponentsFragment extends AbstractFragment implem
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         addData();
     }
 

@@ -63,10 +63,6 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
         bridge.get().componentsChanged(Collections.emptySet());
     }
 
-    public void clearComponents() {
-        components.clear();
-    }
-
     public void setDAO(DishComponentDAO dao) {
         this.dao = dao;
     }
@@ -174,13 +170,10 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
 
             dialog.show();
             dialog.getListView().setOnItemClickListener((parent, view1, position, id) -> {
-                System.out.println(dao.containsFavorites(component));
                 if (position == 0 && dao.containsFavorites(component)) {
                     dao.removeFromFavorites(component);
-                    System.out.println("component was removed from favorites");
                 } else if (position == 0 && !dao.containsFavorites(component)) {
                     dao.addToFavorites(component);
-                    System.out.println("component was added to favorites");
                 }
 
                 dialog.hide();
@@ -241,6 +234,7 @@ public class DishComponentsAdapter extends RecyclerView.Adapter<DishComponentsAd
     }
 
     public void removeComponent(Component component) {
+        components.remove(component);
         selectedIDs.remove(component.getId());
         bridge.get().componentsChanged(selectedIDs);
         notifyDataSetChanged();
