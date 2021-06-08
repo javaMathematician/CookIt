@@ -5,10 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.google.common.base.Joiner;
 
-import org.slovenlypolygon.recipes.backend.mainobjects.Component;
-import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.Step;
+import org.slovenlypolygon.recipes.backend.mainobjects.additionalfunctionality.ShoppingList;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.ComponentType;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Step;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,7 +19,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DishComponentDAO {
     private final SQLiteDatabase database;
@@ -27,8 +31,9 @@ public class DishComponentDAO {
         this.database = database;
     }
 
-    public Observable<Dish> getDishesByIDs(Set<Integer> dishesIDs) {
-        return Observable.create(emitter -> {
+    public Single<List<Dish>> getDishesByIDs(Set<Integer> dishesIDs) {
+        return Single.create(emitter -> {
+            List<Dish> dishes = new ArrayList<>();
             String joinedIDs = Joiner.on(", ").join(dishesIDs);
             String query = "SELECT * FROM dish WHERE dishID IN (" + joinedIDs + ")";
 
@@ -37,11 +42,11 @@ public class DishComponentDAO {
                     Dish dish = getDishFromCursor(cursor);
 
                     fillCleanIngredients(dish);
-                    emitter.onNext(dish);
+                    dishes.add(dish);
                 }
             }
 
-            emitter.onComplete();
+            emitter.onSuccess(dishes);
         });
     }
 
@@ -54,12 +59,19 @@ public class DishComponentDAO {
         return new Dish(dishID, dishName, dishImageURL, dishURL);
     }
 
-    public Observable<Dish> getDishesFromComponents(Set<Component> components) {
+    public Single<List<Dish>> getDishesFromComponents(Set<Component> components) {
         if (components.isEmpty()) {
             return getAllDishes();
         }
 
-        return getDishesFromComponentIDs(components.stream().map(Component::getId).collect(Collectors.toSet()));
+        return Single.create(emitter -> {
+            List<Dish> dishes = new ArrayList<>();
+
+            getDishesFromComponentIDs(components.stream().map(Component::getId).collect(Collectors.toSet()))
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe(dishes::add, Throwable::printStackTrace, () -> emitter.onSuccess(dishes));
+        });
     }
 
     private Observable<Dish> getDishesFromComponentIDs(Set<Integer> componentIDs) {
@@ -126,27 +138,30 @@ public class DishComponentDAO {
         dish.setDirtyIngredients(dirtyIngredients);
     }
 
-    public Observable<Dish> getAllDishes() {
-        return Observable.create(emitter -> {
+    public Single<List<Dish>> getAllDishes() {
+        return Single.create(emitter -> {
+            List<Dish> dishes = new ArrayList<>();
+
             try (Cursor cursor = database.rawQuery("SELECT * FROM dish", null)) {
                 while (cursor.moveToNext()) {
                     Dish dish = getDishFromCursor(cursor);
 
                     fillCleanIngredients(dish);
-                    emitter.onNext(dish);
+                    dishes.add(dish);
                 }
             }
 
-            emitter.onComplete();
+            emitter.onSuccess(dishes);
         });
     }
 
-    public Observable<Component> getComponentByType(ComponentType type) {
+    public Single<List<Component>> getComponentByType(ComponentType type) {
         if (type == ComponentType.FAVORITE_COMPONENT) {
             return getFavoriteComponents();
         }
 
-        return Observable.create(emitter -> {
+        return Single.create(emitter -> {
+            List<Component> components = new ArrayList<>();
             int booleState = type == ComponentType.CATEGORY ? 0 : 1;
 
             try (Cursor cursor = database.rawQuery("SELECT DISTINCT * FROM component WHERE qIsIngredient = " + booleState, null)) {
@@ -155,11 +170,11 @@ public class DishComponentDAO {
                     String name = cursor.getString(cursor.getColumnIndex("componentName"));
                     String imageURL = cursor.getString(cursor.getColumnIndex("componentImageURL"));
 
-                    emitter.onNext(new Component(id, type, name, imageURL));
+                    components.add(new Component(id, type, name, imageURL));
                 }
             }
 
-            emitter.onComplete();
+            emitter.onSuccess(components);
         });
     }
 
@@ -222,10 +237,8 @@ public class DishComponentDAO {
         return ids;
     }
 
-    public Observable<Dish> getFavoriteDishes() {
-        return Observable.create(emitter -> {
-            getDishesByIDs(getFavoriteDishIDs()).subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete);
-        });
+    public Single<List<Dish>> getFavoriteDishes() {
+        return Single.create(emitter -> getDishesByIDs(getFavoriteDishIDs()).subscribe(emitter::onSuccess, Throwable::printStackTrace));
     }
 
     public boolean containsFavorites(Dish dish) {
@@ -237,14 +250,15 @@ public class DishComponentDAO {
         }
     }
 
-    public Observable<Dish> getRecommendedDishes() {
+    public Single<List<Dish>> getRecommendedDishes() {
         Set<Integer> dishesIDs = getFavoriteDishIDs();
 
         if (dishesIDs.isEmpty()) {
             return getAllDishes();
         }
 
-        return Observable.create(emitter -> {
+        return Single.create(emitter -> {
+            List<Dish> dishes = new ArrayList<>();
             Set<Integer> componentsIDs = new HashSet<>();
             String joinedDishesIDs = Joiner.on(", ").join(dishesIDs);
 
@@ -261,7 +275,7 @@ public class DishComponentDAO {
             getDishesFromComponentIDs(componentsIDs)
                     .skip(dishesIDs.size())
                     .take(15)
-                    .subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete);
+                    .subscribe(dishes::add, Throwable::printStackTrace, () -> emitter.onSuccess(dishes));
         });
     }
 
@@ -277,18 +291,19 @@ public class DishComponentDAO {
         database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
     }
 
-    public Observable<Component> getFavoriteComponents() {
-        return Observable.create(emitter -> {
+    public Single<List<Component>> getFavoriteComponents() {
+        return Single.create(emitter -> {
+            List<Component> components = new ArrayList<>();
             String query = "SELECT * FROM component, favoriteComponents " +
                     "WHERE component.componentID = favoriteComponents.componentID";
 
             try (Cursor cursor = database.rawQuery(query, null)) {
                 while (cursor.moveToNext()) {
-                    emitter.onNext(getComponentFromCursor(cursor));
+                    components.add(getComponentFromCursor(cursor));
                 }
             }
 
-            emitter.onComplete();
+            emitter.onSuccess(components);
         });
     }
 
@@ -307,15 +322,30 @@ public class DishComponentDAO {
 
     public Observable<Component> getAllComponents() {
         return Observable.create(emitter -> {
-            String query = "SELECT * FROM component";
-
-            try (Cursor cursor = database.rawQuery(query, null)) {
+            try (Cursor cursor = database.rawQuery("SELECT * FROM component", null)) {
                 while (cursor.moveToNext()) {
                     emitter.onNext(getComponentFromCursor(cursor));
                 }
             }
 
             emitter.onComplete();
+        });
+    }
+
+    public Single<List<ShoppingList>> getShoppingLists() {
+        return Single.create(emitter -> {
+            List<ShoppingList> shoppingLists = new ArrayList<>();
+
+            try (Cursor cursor = database.rawQuery("SELECT * FROM shoppingList", null)) {
+                while (cursor.moveToNext()) {
+                    int id = cursor.getInt(cursor.getColumnIndex("listID"));
+                    int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
+
+                    shoppingLists.add(new ShoppingList(id, dishID));
+                }
+            }
+
+            emitter.onSuccess(shoppingLists);
         });
     }
 }

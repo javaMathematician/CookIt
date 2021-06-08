@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.mainobjects.Component;
-import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.ComponentType;
 
 import java.util.Objects;
 

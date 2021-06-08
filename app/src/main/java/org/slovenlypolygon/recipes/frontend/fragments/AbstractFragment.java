@@ -4,21 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 
 public abstract class AbstractFragment extends Fragment {
     protected SearchView searchView;
-    protected MainActivity activity;
+    protected AppCompatActivity activity;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -40,7 +38,6 @@ public abstract class AbstractFragment extends Fragment {
                 return false;
             }
         });
-
     }
 
     protected abstract void searchTextChanged(String newText);
@@ -49,7 +46,6 @@ public abstract class AbstractFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
-
     }
 
     @Override

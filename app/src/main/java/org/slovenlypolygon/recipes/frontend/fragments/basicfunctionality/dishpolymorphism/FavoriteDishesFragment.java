@@ -19,10 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -122,7 +121,6 @@ public class FavoriteDishesFragment extends DishesFragment {
     protected void getMatches() {
         dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
-                .buffer(750, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dishes -> {
                     for (Dish dish : dishes) {

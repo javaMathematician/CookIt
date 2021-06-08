@@ -22,8 +22,8 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.mainobjects.Component;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.StepByStepFragment;
 
 import java.util.ArrayList;

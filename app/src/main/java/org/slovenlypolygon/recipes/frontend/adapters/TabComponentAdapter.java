@@ -11,7 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.mainobjects.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
 
 import java.util.ArrayList;
 import java.util.List;

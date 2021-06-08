@@ -20,19 +20,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.mainobjects.Component;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DishesFragment extends AbstractFragment {
@@ -41,7 +41,7 @@ public class DishesFragment extends AbstractFragment {
     protected SearchView searchView;
     protected DishesAdapter dishesAdapter;
     protected RecyclerView recyclerView;
-    protected Observable<Dish> provider;
+    protected Single<List<Dish>> provider;
     protected SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton scrollToTop;
     private boolean highlightSelected;
@@ -133,7 +133,6 @@ public class DishesFragment extends AbstractFragment {
     protected void getMatches() {
         dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
-                .buffer(750, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(constructedDish -> {
                     dishesAdapter.addDishes(constructedDish);

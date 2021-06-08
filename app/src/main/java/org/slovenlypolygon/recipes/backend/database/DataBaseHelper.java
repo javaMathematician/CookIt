@@ -36,7 +36,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 throw new Error("Error copying database");
             }
         }
-
     }
 
     private boolean checkDataBase() {
@@ -72,7 +71,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
         super.close();
-
     }
 
     @Override

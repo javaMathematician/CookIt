@@ -17,7 +17,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.BillScanFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.shoppinglists.ShoppingListFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.ShoppingListsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.AbstractComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.CategoriesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.FavoriteIngredientsFragment;
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(findOrGetFragment(recommended, RecommendedDishesFragment.class), recommended);
         } else if (id == R.id.toShoppingLists) {
             String shopping_list = "shopping_list";
-            changeFragment(findOrGetFragment(shopping_list, ShoppingListFragment.class), shopping_list);
+            changeFragment(findOrGetFragment(shopping_list, ShoppingListsFragment.class), shopping_list);
         } else if (id == R.id.scan_bill) {
             String billScan = "bill_scan";
             changeFragment(findOrGetFragment(billScan, BillScanFragment.class), billScan);
@@ -164,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            finish();
         } else {
             super.onBackPressed();
         }

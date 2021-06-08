@@ -31,8 +31,8 @@ import com.squareup.picasso.Picasso;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.mainobjects.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.Step;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Step;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
 
 import java.util.Comparator;
@@ -41,11 +41,11 @@ import java.util.stream.Collectors;
 public class StepByStepFragment extends AbstractFragment {
     private Dish dish;
     private ImageView imageView;
+    private DishComponentDAO dao;
     private ScrollView scrollView;
     private LinearLayout linearLayout;
     private TextView dirtyIngredients;
     private ImageButton favoritesButton;
-    private DishComponentDAO dao;
 
     public void setDish(Dish dish) {
         this.dish = dish;

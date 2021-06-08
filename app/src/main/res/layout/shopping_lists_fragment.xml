@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/mainBackgroundColor">
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:background="?attr/mainBackgroundColor">
 
-    <LinearLayout
-        android:id="@+id/shoopingListsFragment"
+    <ScrollView
+        android:id="@+id/shoppingListsFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -17,11 +17,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/shoppingListsRecyclerView"
+        <LinearLayout
+            android:id="@+id/shoppingListsLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButtonInRecipes"
@@ -31,7 +32,7 @@
         android:clickable="true"
         android:focusable="true"
         app:backgroundTint="?attr/toolbarBackgroundColor"
-        app:layout_constraintBottom_toBottomOf="@+id/shoopingListsFragment"
-        app:layout_constraintEnd_toEndOf="@+id/shoopingListsFragment"
+        app:layout_constraintBottom_toBottomOf="@+id/shoppingListsFragment"
+        app:layout_constraintEnd_toEndOf="@+id/shoppingListsFragment"
         app:srcCompat="@drawable/up_arrow" />
 </androidx.constraintlayout.widget.ConstraintLayout>

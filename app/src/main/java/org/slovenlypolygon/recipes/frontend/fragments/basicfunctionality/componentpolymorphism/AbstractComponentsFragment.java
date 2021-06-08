@@ -27,8 +27,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.mainobjects.Component;
-import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.ComponentType;
 import org.slovenlypolygon.recipes.frontend.adapters.ComponentAdapter;
 import org.slovenlypolygon.recipes.frontend.adapters.TabComponentAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
@@ -36,7 +36,6 @@ import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpol
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -168,7 +167,6 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
     private void addDataSource() {
         dao.getComponentByType(setDataSource())
                 .subscribeOn(Schedulers.newThread())
-                .buffer(200, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(components -> {
                     componentAdapter.addComponents(components);

@@ -24,7 +24,7 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.computervision.OCR;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.mainobjects.Component;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
 
 import java.util.Arrays;

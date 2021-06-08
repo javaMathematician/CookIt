@@ -1,6 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism;
 
-import org.slovenlypolygon.recipes.backend.mainobjects.ComponentType;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.ComponentType;
 
 public class CategoriesFragment extends AbstractComponentsFragment {
     @Override
