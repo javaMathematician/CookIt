@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   xmlns:tools="http://schemas.android.com/tools"
-                                   android:id="@+id/listCardView"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="wrap_content"
-                                   android:elevation="6dp"
-                                   android:foreground="?android:attr/selectableItemBackground"
-                                   app:cardBackgroundColor="?attr/cardBackgroundColor"
-                                   app:cardCornerRadius="0dp"
-                                   app:cardElevation="6dp"
-                                   app:layout_constraintStart_toStartOf="parent"
-                                   app:layout_constraintTop_toTopOf="parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/listCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="6dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="?attr/cardBackgroundColor"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="6dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,17 +21,16 @@
         android:minHeight="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/list_name"
+        app:layout_constraintStart_toEndOf="@+id/listName"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/list_name"
+            android:id="@+id/listName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="СПИСОК ДЛЯ ПОКУПОК №1"
             android:textAlignment="textStart"
             android:textColor="?attr/textCardColor"
             android:textSize="18sp"
@@ -47,7 +46,7 @@
             android:layout_weight="3">
 
             <ImageView
-                android:id="@+id/rightArrowButton"
+                android:id="@+id/toListButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleX="0.7"
@@ -59,12 +58,4 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="bottom"
-        android:layout_marginHorizontal="30dp"
-        android:background="?attr/separatorColor"
-        tools:ignore="MissingConstraints" />
 </androidx.cardview.widget.CardView>

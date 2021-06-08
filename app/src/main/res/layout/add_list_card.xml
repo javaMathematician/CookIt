@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   xmlns:tools="http://schemas.android.com/tools"
-                                   android:id="@+id/listCardView"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="wrap_content"
-                                   android:elevation="6dp"
-                                   android:foreground="?android:attr/selectableItemBackground"
-                                   app:cardBackgroundColor="?attr/cardBackgroundColor"
-                                   app:cardCornerRadius="0dp"
-                                   app:cardElevation="6dp"
-                                   app:layout_constraintStart_toStartOf="parent"
-                                   app:layout_constraintTop_toTopOf="parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addListCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="6dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="?attr/cardBackgroundColor"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="6dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,13 +25,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/list_name"
+            android:id="@+id/newList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Добавить новый список"
+            android:text="@string/add_new_list"
             android:textAlignment="textStart"
             android:textColor="?attr/textCardColor"
             android:textSize="18sp"
@@ -47,7 +47,7 @@
             android:layout_weight="3">
 
             <ImageView
-                android:id="@+id/rightArrowButton"
+                android:id="@+id/addListButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleX="0.7"

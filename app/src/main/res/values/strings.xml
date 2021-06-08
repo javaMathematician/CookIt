@@ -50,4 +50,5 @@
     <string name="deleted_from_favorites">Удалено из избранного</string>
     <string name="added_to_favorites">Добавлено в избранное</string>
     <string name="nothing_found">Не найдено ни единого ингредиента.</string>
+    <string name="add_new_list">Добавить новый список</string>
 </resources>

@@ -112,7 +112,7 @@ public class DishesFragment extends AbstractFragment {
             dishesAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
         }
         recyclerView.swapAdapter(dishesAdapter, true);
-//        recyclerView.
+
         swipeRefreshLayout.setOnRefreshListener(() -> {
             swipeRefreshLayout.setRefreshing(true);
 
