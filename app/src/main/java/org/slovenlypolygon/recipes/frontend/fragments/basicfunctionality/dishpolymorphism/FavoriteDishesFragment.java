@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
+import org.slovenlypolygon.recipes.frontend.FrontendDish;
 
 import java.util.Objects;
 
@@ -123,7 +123,7 @@ public class FavoriteDishesFragment extends DishesFragment {
         provider.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dishes -> {
-                    for (Dish dish : dishes) {
+                    for (FrontendDish dish : dishes) {
                         if (!dishesAdapter.getDishes().contains(dish)) {
                             dishesAdapter.addDish(dish); // TODO: 06.06.2021 ОТВРАТИТЕЛЬНЫЙ КОСТЫЛЬ, СОРРИ
                         }

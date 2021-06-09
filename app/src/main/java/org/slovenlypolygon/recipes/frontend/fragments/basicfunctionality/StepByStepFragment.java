@@ -31,15 +31,15 @@ import com.squareup.picasso.Picasso;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Step;
+import org.slovenlypolygon.recipes.frontend.FrontendDish;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
 
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class StepByStepFragment extends AbstractFragment {
-    private Dish dish;
+    private FrontendDish dish;
     private ImageView imageView;
     private DishComponentDAO dao;
     private ScrollView scrollView;
@@ -48,7 +48,7 @@ public class StepByStepFragment extends AbstractFragment {
     private ImageButton favoritesButton;
     private ImageButton addShoppingListButton;
 
-    public void setDish(Dish dish) {
+    public void setDish(FrontendDish dish) {
         this.dish = dish;
     }
 
@@ -56,7 +56,7 @@ public class StepByStepFragment extends AbstractFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
+        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag))).getDishComponentDAO();
     }
 
     private void addSteps() {
@@ -140,7 +140,6 @@ public class StepByStepFragment extends AbstractFragment {
         super.onActivityCreated(savedInstanceState);
 
         searchView.setVisibility(View.GONE);
-        dish = dao.getRichDish(dish);
         activity.getSupportActionBar().setTitle(dish.getName());
 
         setupPreparedFrontend();

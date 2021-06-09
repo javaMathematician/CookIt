@@ -33,7 +33,7 @@ public class ShoppingListsFragment extends Fragment {
 
         linearLayout = rootView.findViewById(R.id.shoppingListsLinearLayout);
 
-        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
+        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag))).getDishComponentDAO();
         dao.getShoppingLists()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

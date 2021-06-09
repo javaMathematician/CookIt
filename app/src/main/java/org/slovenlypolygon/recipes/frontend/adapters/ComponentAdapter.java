@@ -135,10 +135,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
                 final FilterResults oReturn = new FilterResults();
                 final List<Component> results = new ArrayList<>();
 
-                if (original == null) {
-                    original = components;
-                }
-
+                if (original == null) original = components;
                 if (constraint != null) {
                     if (original != null && !original.isEmpty()) {
                         for (Component iterate : original) {
@@ -188,9 +185,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
 
     public void updateComponent(Component component) {
         components.replaceAll(iterator -> {
-            if (component.equals(iterator)) { // КОМПОНЕНТЫ РАВНЫ В СЛУЧАЕ РАВЕНСТВА ИХ АЙДИ (НЕ РАВНО ==)
-                return component;
-            }
+            if (component.equals(iterator)) return component; // КОМПОНЕНТЫ РАВНЫ В СЛУЧАЕ РАВЕНСТВА ИХ АЙДИ (НЕ РАВНО ==)
 
             return iterator;
         });

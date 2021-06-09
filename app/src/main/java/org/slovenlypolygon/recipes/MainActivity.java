@@ -33,75 +33,64 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private DrawerLayout drawerLayout;
+    private String currentTheme;
 
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
-        setTheme(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.style.Dark : R.style.Light);
+        currentTheme = sharedPreferences.getString(THEME, "Light");
+        setTheme(Objects.equals(currentTheme, "Dark") ? R.style.Dark : R.style.Light);
 
-        try {
-            DatabaseFragment fragment = findOrGetFragment("databaseFragment", DatabaseFragment.class);
-
-            if (!fragment.isAdded()) {
-                getSupportFragmentManager().beginTransaction().add(fragment, "databaseFragment").commitNow();
-            }
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
+        initializeDatabaseFragment();
         setContentView(R.layout.carcass);
         setFrontend();
+        showBaseFragment();
+    }
 
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            try {
-                menuItemsActions(R.id.toIngredients);
-            } catch (IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
-            }
-        }
+    private void initializeDatabaseFragment() {
+        DatabaseFragment fragment = findOrGetFragment(getString(R.string.backend_database_frament_tag), DatabaseFragment.class);
+
+        if (!fragment.isAdded()) getSupportFragmentManager().beginTransaction().add(fragment, getString(R.string.backend_database_frament_tag)).commitNow();
+    }
+
+    private void showBaseFragment() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) menuItemsActions(R.id.toIngredients);
     }
 
     private void setFrontend() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setLogo(null);
         toolbar.setElevation(0);
+
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         drawerLayout = findViewById(R.id.drawerLayout);
-        NavigationView navigationView = findViewById(R.id.navView);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
-
-        toggle.syncState();
-        toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
-        toggle.setDrawerIndicatorEnabled(true);
-
-        toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        navigationView.setItemIconTintList(null);
 
         drawerLayout.addDrawerListener(toggle);
         drawerLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             ImageButton themeButton = findViewById(R.id.themeButton);
             themeButton.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
-            themeButton.setOnClickListener(item -> {
-                changeTheme();
-            });
+            themeButton.setOnClickListener(item -> changeTheme());
         });
 
+        toggle.syncState();
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.setHomeAsUpIndicator(android.R.drawable.button_onoff_indicator_off);
+        toolbar.setNavigationOnClickListener(t -> drawerLayout.openDrawer(GravityCompat.START));
+
+        NavigationView navigationView = findViewById(R.id.navView);
+        navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(item -> {
-            try {
-                menuItemsActions(item.getItemId());
-            } catch (IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
-            }
+            menuItemsActions(item.getItemId());
             return false;
         });
     }
 
-    private void menuItemsActions(int id) throws IllegalAccessException, InstantiationException {
+    private void menuItemsActions(int id) {
         drawerLayout.closeDrawer(GravityCompat.START);
 
         String ingredients = "ingredients";
@@ -110,13 +99,8 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.clearSelected) {
             AbstractComponentsFragment abstractComponentsFragment = findOrGetFragment(ingredients, IngredientsFragment.class);
 
-            if (!abstractComponentsFragment.isVisible()) {
-                abstractComponentsFragment = findOrGetFragment(categories, IngredientsFragment.class);
-            }
-
-            if (abstractComponentsFragment.isVisible()) {
-                abstractComponentsFragment.clearSelected();
-            }
+            if (!abstractComponentsFragment.isVisible()) abstractComponentsFragment = findOrGetFragment(categories, IngredientsFragment.class);
+            if (abstractComponentsFragment.isVisible()) abstractComponentsFragment.clearSelected();
         } else if (id == R.id.toIngredients) {
             changeFragment(findOrGetFragment(ingredients, IngredientsFragment.class), ingredients);
         } else if (id == R.id.toDishes) {
@@ -141,11 +125,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private <T> T findOrGetFragment(String tag, Class<T> fragmentClass) throws InstantiationException, IllegalAccessException {
+    private <T> T findOrGetFragment(String tag, Class<T> fragmentClass) {
         T found = (T) getSupportFragmentManager().findFragmentByTag(tag);
 
         if (found == null) {
-            return fragmentClass.newInstance();
+            try {
+                return fragmentClass.newInstance();
+            } catch (IllegalAccessException | InstantiationException exception) {
+                exception.printStackTrace();
+            }
         }
 
         return found;
@@ -172,10 +160,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeTheme() {
-        sharedPreferences.edit()
-                .putString(THEME, Objects.equals(sharedPreferences.getString(THEME, "Light"), "Light") ? "Dark" : "Light")
-                .apply();
-
+        sharedPreferences.edit().putString(THEME, Objects.equals(currentTheme, "Light") ? "Dark" : "Light").apply();
         recreate();
+    }
+
+    public String getCurrentTheme() {
+        return currentTheme;
     }
 }

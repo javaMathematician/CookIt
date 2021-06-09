@@ -15,36 +15,32 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Sets;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
+import org.slovenlypolygon.recipes.frontend.FrontendDish;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.StepByStepFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
     private final boolean highlight;
 
     private String accent;
-    private List<Dish> dishes = new ArrayList<>();
-    private List<Dish> original = new ArrayList<>();
-    private Set<Component> selectedIngredients;
-    private DishComponentDAO dao;
+    private List<FrontendDish> dishes = new ArrayList<>();
+    private List<FrontendDish> original = new ArrayList<>();
 
     public DishesAdapter(boolean highlight) {
         this.highlight = highlight;
     }
 
-    public List<Dish> getDishes() {
+    public List<FrontendDish> getDishes() {
         return dishes;
     }
 
@@ -53,12 +49,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         original.clear();
     }
 
-    public void addDish(Dish dish) {
+    public void addDish(FrontendDish dish) {
         dishes.add(dish);
-    }
-
-    public void setSelectedIngredients(Set<Component> selectedIngredients) {
-        this.selectedIngredients = selectedIngredients;
     }
 
     @Override
@@ -74,14 +66,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     @Override
     public void onBindViewHolder(@NonNull DishViewHolder dishViewHolder, int i) {
-        Dish dish = dao.getRichDish(dishes.get(i));
+        FrontendDish dish = dishes.get(i);
 
         if (highlight) {
-            Set<Integer> cleanedDish = dish.getCleanComponents().stream().map(Component::getId).collect(Collectors.toSet());
-            Set<Integer> intersection = Sets.intersection(cleanedDish, selectedIngredients);
-
-            String selectedText = Joiner.on(", ").join(namesFromIDs(intersection));
-            String text = Joiner.on(", ").join(namesFromIDs(Sets.difference(cleanedDish, intersection)));
+            String selectedText = Joiner.on(", ").join(dish.getSelectedIngredients());
+            String text = Joiner.on(", ").join(dish.getRestIngredients());
             String output;
 
             if (selectedText.isEmpty()) {
@@ -142,12 +131,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    private Set<String> namesFromIDs(Set<Integer> ids) {
-        return ids.stream()
-                .map(t -> dao.getCleanComponentNameByID(t).toLowerCase())
-                .collect(Collectors.toSet());
-    }
-
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -179,7 +162,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                dishes = results.values != null ? (List<Dish>) results.values : original;
+                dishes = results.values != null ? (List<FrontendDish>) results.values : original;
                 notifyDataSetChanged();
             }
         };
@@ -189,12 +172,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         this.accent = accent;
     }
 
-    public void addDishes(List<? extends Dish> constructedDish) {
+    public void addDishes(List<FrontendDish> constructedDish) {
         dishes.addAll(constructedDish);
-    }
-
-    public void setDAO(DishComponentDAO dao) {
-        this.dao = dao;
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {

@@ -5,11 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.google.common.base.Joiner;
 
+import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.recipes.backend.mainobjects.additionalfunctionality.ShoppingList;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.ComponentType;
-import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Step;
+import org.slovenlypolygon.recipes.frontend.FrontendDish;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,10 +20,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DishComponentDAO {
     private final SQLiteDatabase database;
@@ -31,50 +30,38 @@ public class DishComponentDAO {
         this.database = database;
     }
 
-    public Single<List<Dish>> getDishesByIDs(Set<Integer> dishesIDs) {
-        return Single.create(emitter -> {
-            List<Dish> dishes = new ArrayList<>();
-            String joinedIDs = Joiner.on(", ").join(dishesIDs);
-            String query = "SELECT * FROM dish WHERE dishID IN (" + joinedIDs + ")";
-
-            try (Cursor cursor = database.rawQuery(query, null)) {
-                while (cursor.moveToNext()) {
-                    Dish dish = getDishFromCursor(cursor);
-
-                    fillCleanIngredients(dish);
-                    dishes.add(dish);
-                }
-            }
-
-            emitter.onSuccess(dishes);
-        });
-    }
-
-    private Dish getDishFromCursor(Cursor cursor) {
+    @NotNull
+    private FrontendDish getDishFromCursor(@NotNull Cursor cursor) {
         int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
         String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
         String dishImageURL = cursor.getString(cursor.getColumnIndex("dishImageURL"));
         String dishURL = cursor.getString(cursor.getColumnIndex("dishURL"));
 
-        return new Dish(dishID, dishName, dishImageURL, dishURL);
+        return new FrontendDish(dishID, dishName, dishImageURL, dishURL);
     }
 
-    public Single<List<Dish>> getDishesFromComponents(Set<Component> components) {
-        if (components.isEmpty()) {
-            return getAllDishes();
-        }
+    @NotNull
+    private FrontendDish getRichDish(FrontendDish dish) {
+        FrontendDish clone = new FrontendDish(dish);
 
-        return Single.create(emitter -> {
-            List<Dish> dishes = new ArrayList<>();
-
-            getDishesFromComponentIDs(components.stream().map(Component::getId).collect(Collectors.toSet()))
-                    .subscribeOn(Schedulers.newThread())
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .subscribe(dishes::add, Throwable::printStackTrace, () -> emitter.onSuccess(dishes));
-        });
+        fillDirtyIngredients(clone);
+        fillSteps(clone);
+        return clone;
     }
 
-    private Observable<Dish> getDishesFromComponentIDs(Set<Integer> componentIDs) {
+    @NotNull
+    private Component getComponentFromCursor(@NotNull Cursor cursor) {
+        int id = cursor.getInt(cursor.getColumnIndex("componentID"));
+        int qIsIngredient = cursor.getInt(cursor.getColumnIndex("qIsIngredient"));
+
+        String name = cursor.getString(cursor.getColumnIndex("componentName"));
+        String imageURL = cursor.getString(cursor.getColumnIndex("componentImageURL"));
+
+        return new Component(id, qIsIngredient == 1 ? ComponentType.INGREDIENT : ComponentType.CATEGORY, name, imageURL);
+    }
+
+    @NotNull
+    private Observable<FrontendDish> getDishesFromComponentIDs(Set<Integer> componentIDs) {
         return Observable.create(emitter -> {
             String joinedIDs = Joiner.on(", ").join(componentIDs);
 
@@ -87,10 +74,10 @@ public class DishComponentDAO {
 
             try (Cursor cursor = database.rawQuery(query, null)) {
                 while (cursor.moveToNext()) {
-                    Dish dish = getDishFromCursor(cursor);
+                    FrontendDish dish = getDishFromCursor(cursor);
 
                     fillCleanIngredients(dish);
-                    emitter.onNext(dish);
+                    emitter.onNext(getRichDish(dish));
                 }
             }
 
@@ -98,53 +85,57 @@ public class DishComponentDAO {
         });
     }
 
-    private void fillCleanIngredients(Dish dish) {
-        String query = "SELECT qIsIngredient, component.componentID, componentName, componentImageURL FROM component " +
-                "JOIN dishComponentCrossReference ON dishComponentCrossReference.componentID = component.componentID " +
-                "JOIN dish ON dishComponentCrossReference.dishID = dish.dishID " +
-                "WHERE dish.dishID = " + dish.getId() + " AND qIsIngredient = 1";
+    @NotNull
+    private Set<Integer> getFavoriteDishIDs() {
+        Set<Integer> ids = new HashSet<>();
 
-        try (Cursor cursor = database.rawQuery(query, null)) {
-            Set<Component> components = new TreeSet<>(Comparator.comparing(Component::getName));
-
+        try (Cursor cursor = database.rawQuery("SELECT dishID FROM favoriteDishes", null)) {
             while (cursor.moveToNext()) {
-                components.add(getComponentFromCursor(cursor));
-            }
-
-            dish.setCleanComponents(components);
-        }
-    }
-
-    private Component getComponentFromCursor(Cursor cursor) {
-        int id = cursor.getInt(cursor.getColumnIndex("componentID"));
-        int qIsIngredient = cursor.getInt(cursor.getColumnIndex("qIsIngredient"));
-
-        String name = cursor.getString(cursor.getColumnIndex("componentName"));
-        String imageURL = cursor.getString(cursor.getColumnIndex("componentImageURL"));
-
-        return new Component(id, qIsIngredient == 1 ? ComponentType.INGREDIENT : ComponentType.CATEGORY, name, imageURL);
-    }
-
-    private void fillDirtyIngredients(Dish dish) {
-        String query = "SELECT content FROM rawIngredient WHERE dishID = " + dish.getId();
-        Set<String> dirtyIngredients = new TreeSet<>(Comparator.comparing(String::length));
-
-        try (Cursor cursor = database.rawQuery(query, null)) {
-            while (cursor.moveToNext()) {
-                dirtyIngredients.add(cursor.getString(cursor.getColumnIndex("content")));
+                ids.add(cursor.getInt(0));
             }
         }
 
-        dish.setDirtyIngredients(dirtyIngredients);
+        return ids;
     }
 
-    public Single<List<Dish>> getAllDishes() {
+    public Single<List<FrontendDish>> getDishesByIDs(Set<Integer> dishesIDs) {
         return Single.create(emitter -> {
-            List<Dish> dishes = new ArrayList<>();
+            List<FrontendDish> dishes = new ArrayList<>();
+            String joinedIDs = Joiner.on(", ").join(dishesIDs);
+            String query = "SELECT * FROM dish WHERE dishID IN (" + joinedIDs + ")";
+
+            try (Cursor cursor = database.rawQuery(query, null)) {
+                while (cursor.moveToNext()) {
+                    FrontendDish dish = getDishFromCursor(cursor);
+
+                    fillCleanIngredients(dish);
+                    dishes.add(getRichDish(dish));
+                }
+            }
+
+            emitter.onSuccess(dishes);
+        });
+    }
+
+    public Single<List<FrontendDish>> getDishesFromComponents(@NotNull Set<Component> components) {
+        if (components.isEmpty()) {
+            return getAllDishes();
+        }
+
+        return Single.create(emitter -> {
+            List<FrontendDish> dishes = new ArrayList<>();
+
+            getDishesFromComponentIDs(components.stream().map(Component::getId).collect(Collectors.toSet())).subscribe(dishes::add, Throwable::printStackTrace, () -> emitter.onSuccess(dishes));
+        });
+    }
+
+    public Single<List<FrontendDish>> getAllDishes() {
+        return Single.create(emitter -> {
+            List<FrontendDish> dishes = new ArrayList<>();
 
             try (Cursor cursor = database.rawQuery("SELECT * FROM dish", null)) {
                 while (cursor.moveToNext()) {
-                    Dish dish = getDishFromCursor(cursor);
+                    FrontendDish dish = getDishFromCursor(cursor);
 
                     fillCleanIngredients(dish);
                     dishes.add(dish);
@@ -152,6 +143,39 @@ public class DishComponentDAO {
             }
 
             emitter.onSuccess(dishes);
+        });
+    }
+
+    public Single<List<FrontendDish>> getFavoriteDishes() {
+        return Single.create(emitter -> getDishesByIDs(getFavoriteDishIDs()).subscribe(emitter::onSuccess, Throwable::printStackTrace));
+    }
+
+    public Single<List<FrontendDish>> getRecommendedDishes() {
+        Set<Integer> dishesIDs = getFavoriteDishIDs();
+
+        if (dishesIDs.isEmpty()) {
+            return getAllDishes();
+        }
+
+        return Single.create(emitter -> {
+            List<FrontendDish> dishes = new ArrayList<>();
+            Set<Integer> componentsIDs = new HashSet<>();
+            String joinedDishesIDs = Joiner.on(", ").join(dishesIDs);
+
+            String queryForComponents = "SELECT component.componentID FROM component, dishComponentCrossReference " +
+                    "WHERE dishID IN (" + joinedDishesIDs + ") AND qIsIngredient = 0 " +
+                    "GROUP BY component.componentID";
+
+            try (Cursor cursor = database.rawQuery(queryForComponents, null)) {
+                while (cursor.moveToNext()) {
+                    componentsIDs.add(cursor.getInt(0));
+                }
+            }
+
+            getDishesFromComponentIDs(componentsIDs)
+                    .skip(dishesIDs.size())
+                    .take(15)
+                    .subscribe(dishes::add, Throwable::printStackTrace, () -> emitter.onSuccess(dishes));
         });
     }
 
@@ -178,119 +202,6 @@ public class DishComponentDAO {
         });
     }
 
-    private void fillSteps(Dish dish) {
-        String query = "SELECT stepText, stepImageUrl FROM step WHERE dishID = " + dish.getId() + " ORDER BY localOrder";
-
-        try (Cursor cursor = database.rawQuery(query, null)) {
-            List<Step> steps = new ArrayList<>();
-
-            while (cursor.moveToNext()) {
-                String text = cursor.getString(cursor.getColumnIndex("stepText"));
-                String stepImageUrl = cursor.getString(cursor.getColumnIndex("stepImageURL"));
-
-                Step step = new Step(text);
-                if (stepImageUrl != null && !stepImageUrl.isEmpty()) {
-                    step.setImageURL(stepImageUrl);
-                }
-
-                steps.add(step);
-            }
-
-            dish.setSteps(steps);
-        }
-    }
-
-    public Dish getRichDish(Dish dish) {
-        Dish clone = new Dish(dish);
-
-        fillDirtyIngredients(clone);
-        fillSteps(clone);
-        return clone;
-    }
-
-    public String getCleanComponentNameByID(int componentID) {
-        String query = "SELECT componentName FROM component WHERE componentID = " + componentID;
-
-        try (Cursor cursor = database.rawQuery(query, null)) {
-            cursor.moveToFirst();
-            return cursor.getString(0);
-        }
-    }
-
-    public void addToFavorites(Dish dish) {
-        database.execSQL("INSERT INTO favoriteDishes (dishID) VALUES (" + dish.getId() + ")");
-    }
-
-    public void removeFromFavorites(Dish dish) {
-        database.execSQL("DELETE FROM favoriteDishes WHERE dishID = " + dish.getId());
-    }
-
-    private Set<Integer> getFavoriteDishIDs() {
-        Set<Integer> ids = new HashSet<>();
-
-        try (Cursor cursor = database.rawQuery("SELECT dishID FROM favoriteDishes", null)) {
-            while (cursor.moveToNext()) {
-                ids.add(cursor.getInt(0));
-            }
-        }
-
-        return ids;
-    }
-
-    public Single<List<Dish>> getFavoriteDishes() {
-        return Single.create(emitter -> getDishesByIDs(getFavoriteDishIDs()).subscribe(emitter::onSuccess, Throwable::printStackTrace));
-    }
-
-    public boolean containsFavorites(Dish dish) {
-        String query = "SELECT count(*) FROM favoriteDishes WHERE dishID = " + dish.getId();
-
-        try (Cursor cursor = database.rawQuery(query, null)) {
-            cursor.moveToFirst();
-            return cursor.getInt(0) > 0;
-        }
-    }
-
-    public Single<List<Dish>> getRecommendedDishes() {
-        Set<Integer> dishesIDs = getFavoriteDishIDs();
-
-        if (dishesIDs.isEmpty()) {
-            return getAllDishes();
-        }
-
-        return Single.create(emitter -> {
-            List<Dish> dishes = new ArrayList<>();
-            Set<Integer> componentsIDs = new HashSet<>();
-            String joinedDishesIDs = Joiner.on(", ").join(dishesIDs);
-
-            String queryForComponents = "SELECT component.componentID FROM component, dishComponentCrossReference " +
-                    "WHERE dishID IN (" + joinedDishesIDs + ") AND qIsIngredient = 0 " +
-                    "GROUP BY component.componentID";
-
-            try (Cursor cursor = database.rawQuery(queryForComponents, null)) {
-                while (cursor.moveToNext()) {
-                    componentsIDs.add(cursor.getInt(0));
-                }
-            }
-
-            getDishesFromComponentIDs(componentsIDs)
-                    .skip(dishesIDs.size())
-                    .take(15)
-                    .subscribe(dishes::add, Throwable::printStackTrace, () -> emitter.onSuccess(dishes));
-        });
-    }
-
-    public void deleteFavorite(Dish dish) {
-        database.execSQL("DELETE FROM favoriteDishes WHERE dishID = " + dish.getId());
-    }
-
-    public void addToFavorites(Component component) {
-        database.execSQL("INSERT INTO favoriteComponents (componentID) VALUES (" + component.getId() + ")");
-    }
-
-    public void removeFromFavorites(Component component) {
-        database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
-    }
-
     public Single<List<Component>> getFavoriteComponents() {
         return Single.create(emitter -> {
             List<Component> components = new ArrayList<>();
@@ -305,19 +216,6 @@ public class DishComponentDAO {
 
             emitter.onSuccess(components);
         });
-    }
-
-    public boolean containsFavorites(Component component) {
-        String query = "SELECT count(*) FROM favoriteComponents WHERE componentID = " + component.getId();
-
-        try (Cursor cursor = database.rawQuery(query, null)) {
-            cursor.moveToFirst();
-            return cursor.getInt(0) > 0;
-        }
-    }
-
-    public void deleteFavorite(Component component) {
-        database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
     }
 
     public Observable<Component> getAllComponents() {
@@ -347,5 +245,99 @@ public class DishComponentDAO {
 
             emitter.onSuccess(shoppingLists);
         });
+    }
+
+    private void fillCleanIngredients(@NotNull FrontendDish dish) {
+        String query = "SELECT qIsIngredient, component.componentID, componentName, componentImageURL FROM component " +
+                "JOIN dishComponentCrossReference ON dishComponentCrossReference.componentID = component.componentID " +
+                "JOIN dish ON dishComponentCrossReference.dishID = dish.dishID " +
+                "WHERE dish.dishID = " + dish.getId() + " AND qIsIngredient = 1";
+
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            Set<Component> components = new TreeSet<>(Comparator.comparing(Component::getName));
+
+            while (cursor.moveToNext()) {
+                components.add(getComponentFromCursor(cursor));
+            }
+
+            dish.setCleanComponents(components);
+        }
+    }
+
+    private void fillDirtyIngredients(@NotNull FrontendDish dish) {
+        String query = "SELECT content FROM rawIngredient WHERE dishID = " + dish.getId();
+        Set<String> dirtyIngredients = new TreeSet<>(Comparator.comparing(String::length));
+
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            while (cursor.moveToNext()) {
+                dirtyIngredients.add(cursor.getString(cursor.getColumnIndex("content")));
+            }
+        }
+
+        dish.setDirtyIngredients(dirtyIngredients);
+    }
+
+    private void fillSteps(@NotNull FrontendDish dish) {
+        String query = "SELECT stepText, stepImageUrl FROM step WHERE dishID = " + dish.getId() + " ORDER BY localOrder";
+
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            List<Step> steps = new ArrayList<>();
+
+            while (cursor.moveToNext()) {
+                String text = cursor.getString(cursor.getColumnIndex("stepText"));
+                String stepImageUrl = cursor.getString(cursor.getColumnIndex("stepImageURL"));
+
+                Step step = new Step(text);
+                if (stepImageUrl != null && !stepImageUrl.isEmpty()) {
+                    step.setImageURL(stepImageUrl);
+                }
+
+                steps.add(step);
+            }
+
+            dish.setSteps(steps);
+        }
+    }
+
+    public void addToFavorites(@NotNull FrontendDish dish) {
+        database.execSQL("INSERT INTO favoriteDishes (dishID) VALUES (" + dish.getId() + ")");
+    }
+
+    public void removeFromFavorites(@NotNull FrontendDish dish) {
+        database.execSQL("DELETE FROM favoriteDishes WHERE dishID = " + dish.getId());
+    }
+
+    public boolean containsFavorites(@NotNull FrontendDish dish) {
+        String query = "SELECT count(*) FROM favoriteDishes WHERE dishID = " + dish.getId();
+
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            cursor.moveToFirst();
+            return cursor.getInt(0) > 0;
+        }
+    }
+
+    public void deleteFavorite(@NotNull FrontendDish dish) {
+        database.execSQL("DELETE FROM favoriteDishes WHERE dishID = " + dish.getId());
+    }
+
+    public void addToFavorites(@NotNull Component component) {
+        database.execSQL("INSERT INTO favoriteComponents (componentID) VALUES (" + component.getId() + ")");
+    }
+
+    public void removeFromFavorites(@NotNull Component component) {
+        database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
+    }
+
+    public boolean containsFavorites(@NotNull Component component) {
+        String query = "SELECT count(*) FROM favoriteComponents WHERE componentID = " + component.getId();
+
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            cursor.moveToFirst();
+            return cursor.getInt(0) > 0;
+        }
+    }
+
+    public void deleteFavorite(@NotNull Component component) {
+        database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
     }
 }

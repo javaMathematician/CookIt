@@ -35,7 +35,7 @@
     </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="bill_select_prompt">Выберите / сделайте четкую и контрастную фотографию Вашего чека</string>
+    <string name="bill_select_prompt">Сделайте / выберите чёткую и контрастную фотографию Вашего чека</string>
     <string name="open_camera">Открыть камеру</string>
     <string name="open_gallery">Открыть галерею</string>
     <string name="open_file_manager">Открыть документы (файлы)</string>
@@ -54,4 +54,6 @@
     <string name="ingredient_actions">Действия с ингредиентом</string>
     <string name="delete_from_favorites_suggestion">Удалить из избранного</string>
     <string name="add_to_favorites_suggestion">Добавить в избранное</string>
+    <string name="backend_database_frament_tag">databaseFragment</string>
+    <string name="menu">Меню</string>
 </resources>

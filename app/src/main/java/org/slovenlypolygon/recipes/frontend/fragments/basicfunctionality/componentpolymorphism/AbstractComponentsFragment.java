@@ -162,7 +162,10 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
                 .equals("Dark") ? R.style.DarkDialog : R.style.LightDialog);
 
         initializeDatabase();
-        addDataSource();
+
+        if (componentAdapter.getComponents().isEmpty()) {
+            addDataSource();
+        }
     }
 
     private void addDataSource() {
@@ -241,7 +244,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
 
     protected void initializeDatabase() {
         if (dao == null) {
-            dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
+            dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag))).getDishComponentDAO();
         }
     }
 
@@ -295,9 +298,6 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
         componentAdapter.clearSelected();
         tabComponentAdapter.clearSelected();
 
-        componentAdapter.notifyDataSetChanged();
-        tabComponentAdapter.notifyDataSetChanged();
-
         updateButton();
     }
 
@@ -305,7 +305,9 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
     public void onPause() {
         super.onPause();
 
-        if (alertDialog != null) alertDialog.dismiss();
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+        }
     }
 
     @Override
@@ -313,6 +315,8 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
         super.onResume();
         updateButton();
 
-        if (alertDialog != null) alertDialog.show();
+        if (alertDialog != null) {
+            alertDialog.show();
+        }
     }
 }

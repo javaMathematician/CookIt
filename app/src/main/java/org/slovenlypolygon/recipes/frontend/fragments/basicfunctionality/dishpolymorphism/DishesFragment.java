@@ -16,20 +16,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.common.collect.Sets;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
-import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
+import org.slovenlypolygon.recipes.frontend.FrontendDish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
@@ -41,7 +43,7 @@ public class DishesFragment extends AbstractFragment {
     protected SearchView searchView;
     protected DishesAdapter dishesAdapter;
     protected RecyclerView recyclerView;
-    protected Single<List<Dish>> provider;
+    protected Single<List<FrontendDish>> provider;
     protected SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton scrollToTop;
     private boolean highlightSelected;
@@ -50,7 +52,7 @@ public class DishesFragment extends AbstractFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
+        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag))).getDishComponentDAO();
     }
 
     public void setSelectedComponents(Set<Component> selectedComponentIDs) {
@@ -107,9 +109,6 @@ public class DishesFragment extends AbstractFragment {
 
         if (!initialized) {
             dishesAdapter = new DishesAdapter(highlightSelected);
-
-            dishesAdapter.setDAO(dao);
-            dishesAdapter.setSelectedIngredients(selectedComponents);
             dishesAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
         }
         recyclerView.swapAdapter(dishesAdapter, true);
@@ -133,6 +132,7 @@ public class DishesFragment extends AbstractFragment {
     protected void getMatches() {
         dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
+                .map(this::splitIngredients)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(constructedDish -> {
                     dishesAdapter.addDishes(constructedDish);
@@ -140,6 +140,26 @@ public class DishesFragment extends AbstractFragment {
                 }, Throwable::printStackTrace);
 
         initialized = true;
+    }
+
+    private List<FrontendDish> splitIngredients(List<FrontendDish> frontendDishes) {
+        List<FrontendDish> output = new ArrayList<>();
+
+        for (FrontendDish dish : frontendDishes) {
+            FrontendDish frontendDish = new FrontendDish(dish);
+
+            Set<Component> components = frontendDish.getCleanComponents();
+            frontendDish.setSelectedIngredients(getIngredientNames(Sets.intersection(selectedComponents, components)));
+            frontendDish.setRestIngredients(getIngredientNames(Sets.difference(components, selectedComponents)));
+
+            output.add(frontendDish);
+        }
+
+        return output;
+    }
+
+    private Set<String> getIngredientNames(Set<Component> components) {
+        return components.stream().map(Component::getName).map(String::toLowerCase).collect(Collectors.toSet());
     }
 
     @Override
@@ -151,7 +171,7 @@ public class DishesFragment extends AbstractFragment {
             searchView.setOnClickListener(view -> searchView.setIconified(false));
         }
 
-        dishesAdapter.setAccent(Objects.equals(activity.getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", ""), "Dark") ? "#FFC84D" : "#2787F5");
+        dishesAdapter.setAccent(activity.getCurrentTheme().equals("Dark") ? "#FFC84D" : "#2787F5");
 
         if (provider == null) {
             initializeDataProvider();

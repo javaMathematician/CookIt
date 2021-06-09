@@ -3,7 +3,7 @@ package org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
-public class Component {
+public class Component implements Comparable<Component> {
     private final ComponentType componentType;
     private final String imageURL;
     private final String name;
@@ -59,5 +59,10 @@ public class Component {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public int compareTo(Component o) {
+        return name.compareTo(o.name);
     }
 }

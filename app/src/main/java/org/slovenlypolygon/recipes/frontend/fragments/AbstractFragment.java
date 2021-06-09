@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
@@ -16,7 +15,7 @@ import org.slovenlypolygon.recipes.R;
 
 public abstract class AbstractFragment extends Fragment {
     protected SearchView searchView;
-    protected AppCompatActivity activity;
+    protected MainActivity activity;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
