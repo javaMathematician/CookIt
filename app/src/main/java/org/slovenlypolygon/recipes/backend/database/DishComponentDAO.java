@@ -225,12 +225,12 @@ public class DishComponentDAO {
         return Single.create(emitter -> {
             List<ShoppingList> shoppingLists = new ArrayList<>();
 
-            try (Cursor cursor = database.rawQuery("SELECT * FROM shoppingList", null)) {
+            try (Cursor cursor = database.rawQuery("SELECT * from  dish, shoppingList WHERE dish.dishID = shoppingList.dishID", null)) {
                 while (cursor.moveToNext()) {
-                    int id = cursor.getInt(cursor.getColumnIndex("listID"));
-                    int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
+                    FrontendDish dishFromCursor = getDishFromCursor(cursor);
+                    fillDirtyIngredients(dishFromCursor);
 
-                    shoppingLists.add(new ShoppingList(id, dishID));
+                    shoppingLists.add(new ShoppingList(cursor.getInt(cursor.getColumnIndex("listID")), dishFromCursor));
                 }
             }
 
@@ -332,11 +332,11 @@ public class DishComponentDAO {
         database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
     }
 
-    public void addToShoppingList(Dish dish) {
+    public void addToShoppingList(@NotNull Dish dish) {
         database.execSQL("INSERT INTO shoppingList (dishID) VALUES (" + dish.getId() + ")");
     }
 
-    public boolean containsShoppingList(Dish dish) {
+    public boolean containsShoppingList(@NotNull Dish dish) {
         String query = "SELECT count(*) FROM shoppingList WHERE dishID = " + dish.getId();
 
         try (Cursor cursor = database.rawQuery(query, null)) {
@@ -345,7 +345,7 @@ public class DishComponentDAO {
         }
     }
 
-    public void removeFromShoppingList(Dish dish) {
+    public void removeFromShoppingList(@NotNull Dish dish) {
         database.execSQL("DELETE FROM shoppingList WHERE dishID = " + dish.getId());
     }
 }

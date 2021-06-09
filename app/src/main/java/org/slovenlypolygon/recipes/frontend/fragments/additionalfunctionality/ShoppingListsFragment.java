@@ -5,11 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+
+import com.google.common.base.Joiner;
 
 import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.recipes.R;
@@ -54,6 +57,14 @@ public class ShoppingListsFragment extends Fragment {
 
         for (ShoppingList shoppingList : shoppingLists) {
             CardView cardView = (CardView) layoutInflater.inflate(R.layout.list_card, linearLayout, false);
+
+            TextView name = cardView.findViewById(R.id.listName);
+            name.setText(shoppingList.getDish().getName());
+
+            TextView content = cardView.findViewById(R.id.listContent);
+            content.setText(Joiner.on(",\n").join(shoppingList.getDish().getDirtyIngredients()));
+
+            linearLayout.addView(cardView);
         }
     }
 }
