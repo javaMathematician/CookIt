@@ -10,8 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="?attr/mainBackgroundColor"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="4dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textOnBillFragment"
@@ -29,6 +28,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:gravity="center"
             android:orientation="vertical"
             android:weightSum="100"
@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardElevation="4dp"
+                app:cardCornerRadius="16dp"
                 android:layout_marginBottom="24dp"
                 app:cardBackgroundColor="?attr/cardBackgroundColor">
 
@@ -79,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardElevation="4dp"
+                app:cardCornerRadius="16dp"
                 android:layout_marginBottom="24dp"
                 app:cardBackgroundColor="?attr/cardBackgroundColor">
 

@@ -263,7 +263,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
         String accept = getString(R.string.reset_agree);
         String decline = getString(R.string.reset_disagree);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(contextThemeWrapper);
         builder.setTitle(title);
         builder.setMessage(message);
 

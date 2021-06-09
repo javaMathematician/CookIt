@@ -73,6 +73,29 @@
         <item name="android:background">@color/darkThemeBackgroundCardColor</item>
     </style>
 
+    <style name="LightProgressDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/textDarkColor</item>
+        <item name="android:textColorPrimary">@color/textDarkColor</item>
+        <item name="android:background">@color/lightThemeBackgroundCardColor</item>
+    </style>
+
+
+    <style name="DarkProgressDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/textLightColor</item>
+        <item name="android:textColorPrimary">@color/textLightColor</item>
+        <item name="android:background">@color/darkThemeBackgroundCardColor</item>
+    </style>
+
+    <style name="ProgressBar" parent="@android:style/Widget.ProgressBar">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:background">?attr/cardBackgroundColor</item>
+        <item name="colorAccent">@color/greenAccentColor</item>
+        <item name="android:textColorPrimary">@color/textLightColor</item>
+        <item name="android:textColor">@color/textLightColor</item>
+    </style>
+
     <style name="TextAppearanceLight">
         <item name="actionMenuTextColor">@android:color/black</item>
         <item name="android:actionMenuTextColor">@android:color/black</item>

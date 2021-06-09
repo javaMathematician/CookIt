@@ -2,10 +2,12 @@ package org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +82,10 @@ public class BillScanFragment extends Fragment {
                 Bitmap bitmap = BitmapFactory.decodeFile(mediaFiles[0].getFile().getAbsolutePath());
                 parsed = new HashSet<>();
 
-                progressDialog = new ProgressDialog(getContext());
+                ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getContext(), getActivity()
+                        .getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "Light")
+                        .equals("Dark") ? R.style.DarkProgressDialog : R.style.LightProgressDialog);
+                progressDialog = new ProgressDialog(contextThemeWrapper);
                 progressDialog.setTitle(getString(R.string.parsing));
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progressDialog.setMax(4);
