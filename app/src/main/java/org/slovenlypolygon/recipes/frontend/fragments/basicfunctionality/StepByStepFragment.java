@@ -46,6 +46,7 @@ public class StepByStepFragment extends AbstractFragment {
     private LinearLayout linearLayout;
     private TextView dirtyIngredients;
     private ImageButton favoritesButton;
+    private ImageButton addShoppingListButton;
 
     public void setDish(Dish dish) {
         this.dish = dish;
@@ -129,6 +130,7 @@ public class StepByStepFragment extends AbstractFragment {
         linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
         dirtyIngredients = rootView.findViewById(R.id.stepByStepIngredients);
         favoritesButton = rootView.findViewById(R.id.favoritesSwitcher);
+        addShoppingListButton = rootView.findViewById(R.id.addListButton);
 
         return rootView;
     }
