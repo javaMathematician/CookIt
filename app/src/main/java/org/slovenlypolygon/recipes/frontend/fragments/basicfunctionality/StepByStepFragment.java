@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.common.base.Joiner;
 import com.squareup.picasso.Callback;
@@ -46,7 +47,7 @@ public class StepByStepFragment extends AbstractFragment {
     private LinearLayout linearLayout;
     private TextView dirtyIngredients;
     private ImageButton favoritesButton;
-    private ImageButton addShoppingListButton;
+    private ImageButton addToShoppingListButton;
 
     public void setDish(FrontendDish dish) {
         this.dish = dish;
@@ -130,7 +131,7 @@ public class StepByStepFragment extends AbstractFragment {
         linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
         dirtyIngredients = rootView.findViewById(R.id.stepByStepIngredients);
         favoritesButton = rootView.findViewById(R.id.favoritesSwitcher);
-        addShoppingListButton = rootView.findViewById(R.id.addListButton);
+        addToShoppingListButton = rootView.findViewById(R.id.addToListButton);
 
         return rootView;
     }
@@ -170,18 +171,28 @@ public class StepByStepFragment extends AbstractFragment {
                     }
                 });
 
-        favoritesButton.setBackground(dao.containsFavorites(dish) ? getResources().getDrawable(R.drawable.in_favorites) : getResources().getDrawable(R.drawable.add_to_favorites));
+        favoritesButton.setBackground(ResourcesCompat.getDrawable(getResources(), dao.containsFavorites(dish) ? R.drawable.in_favorites : R.drawable.add_to_favorites, null));
         favoritesButton.setOnClickListener(v -> {
             if (dao.containsFavorites(dish)) {
                 dao.removeFromFavorites(dish);
-                favoritesButton.setBackground(getResources().getDrawable(R.drawable.add_to_favorites));
+                favoritesButton.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.add_to_favorites, null));
                 favoritesButton.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.scale));
                 Toast.makeText(getContext(), R.string.deleted_from_favorites, Toast.LENGTH_SHORT).show();
             } else {
                 dao.addToFavorites(dish);
-                favoritesButton.setBackground(getResources().getDrawable(R.drawable.in_favorites));
+                favoritesButton.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.in_favorites, null));
                 favoritesButton.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.scale));
                 Toast.makeText(getContext(), R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        addToShoppingListButton.setOnClickListener(v -> {
+            if (dao.containsShoppingList(dish)) {
+                dao.removeFromShoppingList(dish);
+                Toast.makeText(getContext(), getString(R.string.removed_from_shopping_list), Toast.LENGTH_SHORT).show();
+            } else {
+                dao.addToShoppingList(dish);
+                Toast.makeText(getContext(), getString(R.string.added_to_shopping_list), Toast.LENGTH_SHORT).show();
             }
         });
 

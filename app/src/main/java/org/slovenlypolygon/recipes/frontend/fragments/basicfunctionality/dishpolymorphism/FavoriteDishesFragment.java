@@ -22,6 +22,7 @@ import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.frontend.FrontendDish;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -121,6 +122,7 @@ public class FavoriteDishesFragment extends DishesFragment {
     protected void getMatches() {
         dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
+                .buffer(300, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dishes -> {
                     for (FrontendDish dish : dishes) {

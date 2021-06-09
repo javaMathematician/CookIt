@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.recipes.backend.mainobjects.additionalfunctionality.ShoppingList;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.ComponentType;
+import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Step;
 import org.slovenlypolygon.recipes.frontend.FrontendDish;
 
@@ -98,9 +99,8 @@ public class DishComponentDAO {
         return ids;
     }
 
-    public Single<List<FrontendDish>> getDishesByIDs(Set<Integer> dishesIDs) {
-        return Single.create(emitter -> {
-            List<FrontendDish> dishes = new ArrayList<>();
+    public Observable<FrontendDish> getDishesByIDs(Set<Integer> dishesIDs) {
+        return Observable.create(emitter -> {
             String joinedIDs = Joiner.on(", ").join(dishesIDs);
             String query = "SELECT * FROM dish WHERE dishID IN (" + joinedIDs + ")";
 
@@ -109,56 +109,49 @@ public class DishComponentDAO {
                     FrontendDish dish = getDishFromCursor(cursor);
 
                     fillCleanIngredients(dish);
-                    dishes.add(getRichDish(dish));
+                    emitter.onNext(getRichDish(dish));
                 }
             }
 
-            emitter.onSuccess(dishes);
+            emitter.onComplete();
         });
     }
 
-    public Single<List<FrontendDish>> getDishesFromComponents(@NotNull Set<Component> components) {
+    public Observable<FrontendDish> getDishesFromComponents(@NotNull Set<Component> components) {
         if (components.isEmpty()) {
             return getAllDishes();
         }
 
-        return Single.create(emitter -> {
-            List<FrontendDish> dishes = new ArrayList<>();
-
-            getDishesFromComponentIDs(components.stream().map(Component::getId).collect(Collectors.toSet())).subscribe(dishes::add, Throwable::printStackTrace, () -> emitter.onSuccess(dishes));
-        });
+        return Observable.create(emitter -> getDishesFromComponentIDs(components.stream().map(Component::getId).collect(Collectors.toSet())).subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete));
     }
 
-    public Single<List<FrontendDish>> getAllDishes() {
-        return Single.create(emitter -> {
-            List<FrontendDish> dishes = new ArrayList<>();
-
+    public Observable<FrontendDish> getAllDishes() {
+        return Observable.create(emitter -> {
             try (Cursor cursor = database.rawQuery("SELECT * FROM dish", null)) {
                 while (cursor.moveToNext()) {
                     FrontendDish dish = getDishFromCursor(cursor);
 
                     fillCleanIngredients(dish);
-                    dishes.add(dish);
+                    emitter.onNext(dish);
                 }
             }
 
-            emitter.onSuccess(dishes);
+            emitter.onComplete();
         });
     }
 
-    public Single<List<FrontendDish>> getFavoriteDishes() {
-        return Single.create(emitter -> getDishesByIDs(getFavoriteDishIDs()).subscribe(emitter::onSuccess, Throwable::printStackTrace));
+    public Observable<FrontendDish> getFavoriteDishes() {
+        return Observable.create(emitter -> getDishesByIDs(getFavoriteDishIDs()).subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete));
     }
 
-    public Single<List<FrontendDish>> getRecommendedDishes() {
+    public Observable<FrontendDish> getRecommendedDishes() {
         Set<Integer> dishesIDs = getFavoriteDishIDs();
 
         if (dishesIDs.isEmpty()) {
             return getAllDishes();
         }
 
-        return Single.create(emitter -> {
-            List<FrontendDish> dishes = new ArrayList<>();
+        return Observable.create(emitter -> {
             Set<Integer> componentsIDs = new HashSet<>();
             String joinedDishesIDs = Joiner.on(", ").join(dishesIDs);
 
@@ -175,17 +168,16 @@ public class DishComponentDAO {
             getDishesFromComponentIDs(componentsIDs)
                     .skip(dishesIDs.size())
                     .take(15)
-                    .subscribe(dishes::add, Throwable::printStackTrace, () -> emitter.onSuccess(dishes));
+                    .subscribe(emitter::onNext, Throwable::printStackTrace, emitter::onComplete);
         });
     }
 
-    public Single<List<Component>> getComponentByType(ComponentType type) {
+    public Observable<Component> getComponentByType(ComponentType type) {
         if (type == ComponentType.FAVORITE_COMPONENT) {
             return getFavoriteComponents();
         }
 
-        return Single.create(emitter -> {
-            List<Component> components = new ArrayList<>();
+        return Observable.create(emitter -> {
             int booleState = type == ComponentType.CATEGORY ? 0 : 1;
 
             try (Cursor cursor = database.rawQuery("SELECT DISTINCT * FROM component WHERE qIsIngredient = " + booleState, null)) {
@@ -194,27 +186,26 @@ public class DishComponentDAO {
                     String name = cursor.getString(cursor.getColumnIndex("componentName"));
                     String imageURL = cursor.getString(cursor.getColumnIndex("componentImageURL"));
 
-                    components.add(new Component(id, type, name, imageURL));
+                    emitter.onNext(new Component(id, type, name, imageURL));
                 }
             }
 
-            emitter.onSuccess(components);
+            emitter.onComplete();
         });
     }
 
-    public Single<List<Component>> getFavoriteComponents() {
-        return Single.create(emitter -> {
-            List<Component> components = new ArrayList<>();
+    public Observable<Component> getFavoriteComponents() {
+        return Observable.create(emitter -> {
             String query = "SELECT * FROM component, favoriteComponents " +
                     "WHERE component.componentID = favoriteComponents.componentID";
 
             try (Cursor cursor = database.rawQuery(query, null)) {
                 while (cursor.moveToNext()) {
-                    components.add(getComponentFromCursor(cursor));
+                    emitter.onNext(getComponentFromCursor(cursor));
                 }
             }
 
-            emitter.onSuccess(components);
+            emitter.onComplete();
         });
     }
 
@@ -303,11 +294,11 @@ public class DishComponentDAO {
         database.execSQL("INSERT INTO favoriteDishes (dishID) VALUES (" + dish.getId() + ")");
     }
 
-    public void removeFromFavorites(@NotNull FrontendDish dish) {
+    public void removeFromFavorites(@NotNull Dish dish) {
         database.execSQL("DELETE FROM favoriteDishes WHERE dishID = " + dish.getId());
     }
 
-    public boolean containsFavorites(@NotNull FrontendDish dish) {
+    public boolean containsFavorites(@NotNull Dish dish) {
         String query = "SELECT count(*) FROM favoriteDishes WHERE dishID = " + dish.getId();
 
         try (Cursor cursor = database.rawQuery(query, null)) {
@@ -316,7 +307,7 @@ public class DishComponentDAO {
         }
     }
 
-    public void deleteFavorite(@NotNull FrontendDish dish) {
+    public void deleteFavorite(@NotNull Dish dish) {
         database.execSQL("DELETE FROM favoriteDishes WHERE dishID = " + dish.getId());
     }
 
@@ -339,5 +330,22 @@ public class DishComponentDAO {
 
     public void deleteFavorite(@NotNull Component component) {
         database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
+    }
+
+    public void addToShoppingList(Dish dish) {
+        database.execSQL("INSERT INTO shoppingList (dishID) VALUES (" + dish.getId() + ")");
+    }
+
+    public boolean containsShoppingList(Dish dish) {
+        String query = "SELECT count(*) FROM shoppingList WHERE dishID = " + dish.getId();
+
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            cursor.moveToFirst();
+            return cursor.getInt(0) > 0;
+        }
+    }
+
+    public void removeFromShoppingList(Dish dish) {
+        database.execSQL("DELETE FROM shoppingList WHERE dishID = " + dish.getId());
     }
 }

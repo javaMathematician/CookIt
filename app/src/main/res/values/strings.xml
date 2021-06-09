@@ -56,4 +56,6 @@
     <string name="add_to_favorites_suggestion">Добавить в избранное</string>
     <string name="backend_database_frament_tag">databaseFragment</string>
     <string name="menu">Меню</string>
+    <string name="added_to_shopping_list">Ингредиенты добавлены в списки покупок</string>
+    <string name="removed_from_shopping_list">Ингредиенты удалены из списка покупок</string>
 </resources>

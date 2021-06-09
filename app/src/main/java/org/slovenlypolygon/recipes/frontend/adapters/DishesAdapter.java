@@ -47,6 +47,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     public void clearDataset() {
         dishes.clear();
         original.clear();
+        notifyDataSetChanged();
     }
 
     public void addDish(FrontendDish dish) {

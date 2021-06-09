@@ -3,6 +3,7 @@ package org.slovenlypolygon.recipes.backend.computervision;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Base64;
+import android.util.Log;
 
 import org.apache.commons.io.IOUtil;
 import org.json.JSONObject;
@@ -38,11 +39,11 @@ public class OCR {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 BitmapUtils.scaleBitmap(BitmapUtils.rotate(bitmap, degrees)).compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
 
-                String string = "data:image/png;base64," + Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+                String base64 = "data:image/png;base64," + Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
                 String encodedQuery = new Uri.Builder()
                         .appendQueryParameter("apikey", "e9525e2a8b88957")
                         .appendQueryParameter("language", "rus")
-                        .appendQueryParameter("base64Image", string)
+                        .appendQueryParameter("base64Image", base64)
                         .build().getEncodedQuery();
 
                 OutputStream outputStream = connection.getOutputStream();
@@ -54,7 +55,11 @@ public class OCR {
                 outputStream.close();
 
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                    JSONObject object = (JSONObject) new JSONObject(IOUtil.toString(reader)).getJSONArray("ParsedResults").get(0);
+                    String string = IOUtil.toString(reader);
+
+                    Log.d("TAG", string);
+
+                    JSONObject object = (JSONObject) new JSONObject(string).getJSONArray("ParsedResults").get(0);
                     String parsedRaw = object.getString("ParsedText").toLowerCase();
                     String regex = "[а-я]{4,}|[nutela]{4,}";
 

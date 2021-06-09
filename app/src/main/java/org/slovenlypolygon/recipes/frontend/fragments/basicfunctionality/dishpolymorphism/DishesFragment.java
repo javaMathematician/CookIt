@@ -26,15 +26,14 @@ import org.slovenlypolygon.recipes.frontend.FrontendDish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DishesFragment extends AbstractFragment {
@@ -43,7 +42,7 @@ public class DishesFragment extends AbstractFragment {
     protected SearchView searchView;
     protected DishesAdapter dishesAdapter;
     protected RecyclerView recyclerView;
-    protected Single<List<FrontendDish>> provider;
+    protected Observable<FrontendDish> provider;
     protected SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton scrollToTop;
     private boolean highlightSelected;
@@ -133,6 +132,7 @@ public class DishesFragment extends AbstractFragment {
         dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
                 .map(this::splitIngredients)
+                .buffer(600, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(constructedDish -> {
                     dishesAdapter.addDishes(constructedDish);
@@ -142,20 +142,14 @@ public class DishesFragment extends AbstractFragment {
         initialized = true;
     }
 
-    private List<FrontendDish> splitIngredients(List<FrontendDish> frontendDishes) {
-        List<FrontendDish> output = new ArrayList<>();
+    private FrontendDish splitIngredients(FrontendDish dish) {
+        FrontendDish frontendDish = new FrontendDish(dish);
 
-        for (FrontendDish dish : frontendDishes) {
-            FrontendDish frontendDish = new FrontendDish(dish);
+        Set<Component> components = frontendDish.getCleanComponents();
+        frontendDish.setSelectedIngredients(getIngredientNames(Sets.intersection(selectedComponents, components)));
+        frontendDish.setRestIngredients(getIngredientNames(Sets.difference(components, selectedComponents)));
 
-            Set<Component> components = frontendDish.getCleanComponents();
-            frontendDish.setSelectedIngredients(getIngredientNames(Sets.intersection(selectedComponents, components)));
-            frontendDish.setRestIngredients(getIngredientNames(Sets.difference(components, selectedComponents)));
-
-            output.add(frontendDish);
-        }
-
-        return output;
+        return frontendDish;
     }
 
     private Set<String> getIngredientNames(Set<Component> components) {
