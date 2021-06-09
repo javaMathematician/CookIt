@@ -27,6 +27,7 @@
                 android:id="@+id/selectedIngredientsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 android:layoutAnimation="@anim/layout_animation"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -35,6 +36,7 @@
                 android:id="@+id/ingredientsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 app:layout_constraintTop_toBottomOf="@+id/selectedIngredientsRecyclerView" />
 
             <TextView
