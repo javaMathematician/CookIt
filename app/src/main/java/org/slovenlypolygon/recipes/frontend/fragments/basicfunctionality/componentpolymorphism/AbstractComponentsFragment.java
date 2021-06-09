@@ -138,6 +138,8 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
             selectedComponents.remove(component);
         }
 
+        tabComponentAdapter.notifyDataSetChanged();
+        componentAdapter.notifyDataSetChanged();
         updateButton();
     }
 
