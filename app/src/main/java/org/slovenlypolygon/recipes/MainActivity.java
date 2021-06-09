@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.toShoppingLists) {
             String shopping_list = "shopping_list";
             changeFragment(findOrGetFragment(shopping_list, ShoppingListsFragment.class), shopping_list);
-        } else if (id == R.id.scan_bill) {
+        } else if (id == R.id.scanBill) {
             String billScan = "bill_scan";
             changeFragment(findOrGetFragment(billScan, BillScanFragment.class), billScan);
         }

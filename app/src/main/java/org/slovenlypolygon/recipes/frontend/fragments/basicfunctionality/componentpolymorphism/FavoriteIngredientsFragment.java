@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -80,6 +81,7 @@ public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
                 int position = viewHolder.getBindingAdapterPosition();
                 Component component = componentAdapter.getComponents().get(position);
                 component.setSelected(false);
+                Toast.makeText(getContext(), R.string.deleted_from_favorites, Toast.LENGTH_SHORT).show();
 
                 onFavoriteComponentDeleted(component);
             }

@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.adapters;
 
+import android.animation.Animator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,10 @@ public class TabComponentAdapter extends RecyclerView.Adapter<TabComponentAdapte
     }
 
     public void removeComponent(Component component) {
+        int pos = components.indexOf(component);
         components.remove(component);
-        notifyDataSetChanged();
+        notifyItemRemoved(pos);
+        recyclerView.clearAnimation();
     }
 
     public void updateComponent(Component component) {
@@ -62,18 +65,17 @@ public class TabComponentAdapter extends RecyclerView.Adapter<TabComponentAdapte
 
     public void clearSelected() {
         components.clear();
-        notifyDataSetChanged();
     }
 
     public void addComponent(Component component) {
         components.add(component);
-        notifyDataSetChanged();
 
         if (components.size() > 5) {
             recyclerView.smoothScrollToPosition(components.size() - 1); // ПОТОМУ ЧТО БАГАНЫЙ АНДРОИД
         } else {
             recyclerView.scrollToPosition(components.size() - 1);
         }
+        notifyItemChanged(components.size() - 1);
     }
 
     public void setCrossClickedCallback(Consumer<Component> crossClickedCallback) {

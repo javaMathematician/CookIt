@@ -238,10 +238,6 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
     protected void onFavoriteComponentDeleted(Component component) {
     }
 
-    protected void setAlertDialogLogic() {
-
-    }
-
     protected void initializeDatabase() {
         if (dao == null) {
             dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag("databaseFragment")).getDishComponentDAO();
@@ -297,6 +293,9 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
 
         componentAdapter.clearSelected();
         tabComponentAdapter.clearSelected();
+
+        componentAdapter.notifyDataSetChanged();
+        tabComponentAdapter.notifyDataSetChanged();
 
         updateButton();
     }
