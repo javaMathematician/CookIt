@@ -132,7 +132,7 @@ public class DishComponentDAO {
                     FrontendDish dish = getDishFromCursor(cursor);
 
                     fillCleanIngredients(dish);
-                    emitter.onNext(dish);
+                    emitter.onNext(getRichDish(dish));
                 }
             }
 
