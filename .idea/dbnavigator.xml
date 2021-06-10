@@ -24,15 +24,11 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="3b0cbda1-a972-41cb-bb8a-671ea9bb402e">
-        <schema name="main" object-types="table, view, constraint, index, column, dataset trigger" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="3b0cbda1-a972-41cb-bb8a-671ea9bb402e">
-      <console name="Connection" type="STANDARD" schema="main" session="Main">SELECT * from  dish, shoppingList WHERE dish.dishID = shoppingList.dishID</console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[SELECT * from  dish, shoppingList WHERE dish.dishID = shoppingList.dishID]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -40,6 +36,9 @@
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="3b0cbda1-a972-41cb-bb8a-671ea9bb402e" />
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="3b0cbda1-a972-41cb-bb8a-671ea9bb402e" dataset="main.shoppingList" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />

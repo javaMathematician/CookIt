@@ -50,6 +50,7 @@ public class BillScanFragment extends Fragment {
     private EasyImage easyImage;
     @Nullable private ProgressDialog progressDialog;
     @Nullable private AlertDialog alertDialog;
+    private ContextThemeWrapper contextThemeWrapper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class BillScanFragment extends Fragment {
                 Bitmap bitmap = BitmapFactory.decodeFile(mediaFiles[0].getFile().getAbsolutePath());
                 parsed = new HashSet<>();
 
-                ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(requireContext(), ((MainActivity) requireActivity()).getCurrentTheme().equals("Dark") ? R.style.DarkProgressDialog : R.style.LightProgressDialog);
+                contextThemeWrapper = new ContextThemeWrapper(requireContext(), ((MainActivity) requireActivity()).getCurrentTheme().equals("Dark") ? R.style.DarkProgressDialog : R.style.LightProgressDialog);
                 progressDialog = new ProgressDialog(contextThemeWrapper);
                 progressDialog.setTitle(getString(R.string.parsing));
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -104,9 +105,9 @@ public class BillScanFragment extends Fragment {
 
                             alertDialog = null;
                         }, () -> {
-                            if (alertDialog != null) alertDialog.dismiss();
+                            if (progressDialog != null) progressDialog.dismiss();
 
-                            alertDialog = null;
+                            progressDialog = null;
                             startSearching();
                         });
 
@@ -132,7 +133,7 @@ public class BillScanFragment extends Fragment {
         DishComponentDAO dishComponentDAO = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag("databaseFragment"))).getDishComponentDAO();
         Set<Component> foundComponents = new HashSet<>();
 
-        progressDialog = new ProgressDialog(requireContext());
+        progressDialog = new ProgressDialog(contextThemeWrapper);
         progressDialog.setTitle(getString(R.string.searching_ingredients));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setMax(1270); // TODO: 03.06.2021 ЗАХАРДКОДИЛ ЧИСЛО, ПОТОМУ ЧТО ЛЕНЬ ОБРАЩАТЬСЯ В ДАО ТОЛЬКО РАДИ ЭТОГО

@@ -1,6 +1,8 @@
 <resources>
     <string name="agree">да</string>
+    <string name="menu">Меню</string>
     <string name="disagree">нет</string>
+    <string name="dismiss">Отмена</string>
     <string name="recipes">Рецепты</string>
     <string name="app_name">CookIt!</string>
     <string name="search_hint">Поиск</string>
@@ -12,54 +14,46 @@
     <string name="ingredients">Ингредиенты</string>
     <string name="page_end">Конец страницы</string>
     <string name="restart_q">Перезапустить?</string>
-    <string name="favorites_dishes">Избранные блюда</string>
     <string name="bill_scan">Сканировать чек</string>
+    <string name="continueString">Продолжить</string>
+    <string name="open_camera">Открыть камеру</string>
+    <string name="open_gallery">Открыть галерею</string>
     <string name="shopping_lists">Списки покупок</string>
     <string name="reset_agree">Да, хочу сбросить</string>
     <string name="empty_search">Ничего не нашлось</string>
     <string name="you_will_need">Вам понадобятся:</string>
     <string name="reset_disagree">Нет, я передумал</string>
     <string name="go_to_recipes_button">К рецептам</string>
+    <string name="favorites_dishes">Избранные блюда</string>
+    <string name="parsing">Распознавание изображения…</string>
+    <string name="add_new_list">Добавить новый список</string>
     <string name="step_by_step_toolbar">Рецепт по шагам</string>
     <string name="recommendations">Вам могут понравиться</string>
-    <string name="dish_image_step_by_step">Изображение блюда</string>
-    <string name="shuffle_ingredients">Перемешать ингредиенты</string>
-    <string name="clear_selected">Сбросить выделенные ингредиенты</string>
-    <string name="select_at_least_one">Выберите хотя бы один ингредиент</string>
-    <string name="restart_theme_q">Для измененения темы придётся перезапустить приложение. Сделать это сейчас?</string>
-    <string name="sure_reset_q">Вы действительно хотите сбросить выбранные компоненты? Это действие нельзя будет отменить.</string>
-
-    <string-array name="material_dialog">
-        <item>Добавить в избранное</item>
-        <item>Отмена</item>
-    </string-array>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="bill_select_prompt">Сделайте / выберите чёткую и контрастную фотографию Вашего чека</string>
-    <string name="open_camera">Открыть камеру</string>
-    <string name="open_gallery">Открыть галерею</string>
-    <string name="open_file_manager">Открыть документы (файлы)</string>
-    <string name="incorrect_photo">Выберите фотографию</string>
-    <string name="parsing">Распознавание изображения…</string>
-    <string name="searching_ingredients">Ищем ингредиенты…</string>
     <string name="parsed_successfull">Найдены результаты</string>
-    <string name="found_following_componenets">Найдены следующие ингредиенты:</string>
-    <string name="continueString">Продолжить</string>
-    <string name="dismiss">Отмена</string>
-    <string name="nothing_selected_to_reset">Вы не выбрали ни одного компонента.</string>
-    <string name="deleted_from_favorites">Удалено из избранного</string>
+    <string name="searching_ingredients">Ищем ингредиенты…</string>
     <string name="added_to_favorites">Добавлено в избранное</string>
-    <string name="nothing_found">Не найдено ни единого ингредиента.</string>
-    <string name="add_new_list">Добавить новый список</string>
+    <string name="dish_image_step_by_step">Изображение блюда</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="shuffle_ingredients">Перемешать ингредиенты</string>
     <string name="ingredient_actions">Действия с ингредиентом</string>
-    <string name="delete_from_favorites_suggestion">Удалить из избранного</string>
-    <string name="add_to_favorites_suggestion">Добавить в избранное</string>
+    <string name="open_file_manager">Открыть документы (файлы)</string>
+    <string name="incorrect_photo">Попробуйте другое приложение</string>
+    <string name="deleted_from_favorites">Удалено из избранного</string>
     <string name="backend_database_frament_tag">databaseFragment</string>
-    <string name="menu">Меню</string>
+    <string name="clear_selected">Сбросить выделенные ингредиенты</string>
+    <string name="add_to_shopping_lists">Добавить в список покупок</string>
+    <string name="nothing_found">Не найдено ни единого ингредиента.</string>
+    <string name="add_to_favorites_suggestion">Добавить в избранное</string>
+    <string name="select_at_least_one">Выберите хотя бы один ингредиент</string>
+    <string name="delete_from_shopping_lists">Удалить из списка покупок</string>
+    <string name="delete_from_favorites_suggestion">Удалить из избранного</string>
+    <string name="actions_with_ingredients">Действия со списком ингредиентов</string>
+    <string name="found_following_componenets">Найдены следующие ингредиенты:</string>
+    <string name="actions_with_shopping_list">Действия со списком ингредиентов</string>
+    <string name="nothing_selected_to_reset">Вы не выбрали ни одного компонента.</string>
     <string name="added_to_shopping_list">Ингредиенты добавлены в списки покупок</string>
     <string name="removed_from_shopping_list">Ингредиенты удалены из списка покупок</string>
-    <string name="actions_with_ingredients">Действия со списком ингредиентов</string>
-    <string name="delete_from_shopping_lists">Удалить из списка покупок</string>
-    <string name="add_to_shopping_lists">Добавить в список покупок</string>
-    <string name="actions_with_shopping_list">Действия со списком ингредиентов</string>
+    <string name="bill_select_prompt">Сделайте / выберите чёткую и контрастную фотографию Вашего чека</string>
+    <string name="restart_theme_q">Для измененения темы придётся перезапустить приложение. Сделать это сейчас?</string>
+    <string name="sure_reset_q">Вы действительно хотите сбросить выбранные компоненты? Это действие нельзя будет отменить.</string>
 </resources>
