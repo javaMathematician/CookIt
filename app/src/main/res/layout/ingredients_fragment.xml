@@ -51,20 +51,13 @@
         </LinearLayout>
     </FrameLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/changeView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="65dp"
         android:layout_marginEnd="65dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="72dp"
         android:background="@drawable/to_recipes_button_enabled_with_mask"
         android:elevation="16dp"
         android:text="@string/go_to_recipes_button"
@@ -87,6 +80,5 @@
         app:layout_constraintTop_toTopOf="@+id/changeView"
         app:srcCompat="@drawable/up_arrow" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
