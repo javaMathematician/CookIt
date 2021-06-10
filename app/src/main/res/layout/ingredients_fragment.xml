@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerMain"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/mainBackgroundColor">
@@ -52,6 +53,7 @@
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatButton
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/changeView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
