@@ -165,7 +165,7 @@ public class DishesFragment extends AbstractFragment {
             searchView.setOnClickListener(view -> searchView.setIconified(false));
         }
 
-        dishesAdapter.setAccent(activity.getCurrentTheme().equals("Dark") ? "#FFC84D" : "#2787F5");
+        dishesAdapter.setAccent(activity.getCurrentTheme().equals("Dark") ? "#FFC84D" : "#EE3D48");
 
         if (provider == null) {
             initializeDataProvider();
