@@ -4,17 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
+
+import java.util.Objects;
 
 public abstract class AbstractFragment extends Fragment {
     protected SearchView searchView;
@@ -23,9 +22,9 @@ public abstract class AbstractFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        activity = (MainActivity) getActivity();
+        activity = (MainActivity) requireActivity();
 
-        activity.getSupportActionBar().setTitle(R.string.app_name);
+        Objects.requireNonNull(activity.getSupportActionBar()).setTitle(R.string.app_name);
         searchView = activity.findViewById(R.id.searchView);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

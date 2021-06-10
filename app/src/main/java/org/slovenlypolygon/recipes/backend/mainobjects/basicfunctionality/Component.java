@@ -3,6 +3,8 @@ package org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
+import javax.annotation.Nonnull;
+
 public class Component implements Comparable<Component> {
     private final ComponentType componentType;
     private final String imageURL;
@@ -30,6 +32,7 @@ public class Component implements Comparable<Component> {
         return name;
     }
 
+    @Nonnull
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

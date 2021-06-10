@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DataExportManager">
@@ -32,7 +32,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="3b0cbda1-a972-41cb-bb8a-671ea9bb402e">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[SELECT * from  dish, shoppingList WHERE dish.dishID = shoppingList.dishID]]></console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main">SELECT * from  dish, shoppingList WHERE dish.dishID = shoppingList.dishID</console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">

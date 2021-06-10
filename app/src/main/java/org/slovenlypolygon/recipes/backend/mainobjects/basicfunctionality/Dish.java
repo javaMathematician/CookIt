@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 public class Dish {
     private final String imageURL;
     private final String dishURL;
@@ -69,6 +71,7 @@ public class Dish {
         return id;
     }
 
+    @Nonnull
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

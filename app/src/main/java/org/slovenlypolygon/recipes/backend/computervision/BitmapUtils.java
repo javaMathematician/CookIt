@@ -9,17 +9,15 @@ class BitmapUtils {
         final int currentHeight = input.getHeight();
         final int currentPixels = currentWidth * currentHeight;
 
-        final long maxPixels = 1024 * 900 * 4;
-
-        if (currentPixels <= maxPixels) {
-            return input;
-        }
-
+        final long maxPixels = 1024 * 1024 * 4;
         final double scaleFactor = Math.sqrt(maxPixels / (double) currentPixels);
         final int newWidthPx = (int) Math.floor(currentWidth * scaleFactor);
         final int newHeightPx = (int) Math.floor(currentHeight * scaleFactor);
 
-        return Bitmap.createScaledBitmap(input, newWidthPx, newHeightPx, true);
+        Bitmap copy = input.copy(Bitmap.Config.RGB_565, true);
+        copy = Bitmap.createScaledBitmap(copy, newWidthPx, newHeightPx, true);
+
+        return copy;
     }
 
     static Bitmap rotate(Bitmap source, int degrees) {

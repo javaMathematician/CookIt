@@ -2,6 +2,8 @@ package org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality;
 
 import com.google.common.base.MoreObjects;
 
+import javax.annotation.Nonnull;
+
 public class Step {
     private String text;
     private String imageURL;
@@ -26,6 +28,7 @@ public class Step {
         this.imageURL = imageURL;
     }
 
+    @Nonnull
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

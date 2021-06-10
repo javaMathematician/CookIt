@@ -28,6 +28,7 @@ import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -51,7 +52,7 @@ public class DishesFragment extends AbstractFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag))).getDishComponentDAO();
+        dao = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag)))).getDishComponentDAO();
     }
 
     public void setSelectedComponents(Set<Component> selectedComponentIDs) {
@@ -69,7 +70,7 @@ public class DishesFragment extends AbstractFragment {
 
         scrollToTop = rootView.findViewById(R.id.floatingActionButtonInRecipes);
         scrollToTop.setOnClickListener(view -> {
-            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
+            if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
                 recyclerView.scrollToPosition(15);
             }
 
@@ -81,7 +82,7 @@ public class DishesFragment extends AbstractFragment {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() < 5) {
+                if (dy > 0 || ((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() < 5) {
                     scrollToTop.hide();
                 } else if (dy < 0) {
                     scrollToTop.show();

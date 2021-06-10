@@ -58,4 +58,8 @@
     <string name="menu">Меню</string>
     <string name="added_to_shopping_list">Ингредиенты добавлены в списки покупок</string>
     <string name="removed_from_shopping_list">Ингредиенты удалены из списка покупок</string>
+    <string name="actions_with_ingredients">Действия со списком ингредиентов</string>
+    <string name="delete_from_shopping_lists">Удалить из списка покупок</string>
+    <string name="add_to_shopping_lists">Добавить в список покупок</string>
+    <string name="actions_with_shopping_list">Действия со списком ингредиентов</string>
 </resources>

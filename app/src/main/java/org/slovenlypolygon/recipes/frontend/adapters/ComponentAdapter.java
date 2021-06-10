@@ -46,8 +46,12 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
     }
 
     public void deleteComponent(Component component) {
-        components.remove(component);
-        notifyDataSetChanged();
+        int index = components.indexOf(component);
+
+        if (index != -1) {
+            components.remove(index);
+            notifyItemRemoved(index);
+        }
     }
 
     public void setItemClickCallback(Consumer<Component> callback) {
@@ -184,11 +188,12 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
     }
 
     public void updateComponent(Component component) {
-        components.replaceAll(iterator -> {
-            if (component.equals(iterator)) return component; // КОМПОНЕНТЫ РАВНЫ В СЛУЧАЕ РАВЕНСТВА ИХ АЙДИ (НЕ РАВНО ==)
-
-            return iterator;
-        });
+        int index = components.indexOf(component);
+        // выглядит контритуитивно, но мем в том, что ингредиенты равны (.equals), если равны их айдишники.
+        // но у них могут быть не равны поля isSelected и т. д.
+        // так вот, indexOf найдет индекс по .equals (сравнивая только id), а заменой мы уже изменим компонент (например, на выбраенный)
+        components.set(index, component);
+        notifyItemChanged(index);
     }
 
     public void setLongClickListenerCallback(Consumer<Component> longClickListenerCallback) {

@@ -37,7 +37,7 @@ public class OCR {
                 connection.setDoOutput(true);
 
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                BitmapUtils.scaleBitmap(BitmapUtils.rotate(bitmap, degrees)).compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
+                BitmapUtils.scaleBitmap(BitmapUtils.rotate(bitmap, degrees)).compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
 
                 String base64 = "data:image/png;base64," + Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
                 String encodedQuery = new Uri.Builder()

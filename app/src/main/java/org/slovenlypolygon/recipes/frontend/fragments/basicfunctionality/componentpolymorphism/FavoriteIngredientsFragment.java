@@ -21,6 +21,8 @@ import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Compon
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
     @Override
     protected ComponentType setDataSource() {
@@ -33,7 +35,7 @@ public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            public void onChildDraw(@Nonnull Canvas canvas, @Nonnull RecyclerView recyclerView, @Nonnull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
                 int backgroundCornerOffset = 20;
@@ -81,7 +83,7 @@ public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
                 int position = viewHolder.getBindingAdapterPosition();
                 Component component = componentAdapter.getComponents().get(position);
                 component.setSelected(false);
-                Toast.makeText(getContext(), R.string.deleted_from_favorites, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.deleted_from_favorites, Toast.LENGTH_SHORT).show();
 
                 onFavoriteComponentDeleted(component);
             }

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.R;
@@ -36,7 +34,9 @@ import org.slovenlypolygon.recipes.frontend.adapters.TabComponentAdapter;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -53,9 +53,10 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
     protected TabComponentAdapter tabComponentAdapter;
     protected Set<Component> selectedComponents = new HashSet<>();
 
-    private AlertDialog alertDialog;
     private FloatingActionButton scrollToTop;
     private ContextThemeWrapper contextThemeWrapper;
+    @Nullable private AlertDialog clearSelectedDialog;
+    @Nullable private AlertDialog actionsWithIngredientDialog;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -85,7 +86,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
 
         scrollToTop = rootView.findViewById(R.id.scrollToTop);
         scrollToTop.setOnClickListener(view -> {
-            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() > 15) {
+            if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
                 recyclerView.scrollToPosition(15);
             }
 
@@ -97,7 +98,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView1, int dx, int dy) {
-                if (dy > 0 || ((LinearLayoutManager) recyclerView1.getLayoutManager()).findFirstCompletelyVisibleItemPosition() < 5) {
+                if (dy > 0 || ((LinearLayoutManager) Objects.requireNonNull(recyclerView1.getLayoutManager())).findFirstCompletelyVisibleItemPosition() < 5) {
                     scrollToTop.hide();
                 } else if (dy < 0) {
                     scrollToTop.show();
@@ -172,10 +173,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        contextThemeWrapper = new ContextThemeWrapper(getContext(), getActivity()
-                .getSharedPreferences("Theme", Context.MODE_PRIVATE).getString("Theme", "Light")
-                .equals("Dark") ? R.style.DarkDialog : R.style.LightDialog);
-
+        contextThemeWrapper = new ContextThemeWrapper(requireContext(), activity.getCurrentTheme().equals("Dark") ? R.style.DarkDialog : R.style.LightDialog);
         initializeDatabase();
 
         if (componentAdapter.getComponents().isEmpty()) {
@@ -216,41 +214,41 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
         componentAdapter.setLongClickListenerCallback(new Consumer<Component>() {
             @Override
             public void accept(Component component) {
-                String[] options = {"Добавить в избранное", "Отмена"};
+                String[] options = {getString(R.string.add_to_favorites_suggestion), "Отмена"};
 
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.item_dialog, R.id.tv1, options) {
+                final boolean containsFavorites = dao.containsFavorites(component);
+                if (containsFavorites) {
+                    options[0] = getString(R.string.delete_from_favorites_suggestion);
+                }
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(requireContext(), R.layout.item_dialog, R.id.dialogTextView, options) {
                     public View getView(int position, View convertView, ViewGroup parent) {
                         View view = super.getView(position, convertView, parent);
-                        ImageView image = view.findViewById(R.id.iv1);
 
-                        options[0] = dao.containsFavorites(component) ? getString(R.string.delete_from_favorites_suggestion) : getString(R.string.add_to_favorites_suggestion);
-                        image.setBackground(ContextCompat.getDrawable(getContext(), position == 0 ? R.drawable.to_favorites_icon : R.drawable.cancel_close_clear_icon));
+                        ImageView imageView = view.findViewById(R.id.dialogImageView);
+                        imageView.setBackground(ContextCompat.getDrawable(requireContext(), position == 0 ? R.drawable.to_favorites_icon : R.drawable.cancel_close_clear_icon));
 
                         return view;
                     }
                 };
 
-                AlertDialog alertDialog = new AlertDialog.Builder(contextThemeWrapper)
-                        .setTitle(R.string.ingredient_actions)
-                        .setAdapter(arrayAdapter, (dialog1, which) -> {
-                        }).create();
-
-                alertDialog.show();
-
-                AdapterView.OnItemClickListener onItemClickListener = (parent, view1, position, id) -> {
-                    if (position == 0 && dao.containsFavorites(component)) {
+                actionsWithIngredientDialog = new AlertDialog.Builder(contextThemeWrapper).setTitle(R.string.ingredient_actions).setAdapter(arrayAdapter, (dialog1, which) -> {}).create();
+                actionsWithIngredientDialog.getListView().setOnItemClickListener((parent, view1, position, id) -> {
+                    if (position == 0 && containsFavorites) {
                         dao.removeFromFavorites(component);
-                        Toast.makeText(getContext(), R.string.deleted_from_favorites, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), R.string.deleted_from_favorites, Toast.LENGTH_SHORT).show();
                         onFavoriteComponentDeleted(component);
-                    } else if (position == 0 && !dao.containsFavorites(component)) {
+                    } else if (position == 0) {
                         dao.addToFavorites(component);
-                        Toast.makeText(getContext(), R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
                     }
 
-                    alertDialog.dismiss();
-                };
+                    actionsWithIngredientDialog.dismiss();
+                    actionsWithIngredientDialog = null;
+                });
 
-                alertDialog.getListView().setOnItemClickListener(onItemClickListener);
+                actionsWithIngredientDialog.setOnCancelListener(dialog -> actionsWithIngredientDialog = null);
+                actionsWithIngredientDialog.show();
             }
         });
     }
@@ -260,7 +258,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
 
     protected void initializeDatabase() {
         if (dao == null) {
-            dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag))).getDishComponentDAO();
+            dao = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag)))).getDishComponentDAO();
         }
     }
 
@@ -287,25 +285,24 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
         builder.setTitle(title);
         builder.setMessage(message);
 
+        builder.setNegativeButton(decline, (dialog, temp) -> clearSelectedDialog = null);
         builder.setPositiveButton(accept, (dialog, temp) -> {
             sureClearSelected();
-            alertDialog = null;
-        });
-        builder.setNegativeButton(decline, (dialog, temp) -> {
-            alertDialog = null;
+            clearSelectedDialog = null;
         });
 
         builder.setCancelable(true);
+        builder.setOnCancelListener(dialog -> clearSelectedDialog = null);
 
-        alertDialog = builder.create();
+        clearSelectedDialog = builder.create();
 
         if (!selectedComponents.isEmpty()) {
-            alertDialog.show();
+            clearSelectedDialog.show();
         } else {
-            Toast.makeText(getContext(), R.string.nothing_selected_to_reset, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.nothing_selected_to_reset, Toast.LENGTH_SHORT).show();
         }
 
-        alertDialog = null;
+        clearSelectedDialog = null;
     }
 
     private void sureClearSelected() {
@@ -321,8 +318,10 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
     public void onPause() {
         super.onPause();
 
-        if (alertDialog != null) {
-            alertDialog.dismiss();
+        for (AlertDialog dialog : Arrays.asList(clearSelectedDialog, actionsWithIngredientDialog)) {
+            if (dialog != null) {
+                dialog.dismiss();
+            }
         }
     }
 
@@ -331,8 +330,10 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
         super.onResume();
         updateButton();
 
-        if (alertDialog != null) {
-            alertDialog.show();
+        for (AlertDialog dialog : Arrays.asList(clearSelectedDialog, actionsWithIngredientDialog)) {
+            if (dialog != null) {
+                dialog.show();
+            }
         }
     }
 }

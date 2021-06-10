@@ -50,8 +50,10 @@ public class TabComponentAdapter extends RecyclerView.Adapter<TabComponentAdapte
     public void removeComponent(Component component) {
         int indexOf = components.indexOf(component);
 
-        components.remove(indexOf);
-        notifyItemRemoved(indexOf);
+        if (indexOf != -1) {
+            components.remove(indexOf);
+            notifyItemRemoved(indexOf);
+        }
     }
 
     public void updateComponent(Component component) {

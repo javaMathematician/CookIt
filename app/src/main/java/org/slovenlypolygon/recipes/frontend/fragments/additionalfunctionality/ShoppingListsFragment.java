@@ -48,12 +48,12 @@ public class ShoppingListsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        SearchView searchView = getActivity().findViewById(R.id.searchView);
+        SearchView searchView = requireActivity().findViewById(R.id.searchView);
         searchView.setVisibility(View.INVISIBLE);
     }
 
     private void addCards(List<ShoppingList> shoppingLists) {
-        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        LayoutInflater layoutInflater = LayoutInflater.from(requireContext());
 
         for (ShoppingList shoppingList : shoppingLists) {
             CardView cardView = (CardView) layoutInflater.inflate(R.layout.list_card, linearLayout, false);
