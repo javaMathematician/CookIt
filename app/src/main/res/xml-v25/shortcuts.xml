@@ -1,0 +1,49 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/to_all_dishes_icon"
+        android:shortcutId="dishes"
+        android:shortcutShortLabel="@string/dishes">
+
+        <intent
+            android:action="org.slovenlypolygon.recipes.ALL_DISHES"
+            android:targetClass="org.slovenlypolygon.recipes.MainActivity"
+            android:targetPackage="org.slovenlypolygon.recipes" />
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/to_favorites_icon"
+        android:shortcutId="favorites_dishes"
+        android:shortcutShortLabel="@string/favorites_dishes">
+
+        <intent
+            android:action="org.slovenlypolygon.recipes.FAVORITE_DISHES"
+            android:targetClass="org.slovenlypolygon.recipes.MainActivity"
+            android:targetPackage="org.slovenlypolygon.recipes" />
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/fridge_icon"
+        android:shortcutId="refrigerator"
+        android:shortcutShortLabel="@string/refrigerator">
+
+        <intent
+            android:action="org.slovenlypolygon.recipes.REFRIGERATOR"
+            android:targetClass="org.slovenlypolygon.recipes.MainActivity"
+            android:targetPackage="org.slovenlypolygon.recipes" />
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/to_shopping_lists_icon"
+        android:shortcutId="shopping_lists"
+        android:shortcutShortLabel="@string/shopping_lists">
+
+        <intent
+            android:action="org.slovenlypolygon.recipes.SHOPPING_LISTS"
+            android:targetClass="org.slovenlypolygon.recipes.MainActivity"
+            android:targetPackage="org.slovenlypolygon.recipes" />
+    </shortcut>
+</shortcuts>

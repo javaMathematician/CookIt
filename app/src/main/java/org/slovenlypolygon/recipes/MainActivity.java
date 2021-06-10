@@ -3,7 +3,6 @@ package org.slovenlypolygon.recipes;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -27,6 +26,8 @@ import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpol
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.FavoriteDishesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.RecommendedDishesFragment;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,7 +58,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showBaseFragment() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) menuItemsActions(R.id.toIngredients);
+        Map<String, Integer> map = new HashMap<>();
+
+        map.put(getPackageName() + ".ALL_DISHES", R.id.toDishes);
+        map.put(getPackageName() + ".REFRIGERATOR", R.id.toFavoritesIngredients);
+        map.put(getPackageName() + ".FAVORITE_DISHES", R.id.toFavoritesDishes);
+        map.put(getPackageName() + ".SHOPPING_LISTS", R.id.toShoppingLists);
+
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getKey().equals(getIntent().getAction())) {
+                menuItemsActions(entry.getValue());
+                break;
+            }
+        } // заменяет миллион элифов и делает псевдо свитч-кейз
+
+        if (!map.containsKey(getIntent().getAction()) && getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            menuItemsActions(R.id.toIngredients);
+        }
     }
 
     private void setFrontend() {

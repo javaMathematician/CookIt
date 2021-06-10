@@ -24,7 +24,7 @@
     <item
         android:id="@+id/toFavoritesIngredients"
         android:icon="@drawable/fridge_icon"
-        android:title="Холодильник" />
+        android:title="@string/refrigerator" />
 
     <item
         android:id="@+id/toRecommendations"

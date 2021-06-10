@@ -56,4 +56,5 @@
     <string name="bill_select_prompt">Сделайте / выберите чёткую и контрастную фотографию Вашего чека</string>
     <string name="restart_theme_q">Для измененения темы придётся перезапустить приложение. Сделать это сейчас?</string>
     <string name="sure_reset_q">Вы действительно хотите сбросить выбранные компоненты? Это действие нельзя будет отменить.</string>
+    <string name="refrigerator">Холодильник</string>
 </resources>
