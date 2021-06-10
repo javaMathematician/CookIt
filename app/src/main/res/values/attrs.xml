@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="strokeColor" type="color" />
     <attr name="accentColor" format="color" />
     <attr name="colorSurface" format="color" />
     <attr name="textCardColor" format="color" />
