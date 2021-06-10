@@ -27,7 +27,7 @@
         <item name="selectedCardBackgroundColor">@color/selectedLightCardBackgroundColor</item>
 
         <!-- Additional colors -->
-        <item name="logo">@drawable/blue_logo</item>
+        <item name="logo">@drawable/green_logo</item>
         <item name="accentColor">@color/blueAccentColor</item>
         <item name="strokeColor">@color/lightStrokeColor</item>
         <item name="toRecipeButtonColor">@color/blueAccentColor</item>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Light theme -->
-    <color name="blueAccentColor">#2787F5</color>
-    <color name="lightStrokeColor">#F55E51</color>
+    <color name="blueAccentColor">#8CBA51</color>
+    <color name="lightStrokeColor">#EE3D48</color>
     <color name="lightThemeBackgroundColor">#FFFFFF</color>
     <color name="toolbarBackgroundLightColor">#FFFFFF</color>
     <color name="lightThemeBackgroundCardColor">#FFFFFF</color>
@@ -10,7 +10,7 @@
 
     <!-- Dark theme -->
     <color name="greenAccentColor">#FFC84D</color>
-    <color name="darkStrokeColor">#BB30F0</color>
+    <color name="darkStrokeColor">#A771FE</color>
     <color name="darkThemeBackgroundColor">#121212</color>
     <color name="toolbarBackgroundDarkColor">#121212</color>
     <color name="darkThemeBackgroundCardColor">#171717</color>

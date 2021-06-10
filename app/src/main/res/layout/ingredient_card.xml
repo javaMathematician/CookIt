@@ -8,17 +8,28 @@
     android:background="@android:color/transparent"
     android:orientation="horizontal">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageOnIngredient"
+    <androidx.cardview.widget.CardView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_gravity="center"
         android:layout_marginStart="12dp"
-        android:elevation="5dp"
-        android:src="?attr/cardBackgroundColor"
+        app:cardElevation="5dp"
+        app:cardBackgroundColor="?attr/cardBackgroundColor"
+        app:cardCornerRadius="1000dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageOnIngredient"
+            android:layout_width="121dp"
+            android:layout_height="121dp"
+            android:layout_gravity="center"
+            android:src="?attr/cardBackgroundColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/componentCardView"
