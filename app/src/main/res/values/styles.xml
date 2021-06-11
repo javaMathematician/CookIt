@@ -28,9 +28,9 @@
 
         <!-- Additional colors -->
         <item name="logo">@drawable/green_logo</item>
-        <item name="accentColor">@color/blueAccentColor</item>
+        <item name="accentColor">@color/greenAccentColor</item>
         <item name="strokeColor">@color/lightStrokeColor</item>
-        <item name="toRecipeButtonColor">@color/blueAccentColor</item>
+        <item name="toRecipeButtonColor">@color/greenAccentColor</item>
     </style>
 
     <style name="Dark" parent="Theme.AppCompat.NoActionBar">
@@ -63,8 +63,8 @@
         <!-- Additional colors -->
         <item name="logo">@drawable/orange_logo</item>
         <item name="strokeColor">@color/darkStrokeColor</item>
-        <item name="accentColor">@color/greenAccentColor</item>
-        <item name="toRecipeButtonColor">@color/greenAccentColor</item>
+        <item name="accentColor">@color/yellowAccentColor</item>
+        <item name="toRecipeButtonColor">@color/yellowAccentColor</item>
     </style>
 
     <style name="WindowAnimationTransition">
@@ -73,14 +73,14 @@
     </style>
 
     <style name="LightDialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/blueAccentColor</item>
+        <item name="colorAccent">@color/greenAccentColor</item>
         <item name="android:textColorPrimary">@color/textDarkColor</item>
         <item name="android:background">@color/lightThemeBackgroundCardColor</item>
     </style>
 
 
     <style name="DarkDialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/greenAccentColor</item>
+        <item name="colorAccent">@color/yellowAccentColor</item>
         <item name="android:textColorPrimary">@color/textLightColor</item>
         <item name="android:background">@color/darkThemeBackgroundCardColor</item>
     </style>
@@ -103,7 +103,7 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:visibility">gone</item>
         <item name="android:background">?attr/cardBackgroundColor</item>
-        <item name="colorAccent">@color/greenAccentColor</item>
+        <item name="colorAccent">@color/yellowAccentColor</item>
         <item name="android:textColorPrimary">@color/textLightColor</item>
         <item name="android:textColor">@color/textLightColor</item>
     </style>
