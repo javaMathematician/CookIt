@@ -93,6 +93,6 @@ public class Dish {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(imageURL, dishURL, name, id, steps, dirtyIngredients, cleanComponents);
+        return Objects.hashCode(id);
     }
 }

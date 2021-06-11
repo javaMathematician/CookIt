@@ -57,4 +57,8 @@
     <string name="restart_theme_q">Для измененения темы придётся перезапустить приложение. Сделать это сейчас?</string>
     <string name="sure_reset_q">Вы действительно хотите сбросить выбранные компоненты? Это действие нельзя будет отменить.</string>
     <string name="refrigerator">Холодильник</string>
+
+    <string name="pictures_header">Картинки</string>
+    <string name="download_pictures_settings">Скачивать изображения</string>
+    <string name="backend_settings_fragment_tag">settingsFragment</string>
 </resources>

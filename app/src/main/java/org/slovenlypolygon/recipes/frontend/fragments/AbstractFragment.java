@@ -18,6 +18,7 @@ import java.util.Objects;
 public abstract class AbstractFragment extends Fragment {
     protected SearchView searchView;
     protected MainActivity activity;
+    protected boolean downloadQ;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public abstract class AbstractFragment extends Fragment {
         super.onResume();
         searchView.setVisibility(View.VISIBLE);
         searchView.setIconified(true);
+
+        downloadQ = ((SettingsFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_settings_fragment_tag)))).downloadPicturesQ();
     }
 
     @Override

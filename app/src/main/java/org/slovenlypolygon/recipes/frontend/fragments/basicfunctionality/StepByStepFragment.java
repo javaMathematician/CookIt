@@ -28,15 +28,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.google.common.base.Joiner;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Step;
+import org.slovenlypolygon.recipes.backend.picasso.PicassoBuilder;
 import org.slovenlypolygon.recipes.frontend.FrontendDish;
 import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
 
@@ -94,29 +92,11 @@ public class StepByStepFragment extends AbstractFragment {
     }
 
     private void setupPreparedFrontend() {
-        Picasso picasso = Picasso.get();
-        picasso.setIndicatorsEnabled(false);
-        picasso.load(dish.getImageURL())
-                .placeholder(R.drawable.loading_animation)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .fit()
-                .centerCrop()
-                .into(imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        picasso.setIndicatorsEnabled(false);
-                        picasso.load(dish.getImageURL())
-                                .placeholder(R.drawable.loading_animation)
-                                .error(R.drawable.error_image)
-                                .fit()
-                                .centerCrop()
-                                .into(imageView);
-                    }
-                });
+        new PicassoBuilder()
+                .setDownloadQ(downloadQ)
+                .setImageURL(dish.getImageURL())
+                .setImageView(imageView)
+                .process();
 
         favoritesButton.setBackground(ResourcesCompat.getDrawable(getResources(), dao.containsFavorites(dish) ? R.drawable.in_favorites : R.drawable.add_to_favorites, null));
         favoritesButton.setOnClickListener(v -> {
@@ -189,29 +169,11 @@ public class StepByStepFragment extends AbstractFragment {
             String url = step.getImageURL();
 
             if (url != null && !url.isEmpty()) {
-                Picasso picasso = Picasso.get();
-                picasso.setIndicatorsEnabled(false);
-                picasso.load(url)
-                        .placeholder(R.drawable.loading_animation)
-                        .networkPolicy(NetworkPolicy.OFFLINE)
-                        .fit()
-                        .centerCrop()
-                        .into(imageView, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                picasso.setIndicatorsEnabled(false);
-                                picasso.load(url)
-                                        .placeholder(R.drawable.loading_animation)
-                                        .error(R.drawable.error_image)
-                                        .fit()
-                                        .centerCrop()
-                                        .into(imageView);
-                            }
-                        });
+                new PicassoBuilder()
+                        .setDownloadQ(downloadQ)
+                        .setImageURL(url)
+                        .setImageView(imageView)
+                        .process();
 
                 expandButton.setVisibility(View.VISIBLE);
                 cardView.setOnClickListener(view -> {

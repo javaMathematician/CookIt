@@ -109,6 +109,7 @@ public class DishesFragment extends AbstractFragment {
 
         if (!initialized) {
             dishesAdapter = new DishesAdapter(highlightSelected);
+            dishesAdapter.setDownloadQ(downloadQ);
             dishesAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
         }
         recyclerView.swapAdapter(dishesAdapter, true);

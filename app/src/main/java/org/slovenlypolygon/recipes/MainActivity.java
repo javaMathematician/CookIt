@@ -16,9 +16,9 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.SettingsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.BillScanFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.ShoppingListsFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.AbstractComponentsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.CategoriesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.FavoriteIngredientsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.IngredientsFragment;
@@ -41,20 +41,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
-        currentTheme = sharedPreferences.getString(THEME, "Light");
-        setTheme(Objects.equals(currentTheme, "Dark") ? R.style.Dark : R.style.Light);
+        initializeDatabaseAndSettingsFragment();
 
-        initializeDatabaseFragment();
+        setTheme();
         setContentView(R.layout.carcass);
         setFrontend();
+
         showBaseFragment();
     }
 
-    private void initializeDatabaseFragment() {
+    private void setTheme() {
+        sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
+        currentTheme = sharedPreferences.getString(THEME, "Light");
+        setTheme(Objects.equals(currentTheme, "Dark") ? R.style.Dark : R.style.Light);
+    }
+
+    private void initializeDatabaseAndSettingsFragment() {
         DatabaseFragment fragment = findOrGetFragment(getString(R.string.backend_database_frament_tag), DatabaseFragment.class);
+        SettingsFragment settingsFragment = findOrGetFragment(getString(R.string.backend_settings_fragment_tag), SettingsFragment.class);
 
         if (!fragment.isAdded()) getSupportFragmentManager().beginTransaction().add(fragment, getString(R.string.backend_database_frament_tag)).commitNow();
+        if (!settingsFragment.isAdded()) getSupportFragmentManager().beginTransaction().add(settingsFragment, getString(R.string.backend_settings_fragment_tag)).commitNow();
     }
 
     private void showBaseFragment() {
@@ -83,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setElevation(0);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
 
         drawerLayout = findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
@@ -114,12 +121,14 @@ public class MainActivity extends AppCompatActivity {
         String ingredients = "ingredients";
         String categories = "categories";
 
-        if (id == R.id.clearSelected) {
+/*        if (id == R.id.clearSelected) {
             AbstractComponentsFragment abstractComponentsFragment = findOrGetFragment(ingredients, IngredientsFragment.class);
 
+            // сначала узнаем, какой фрагмент сейчас видим (ингредиенты или категории). если ингредиенты не видны, то пробуем категории
             if (!abstractComponentsFragment.isVisible()) abstractComponentsFragment = findOrGetFragment(categories, IngredientsFragment.class);
-            if (abstractComponentsFragment.isVisible()) abstractComponentsFragment.clearSelected();
-        } else if (id == R.id.toIngredients) {
+            if (abstractComponentsFragment.isVisible()) abstractComponentsFragment.clearSelected(); // чистим конкретный датасет
+        } else */
+        if (id == R.id.toIngredients) {
             changeFragment(findOrGetFragment(ingredients, IngredientsFragment.class), ingredients);
         } else if (id == R.id.toDishes) {
             changeFragment(new DishesFragment(), "all_dishes");
@@ -140,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.scanBill) {
             String billScan = "bill_scan";
             changeFragment(findOrGetFragment(billScan, BillScanFragment.class), billScan);
+        } else if (id == R.id.toSettings) {
+            String settings = "settings";
+            changeFragment(findOrGetFragment(settings, SettingsFragment.class), settings);
         }
     }
 

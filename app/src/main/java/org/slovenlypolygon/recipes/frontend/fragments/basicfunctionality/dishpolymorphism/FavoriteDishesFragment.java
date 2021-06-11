@@ -21,8 +21,10 @@ import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.frontend.FrontendDish;
 
+import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.Nonnull;
 
@@ -119,19 +121,16 @@ public class FavoriteDishesFragment extends DishesFragment {
 
     @Override
     protected void getMatches() {
+        Set<FrontendDish> frontendDishes = new TreeSet<>();
+
         dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
-                .buffer(300, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(dishes -> {
-                    for (FrontendDish dish : dishes) {
-                        if (!dishesAdapter.getDishes().contains(dish)) {
-                            dishesAdapter.addDish(dish); // TODO: 06.06.2021 ОТВРАТИТЕЛЬНЫЙ КОСТЫЛЬ, СОРРИ
-                        }
-                    }
-
-                    dishesAdapter.notifyDataSetChanged();
-                }, Throwable::printStackTrace);
+                .subscribe(
+                        frontendDishes::add,
+                        Throwable::printStackTrace,
+                        () -> dishesAdapter.setDishes(new ArrayList<>(frontendDishes))
+                );
 
         initialized = true;
     }

@@ -1,0 +1,7 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/pictures_header">
+        <SwitchPreferenceCompat
+            app:key="download_pictures"
+            app:title="@string/download_pictures_settings" />
+    </PreferenceCategory>
+</PreferenceScreen>

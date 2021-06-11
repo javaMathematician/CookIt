@@ -19,12 +19,9 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
-
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
+import org.slovenlypolygon.recipes.backend.picasso.PicassoBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +29,20 @@ import java.util.function.Consumer;
 
 @SuppressWarnings("unchecked")
 public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.IngredientViewHolder> implements Filterable {
-    private List<Component> components = new ArrayList<>();
+    private final PicassoBuilder picassoBuilder = new PicassoBuilder();
 
+    private List<Component> components = new ArrayList<>();
     private List<Component> original;
+
     private ContextThemeWrapper contextThemeWrapper;
 
     private Consumer<Component> longClickListenerCallback;
     private Consumer<Component> itemClickedCallback;
+    private boolean downloadQ;
+
+    public void setDownloadQ(boolean downloadQ) {
+        this.downloadQ = downloadQ;
+    }
 
     public void clearSelected() {
         components.forEach(t -> t.setSelected(false));
@@ -92,38 +96,11 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
             itemClickedCallback.accept(component);
         });
 
-        Picasso picasso = Picasso.get();
-        picasso.setIndicatorsEnabled(false);
-        picasso.load(component.getImageURL())
-                .placeholder(R.drawable.loading_animation)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .fit()
-                .centerCrop()
-                .into(ingredientViewHolder.imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        picasso.setIndicatorsEnabled(false);
-                        picasso.load(component.getImageURL())
-                                .placeholder(R.drawable.loading_animation)
-                                .error(R.drawable.error_image)
-                                .fit()
-                                .centerCrop()
-                                .into(ingredientViewHolder.imageView, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                    }
-
-                                    @Override
-                                    public void onError(Exception e) {
-                                        System.out.println(component.getName());
-                                    }
-                                });
-                    }
-                });
+        picassoBuilder
+                .setDownloadQ(downloadQ)
+                .setImageURL(component.getImageURL())
+                .setImageView(ingredientViewHolder.imageView)
+                .process();
     }
 
     @Override

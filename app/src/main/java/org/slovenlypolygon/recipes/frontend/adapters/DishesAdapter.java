@@ -15,13 +15,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Joiner;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
+import org.slovenlypolygon.recipes.backend.picasso.PicassoBuilder;
 import org.slovenlypolygon.recipes.frontend.FrontendDish;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.StepByStepFragment;
 
@@ -33,8 +31,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     private final boolean highlight;
 
     private String accent;
+    private final PicassoBuilder builder = new PicassoBuilder();
+
     private List<FrontendDish> dishes = new ArrayList<>();
     private List<FrontendDish> original = new ArrayList<>();
+    private boolean downloadQ;
 
     public DishesAdapter(boolean highlight) {
         this.highlight = highlight;
@@ -44,14 +45,14 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         return dishes;
     }
 
+    public void setDownloadQ(boolean downloadQ) {
+        this.downloadQ = downloadQ;
+    }
+
     public void clearDataset() {
         dishes.clear();
         original.clear();
         notifyDataSetChanged();
-    }
-
-    public void addDish(FrontendDish dish) {
-        dishes.add(dish);
     }
 
     @Override
@@ -101,29 +102,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                     .commit();
         });
 
-        Picasso picasso = Picasso.get();
-        picasso.setIndicatorsEnabled(false);
-        picasso.load(dish.getImageURL())
-                .placeholder(R.drawable.loading_animation)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .fit()
-                .centerCrop()
-                .into(dishViewHolder.imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        picasso.setIndicatorsEnabled(false);
-                        picasso.load(dish.getImageURL())
-                                .placeholder(R.drawable.loading_animation)
-                                .error(R.drawable.error_image)
-                                .fit()
-                                .centerCrop()
-                                .into(dishViewHolder.imageView);
-                    }
-                });
+        builder.setDownloadQ(downloadQ)
+                .setImageURL(dish.getImageURL())
+                .setImageView(dishViewHolder.imageView)
+                .process();
     }
 
     @Override
@@ -172,8 +154,16 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         this.accent = accent;
     }
 
-    public void addDishes(List<FrontendDish> constructedDish) {
-        dishes.addAll(constructedDish);
+    public void addDishes(List<FrontendDish> constructedDishes) {
+        int size = dishes.size();
+
+        dishes.addAll(constructedDishes);
+        notifyItemRangeInserted(size - 1, constructedDishes.size());
+    }
+
+    public void setDishes(List<FrontendDish> frontendDishes) {
+        this.dishes = frontendDishes;
+        notifyDataSetChanged();
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {

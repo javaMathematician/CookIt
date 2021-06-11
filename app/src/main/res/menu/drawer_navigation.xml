@@ -41,9 +41,16 @@
         android:icon="@drawable/to_bill_scan_icon"
         android:title="@string/bill_scan" />
 
+    <!--
+        <item
+            android:id="@+id/clearSelected"
+            android:icon="@drawable/cancel_close_clear_icon"
+            android:title="@string/clear_selected" />
+    -->
+
     <item
-        android:id="@+id/clearSelected"
-        android:icon="@drawable/cancel_close_clear_icon"
-        android:title="@string/clear_selected" />
+        android:id="@+id/toSettings"
+        android:icon="@drawable/settings"
+        android:title="@string/settings" />
 
 </menu>
