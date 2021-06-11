@@ -12,14 +12,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.annotation.Nullable;
+
 public class DataBaseHelper extends SQLiteOpenHelper {
     private final Context context;
     private final String DB_PATH;
     private final String DB_NAME;
     private SQLiteDatabase database;
 
-    public DataBaseHelper(Context context) {
+    public DataBaseHelper(@Nullable Context context) {
         super(context, "global.sqlite3", null, 1);
+        this.context = context;
+
+        DB_NAME = super.getDatabaseName();
+        DB_PATH = context.getDatabasePath(DB_NAME).getPath();
+    }
+
+    public DataBaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
         this.context = context;
 
         DB_NAME = super.getDatabaseName();

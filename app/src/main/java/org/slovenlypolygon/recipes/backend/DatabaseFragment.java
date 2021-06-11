@@ -31,7 +31,7 @@ public class DatabaseFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(requireContext());
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(requireContext(), "global.sqlite3", null, 1);
         dataBaseHelper.createDataBase();
 
         dishComponentDAO = new DishComponentDAO(dataBaseHelper.openDataBase());

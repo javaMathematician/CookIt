@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.NestedScrollView;
 
 import com.google.common.base.Joiner;
 
@@ -36,22 +36,22 @@ import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Step;
 import org.slovenlypolygon.recipes.backend.picasso.PicassoBuilder;
 import org.slovenlypolygon.recipes.frontend.FrontendDish;
-import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.SimpleCookItFragment;
 
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class StepByStepFragment extends AbstractFragment {
+public class StepByStepFragment extends SimpleCookItFragment {
+    private final PicassoBuilder picassoBuilder = new PicassoBuilder();
     private final FrontendDish dish;
     private ImageView imageView;
     private DishComponentDAO dao;
-    private ScrollView scrollView;
+    private NestedScrollView scrollView;
     private LinearLayout linearLayout;
     private TextView dirtyIngredients;
     private ImageButton favoritesButton;
     private LinearLayout ingredientsLinearLayout;
-
     @Nullable private AlertDialog alertDialog;
 
     public StepByStepFragment(FrontendDish dish) {
@@ -85,9 +85,7 @@ public class StepByStepFragment extends AbstractFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        searchView.setVisibility(View.GONE);
         Objects.requireNonNull(activity.getSupportActionBar()).setTitle(dish.getName());
-
         setupPreparedFrontend();
     }
 
@@ -169,8 +167,7 @@ public class StepByStepFragment extends AbstractFragment {
             String url = step.getImageURL();
 
             if (url != null && !url.isEmpty()) {
-                new PicassoBuilder()
-                        .setDownloadQ(downloadQ)
+                picassoBuilder.setDownloadQ(downloadQ)
                         .setImageURL(url)
                         .setImageView(imageView)
                         .process();
@@ -218,17 +215,14 @@ public class StepByStepFragment extends AbstractFragment {
     }
 
     @Override
-    protected void searchTextChanged(String newText) {
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        searchView.setVisibility(View.GONE);
 
         if (alertDialog != null) {
             alertDialog.show();
         }
+
+        activity.getSupportActionBar().setTitle(dish.getName());
     }
 
     @Override

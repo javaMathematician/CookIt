@@ -17,6 +17,7 @@
         android:layout_gravity="end"
         android:clickable="true"
         android:focusable="true"
+        android:visibility="gone"
         android:inputType="textPersonName"
         android:layoutDirection="rtl"
         app:queryBackground="@android:color/white"

@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism;
+package org.slovenlypolygon.recipes.frontend;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 
 import com.google.common.base.Joiner;
 
@@ -26,6 +25,7 @@ import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.computervision.OCR;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
+import org.slovenlypolygon.recipes.frontend.fragments.SimpleCookItFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
 
 import java.util.Arrays;
@@ -45,7 +45,7 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 import pl.aprilapps.easyphotopicker.MediaFile;
 import pl.aprilapps.easyphotopicker.MediaSource;
 
-public class BillScanFragment extends Fragment {
+public class BillScanFragment extends SimpleCookItFragment {
     private Set<String> parsed = new HashSet<>();
     private EasyImage easyImage;
     @Nullable private ProgressDialog progressDialog;

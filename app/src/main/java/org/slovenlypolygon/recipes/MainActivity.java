@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,9 +17,9 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.navigation.NavigationView;
 
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.SettingsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.BillScanFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.ShoppingListsFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.SettingsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.CategoriesFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.FavoriteIngredientsFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.IngredientsFragment;
@@ -32,10 +33,10 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private final static String THEME = "Theme";
-
     private SharedPreferences sharedPreferences;
     private DrawerLayout drawerLayout;
     private String currentTheme;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
@@ -113,6 +114,12 @@ public class MainActivity extends AppCompatActivity {
             menuItemsActions(item.getItemId());
             return false;
         });
+
+        searchView = findViewById(R.id.searchView);
+    }
+
+    public SearchView getSearchView() {
+        return searchView;
     }
 
     private void menuItemsActions(int id) {
@@ -135,22 +142,22 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.toCategories) {
             changeFragment(findOrGetFragment(categories, CategoriesFragment.class), categories);
         } else if (id == R.id.toFavoritesDishes) {
-            String favorites = "favorite_dishes";
+            String favorites = getString(R.string.backend_favorite_dishes_fragment_tag);
             changeFragment(findOrGetFragment(favorites, FavoriteDishesFragment.class), favorites);
         } else if (id == R.id.toFavoritesIngredients) {
-            String favorites = "favorite_ingredients";
+            String favorites = getString(R.string.backend_favorite_ingredients_fragment_tag);
             changeFragment(findOrGetFragment(favorites, FavoriteIngredientsFragment.class), favorites);
         } else if (id == R.id.toRecommendations) {
-            String recommended = "recommended";
+            String recommended = getString(R.string.backend_recommended_dishes_fragment_tag);
             changeFragment(findOrGetFragment(recommended, RecommendedDishesFragment.class), recommended);
         } else if (id == R.id.toShoppingLists) {
-            String shopping_list = "shopping_list";
+            String shopping_list = getString(R.string.backend_shopping_list_fragment_tag);
             changeFragment(findOrGetFragment(shopping_list, ShoppingListsFragment.class), shopping_list);
         } else if (id == R.id.scanBill) {
-            String billScan = "bill_scan";
+            String billScan = getString(R.string.backend_bill_scan_fragment_tag);
             changeFragment(findOrGetFragment(billScan, BillScanFragment.class), billScan);
         } else if (id == R.id.toSettings) {
-            String settings = "settings";
+            String settings = getString(R.string.backend_settings_fragment_tag);
             changeFragment(findOrGetFragment(settings, SettingsFragment.class), settings);
         }
     }

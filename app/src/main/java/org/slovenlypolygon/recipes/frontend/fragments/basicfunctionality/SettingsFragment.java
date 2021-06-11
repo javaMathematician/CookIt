@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.frontend.fragments;
+package org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

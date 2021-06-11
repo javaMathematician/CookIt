@@ -24,7 +24,7 @@ import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
 import org.slovenlypolygon.recipes.frontend.FrontendDish;
 import org.slovenlypolygon.recipes.frontend.adapters.DishesAdapter;
-import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.AbstractSearchableContentFragment;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -37,7 +37,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class DishesFragment extends AbstractFragment {
+public class DishesFragment extends AbstractSearchableContentFragment {
     protected boolean initialized;
     protected DishComponentDAO dao;
     protected SearchView searchView;

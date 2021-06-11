@@ -29,9 +29,10 @@ import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
 import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.ComponentType;
+import org.slovenlypolygon.recipes.frontend.HidingScrollListener;
 import org.slovenlypolygon.recipes.frontend.adapters.ComponentAdapter;
 import org.slovenlypolygon.recipes.frontend.adapters.TabComponentAdapter;
-import org.slovenlypolygon.recipes.frontend.fragments.AbstractFragment;
+import org.slovenlypolygon.recipes.frontend.fragments.AbstractSearchableContentFragment;
 import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
 
 import java.util.Arrays;
@@ -44,7 +45,7 @@ import java.util.function.Consumer;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public abstract class AbstractComponentsFragment extends AbstractFragment {
+public abstract class AbstractComponentsFragment extends AbstractSearchableContentFragment {
     protected DishComponentDAO dao;
     protected RecyclerView recyclerView;
     protected Button changeViewComponent;

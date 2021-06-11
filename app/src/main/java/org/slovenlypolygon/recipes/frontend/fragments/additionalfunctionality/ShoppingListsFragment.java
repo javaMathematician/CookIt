@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 
 import com.google.common.base.Joiner;
 
@@ -19,13 +18,14 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
 import org.slovenlypolygon.recipes.backend.mainobjects.additionalfunctionality.ShoppingList;
+import org.slovenlypolygon.recipes.frontend.fragments.SimpleCookItFragment;
 
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class ShoppingListsFragment extends Fragment {
+public class ShoppingListsFragment extends SimpleCookItFragment {
     protected DishComponentDAO dao;
     private LinearLayout linearLayout;
 
