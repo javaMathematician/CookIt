@@ -16,16 +16,16 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 
-import org.slovenlypolygon.recipes.backend.DatabaseFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.BillScanFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.additionalfunctionality.ShoppingListsFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.SettingsFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.CategoriesFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.FavoriteIngredientsFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.componentpolymorphism.IngredientsFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.DishesFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.FavoriteDishesFragment;
-import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.dishpolymorphism.RecommendedDishesFragment;
+import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
+import org.slovenlypolygon.recipes.billscanner.BillScanFragment;
+import org.slovenlypolygon.recipes.components.categories.CategoriesFragment;
+import org.slovenlypolygon.recipes.components.ingredients.FavoriteIngredientsFragment;
+import org.slovenlypolygon.recipes.components.ingredients.IngredientsFragment;
+import org.slovenlypolygon.recipes.dishes.fragments.DishesFragment;
+import org.slovenlypolygon.recipes.dishes.fragments.FavoriteDishesFragment;
+import org.slovenlypolygon.recipes.dishes.fragments.RecommendedDishesFragment;
+import org.slovenlypolygon.recipes.settings.SettingsFragment;
+import org.slovenlypolygon.recipes.shoppinglists.ShoppingListsFragment;
 
 import java.util.HashMap;
 import java.util.Map;

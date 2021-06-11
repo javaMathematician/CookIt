@@ -1,0 +1,340 @@
+package org.slovenlypolygon.recipes.components;
+
+import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.abstractfragments.AbstractSearchableContentFragment;
+import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
+import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.components.adapters.ComponentAdapter;
+import org.slovenlypolygon.recipes.components.adapters.TabComponentAdapter;
+import org.slovenlypolygon.recipes.components.entitys.Component;
+import org.slovenlypolygon.recipes.components.entitys.ComponentType;
+import org.slovenlypolygon.recipes.dishes.fragments.DishesFragment;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public abstract class AbstractComponentsFragment extends AbstractSearchableContentFragment {
+    protected DishComponentDAO dao;
+    protected RecyclerView recyclerView;
+    protected Button changeViewComponent;
+    protected RecyclerView selectedAsTabs;
+    protected ComponentAdapter componentAdapter;
+    protected TabComponentAdapter tabComponentAdapter;
+    protected Set<Component> selectedComponents = new HashSet<>();
+
+    private FloatingActionButton scrollToTop;
+    private ContextThemeWrapper contextThemeWrapper;
+    @Nullable private AlertDialog clearSelectedDialog;
+    @Nullable private AlertDialog actionsWithIngredientDialog;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    protected void searchTextChanged(String newText) {
+        componentAdapter.getFilter().filter(newText);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.ingredients_fragment, container, false);
+        setRetainInstance(true);
+
+        selectedAsTabs = rootView.findViewById(R.id.selectedIngredientsRecyclerView);
+        selectedAsTabs.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+
+        recyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(activity, getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
+
+        changeViewComponent = rootView.findViewById(R.id.changeView);
+        changeViewComponent.setVisibility(View.INVISIBLE);
+
+        scrollToTop = rootView.findViewById(R.id.scrollToTop);
+        scrollToTop.setOnClickListener(view -> {
+            if (((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition() > 15) {
+                recyclerView.scrollToPosition(15);
+            }
+
+            recyclerView.smoothScrollToPosition(0);
+            scrollToTop.hide();
+        });
+
+        scrollToTop.hide();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView1, int dx, int dy) {
+                if (dy > 0 || ((LinearLayoutManager) Objects.requireNonNull(recyclerView1.getLayoutManager())).findFirstCompletelyVisibleItemPosition() < 5) {
+                    scrollToTop.hide();
+                } else if (dy < 0) {
+                    scrollToTop.show();
+                }
+            }
+        });
+
+        recyclerView.addOnScrollListener(new HidingScrollListener() {
+            @Override
+            public void onHide() {
+                changeViewComponent.animate().translationY(changeViewComponent.getBottom() >> 4).setInterpolator(new AccelerateInterpolator(2)).start();
+            }
+
+            @Override
+            public void onShow() {
+                changeViewComponent.animate().translationY(0).setInterpolator(new AccelerateInterpolator(2)).start();
+            }
+        });
+
+        selectedAsTabs.setAdapter(tabComponentAdapter);
+        recyclerView.setAdapter(componentAdapter);
+
+        changeViewComponent.setOnClickListener(view -> goToRecipes());
+
+        initializeAdapters();
+        addCallbacks();
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    public void goToRecipes() {
+        DishesFragment dishesFragment = new DishesFragment();
+        dishesFragment.setHighlightSelected(true);
+        dishesFragment.setSelectedComponents(selectedComponents);
+
+        getParentFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.animator.to_left_in, R.animator.to_left_out, R.animator.to_right_in, R.animator.to_right_out)
+                .replace(R.id.fragmentHolder, dishesFragment, "dishes")
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void componentsChanged(Component component) {
+        if (component.isSelected()) {
+            selectedComponents.add(component);
+        } else {
+            selectedComponents.remove(component);
+        }
+
+        componentAdapter.notifyDataSetChanged();
+        updateButton();
+    }
+
+    private void updateButton() {
+        boolean isEmpty = selectedComponents.isEmpty();
+
+        changeViewComponent.setVisibility(isEmpty ? View.INVISIBLE : View.VISIBLE);
+        changeViewComponent.setActivated(!isEmpty);
+        changeViewComponent.setEnabled(!isEmpty);
+        changeViewComponent.setFocusable(isEmpty);
+        changeViewComponent.setElevation(isEmpty ? 0 : 16);
+        changeViewComponent.setBackground(AppCompatResources.getDrawable(activity, isEmpty ? R.drawable.to_recipes_btn_disabled : R.drawable.to_recipes_button_enabled_with_mask));
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        contextThemeWrapper = new ContextThemeWrapper(requireContext(), activity.getCurrentTheme().equals("Dark") ? R.style.DarkDialog : R.style.LightDialog);
+        initializeDatabase();
+
+        if (componentAdapter.getComponents().isEmpty()) {
+            addDataSource();
+        }
+    }
+
+    private void addDataSource() {
+        dao.getComponentByType(setDataSource())
+                .subscribeOn(Schedulers.newThread())
+                .buffer(300, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(components -> {
+                    componentAdapter.addComponents(components);
+                    componentAdapter.notifyDataSetChanged();
+                }, Throwable::printStackTrace);
+    }
+
+    protected abstract ComponentType setDataSource();
+
+    protected void addCallbacks() {
+        tabComponentAdapter.setCrossClickedCallback(component -> {
+            component.setSelected(false);
+
+            tabComponentAdapter.updateComponent(component);
+            componentAdapter.updateComponent(component);
+
+            componentsChanged(component);
+        });
+
+        componentAdapter.setItemClickCallback(component -> {
+            componentAdapter.updateComponent(component);
+            tabComponentAdapter.updateComponent(component);
+
+            componentsChanged(component);
+        });
+
+        componentAdapter.setLongClickListenerCallback(new Consumer<Component>() {
+            @Override
+            public void accept(Component component) {
+                String[] options = {getString(R.string.add_to_favorites_suggestion), "Отмена"};
+
+                final boolean containsFavorites = dao.containsFavorites(component);
+                if (containsFavorites) {
+                    options[0] = getString(R.string.delete_from_favorites_suggestion);
+                }
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(requireContext(), R.layout.item_dialog, R.id.dialogTextView, options) {
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        View view = super.getView(position, convertView, parent);
+
+                        ImageView imageView = view.findViewById(R.id.dialogImageView);
+                        imageView.setBackground(ContextCompat.getDrawable(requireContext(), position == 0 ? R.drawable.to_favorites_icon : R.drawable.cancel_close_clear_icon));
+
+                        return view;
+                    }
+                };
+
+                actionsWithIngredientDialog = new AlertDialog.Builder(contextThemeWrapper).setTitle(R.string.ingredient_actions).setAdapter(arrayAdapter, (dialog1, which) -> {}).create();
+                actionsWithIngredientDialog.getListView().setOnItemClickListener((parent, view1, position, id) -> {
+                    if (position == 0 && containsFavorites) {
+                        dao.removeFromFavorites(component);
+                        Toast.makeText(requireContext(), R.string.deleted_from_favorites, Toast.LENGTH_SHORT).show();
+                        onFavoriteComponentDeleted(component);
+                    } else if (position == 0) {
+                        dao.addToFavorites(component);
+                        Toast.makeText(requireContext(), R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
+                    }
+
+                    actionsWithIngredientDialog.dismiss();
+                    actionsWithIngredientDialog = null;
+                });
+
+                actionsWithIngredientDialog.setOnCancelListener(dialog -> actionsWithIngredientDialog = null);
+                actionsWithIngredientDialog.show();
+            }
+        });
+    }
+
+    protected void onFavoriteComponentDeleted(Component component) {
+    }
+
+    protected void initializeDatabase() {
+        if (dao == null) {
+            dao = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_fragment_tag)))).getDishComponentDAO();
+        }
+    }
+
+    private void initializeAdapters() {
+        if (componentAdapter == null || tabComponentAdapter == null) {
+            componentAdapter = new ComponentAdapter();
+            componentAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
+            componentAdapter.setDownloadQ(downloadQ);
+
+            tabComponentAdapter = new TabComponentAdapter();
+            componentAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
+
+            selectedAsTabs.setAdapter(tabComponentAdapter);
+            recyclerView.setAdapter(componentAdapter);
+        }
+    }
+
+    public void clearSelected() {
+        String title = getString(R.string.resources);
+        String message = getString(R.string.sure_reset_q);
+        String accept = getString(R.string.reset_agree);
+        String decline = getString(R.string.reset_disagree);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(contextThemeWrapper);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setNegativeButton(decline, (dialog, temp) -> clearSelectedDialog = null);
+        builder.setPositiveButton(accept, (dialog, temp) -> {
+            sureClearSelected();
+            clearSelectedDialog = null;
+        });
+
+        builder.setCancelable(true);
+        builder.setOnCancelListener(dialog -> clearSelectedDialog = null);
+
+        clearSelectedDialog = builder.create();
+
+        if (!selectedComponents.isEmpty()) {
+            clearSelectedDialog.show();
+        } else {
+            Toast.makeText(requireContext(), R.string.nothing_selected_to_reset, Toast.LENGTH_SHORT).show();
+        }
+
+        clearSelectedDialog = null;
+    }
+
+    private void sureClearSelected() {
+        selectedComponents.clear();
+
+        componentAdapter.clearSelected();
+        tabComponentAdapter.clearSelected();
+
+        updateButton();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        for (AlertDialog dialog : Arrays.asList(clearSelectedDialog, actionsWithIngredientDialog)) {
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateButton();
+
+        for (AlertDialog dialog : Arrays.asList(clearSelectedDialog, actionsWithIngredientDialog)) {
+            if (dialog != null) {
+                dialog.show();
+            }
+        }
+    }
+}

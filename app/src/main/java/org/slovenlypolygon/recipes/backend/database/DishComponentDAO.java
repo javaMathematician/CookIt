@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.common.base.Joiner;
 
 import org.jetbrains.annotations.NotNull;
-import org.slovenlypolygon.recipes.backend.mainobjects.additionalfunctionality.ShoppingList;
-import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Component;
-import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.ComponentType;
-import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Dish;
-import org.slovenlypolygon.recipes.backend.mainobjects.basicfunctionality.Step;
-import org.slovenlypolygon.recipes.frontend.FrontendDish;
+import org.slovenlypolygon.recipes.components.entitys.Component;
+import org.slovenlypolygon.recipes.components.entitys.ComponentType;
+import org.slovenlypolygon.recipes.dishes.entitys.Dish;
+import org.slovenlypolygon.recipes.dishes.entitys.FrontendDish;
+import org.slovenlypolygon.recipes.dishes.stepbystep.Step;
+import org.slovenlypolygon.recipes.shoppinglists.ShoppingList;
 
 import java.util.ArrayList;
 import java.util.Comparator;
