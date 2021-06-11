@@ -45,17 +45,18 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class StepByStepFragment extends AbstractFragment {
-    private FrontendDish dish;
+    private final FrontendDish dish;
     private ImageView imageView;
     private DishComponentDAO dao;
     private ScrollView scrollView;
     private LinearLayout linearLayout;
     private TextView dirtyIngredients;
     private ImageButton favoritesButton;
+    private LinearLayout ingredientsLinearLayout;
 
     @Nullable private AlertDialog alertDialog;
 
-    public void setDish(FrontendDish dish) {
+    public StepByStepFragment(FrontendDish dish) {
         this.dish = dish;
     }
 
@@ -64,66 +65,6 @@ public class StepByStepFragment extends AbstractFragment {
         super.onAttach(context);
 
         dao = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag)))).getDishComponentDAO();
-    }
-
-    private void addSteps() {
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
-
-        for (Step step : dish.getSteps()) {
-            CardView cardView = (CardView) inflater.inflate(R.layout.step_by_step_card, linearLayout, false);
-
-            Button expandButton = cardView.findViewById(R.id.expandStepButton);
-            TextView stepText = cardView.findViewById(R.id.stepText);
-            ImageView imageView = cardView.findViewById(R.id.stepByStepImage);
-            ConstraintLayout constraintLayout = cardView.findViewById(R.id.expandableStep);
-
-            String url = step.getImageURL();
-
-            if (url != null && !url.isEmpty()) {
-                Picasso picasso = Picasso.get();
-                picasso.setIndicatorsEnabled(false);
-                picasso.load(url)
-                        .placeholder(R.drawable.loading_animation)
-                        .networkPolicy(NetworkPolicy.OFFLINE)
-                        .fit()
-                        .centerCrop()
-                        .into(imageView, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                picasso.setIndicatorsEnabled(false);
-                                picasso.load(url)
-                                        .placeholder(R.drawable.loading_animation)
-                                        .error(R.drawable.error_image)
-                                        .fit()
-                                        .centerCrop()
-                                        .into(imageView);
-                            }
-                        });
-
-                expandButton.setVisibility(View.VISIBLE);
-                cardView.setOnClickListener(view -> {
-                    if (constraintLayout.getVisibility() == View.GONE) {
-                        TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
-                        constraintLayout.setVisibility(View.VISIBLE);
-                        scrollView.smoothScrollTo(0, view.getTop());
-                        expandButton.setBackgroundResource(R.drawable.expandable_arrow_up);
-                    } else {
-                        constraintLayout.setVisibility(View.GONE);
-                        scrollView.smoothScrollBy(0, -view.getHeight());
-                        expandButton.setBackgroundResource(R.drawable.expandable_arrow_down);
-                    }
-                });
-            } else {
-                stepText.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
-
-            stepText.setText(step.getText());
-            linearLayout.addView(cardView);
-        }
     }
 
     @Nullable
@@ -137,6 +78,7 @@ public class StepByStepFragment extends AbstractFragment {
         linearLayout = rootView.findViewById(R.id.stepByStepLinearLayout);
         dirtyIngredients = rootView.findViewById(R.id.stepByStepIngredients);
         favoritesButton = rootView.findViewById(R.id.favoritesSwitcher);
+        ingredientsLinearLayout = rootView.findViewById(R.id.stepByStepIngredientLinearLayout);
 
         return rootView;
     }
@@ -219,9 +161,7 @@ public class StepByStepFragment extends AbstractFragment {
         addDirtyIngredients();
         addSteps();
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            addEmptySpace();
-        }
+        addEmptySpace();
     }
 
     private void addDirtyIngredients() {
@@ -235,6 +175,66 @@ public class StepByStepFragment extends AbstractFragment {
         dirtyIngredients.setText(ingredients);
     }
 
+    private void addSteps() {
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+
+        for (Step step : dish.getSteps()) {
+            CardView cardView = (CardView) inflater.inflate(R.layout.step_by_step_card, linearLayout, false);
+
+            Button expandButton = cardView.findViewById(R.id.expandStepButton);
+            TextView stepText = cardView.findViewById(R.id.stepText);
+            ImageView imageView = cardView.findViewById(R.id.stepByStepImage);
+            ConstraintLayout constraintLayout = cardView.findViewById(R.id.expandableStep);
+
+            String url = step.getImageURL();
+
+            if (url != null && !url.isEmpty()) {
+                Picasso picasso = Picasso.get();
+                picasso.setIndicatorsEnabled(false);
+                picasso.load(url)
+                        .placeholder(R.drawable.loading_animation)
+                        .networkPolicy(NetworkPolicy.OFFLINE)
+                        .fit()
+                        .centerCrop()
+                        .into(imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                picasso.setIndicatorsEnabled(false);
+                                picasso.load(url)
+                                        .placeholder(R.drawable.loading_animation)
+                                        .error(R.drawable.error_image)
+                                        .fit()
+                                        .centerCrop()
+                                        .into(imageView);
+                            }
+                        });
+
+                expandButton.setVisibility(View.VISIBLE);
+                cardView.setOnClickListener(view -> {
+                    if (constraintLayout.getVisibility() == View.GONE) {
+                        TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+                        scrollView.smoothScrollBy(0, cardView.getWidth() + cardView.getHeight()); // преполагаем, что картинка будет квадратной, поэтому скроллим на в том числе ширину карточки
+                        constraintLayout.setVisibility(View.VISIBLE);
+                        expandButton.setBackgroundResource(R.drawable.expandable_arrow_up);
+                    } else {
+                        scrollView.smoothScrollBy(0, -cardView.getHeight());
+                        constraintLayout.setVisibility(View.GONE);
+                        expandButton.setBackgroundResource(R.drawable.expandable_arrow_down);
+                    }
+                });
+            } else {
+                stepText.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+
+            stepText.setText(step.getText());
+            linearLayout.addView(cardView);
+        }
+    }
+
     private void addEmptySpace() {
         View bottomEmptySpace = new View(requireContext());
         bottomEmptySpace.setLayoutParams(new ViewGroup.LayoutParams(
@@ -243,6 +243,16 @@ public class StepByStepFragment extends AbstractFragment {
         ));
 
         linearLayout.addView(bottomEmptySpace);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            View view = new View(requireContext());
+            view.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    Resources.getSystem().getDisplayMetrics().heightPixels / 3
+            ));
+
+            ingredientsLinearLayout.addView(view);
+        }
     }
 
     @Override

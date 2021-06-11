@@ -109,7 +109,7 @@ public abstract class AbstractComponentsFragment extends AbstractFragment {
         recyclerView.addOnScrollListener(new HidingScrollListener() {
             @Override
             public void onHide() {
-                changeViewComponent.animate().translationY(changeViewComponent.getBottom() >> 5).setInterpolator(new AccelerateInterpolator(2)).start();
+                changeViewComponent.animate().translationY(changeViewComponent.getBottom() >> 4).setInterpolator(new AccelerateInterpolator(2)).start();
             }
 
             @Override

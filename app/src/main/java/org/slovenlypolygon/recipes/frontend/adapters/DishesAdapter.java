@@ -90,8 +90,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
         dishViewHolder.name.setText(dish.getName());
         dishViewHolder.cardView.setOnClickListener(view -> {
-            StepByStepFragment stepByStepFragment = new StepByStepFragment();
-            stepByStepFragment.setDish(dish);
+            StepByStepFragment stepByStepFragment = new StepByStepFragment(dish);
 
             ((AppCompatActivity) view.getContext())
                     .getSupportFragmentManager()
