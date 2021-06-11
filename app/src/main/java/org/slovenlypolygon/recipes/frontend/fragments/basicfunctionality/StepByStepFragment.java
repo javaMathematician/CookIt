@@ -62,7 +62,7 @@ public class StepByStepFragment extends SimpleCookItFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        dao = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag)))).getDishComponentDAO();
+        dao = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_fragment_tag)))).getDishComponentDAO();
     }
 
     @Nullable
@@ -118,7 +118,7 @@ public class StepByStepFragment extends SimpleCookItFragment {
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.item_dialog, R.id.dialogTextView, actions);
             ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(requireContext(), ((MainActivity) requireActivity()).getCurrentTheme().equals("Dark") ? R.style.DarkProgressDialog : R.style.LightProgressDialog);
 
-            alertDialog = new AlertDialog.Builder(contextThemeWrapper).setTitle(R.string.actions_with_shopping_list).setAdapter(arrayAdapter, (dialog1, which) -> {}).create();
+            alertDialog = new AlertDialog.Builder(contextThemeWrapper).setTitle(R.string.actions_with_ingredients).setAdapter(arrayAdapter, (dialog1, which) -> {}).create();
             alertDialog.getListView().setOnItemClickListener((parent, view, position, id) -> {
                 if (containsShoppingList) {
                     dao.removeFromShoppingList(dish);

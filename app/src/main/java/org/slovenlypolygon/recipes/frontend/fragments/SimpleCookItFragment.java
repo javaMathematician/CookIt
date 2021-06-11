@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.frontend.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -8,9 +9,6 @@ import androidx.fragment.app.Fragment;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.frontend.fragments.basicfunctionality.SettingsFragment;
-
-import java.util.Objects;
 
 public abstract class SimpleCookItFragment extends Fragment {
     protected MainActivity activity;
@@ -28,6 +26,6 @@ public abstract class SimpleCookItFragment extends Fragment {
 
         activity.getSearchView().setVisibility(View.GONE);
         activity.getSupportActionBar().setTitle(R.string.app_name);
-        downloadQ = ((SettingsFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_settings_fragment_tag)))).downloadPicturesQ();
+        downloadQ = activity.getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE).getBoolean("download_pictures", false);
     }
 }

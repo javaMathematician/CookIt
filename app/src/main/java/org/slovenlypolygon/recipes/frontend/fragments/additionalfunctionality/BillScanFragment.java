@@ -159,8 +159,8 @@ public class BillScanFragment extends SimpleCookItFragment {
                     if (foundComponents.isEmpty()) {
                         Toast.makeText(requireContext(), R.string.nothing_found, Toast.LENGTH_SHORT).show();
                     } else {
-                        String title = getString(R.string.parsed_successfull);
-                        String message = getString(R.string.found_following_componenets) + " " +
+                        String title = getString(R.string.parsed_successful);
+                        String message = getString(R.string.found_following_components) + " " +
                                 Joiner.on(", ").join(foundComponents.parallelStream().map(Component::getName).collect(Collectors.toSet()));
 
                         String accept = getString(R.string.continueString);

@@ -78,7 +78,6 @@
         <item name="android:background">@color/lightThemeBackgroundCardColor</item>
     </style>
 
-
     <style name="DarkDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/yellowAccentColor</item>
         <item name="android:textColorPrimary">@color/textLightColor</item>
@@ -90,7 +89,6 @@
         <item name="android:textColorPrimary">@color/textDarkColor</item>
         <item name="android:background">@color/lightThemeBackgroundCardColor</item>
     </style>
-
 
     <style name="DarkProgressDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:textColor">@color/textLightColor</item>

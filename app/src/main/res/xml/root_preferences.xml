@@ -4,4 +4,10 @@
             app:key="download_pictures"
             app:title="@string/download_pictures_settings" />
     </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/interface_title">
+        <Preference
+            app:key="dark_theme_accent_color"
+            app:title="@string/settings_dark_theme_accent" />
+    </PreferenceCategory>
 </PreferenceScreen>

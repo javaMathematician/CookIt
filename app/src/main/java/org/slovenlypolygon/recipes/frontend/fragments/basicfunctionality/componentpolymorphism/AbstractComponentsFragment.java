@@ -259,7 +259,7 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
 
     protected void initializeDatabase() {
         if (dao == null) {
-            dao = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag)))).getDishComponentDAO();
+            dao = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_fragment_tag)))).getDishComponentDAO();
         }
     }
 

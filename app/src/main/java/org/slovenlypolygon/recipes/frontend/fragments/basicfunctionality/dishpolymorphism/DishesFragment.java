@@ -52,7 +52,7 @@ public class DishesFragment extends AbstractSearchableContentFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        dao = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_frament_tag)))).getDishComponentDAO();
+        dao = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_fragment_tag)))).getDishComponentDAO();
     }
 
     public void setSelectedComponents(Set<Component> selectedComponentIDs) {

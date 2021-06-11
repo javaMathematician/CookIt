@@ -1,68 +1,82 @@
 <resources>
-    <string name="actions_with_ingredients">Действия со списком ингредиентов</string>
-    <string name="actions_with_shopping_list">Действия со списком ингредиентов</string>
-    <string name="add_new_list">Добавить новый список</string>
-    <string name="add_to_favorites_suggestion">Добавить в избранное</string>
-    <string name="add_to_shopping_lists">Добавить в список покупок</string>
-    <string name="added_to_favorites">Добавлено в избранное</string>
-    <string name="added_to_shopping_list">Ингредиенты добавлены в списки покупок</string>
-    <string name="agree">да</string>
     <string name="app_name">CookIt!</string>
-    <string name="backend_bill_scan_fragment_tag">bill_scan</string>
-    <string name="backend_database_frament_tag">databaseFragment</string>
-    <string name="backend_favorite_dishes_fragment_tag">favorite_dishes</string>
-    <string name="backend_favorite_ingredients_fragment_tag">favorite_ingredients</string>
-    <string name="backend_recommended_dishes_fragment_tag">recommended</string>
-    <string name="backend_settings_fragment_tag">settingsFragment</string>
-    <string name="backend_shopping_list_fragment_tag">shopping_list</string>
-    <string name="bill_scan">Сканировать чек</string>
-    <string name="bill_select_prompt">Сделайте / выберите чёткую и контрастную фотографию Вашего чека</string>
-    <string name="categories">Категории</string>
-    <string name="clear_selected">Сбросить выделенные ингредиенты</string>
-    <string name="continueString">Продолжить</string>
-    <string name="delete_from_favorites_suggestion">Удалить из избранного</string>
-    <string name="delete_from_shopping_lists">Удалить из списка покупок</string>
-    <string name="deleted_from_favorites">Удалено из избранного</string>
-    <string name="disagree">нет</string>
-    <string name="dish_image_step_by_step">Изображение блюда</string>
-    <string name="dishes">Все рецепты</string>
+
+    <!-- Basic dialog answers -->
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
     <string name="dismiss">Отмена</string>
-    <string name="download_pictures_settings">Скачивать изображения</string>
-    <string name="empty_search">Ничего не нашлось</string>
-    <string name="favorites_dishes">Избранные блюда</string>
-    <string name="found_following_componenets">Найдены следующие ингредиенты:</string>
-    <string name="go_to_recipes_button">К рецептам</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="incorrect_photo">Попробуйте другое приложение</string>
-    <string name="ingredient_actions">Действия с ингредиентом</string>
-    <string name="ingredients">Ингредиенты</string>
-    <string name="menu">Меню</string>
-    <string name="nothing_found">Не найдено ни единого ингредиента.</string>
-    <string name="nothing_selected_to_reset">Вы не выбрали ни одного компонента.</string>
-    <string name="open_camera">Открыть камеру</string>
-    <string name="open_file_manager">Открыть документы (файлы)</string>
-    <string name="open_gallery">Открыть галерею</string>
-    <string name="page_end">Конец страницы</string>
-    <string name="parsed_successfull">Найдены результаты</string>
-    <string name="parsing">Распознавание изображения…</string>
-    <string name="pictures_header">Картинки</string>
-    <string name="recipes">Рецепты</string>
-    <string name="recommendations">Вам могут понравиться</string>
-    <string name="refrigerator">Холодильник</string>
-    <string name="removed_from_shopping_list">Ингредиенты удалены из списка покупок</string>
+    <string name="cancel">Отменить</string>
+    <string name="resources">Сбросить?</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="restart_q">Перезапустить?</string>
+    <string name="continueString">Продолжить</string>
     <string name="reset_agree">Да, хочу сбросить</string>
     <string name="reset_disagree">Нет, я передумал</string>
-    <string name="resources">Сбросить?</string>
-    <string name="restart_q">Перезапустить?</string>
-    <string name="restart_theme_q">Для измененения темы придётся перезапустить приложение. Сделать это сейчас?</string>
-    <string name="search_hint">Поиск</string>
-    <string name="search_hint_text">Искать</string>
-    <string name="searching_ingredients">Ищем ингредиенты…</string>
-    <string name="select_at_least_one">Выберите хотя бы один ингредиент</string>
-    <string name="settings">Настройки</string>
-    <string name="shopping_lists">Списки покупок</string>
-    <string name="shuffle_ingredients">Перемешать ингредиенты</string>
-    <string name="step_by_step_toolbar">Рецепт по шагам</string>
+
+    <!-- Actions -->
+    <string name="open_camera">Открыть камеру</string>
+    <string name="open_gallery">Открыть галерею</string>
+    <string name="go_to_recipes_button">К рецептам</string>
+    <string name="add_new_list">Добавить новый список</string>
+    <string name="ingredient_actions">Действия с ингредиентом</string>
+    <string name="open_file_manager">Открыть документы (файлы)</string>
+    <string name="clear_selected">Сбросить выделенные ингредиенты</string>
+    <string name="add_to_shopping_lists">Добавить в список покупок</string>
+    <string name="add_to_favorites_suggestion">Добавить в избранное</string>
+    <string name="delete_from_shopping_lists">Удалить из списка покупок</string>
+    <string name="delete_from_favorites_suggestion">Удалить из избранного</string>
+    <string name="actions_with_ingredients">Действия со списком ингредиентов</string>
+    <string name="bill_select_prompt">Сделайте / выберите чёткую и контрастную фотографию Вашего чека</string>
     <string name="sure_reset_q">Вы действительно хотите сбросить выбранные компоненты? Это действие нельзя будет отменить.</string>
+
+    <!-- Results of actions -->
+    <string name="empty_search">Ничего не нашлось</string>
     <string name="you_will_need">Вам понадобятся:</string>
+    <string name="parsed_successful">Найдены результаты</string>
+    <string name="added_to_favorites">Добавлено в избранное</string>
+    <string name="deleted_from_favorites">Удалено из избранного</string>
+    <string name="incorrect_photo">Попробуйте другое приложение</string>
+    <string name="nothing_found">Не найдено ни единого ингредиента</string>
+    <string name="select_at_least_one">Выберите хотя бы один ингредиент</string>
+    <string name="found_following_components">Найдены следующие ингредиенты:</string>
+    <string name="nothing_selected_to_reset">Вы не выбрали ни одного компонента</string>
+    <string name="added_to_shopping_list">Ингредиенты добавлены в список покупок</string>
+    <string name="removed_from_shopping_list">Ингредиенты удалены из списка покупок</string>
+
+    <!-- Fragment tags -->
+    <string name="backend_bill_scan_fragment_tag">bill_fragment</string>
+    <string name="backend_database_fragment_tag">database_fragment</string>
+    <string name="backend_settings_fragment_tag">settings_fragment</string>
+    <string name="backend_shopping_list_fragment_tag">shopping_list</string>
+    <string name="backend_favorite_dishes_fragment_tag">favorite_dishes</string>
+    <string name="backend_recommended_dishes_fragment_tag">recommended</string>
+    <string name="backend_favorite_ingredients_fragment_tag">favorite_ingredients</string>
+
+    <!-- Side menu -->
+    <string name="menu">Меню</string>
+    <string name="dishes">Все рецепты</string>
+    <string name="settings">Настройки</string>
+    <string name="categories">Категории</string>
+    <string name="ingredients">Ингредиенты</string>
+    <string name="refrigerator">Холодильник</string>
+    <string name="bill_scan">Сканировать чек</string>
+    <string name="shopping_lists">Списки покупок</string>
+    <string name="favorites_dishes">Избранные блюда</string>
+    <string name="recommendations">Вам могут понравиться</string>
+
+    <!-- Content descriptions -->
+    <string name="search_hint">Поиск</string>
+    <string name="page_end">Конец страницы</string>
+    <string name="dish_image_step_by_step">Изображение блюда</string>
+
+    <!-- Settings -->
+    <string name="pictures_header">Картинки</string>
+    <string name="download_pictures_settings">Скачивать изображения</string>
+
+    <string name="interface_title">Интерфейс</string>
+    <string name="settings_dark_theme_accent">Акцент тёмной темы</string>
+
+    <!-- Processing -->
+    <string name="parsing">Распознавание изображения…</string>
+    <string name="searching_ingredients">Ищем ингредиенты…</string>
 </resources>

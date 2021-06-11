@@ -15,9 +15,7 @@ class BitmapUtils {
         final int newHeightPx = (int) Math.floor(currentHeight * scaleFactor);
 
         Bitmap copy = input.copy(Bitmap.Config.RGB_565, true);
-        copy = Bitmap.createScaledBitmap(copy, newWidthPx, newHeightPx, true);
-
-        return copy;
+        return Bitmap.createScaledBitmap(copy, newWidthPx, newHeightPx, true);
     }
 
     static Bitmap rotate(Bitmap source, int degrees) {
