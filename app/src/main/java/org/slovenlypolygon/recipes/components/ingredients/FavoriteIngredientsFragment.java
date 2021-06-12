@@ -42,7 +42,7 @@ public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
                 int backgroundCornerOffset = 20;
 
                 Rect boundRect;
-                View itemView = viewHolder.itemView;
+                View itemView = viewHolder.itemView.findViewById(R.id.componentCardView);
                 Drawable icon = ContextCompat.getDrawable(activity, R.drawable.delete_icon);
                 ColorDrawable background = new ColorDrawable(Color.RED);
 

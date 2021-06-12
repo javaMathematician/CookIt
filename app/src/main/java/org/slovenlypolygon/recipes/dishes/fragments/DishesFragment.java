@@ -13,7 +13,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.Sets;
@@ -44,7 +43,6 @@ public class DishesFragment extends AbstractSearchableContentFragment {
     protected DishesAdapter dishesAdapter;
     protected RecyclerView recyclerView;
     protected Observable<FrontendDish> provider;
-    protected SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton scrollToTop;
     private boolean highlightSelected;
     private Set<Component> selectedComponents = new HashSet<>();
@@ -90,8 +88,6 @@ public class DishesFragment extends AbstractSearchableContentFragment {
             }
         });
 
-        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefresh);
-        swipeRefreshLayout.setEnabled(false);
     }
 
     @Override
@@ -111,16 +107,8 @@ public class DishesFragment extends AbstractSearchableContentFragment {
             dishesAdapter = new DishesAdapter(highlightSelected);
             dishesAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
         }
-        recyclerView.swapAdapter(dishesAdapter, true);
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            swipeRefreshLayout.setRefreshing(true);
-
-            Collections.shuffle(dishesAdapter.getDishes());
-            dishesAdapter.notifyDataSetChanged();
-
-            swipeRefreshLayout.setRefreshing(false);
-        });
+        recyclerView.setAdapter(dishesAdapter);
 
         return rootView;
     }

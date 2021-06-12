@@ -46,7 +46,6 @@ public class FavoriteDishesFragment extends DishesFragment {
     @Override
     protected void initializeVariablesForDishes(View rootView) {
         super.initializeVariablesForDishes(rootView);
-        swipeRefreshLayout.setEnabled(false);
     }
 
     @Override

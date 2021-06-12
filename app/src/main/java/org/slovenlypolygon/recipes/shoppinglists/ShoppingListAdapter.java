@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.base.Joiner;
 
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.components.entitys.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,15 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     @Override
     public int getItemCount() {
         return shoppingLists.size();
+    }
+
+    public ShoppingList getList(int position) {
+        return shoppingLists.get(position);
+    }
+
+    public void removeList(int position) {
+        shoppingLists.remove(position);
+        notifyItemRemoved(position);
     }
 
     public static class ListViewHolder extends RecyclerView.ViewHolder {

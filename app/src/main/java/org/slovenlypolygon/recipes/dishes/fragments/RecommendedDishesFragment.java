@@ -20,6 +20,5 @@ public class RecommendedDishesFragment extends DishesFragment {
     @Override
     protected void initializeVariablesForDishes(View rootView) {
         super.initializeVariablesForDishes(rootView);
-        swipeRefreshLayout.setEnabled(true);
     }
 }
