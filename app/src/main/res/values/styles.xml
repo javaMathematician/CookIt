@@ -28,9 +28,10 @@
 
         <!-- Additional colors -->
         <item name="logo">@drawable/logo</item>
-        <item name="accentColor">@color/greenAccentColor</item>
+        <item name="accentColor">@color/lightAccentColor</item>
         <item name="strokeColor">@color/lightStrokeColor</item>
-        <item name="toRecipeButtonColor">@color/greenAccentColor</item>
+        <item name="toRecipeButtonColor">@color/lightAccentColor</item>
+        <item name="colorControlActivated">@color/lightAccentColor</item>
     </style>
 
     <style name="Dark" parent="Theme.AppCompat.NoActionBar">
@@ -63,8 +64,9 @@
         <!-- Additional colors -->
         <item name="logo">@drawable/logo</item>
         <item name="strokeColor">@color/darkStrokeColor</item>
-        <item name="accentColor">@color/yellowAccentColor</item>
-        <item name="toRecipeButtonColor">@color/yellowAccentColor</item>
+        <item name="accentColor">@color/darkAccentColor</item>
+        <item name="toRecipeButtonColor">@color/darkAccentColor</item>
+        <item name="colorControlActivated">@color/darkAccentColor</item>
     </style>
 
     <style name="WindowAnimationTransition">
@@ -73,13 +75,13 @@
     </style>
 
     <style name="LightDialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/greenAccentColor</item>
+        <item name="colorAccent">@color/lightAccentColor</item>
         <item name="android:textColorPrimary">@color/textDarkColor</item>
         <item name="android:background">@color/lightThemeBackgroundCardColor</item>
     </style>
 
     <style name="DarkDialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/yellowAccentColor</item>
+        <item name="colorAccent">@color/darkAccentColor</item>
         <item name="android:textColorPrimary">@color/textLightColor</item>
         <item name="android:background">@color/darkThemeBackgroundCardColor</item>
     </style>
@@ -101,7 +103,7 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:visibility">gone</item>
         <item name="android:background">?attr/cardBackgroundColor</item>
-        <item name="colorAccent">@color/yellowAccentColor</item>
+        <item name="colorAccent">@color/darkAccentColor</item>
         <item name="android:textColorPrimary">@color/textLightColor</item>
         <item name="android:textColor">@color/textLightColor</item>
     </style>
@@ -157,6 +159,4 @@
         <item name="colorControlNormal">?attr/textCardColor</item>
         <item name="colorControlActivated">?attr/textCardColor</item>
     </style>
-
-    <style name="SCBSwitch"></style>
 </resources>
