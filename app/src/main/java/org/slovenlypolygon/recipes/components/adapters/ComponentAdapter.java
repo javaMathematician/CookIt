@@ -20,8 +20,11 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.picasso.PicassoWrapper;
 import org.slovenlypolygon.recipes.components.entitys.Component;
 
 import java.util.ArrayList;
@@ -31,8 +34,6 @@ import java.util.function.Consumer;
 
 @SuppressWarnings("unchecked")
 public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.IngredientViewHolder> implements Filterable {
-    private final PicassoWrapper picassoWrapper = new PicassoWrapper();
-
     private List<Component> components = new ArrayList<>();
     private List<Component> original;
 
@@ -94,10 +95,38 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
             itemClickedCallback.accept(component);
         });
 
-        picassoWrapper
-                .setImageURL(component.getImageURL())
-                .setImageView(ingredientViewHolder.imageView)
-                .process();
+        Picasso picasso = Picasso.get();
+        picasso.setIndicatorsEnabled(false);
+
+        picasso.load(component.getImageURL())
+                .placeholder(R.drawable.loading_animation)
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .fit()
+                .centerCrop()
+                .into(ingredientViewHolder.imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        picasso.load(component.getImageURL())
+                                .placeholder(R.drawable.loading_animation)
+                                .error(R.drawable.error_image)
+                                .fit()
+                                .centerCrop()
+                                .into(ingredientViewHolder.imageView, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                    }
+                });
     }
 
     @Override

@@ -48,12 +48,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initializeDatabaseAndSettingsFragment();
+        downloadQ = getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE).getBoolean("download_pictures", false);
 
-        if (picasso == null) {
-            downloadQ = getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE).getBoolean("download_pictures", false);
-            initializePicasso();
-        }
+        initializePicasso();
+        initializeDatabaseAndSettingsFragment();
 
         setTheme();
         setContentView(R.layout.carcass);
@@ -63,10 +61,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializePicasso() {
-        picasso = new Picasso.Builder(this).downloader(new OkHttp3Downloader(this, Integer.MAX_VALUE)).build();
-
-        picasso.setIndicatorsEnabled(false);
-        picasso.setLoggingEnabled(false);
+        if (picasso == null) {
+            picasso = new Picasso.Builder(this).downloader(new OkHttp3Downloader(this, Integer.MAX_VALUE)).build();
+        }
 
         Picasso.setSingletonInstance(picasso);
     }

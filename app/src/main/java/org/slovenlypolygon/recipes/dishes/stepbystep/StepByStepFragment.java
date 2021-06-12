@@ -28,13 +28,15 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.google.common.base.Joiner;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.abstractfragments.SimpleCookItFragment;
 import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.picasso.PicassoWrapper;
 import org.slovenlypolygon.recipes.dishes.entitys.FrontendDish;
 
 import java.util.Comparator;
@@ -42,8 +44,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class StepByStepFragment extends SimpleCookItFragment {
-    private final PicassoWrapper picassoWrapper = new PicassoWrapper();
     private final FrontendDish dish;
+
     private ImageView imageView;
     private DishComponentDAO dao;
     private NestedScrollView scrollView;
@@ -51,6 +53,7 @@ public class StepByStepFragment extends SimpleCookItFragment {
     private TextView dirtyIngredients;
     private ImageButton favoritesButton;
     private LinearLayout ingredientsLinearLayout;
+
     @Nullable private AlertDialog alertDialog;
 
     public StepByStepFragment(FrontendDish dish) {
@@ -89,10 +92,38 @@ public class StepByStepFragment extends SimpleCookItFragment {
     }
 
     private void setupPreparedFrontend() {
-        picassoWrapper
-                .setImageURL(dish.getImageURL())
-                .setImageView(imageView)
-                .process();
+        Picasso picasso = Picasso.get();
+        picasso.setIndicatorsEnabled(false);
+
+        picasso.load(dish.getImageURL())
+                .placeholder(R.drawable.loading_animation)
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .fit()
+                .centerCrop()
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        picasso.load(dish.getImageURL())
+                                .placeholder(R.drawable.loading_animation)
+                                .error(R.drawable.error_image)
+                                .fit()
+                                .centerCrop()
+                                .into(imageView, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                    }
+                });
 
         favoritesButton.setBackground(ResourcesCompat.getDrawable(getResources(), dao.containsFavorites(dish) ? R.drawable.in_favorites : R.drawable.add_to_favorites, null));
         favoritesButton.setOnClickListener(v -> {
@@ -165,10 +196,38 @@ public class StepByStepFragment extends SimpleCookItFragment {
             String url = step.getImageURL();
 
             if (url != null && !url.isEmpty()) {
-                picassoWrapper
-                        .setImageURL(url)
-                        .setImageView(imageView)
-                        .process();
+                Picasso picasso = Picasso.get();
+                picasso.setIndicatorsEnabled(false);
+
+                picasso.load(url)
+                        .placeholder(R.drawable.loading_animation)
+                        .networkPolicy(NetworkPolicy.OFFLINE)
+                        .fit()
+                        .centerCrop()
+                        .into(imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                picasso.load(url)
+                                        .placeholder(R.drawable.loading_animation)
+                                        .error(R.drawable.error_image)
+                                        .fit()
+                                        .centerCrop()
+                                        .into(imageView, new Callback() {
+                                            @Override
+                                            public void onSuccess() {
+                                            }
+
+                                            @Override
+                                            public void onError(Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        });
+                            }
+                        });
 
                 expandButton.setVisibility(View.VISIBLE);
                 cardView.setOnClickListener(view -> {

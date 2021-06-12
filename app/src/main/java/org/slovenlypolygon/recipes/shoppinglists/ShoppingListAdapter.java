@@ -20,9 +20,8 @@ import org.slovenlypolygon.recipes.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ListViewHolder> {
-    private List<ShoppingList> shoppingLists = new ArrayList<>();
+    private final List<ShoppingList> shoppingLists = new ArrayList<>();
 
     public void addList(List<ShoppingList> lists) {
         int size = shoppingLists.size();
@@ -35,7 +34,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.dish_card, parent, false));
-
     }
 
     @Override
