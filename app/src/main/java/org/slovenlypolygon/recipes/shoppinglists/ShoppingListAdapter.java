@@ -23,51 +23,42 @@ import java.util.List;
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ListViewHolder> {
     private final List<ShoppingList> shoppingLists = new ArrayList<>();
 
-    public void addList(List<ShoppingList> lists) {
-        int size = shoppingLists.size();
-
+    public void addLists(List<ShoppingList> lists) {
         shoppingLists.addAll(lists);
-        notifyItemRangeInserted(size - 1, shoppingLists.size());
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.dish_card, parent, false));
+        return new ListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_card, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ListViewHolder listViewHolder, int position) {
         ShoppingList shoppingList = shoppingLists.get(position);
 
-        CardView cardView = holder.cardView;
+        listViewHolder.name.setText(shoppingList.getDish().getName());
+        listViewHolder.content.setText(Joiner.on(",\n").join(shoppingList.getDish().getDirtyIngredients()));
+        listViewHolder.expandButton.setVisibility(View.VISIBLE);
 
-        TextView name = holder.name;
-        name.setText(shoppingList.getDish().getName());
+        listViewHolder.cardView.setOnClickListener(view -> {
 
-        TextView content = holder.content;
-        content.setText(Joiner.on(",\n").join(shoppingList.getDish().getDirtyIngredients()));
-
-        Button expandButton = holder.expandButton;
-        expandButton.setVisibility(View.VISIBLE);
-
-        ConstraintLayout constraintLayout = holder.constraintLayout;
-
-        cardView.setOnClickListener(view -> {
-            if (constraintLayout.getVisibility() == View.GONE) {
-                TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
-                constraintLayout.setVisibility(View.VISIBLE);
-                expandButton.setBackgroundResource(R.drawable.expandable_arrow_up);
+            if (listViewHolder.constraintLayout.getVisibility() == View.GONE) {
+                TransitionManager.beginDelayedTransition(listViewHolder.cardView, new AutoTransition());
+                listViewHolder.constraintLayout.setVisibility(View.VISIBLE);
+                listViewHolder.expandButton.setBackgroundResource(R.drawable.expandable_arrow_up);
             } else {
-                constraintLayout.setVisibility(View.GONE);
-                expandButton.setBackgroundResource(R.drawable.expandable_arrow_down);
+                TransitionManager.beginDelayedTransition(listViewHolder.constraintLayout, new AutoTransition());
+                listViewHolder.constraintLayout.setVisibility(View.GONE);
+                listViewHolder.expandButton.setBackgroundResource(R.drawable.expandable_arrow_down);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return shoppingLists.size();
     }
 
     public static class ListViewHolder extends RecyclerView.ViewHolder {

@@ -31,7 +31,7 @@ public class ShoppingListsFragment extends SimpleCookItFragment {
 
         recyclerView = rootView.findViewById(R.id.shoppingListsRecyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(activity, getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
 
         ShoppingListAdapter adapter = new ShoppingListAdapter();
         recyclerView.setAdapter(adapter);
@@ -40,7 +40,7 @@ public class ShoppingListsFragment extends SimpleCookItFragment {
         dao.getShoppingLists()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(adapter::addList, Throwable::printStackTrace);
+                .subscribe(adapter::addLists, Throwable::printStackTrace);
 
         return rootView;
     }
