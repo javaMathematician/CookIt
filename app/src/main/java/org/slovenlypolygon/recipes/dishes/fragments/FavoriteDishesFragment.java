@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
-import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
+import org.slovenlypolygon.recipes.backend.DishComponentDAO;
 import org.slovenlypolygon.recipes.dishes.entitys.FrontendDish;
 
 import java.util.ArrayList;

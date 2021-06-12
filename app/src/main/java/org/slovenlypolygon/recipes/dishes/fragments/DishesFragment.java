@@ -20,8 +20,8 @@ import com.google.common.collect.Sets;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.abstractfragments.AbstractSearchableContentFragment;
-import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
-import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
+import org.slovenlypolygon.recipes.backend.DishComponentDAO;
 import org.slovenlypolygon.recipes.components.entitys.Component;
 import org.slovenlypolygon.recipes.dishes.adapters.DishesAdapter;
 import org.slovenlypolygon.recipes.dishes.entitys.FrontendDish;

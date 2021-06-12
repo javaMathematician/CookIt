@@ -26,8 +26,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.abstractfragments.AbstractSearchableContentFragment;
-import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
-import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
+import org.slovenlypolygon.recipes.backend.DishComponentDAO;
 import org.slovenlypolygon.recipes.components.adapters.ComponentAdapter;
 import org.slovenlypolygon.recipes.components.adapters.TabComponentAdapter;
 import org.slovenlypolygon.recipes.components.entitys.Component;

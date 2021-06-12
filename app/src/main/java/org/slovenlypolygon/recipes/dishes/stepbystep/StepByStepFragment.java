@@ -35,8 +35,8 @@ import com.squareup.picasso.Picasso;
 import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.abstractfragments.SimpleCookItFragment;
-import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
-import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
+import org.slovenlypolygon.recipes.backend.DishComponentDAO;
 import org.slovenlypolygon.recipes.dishes.entitys.FrontendDish;
 
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.backend.database;
+package org.slovenlypolygon.recipes.backend;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

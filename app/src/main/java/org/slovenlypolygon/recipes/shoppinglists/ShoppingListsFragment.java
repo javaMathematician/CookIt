@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.abstractfragments.SimpleCookItFragment;
-import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
-import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
+import org.slovenlypolygon.recipes.backend.DishComponentDAO;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;

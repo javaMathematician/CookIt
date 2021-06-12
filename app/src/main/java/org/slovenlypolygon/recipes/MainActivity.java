@@ -15,11 +15,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.FileUtils;
-import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
+import org.slovenlypolygon.recipes.backend.DatabaseFragment;
 import org.slovenlypolygon.recipes.billscanner.BillScanFragment;
 import org.slovenlypolygon.recipes.components.categories.CategoriesFragment;
 import org.slovenlypolygon.recipes.components.ingredients.FavoriteIngredientsFragment;
@@ -41,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private String currentTheme;
     private SearchView searchView;
-    private Picasso picasso;
     private boolean downloadQ;
 
     @Override
@@ -49,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         downloadQ = getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE).getBoolean("download_pictures", false);
-
-        initializePicasso();
         initializeDatabaseAndSettingsFragment();
 
         setTheme();
@@ -58,14 +53,6 @@ public class MainActivity extends AppCompatActivity {
         setFrontend();
 
         showBaseFragment();
-    }
-
-    private void initializePicasso() {
-        if (picasso == null) {
-            picasso = new Picasso.Builder(this).downloader(new OkHttp3Downloader(this, Integer.MAX_VALUE)).build();
-        }
-
-        Picasso.setSingletonInstance(picasso);
     }
 
     private void setTheme() {

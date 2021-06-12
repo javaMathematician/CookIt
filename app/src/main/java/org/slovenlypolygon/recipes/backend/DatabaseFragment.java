@@ -1,4 +1,4 @@
-package org.slovenlypolygon.recipes.backend.database;
+package org.slovenlypolygon.recipes.backend;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
