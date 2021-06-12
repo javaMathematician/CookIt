@@ -1,15 +1,23 @@
 package org.slovenlypolygon.recipes.shoppinglists;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Joiner;
 
@@ -18,6 +26,7 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.abstractfragments.SimpleCookItFragment;
 import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
+import org.slovenlypolygon.recipes.backend.picasso.PicassoBuilder;
 
 import java.util.List;
 
@@ -26,20 +35,30 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ShoppingListsFragment extends SimpleCookItFragment {
     protected DishComponentDAO dao;
-    private LinearLayout linearLayout;
+    private RecyclerView recyclerView;
+
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.shopping_lists_fragment, container, false);
         setRetainInstance(true);
 
-        linearLayout = rootView.findViewById(R.id.shoppingListsLinearLayout);
+        recyclerView = rootView.findViewById(R.id.shoppingListsRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(activity, getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
+
+        ShoppingListAdapter adapter = new ShoppingListAdapter();
+        recyclerView.setAdapter(adapter);
 
         dao = ((DatabaseFragment) getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_fragment_tag))).getDishComponentDAO();
         dao.getShoppingLists()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::addCards, Throwable::printStackTrace);
+                .subscribe(lists -> {
+                    adapter.addList(lists);
+                    adapter.notifyDataSetChanged();
+                }, Throwable::printStackTrace);
+
 
         return rootView;
     }
@@ -49,21 +68,5 @@ public class ShoppingListsFragment extends SimpleCookItFragment {
         super.onActivityCreated(savedInstanceState);
         SearchView searchView = requireActivity().findViewById(R.id.searchView);
         searchView.setVisibility(View.INVISIBLE);
-    }
-
-    private void addCards(List<ShoppingList> shoppingLists) {
-        LayoutInflater layoutInflater = LayoutInflater.from(requireContext());
-
-        for (ShoppingList shoppingList : shoppingLists) {
-            CardView cardView = (CardView) layoutInflater.inflate(R.layout.list_card, linearLayout, false);
-
-            TextView name = cardView.findViewById(R.id.listName);
-            name.setText(shoppingList.getDish().getName());
-
-            TextView content = cardView.findViewById(R.id.listContent);
-            content.setText(Joiner.on(",\n").join(shoppingList.getDish().getDirtyIngredients()));
-
-            linearLayout.addView(cardView);
-        }
     }
 }
