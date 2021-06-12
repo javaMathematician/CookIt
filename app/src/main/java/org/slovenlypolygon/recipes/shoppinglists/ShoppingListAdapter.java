@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.base.Joiner;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.components.entitys.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         listViewHolder.expandButton.setVisibility(View.VISIBLE);
 
         listViewHolder.cardView.setOnClickListener(view -> {
-
             if (listViewHolder.constraintLayout.getVisibility() == View.GONE) {
                 TransitionManager.beginDelayedTransition(listViewHolder.cardView, new AutoTransition());
                 listViewHolder.constraintLayout.setVisibility(View.VISIBLE);

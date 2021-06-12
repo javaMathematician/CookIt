@@ -2,46 +2,32 @@
     <string name="app_name">CookIt!</string>
 
     <!-- Basic dialog answers -->
-    <string name="yes">Да</string>
-    <string name="no">Нет</string>
     <string name="dismiss">Отмена</string>
-    <string name="cancel">Отменить</string>
-    <string name="resources">Сбросить?</string>
-    <string name="confirm">Подтвердить</string>
-    <string name="restart_q">Перезапустить?</string>
     <string name="continueString">Продолжить</string>
-    <string name="reset_agree">Да, хочу сбросить</string>
-    <string name="reset_disagree">Нет, я передумал</string>
 
     <!-- Actions -->
-    <string name="open_camera">Открыть камеру</string>
+    <string name="open_camera">Открыть камеру (экспериментально!)</string>
     <string name="open_gallery">Открыть галерею</string>
     <string name="go_to_recipes_button">К рецептам</string>
-    <string name="add_new_list">Добавить новый список</string>
     <string name="ingredient_actions">Действия с ингредиентом</string>
-    <string name="open_file_manager">Открыть документы (файлы)</string>
-    <string name="clear_selected">Сбросить выделенные ингредиенты</string>
     <string name="add_to_shopping_lists">Добавить в список покупок</string>
     <string name="add_to_favorites_suggestion">Добавить в избранное</string>
     <string name="delete_from_shopping_lists">Удалить из списка покупок</string>
     <string name="delete_from_favorites_suggestion">Удалить из избранного</string>
     <string name="actions_with_ingredients">Действия со списком ингредиентов</string>
     <string name="bill_select_prompt">Сделайте / выберите чёткую и контрастную фотографию Вашего чека</string>
-    <string name="sure_reset_q">Вы действительно хотите сбросить выбранные компоненты? Это действие нельзя будет отменить.</string>
 
     <!-- Results of actions -->
-    <string name="empty_search">Ничего не нашлось</string>
     <string name="you_will_need">Вам понадобятся:</string>
     <string name="parsed_successful">Найдены результаты</string>
+    <string name="nothing_found">Ингредиенты не найдены</string>
     <string name="added_to_favorites">Добавлено в избранное</string>
     <string name="deleted_from_favorites">Удалено из избранного</string>
     <string name="incorrect_photo">Попробуйте другое приложение</string>
-    <string name="nothing_found">Не найдено ни единого ингредиента</string>
-    <string name="select_at_least_one">Выберите хотя бы один ингредиент</string>
     <string name="found_following_components">Найдены следующие ингредиенты:</string>
-    <string name="nothing_selected_to_reset">Вы не выбрали ни одного компонента</string>
     <string name="added_to_shopping_list">Ингредиенты добавлены в список покупок</string>
     <string name="removed_from_shopping_list">Ингредиенты удалены из списка покупок</string>
+    <string name="nothing_in_shopping_lists">Не найдено списков покупок. Чтобы добавить список, перейдите на интересующее блюдо, нажмите на список ингредиентов (под главной картинкой)</string>
 
     <!-- Fragment tags -->
     <string name="backend_bill_scan_fragment_tag">bill_fragment</string>
@@ -70,13 +56,10 @@
     <string name="dish_image_step_by_step">Изображение блюда</string>
 
     <!-- Settings -->
-    <string name="pictures_header">Картинки</string>
     <string name="download_pictures_settings">Скачивать изображения</string>
-
-    <string name="interface_title">Интерфейс</string>
-    <string name="settings_dark_theme_accent">Акцент тёмной темы</string>
 
     <!-- Processing -->
     <string name="parsing">Распознавание изображения…</string>
     <string name="searching_ingredients">Ищем ингредиенты…</string>
+    <string name="permission_required">Требуется разрешение</string>
 </resources>

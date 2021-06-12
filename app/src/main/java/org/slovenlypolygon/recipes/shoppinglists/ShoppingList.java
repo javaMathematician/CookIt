@@ -1,14 +1,17 @@
 package org.slovenlypolygon.recipes.shoppinglists;
 
+import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.recipes.dishes.entitys.Dish;
 
+import java.util.Comparator;
+
 import javax.annotation.Nonnull;
 
-public class ShoppingList {
+public class ShoppingList implements Comparable<ShoppingList> {
     private final int id;
     @NotNull private final Dish dish;
 
@@ -47,5 +50,10 @@ public class ShoppingList {
                 .add("id", id)
                 .add("dish", dish)
                 .toString();
+    }
+
+    @Override
+    public int compareTo(ShoppingList o) {
+        return Comparator.comparing((Function<ShoppingList, String>) input -> input.dish.getName()).compare(this, o);
     }
 }

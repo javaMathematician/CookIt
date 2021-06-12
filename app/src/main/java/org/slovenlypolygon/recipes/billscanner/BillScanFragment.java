@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
@@ -36,7 +37,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
@@ -45,11 +45,12 @@ import pl.aprilapps.easyphotopicker.MediaFile;
 import pl.aprilapps.easyphotopicker.MediaSource;
 
 public class BillScanFragment extends SimpleCookItFragment {
+    private ContextThemeWrapper contextThemeWrapper;
     private Set<String> parsed = new HashSet<>();
     private EasyImage easyImage;
+
     @Nullable private ProgressDialog progressDialog;
     @Nullable private AlertDialog alertDialog;
-    private ContextThemeWrapper contextThemeWrapper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +101,8 @@ public class BillScanFragment extends SimpleCookItFragment {
                             parsed.addAll(strings);
                         }, throwable -> {
                             Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            throwable.printStackTrace();
+
                             if (alertDialog != null) alertDialog.dismiss();
 
                             alertDialog = null;
@@ -129,7 +132,7 @@ public class BillScanFragment extends SimpleCookItFragment {
     }
 
     private void startSearching() {
-        DishComponentDAO dishComponentDAO = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag("databaseFragment"))).getDishComponentDAO();
+        DishComponentDAO dishComponentDAO = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_fragment_tag)))).getDishComponentDAO();
         Set<Component> foundComponents = new HashSet<>();
 
         progressDialog = new ProgressDialog(contextThemeWrapper);
@@ -149,6 +152,8 @@ public class BillScanFragment extends SimpleCookItFragment {
                     }
                 }, throwable -> {
                     Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    throwable.printStackTrace();
+
                     progressDialog.dismiss();
                     progressDialog = null;
                 }, () -> {

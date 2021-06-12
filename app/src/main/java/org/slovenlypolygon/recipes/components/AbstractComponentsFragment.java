@@ -274,36 +274,6 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
         }
     }
 
-    public void clearSelected() {
-        String title = getString(R.string.resources);
-        String message = getString(R.string.sure_reset_q);
-        String accept = getString(R.string.reset_agree);
-        String decline = getString(R.string.reset_disagree);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(contextThemeWrapper);
-        builder.setTitle(title);
-        builder.setMessage(message);
-
-        builder.setNegativeButton(decline, (dialog, temp) -> clearSelectedDialog = null);
-        builder.setPositiveButton(accept, (dialog, temp) -> {
-            sureClearSelected();
-            clearSelectedDialog = null;
-        });
-
-        builder.setCancelable(true);
-        builder.setOnCancelListener(dialog -> clearSelectedDialog = null);
-
-        clearSelectedDialog = builder.create();
-
-        if (!selectedComponents.isEmpty()) {
-            clearSelectedDialog.show();
-        } else {
-            Toast.makeText(requireContext(), R.string.nothing_selected_to_reset, Toast.LENGTH_SHORT).show();
-        }
-
-        clearSelectedDialog = null;
-    }
-
     private void sureClearSelected() {
         selectedComponents.clear();
 

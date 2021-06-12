@@ -25,7 +25,6 @@ import org.slovenlypolygon.recipes.components.entitys.Component;
 import org.slovenlypolygon.recipes.dishes.adapters.DishesAdapter;
 import org.slovenlypolygon.recipes.dishes.entitys.FrontendDish;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -87,7 +86,6 @@ public class DishesFragment extends AbstractSearchableContentFragment {
                 }
             }
         });
-
     }
 
     @Override

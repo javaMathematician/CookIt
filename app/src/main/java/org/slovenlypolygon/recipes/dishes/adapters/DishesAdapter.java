@@ -184,10 +184,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     }
 
     public void addDishes(List<FrontendDish> constructedDishes) {
-        int size = dishes.size();
-
         dishes.addAll(constructedDishes);
-        notifyItemRangeInserted(size, constructedDishes.size());
+        notifyDataSetChanged();
     }
 
     public void removeDish(int position) {
