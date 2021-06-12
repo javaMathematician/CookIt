@@ -62,5 +62,5 @@
     <string name="parsing">Распознавание изображения…</string>
     <string name="searching_ingredients">Ищем ингредиенты…</string>
     <string name="permission_required">Требуется разрешение</string>
-    <string name="nothing_in_fridge">Не найдено ингредиентов. Чтобы добавить ингредиент в холодильник, долго подержите его, затем нажмите "добавить в избранное"</string>
+    <string name="nothing_in_fridge">Не найдено ингредиентов. Чтобы добавить ингредиент в холодильник, долго подержите его, затем нажмите «добавить в избранное»</string>
 </resources>
