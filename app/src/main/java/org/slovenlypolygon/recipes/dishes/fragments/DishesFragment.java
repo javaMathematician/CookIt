@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,12 +37,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class DishesFragment extends AbstractSearchableContentFragment {
     protected boolean initialized;
     protected DishComponentDAO dao;
-    protected SearchView searchView;
     protected DishesAdapter dishesAdapter;
     protected RecyclerView recyclerView;
     protected Observable<FrontendDish> provider;
     private FloatingActionButton scrollToTop;
     private boolean highlightSelected;
+    protected String savedSearchQuery = "";
     private Set<Component> selectedComponents = new HashSet<>();
 
     @Override
@@ -90,6 +89,7 @@ public class DishesFragment extends AbstractSearchableContentFragment {
 
     @Override
     protected void searchTextChanged(String newText) {
+        if (!newText.isEmpty()) savedSearchQuery = newText;
         dishesAdapter.getFilter().filter(newText);
     }
 
@@ -144,11 +144,6 @@ public class DishesFragment extends AbstractSearchableContentFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (searchView == null) {
-            searchView = activity.findViewById(R.id.searchView);
-            searchView.setOnClickListener(view -> searchView.setIconified(false));
-        }
-
         dishesAdapter.setAccent(activity.getCurrentTheme().equals("Dark") ? "#FFC84D" : "#EE3D48");
 
         if (provider == null) {
@@ -166,6 +161,10 @@ public class DishesFragment extends AbstractSearchableContentFragment {
 
         if (!initialized) {
             initialized = true;
+        }
+
+        if (!savedSearchQuery.isEmpty()) {
+            activity.getSearchView().setQuery(savedSearchQuery, true);
         }
     }
 }

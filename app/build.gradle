@@ -10,8 +10,8 @@ android {
         applicationId "org.slovenlypolygon.recipes"
         targetSdkVersion 30
         minSdkVersion 24
-        versionName "1.0"
-        versionCode 1
+        versionName "1.0.0.1"
+        versionCode 500
     }
 
     buildTypes {

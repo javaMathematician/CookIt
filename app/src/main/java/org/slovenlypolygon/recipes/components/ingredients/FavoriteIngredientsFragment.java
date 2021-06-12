@@ -13,6 +13,7 @@ import org.slovenlypolygon.recipes.components.entitys.ComponentType;
 import org.slovenlypolygon.recipes.utils.DeleteSubstrate;
 
 public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
+
     @Override
     protected ComponentType setDataSource() {
         return ComponentType.FAVORITE_COMPONENT;
@@ -36,6 +37,9 @@ public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        tabComponentAdapter.clearSelected();
+        addDataSource();
     }
 
     @Override
@@ -45,5 +49,17 @@ public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
         dao.deleteFavorite(component);
         componentAdapter.deleteComponent(component);
         tabComponentAdapter.updateComponent(component);
+
+        checkQuantity();
+    }
+
+    @Override
+    protected void updateData() {
+        addDataSource();
+    }
+
+    @Override
+    protected void checkQuantity() {
+        textView.setText(componentAdapter.getItemCount() == 0 ? R.string.nothing_in_fridge : R.string.page_end);
     }
 }

@@ -56,9 +56,7 @@ public class ShoppingListsFragment extends SimpleCookItFragment {
     }
 
     private void checkQuantity() {
-        if (adapter.getItemCount() == 0) {
-            textView.setText(R.string.nothing_in_shopping_lists);
-        }
+        textView.setText(adapter.getItemCount() == 0 ? R.string.nothing_in_shopping_lists : R.string.page_end);
     }
 
     @Override

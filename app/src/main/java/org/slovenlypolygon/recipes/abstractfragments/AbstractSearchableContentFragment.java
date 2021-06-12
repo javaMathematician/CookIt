@@ -14,6 +14,8 @@ import org.slovenlypolygon.recipes.R;
 import java.util.Objects;
 
 public abstract class AbstractSearchableContentFragment extends SimpleCookItFragment {
+    protected String searchQuery = "";
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -29,7 +31,7 @@ public abstract class AbstractSearchableContentFragment extends SimpleCookItFrag
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchTextChanged(newText.toLowerCase());
+                searchTextChanged(searchQuery = newText.toLowerCase());
                 return false;
             }
         });

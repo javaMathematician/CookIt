@@ -11,6 +11,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,7 +35,6 @@ import org.slovenlypolygon.recipes.components.entitys.Component;
 import org.slovenlypolygon.recipes.components.entitys.ComponentType;
 import org.slovenlypolygon.recipes.dishes.fragments.DishesFragment;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -53,9 +53,9 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
     protected TabComponentAdapter tabComponentAdapter;
     protected Set<Component> selectedComponents = new HashSet<>();
 
+    protected TextView textView;
     private FloatingActionButton scrollToTop;
     private ContextThemeWrapper contextThemeWrapper;
-    @Nullable private AlertDialog clearSelectedDialog;
     @Nullable private AlertDialog actionsWithIngredientDialog;
 
     @Override
@@ -81,6 +81,7 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(activity, getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
 
+        textView = rootView.findViewById(R.id.endOfPageIngredientsTextView);
         changeViewComponent = rootView.findViewById(R.id.changeView);
         changeViewComponent.setVisibility(View.INVISIBLE);
 
@@ -129,11 +130,6 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
         return rootView;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
     public void goToRecipes() {
         DishesFragment dishesFragment = new DishesFragment();
         dishesFragment.setHighlightSelected(true);
@@ -176,17 +172,24 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
         contextThemeWrapper = new ContextThemeWrapper(requireContext(), activity.getCurrentTheme().equals("Dark") ? R.style.DarkDialog : R.style.LightDialog);
         initializeDatabase();
 
+        updateData();
+    }
+
+    protected void updateData() {
         if (componentAdapter.getComponents().isEmpty()) {
             addDataSource();
         }
     }
 
-    private void addDataSource() {
+    protected void addDataSource() {
         dao.getComponentByType(setDataSource())
                 .subscribeOn(Schedulers.newThread())
                 .buffer(300, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(componentAdapter::addComponents, Throwable::printStackTrace);
+                .subscribe(componentAdapter::addComponents, Throwable::printStackTrace, this::checkQuantity);
+    }
+
+    protected void checkQuantity() {
     }
 
     protected abstract ComponentType setDataSource();
@@ -274,23 +277,12 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
         }
     }
 
-    private void sureClearSelected() {
-        selectedComponents.clear();
-
-        componentAdapter.clearSelected();
-        tabComponentAdapter.clearSelected();
-
-        updateButton();
-    }
-
     @Override
     public void onPause() {
         super.onPause();
 
-        for (AlertDialog dialog : Arrays.asList(clearSelectedDialog, actionsWithIngredientDialog)) {
-            if (dialog != null) {
-                dialog.dismiss();
-            }
+        if (actionsWithIngredientDialog != null) {
+            actionsWithIngredientDialog.dismiss();
         }
     }
 
@@ -299,10 +291,12 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
         super.onResume();
         updateButton();
 
-        for (AlertDialog dialog : Arrays.asList(clearSelectedDialog, actionsWithIngredientDialog)) {
-            if (dialog != null) {
-                dialog.show();
-            }
+        if (actionsWithIngredientDialog != null) {
+            actionsWithIngredientDialog.show();
+        }
+
+        if (!searchQuery.isEmpty()) {
+            activity.getSearchView().setQuery(searchQuery, true);
         }
     }
 }

@@ -30,6 +30,7 @@ import org.slovenlypolygon.recipes.components.entitys.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unchecked")
@@ -42,11 +43,6 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
 
     private Consumer<Component> longClickListenerCallback;
     private Consumer<Component> itemClickedCallback;
-
-    public void clearSelected() {
-        components.forEach(t -> t.setSelected(false));
-        notifyDataSetChanged();
-    }
 
     public void deleteComponent(Component component) {
         int index = components.indexOf(component);
@@ -171,6 +167,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
 
     public void addComponents(List<? extends Component> components) {
         this.components.addAll(components);
+        this.components = new ArrayList<>(new TreeSet<>(components));
         notifyDataSetChanged();
     }
 
