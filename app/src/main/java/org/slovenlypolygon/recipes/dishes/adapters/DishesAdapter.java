@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.base.Joiner;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.picasso.PicassoBuilder;
+import org.slovenlypolygon.recipes.backend.picasso.PicassoWrapper;
 import org.slovenlypolygon.recipes.components.entitys.Component;
 import org.slovenlypolygon.recipes.dishes.entitys.Dish;
 import org.slovenlypolygon.recipes.dishes.entitys.FrontendDish;
@@ -31,11 +31,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     private final boolean highlight;
 
     private String accent;
-    private final PicassoBuilder builder = new PicassoBuilder();
 
     private List<FrontendDish> dishes = new ArrayList<>();
     private List<FrontendDish> original = new ArrayList<>();
-    private boolean downloadQ;
+
+    private final PicassoWrapper picassoWrapper = new PicassoWrapper();
 
     public DishesAdapter(boolean highlight) {
         this.highlight = highlight;
@@ -43,10 +43,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     public List<FrontendDish> getDishes() {
         return dishes;
-    }
-
-    public void setDownloadQ(boolean downloadQ) {
-        this.downloadQ = downloadQ;
     }
 
     public void clearDataset() {
@@ -102,7 +98,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                     .commit();
         });
 
-        builder.setDownloadQ(downloadQ)
+        picassoWrapper
                 .setImageURL(dish.getImageURL())
                 .setImageView(dishViewHolder.imageView)
                 .process();
@@ -164,6 +160,15 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     public void setDishes(List<FrontendDish> frontendDishes) {
         this.dishes = frontendDishes;
         notifyDataSetChanged();
+    }
+
+    public void removeDish(int position) {
+        dishes.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public Dish getDish(int position) {
+        return dishes.get(position);
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {

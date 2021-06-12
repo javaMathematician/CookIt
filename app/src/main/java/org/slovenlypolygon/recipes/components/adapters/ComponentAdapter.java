@@ -17,32 +17,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.slovenlypolygon.recipes.R;
-import org.slovenlypolygon.recipes.backend.picasso.PicassoBuilder;
+import org.slovenlypolygon.recipes.backend.picasso.PicassoWrapper;
 import org.slovenlypolygon.recipes.components.entitys.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unchecked")
 public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.IngredientViewHolder> implements Filterable {
-    private final PicassoBuilder picassoBuilder = new PicassoBuilder();
+    private final PicassoWrapper picassoWrapper = new PicassoWrapper();
 
     private List<Component> components = new ArrayList<>();
     private List<Component> original;
 
     private ContextThemeWrapper contextThemeWrapper;
+    private RecyclerView ownerRecyclerView;
 
     private Consumer<Component> longClickListenerCallback;
     private Consumer<Component> itemClickedCallback;
-    private boolean downloadQ;
-
-    public void setDownloadQ(boolean downloadQ) {
-        this.downloadQ = downloadQ;
-    }
 
     public void clearSelected() {
         components.forEach(t -> t.setSelected(false));
@@ -96,8 +94,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
             itemClickedCallback.accept(component);
         });
 
-        picassoBuilder
-                .setDownloadQ(downloadQ)
+        picassoWrapper
                 .setImageURL(component.getImageURL())
                 .setImageView(ingredientViewHolder.imageView)
                 .process();
@@ -106,6 +103,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+        this.ownerRecyclerView = recyclerView;
     }
 
     @Override
@@ -160,21 +158,35 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
     }
 
     public void clearItemLongClickCallback() {
-        longClickListenerCallback = component -> {
-        };
+        longClickListenerCallback = component -> {}; // у категорий нет действия на лонг клик, поэтому надо очистить
     }
 
     public void updateComponent(Component component) {
         int index = components.indexOf(component);
         // выглядит контритуитивно, но мем в том, что ингредиенты равны (.equals), если равны их айдишники.
         // но у них могут быть не равны поля isSelected и т. д.
-        // так вот, indexOf найдет индекс по .equals (сравнивая только id), а заменой мы уже изменим компонент (например, на выбраенный)
+        // так вот, indexOf найдет индекс по .equals (сравнивая только id), а заменой мы уже изменим компонент (например, на выбранный)
         components.set(index, component);
         notifyItemChanged(index);
     }
 
     public void setLongClickListenerCallback(Consumer<Component> longClickListenerCallback) {
         this.longClickListenerCallback = longClickListenerCallback;
+    }
+
+    public void scrollTo(Component component) {
+        LinearLayoutManager layoutManager = Objects.requireNonNull((LinearLayoutManager) ownerRecyclerView.getLayoutManager());
+
+        int bottomIndex = layoutManager.findLastVisibleItemPosition();
+        int topIndex = layoutManager.findFirstVisibleItemPosition();
+        int position = components.indexOf(component);
+        int quantity = bottomIndex - topIndex + 1; // length([a, b]) = b - a + 1
+
+        if (Math.abs(topIndex - position) > 15) {
+            ownerRecyclerView.scrollToPosition(position + 15 * (int) Math.signum(topIndex - position));
+        } // если больше 15, то position + 15. если меньше -15, то position - 15.
+
+        ownerRecyclerView.smoothScrollToPosition(position + (topIndex - position <= 0 ? quantity / 2 : -quantity / 2));
     }
 
     public static class IngredientViewHolder extends RecyclerView.ViewHolder {

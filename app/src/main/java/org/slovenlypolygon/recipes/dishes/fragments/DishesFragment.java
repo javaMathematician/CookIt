@@ -109,7 +109,6 @@ public class DishesFragment extends AbstractSearchableContentFragment {
 
         if (!initialized) {
             dishesAdapter = new DishesAdapter(highlightSelected);
-            dishesAdapter.setDownloadQ(downloadQ);
             dishesAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
         }
         recyclerView.swapAdapter(dishesAdapter, true);
@@ -136,10 +135,7 @@ public class DishesFragment extends AbstractSearchableContentFragment {
                 .map(this::splitIngredients)
                 .buffer(600, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(constructedDish -> {
-                    dishesAdapter.addDishes(constructedDish);
-                    dishesAdapter.notifyDataSetChanged();
-                }, Throwable::printStackTrace);
+                .subscribe(dishesAdapter::addDishes, Throwable::printStackTrace);
 
         initialized = true;
     }

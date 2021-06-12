@@ -54,7 +54,7 @@ public class FavoriteDishesFragment extends DishesFragment {
         super.onActivityCreated(savedInstanceState);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            private final DishComponentDAO dishComponentDAO = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag("databaseFragment"))).getDishComponentDAO();
+            private final DishComponentDAO dishComponentDAO = ((DatabaseFragment) Objects.requireNonNull(getParentFragmentManager().findFragmentByTag(getString(R.string.backend_database_fragment_tag)))).getDishComponentDAO();
 
             @Override
             public void onChildDraw(@Nonnull Canvas canvas, @Nonnull RecyclerView recyclerView, @Nonnull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -104,9 +104,8 @@ public class FavoriteDishesFragment extends DishesFragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getBindingAdapterPosition();
 
-                dishComponentDAO.deleteFavorite(dishesAdapter.getDishes().get(position));
-                dishesAdapter.getDishes().remove(position);
-                dishesAdapter.notifyDataSetChanged();
+                dishComponentDAO.deleteFavorite(dishesAdapter.getDish(position));
+                dishesAdapter.removeDish(position);
             }
         };
 

@@ -1,6 +1,5 @@
 package org.slovenlypolygon.recipes.abstractfragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,7 +11,6 @@ import org.slovenlypolygon.recipes.R;
 
 public abstract class SimpleCookItFragment extends Fragment {
     protected MainActivity activity;
-    protected boolean downloadQ;
 
     @Override
     public void onActivityCreated(@Nullable @javax.annotation.Nullable Bundle savedInstanceState) {
@@ -26,6 +24,5 @@ public abstract class SimpleCookItFragment extends Fragment {
 
         activity.getSearchView().setVisibility(View.GONE);
         activity.getSupportActionBar().setTitle(R.string.app_name);
-        downloadQ = activity.getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE).getBoolean("download_pictures", false);
     }
 }

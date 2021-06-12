@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 
 public class TabComponentAdapter extends RecyclerView.Adapter<TabComponentAdapter.ViewHolder> {
     private final List<Component> components = new ArrayList<>();
+    private Consumer<Component> cardClickCallback;
     private Consumer<Component> crossCallback;
     private RecyclerView recyclerView;
 
@@ -45,6 +46,7 @@ public class TabComponentAdapter extends RecyclerView.Adapter<TabComponentAdapte
 
         viewHolder.text.setText(component.getName());
         viewHolder.deleteButton.setOnClickListener(v -> crossCallback.accept(component));
+        viewHolder.cardView.setOnClickListener(v -> cardClickCallback.accept(component));
     }
 
     public void removeComponent(Component component) {
@@ -78,20 +80,26 @@ public class TabComponentAdapter extends RecyclerView.Adapter<TabComponentAdapte
             recyclerView.scrollToPosition(components.size() - 1);
         }
 
-        notifyItemChanged(components.size() - 1);
+        notifyItemInserted(components.size() - 1);
     }
 
     public void setCrossClickedCallback(Consumer<Component> crossClickedCallback) {
         this.crossCallback = crossClickedCallback;
     }
 
+    public void setCardClickCallback(Consumer<Component> cardClickCallback) {
+        this.cardClickCallback = cardClickCallback;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final Button deleteButton;
+        private final CardView cardView;
         private final TextView text;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            cardView = (CardView) itemView;
             text = itemView.findViewById(R.id.textOnSelectedIngredient);
             deleteButton = itemView.<CardView>findViewById(R.id.selectedIngredientCard).findViewById(R.id.buttonOnSelectedIngredient);
         }

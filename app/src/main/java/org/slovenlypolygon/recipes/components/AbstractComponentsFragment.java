@@ -186,10 +186,7 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
                 .subscribeOn(Schedulers.newThread())
                 .buffer(300, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(components -> {
-                    componentAdapter.addComponents(components);
-                    componentAdapter.notifyDataSetChanged();
-                }, Throwable::printStackTrace);
+                .subscribe(componentAdapter::addComponents, Throwable::printStackTrace);
     }
 
     protected abstract ComponentType setDataSource();
@@ -203,6 +200,8 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
 
             componentsChanged(component);
         });
+
+        tabComponentAdapter.setCardClickCallback(componentAdapter::scrollTo);
 
         componentAdapter.setItemClickCallback(component -> {
             componentAdapter.updateComponent(component);
@@ -266,7 +265,6 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
         if (componentAdapter == null || tabComponentAdapter == null) {
             componentAdapter = new ComponentAdapter();
             componentAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
-            componentAdapter.setDownloadQ(downloadQ);
 
             tabComponentAdapter = new TabComponentAdapter();
             componentAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);

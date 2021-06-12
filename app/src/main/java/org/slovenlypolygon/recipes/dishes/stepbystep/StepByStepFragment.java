@@ -34,7 +34,7 @@ import org.slovenlypolygon.recipes.R;
 import org.slovenlypolygon.recipes.abstractfragments.SimpleCookItFragment;
 import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
 import org.slovenlypolygon.recipes.backend.database.DishComponentDAO;
-import org.slovenlypolygon.recipes.backend.picasso.PicassoBuilder;
+import org.slovenlypolygon.recipes.backend.picasso.PicassoWrapper;
 import org.slovenlypolygon.recipes.dishes.entitys.FrontendDish;
 
 import java.util.Comparator;
@@ -42,7 +42,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class StepByStepFragment extends SimpleCookItFragment {
-    private final PicassoBuilder picassoBuilder = new PicassoBuilder();
+    private final PicassoWrapper picassoWrapper = new PicassoWrapper();
     private final FrontendDish dish;
     private ImageView imageView;
     private DishComponentDAO dao;
@@ -89,8 +89,7 @@ public class StepByStepFragment extends SimpleCookItFragment {
     }
 
     private void setupPreparedFrontend() {
-        new PicassoBuilder()
-                .setDownloadQ(downloadQ)
+        picassoWrapper
                 .setImageURL(dish.getImageURL())
                 .setImageView(imageView)
                 .process();
@@ -166,7 +165,7 @@ public class StepByStepFragment extends SimpleCookItFragment {
             String url = step.getImageURL();
 
             if (url != null && !url.isEmpty()) {
-                picassoBuilder.setDownloadQ(downloadQ)
+                picassoWrapper
                         .setImageURL(url)
                         .setImageView(imageView)
                         .process();

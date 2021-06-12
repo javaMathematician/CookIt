@@ -8,33 +8,25 @@ import com.squareup.picasso.Picasso;
 
 import org.slovenlypolygon.recipes.R;
 
-public class PicassoBuilder {
+public class PicassoWrapper {
     private String imageURL;
     private ImageView imageView;
-    private boolean downloadQ;
 
-    public PicassoBuilder setImageView(ImageView imageView) {
+    public PicassoWrapper setImageView(ImageView imageView) {
         this.imageView = imageView;
         return this;
     }
 
-    public PicassoBuilder setImageURL(String imageURL) {
+    public PicassoWrapper setImageURL(String imageURL) {
         this.imageURL = imageURL;
-        return this;
-    }
-
-    public PicassoBuilder setDownloadQ(boolean downloadQ) {
-        this.downloadQ = downloadQ;
         return this;
     }
 
     public void process() {
         Picasso picasso = Picasso.get();
-
-        picasso.setIndicatorsEnabled(false);
         picasso.load(imageURL)
                 .placeholder(R.drawable.loading_animation)
-                .networkPolicy(downloadQ ? NetworkPolicy.OFFLINE : NetworkPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.OFFLINE)
                 .fit()
                 .centerCrop()
                 .into(imageView, new Callback() {

@@ -66,4 +66,7 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.13-RC4'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
+
+    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 }

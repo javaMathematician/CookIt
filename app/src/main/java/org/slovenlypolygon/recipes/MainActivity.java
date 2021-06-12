@@ -15,7 +15,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
+import org.apache.commons.io.FileUtils;
 import org.slovenlypolygon.recipes.backend.database.DatabaseFragment;
 import org.slovenlypolygon.recipes.billscanner.BillScanFragment;
 import org.slovenlypolygon.recipes.components.categories.CategoriesFragment;
@@ -27,6 +30,7 @@ import org.slovenlypolygon.recipes.dishes.fragments.RecommendedDishesFragment;
 import org.slovenlypolygon.recipes.settings.SettingsFragment;
 import org.slovenlypolygon.recipes.shoppinglists.ShoppingListsFragment;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private String currentTheme;
     private SearchView searchView;
+    private Picasso picasso;
+    private boolean downloadQ;
 
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
@@ -44,11 +50,25 @@ public class MainActivity extends AppCompatActivity {
 
         initializeDatabaseAndSettingsFragment();
 
+        if (picasso == null) {
+            downloadQ = getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE).getBoolean("download_pictures", false);
+            initializePicasso();
+        }
+
         setTheme();
         setContentView(R.layout.carcass);
         setFrontend();
 
         showBaseFragment();
+    }
+
+    private void initializePicasso() {
+        picasso = new Picasso.Builder(this).downloader(new OkHttp3Downloader(this, Integer.MAX_VALUE)).build();
+
+        picasso.setIndicatorsEnabled(false);
+        picasso.setLoggingEnabled(false);
+
+        Picasso.setSingletonInstance(picasso);
     }
 
     private void setTheme() {
@@ -201,5 +221,24 @@ public class MainActivity extends AppCompatActivity {
 
     public String getCurrentTheme() {
         return currentTheme;
+    }
+
+    public void notifySharedPreferencesChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("download_pictures")) {
+            downloadQ = sharedPreferences.getBoolean(key, false);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (!downloadQ) {
+            try {
+                FileUtils.deleteDirectory(getCacheDir());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
