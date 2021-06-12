@@ -165,7 +165,7 @@ public class BillScanFragment extends SimpleCookItFragment {
                     } else {
                         String title = getString(R.string.parsed_successful);
                         String message = getString(R.string.found_following_components) + " " +
-                                Joiner.on(", ").join(foundComponents.parallelStream().map(Component::getName).collect(Collectors.toSet()));
+                                Joiner.on(", ").join(foundComponents.parallelStream().map(Component::getName).collect(Collectors.toSet())).toLowerCase();
 
                         String accept = getString(R.string.continueString);
                         String decline = getString(R.string.dismiss);

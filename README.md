@@ -30,9 +30,11 @@ CookIt! — приложение, которое подберет для Вас 
 
 Скриншоты
 ---------
-<img src = "app/screenshots/Screenshot_1621808733.png" width = 480 />
-<img src = "app/screenshots/Screenshot_1621808749.png" width = 480 />
-<img src = "app/screenshots/Screenshot_1621808835.png" width = 480 />
-<img src = "app/screenshots/Screenshot_1621808869.png" width = 480 />
-<img src = "app/screenshots/Screenshot_1621808890.png" width = 480 />
-<img src = "app/screenshots/Screenshot_1621808904.png" width = 480 />
+<img src = "./app/screenshots/Screenshot_1623528320.png" width = 480 />
+<img src = "./app/screenshots/Screenshot_1623528335.png" width = 480 />
+<img src = "./app/screenshots/Screenshot_1623528383.png" width = 480 />
+<img src = "./app/screenshots/Screenshot_1623528395.png" width = 480 />
+<img src = "./app/screenshots/Screenshot_1623528424.png" width = 480 />
+<img src = "./app/screenshots/Screenshot_1623529693.png" width = 480 />
+<img src = "./app/screenshots/Screenshot_1623530391.png" width = 480 />
+<img src = "./app/screenshots/Screenshot_12.06.21-23.52.58_CookIt!.png" width = 480 />

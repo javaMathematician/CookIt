@@ -9,12 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
+import org.slovenlypolygon.recipes.dishes.entitys.Dish;
 import org.slovenlypolygon.recipes.dishes.entitys.FrontendDish;
 import org.slovenlypolygon.recipes.utils.DeleteSubstrate;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -56,12 +60,13 @@ public class FavoriteDishesFragment extends DishesFragment {
 
     @Override
     protected void getMatches() {
-        Set<FrontendDish> frontendDishes = new TreeSet<>();
+        Set<FrontendDish> frontendDishes = new TreeSet<>((first, second) -> Comparator.comparing((Function<FrontendDish, String>) Dish::getName).compare(first, second));
 
         dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
+                .buffer(300, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(frontendDishes::add, Throwable::printStackTrace, () -> dishesAdapter.setDishes(new ArrayList<>(frontendDishes)));
+                .subscribe(frontendDishes::addAll, Throwable::printStackTrace, () -> dishesAdapter.setDishes(new ArrayList<>(frontendDishes)));
 
         initialized = true;
     }
