@@ -1,62 +1,39 @@
 package org.slovenlypolygon.recipes.settings;
 
-import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.preference.PreferenceFragmentCompat;
 
-import com.flask.colorpicker.ColorPickerView;
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
-import org.slovenlypolygon.recipes.MainActivity;
 import org.slovenlypolygon.recipes.R;
+import org.slovenlypolygon.recipes.abstractfragments.SimpleCookItFragment;
 
-public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private MainActivity activity;
+public class SettingsFragment extends SimpleCookItFragment {
+    private SwitchMaterial switchMaterial;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.settings_fragment, container, false);
+        setRetainInstance(true);
+
+        switchMaterial = rootView.findViewById(R.id.download_pictures_switch);
+        return rootView;
+    }
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.root_preferences, rootKey);
-        setRetainInstance(false);
-
-        getPreferenceScreen().findPreference("dark_theme_accent_color").setOnPreferenceClickListener(preference -> {
-            ColorPickerDialogBuilder
-                    .with(requireContext())
-                    .setTitle("Выберите цвет")
-                    .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                    .density(20)
-                    .setPositiveButton(getString(R.string.confirm), (dialog, selectedColor, allColors) -> changeBackgroundColor(selectedColor))
-                    .setNegativeButton(getString(R.string.cancel), (dialog, which) -> {})
-                    .build()
-                    .show();
-
-            return false;
+    public void onActivityCreated(@Nullable @javax.annotation.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        switchMaterial.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            activity.getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE).edit().putBoolean("download_pictures", isChecked).apply();
+            activity.notifySharedPreferencesChanged();
         });
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        this.activity = (MainActivity) getActivity();
-    }
-
-    private void changeBackgroundColor(int selectedColor) {
-        System.out.println(Color.valueOf(selectedColor));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        activity.getSupportActionBar().setTitle(R.string.app_name);
-        activity.getSearchView().setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        activity.notifySharedPreferencesChanged(sharedPreferences, key);
-    }
 }
+

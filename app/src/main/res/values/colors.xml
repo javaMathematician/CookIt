@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Light theme -->
-    <color name="greenAccentColor">#8CBA51</color>
+    <color name="greenAccentColor">#46BDBF</color>
     <color name="lightStrokeColor">#EE3D48</color>
     <color name="lightThemeBackgroundColor">#FFFFFF</color>
     <color name="toolbarBackgroundLightColor">#FFFFFF</color>

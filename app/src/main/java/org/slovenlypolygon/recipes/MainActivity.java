@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        downloadQ = getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE).getBoolean("download_pictures", false);
+        notifySharedPreferencesChanged();
         initializeDatabaseAndSettingsFragment();
 
         setTheme();
@@ -207,10 +207,8 @@ public class MainActivity extends AppCompatActivity {
         return currentTheme;
     }
 
-    public void notifySharedPreferencesChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("download_pictures")) {
-            downloadQ = sharedPreferences.getBoolean(key, false);
-        }
+    public void notifySharedPreferencesChanged() {
+        downloadQ = getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE).getBoolean("download_pictures", false);
     }
 
     @Override

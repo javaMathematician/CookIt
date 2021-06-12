@@ -27,7 +27,7 @@
         <item name="selectedCardBackgroundColor">@color/selectedLightCardBackgroundColor</item>
 
         <!-- Additional colors -->
-        <item name="logo">@drawable/green_logo</item>
+        <item name="logo">@drawable/logo</item>
         <item name="accentColor">@color/greenAccentColor</item>
         <item name="strokeColor">@color/lightStrokeColor</item>
         <item name="toRecipeButtonColor">@color/greenAccentColor</item>
@@ -61,7 +61,7 @@
         <item name="selectedCardBackgroundColor">@color/selectedDarkCardBackgroundColor</item>
 
         <!-- Additional colors -->
-        <item name="logo">@drawable/orange_logo</item>
+        <item name="logo">@drawable/logo</item>
         <item name="strokeColor">@color/darkStrokeColor</item>
         <item name="accentColor">@color/yellowAccentColor</item>
         <item name="toRecipeButtonColor">@color/yellowAccentColor</item>
@@ -152,8 +152,11 @@
         <item name="android:backgroundTint">?attr/toolbarBackgroundColor</item>
     </style>
 
-    <style name="checkBoxStyle" parent="Theme.AppCompat.Light">
+    <style name="checkBoxStyle"
+        parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">?attr/textCardColor</item>
         <item name="colorControlActivated">?attr/textCardColor</item>
     </style>
+
+    <style name="SCBSwitch"></style>
 </resources>
