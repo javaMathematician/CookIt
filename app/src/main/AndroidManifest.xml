@@ -9,6 +9,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
+
     <application
         android:name=".GlobalInitializer"
         android:allowBackup="false"
@@ -37,7 +43,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="org.slovenlypolygon.recipes.provider"
+            android:authorities="org.slovenlypolygon.recipes.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

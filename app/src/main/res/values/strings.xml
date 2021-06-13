@@ -6,7 +6,7 @@
     <string name="continueString">Продолжить</string>
 
     <!-- Actions -->
-    <string name="open_camera">Открыть камеру (экспериментально!)</string>
+    <string name="open_camera">Открыть камеру</string>
     <string name="open_gallery">Открыть галерею</string>
     <string name="go_to_recipes_button">К рецептам</string>
     <string name="permission_required">Требуется разрешение</string>

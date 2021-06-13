@@ -5,7 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.FileProvider;
 
 import com.google.common.base.Joiner;
 
@@ -28,6 +33,7 @@ import org.slovenlypolygon.recipes.backend.DishComponentDAO;
 import org.slovenlypolygon.recipes.components.entitys.Component;
 import org.slovenlypolygon.recipes.dishes.fragments.DishesFragment;
 
+import java.io.File;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -46,9 +52,13 @@ import pl.aprilapps.easyphotopicker.MediaFile;
 import pl.aprilapps.easyphotopicker.MediaSource;
 
 public class BillScanFragment extends SimpleCookItFragment {
+    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public static final String APP_TAG = "CookIt";
+
     private ContextThemeWrapper contextThemeWrapper;
     private Set<String> parsed = new HashSet<>();
     private EasyImage easyImage;
+    private File photoFile;
 
     @Nullable private ProgressDialog progressDialog;
     @Nullable private AlertDialog alertDialog;
@@ -71,7 +81,7 @@ public class BillScanFragment extends SimpleCookItFragment {
         CardView camera = inflate.findViewById(R.id.cameraOpener);
         CardView gallery = inflate.findViewById(R.id.galleryOpener);
 
-        camera.setOnClickListener(t -> easyImage.openCameraForImage(this));
+        camera.setOnClickListener(t -> onLaunchCamera());
         gallery.setOnClickListener(t -> easyImage.openGallery(this));
 
         return inflate;
@@ -81,47 +91,15 @@ public class BillScanFragment extends SimpleCookItFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+            processImage(takenImage);
+        }
+
         easyImage.handleActivityResult(requestCode, resultCode, data, requireActivity(), new DefaultCallback() {
             @Override
             public void onMediaFilesPicked(@NotNull MediaFile[] mediaFiles, @NotNull MediaSource mediaSource) {
-                Bitmap bitmap = BitmapFactory.decodeFile(mediaFiles[0].getFile().getAbsolutePath());
-                parsed = new HashSet<>();
-
-                contextThemeWrapper = new ContextThemeWrapper(requireContext(), ((MainActivity) requireActivity()).getCurrentTheme().equals("Dark") ? R.style.DarkProgressDialog : R.style.LightProgressDialog);
-                progressDialog = new ProgressDialog(contextThemeWrapper);
-                progressDialog.setTitle(getString(R.string.parsing));
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setMax(4);
-                progressDialog.show();
-
-                Disposable disposable = OCR.parseImage(bitmap)
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(strings -> {
-                            progressDialog.incrementProgressBy(1);
-                            parsed.addAll(strings);
-                        }, throwable -> {
-                            if (throwable instanceof UnknownHostException) {
-                                Toast.makeText(requireContext(), R.string.internet_required, Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-
-                            throwable.printStackTrace();
-                            if (progressDialog != null) progressDialog.dismiss();
-
-                            progressDialog = null;
-                        }, () -> {
-                            if (progressDialog != null) progressDialog.dismiss();
-
-                            progressDialog = null;
-                            startSearching();
-                        });
-
-                progressDialog.setOnCancelListener(dialog -> {
-                    if (!disposable.isDisposed()) disposable.dispose();
-                    progressDialog = null;
-                });
+                processImage(BitmapFactory.decodeFile(mediaFiles[0].getFile().getAbsolutePath()));
             }
 
             @Override
@@ -133,6 +111,46 @@ public class BillScanFragment extends SimpleCookItFragment {
             public void onCanceled(@NonNull MediaSource source) {
                 Toast.makeText(requireContext(), R.string.incorrect_photo, Toast.LENGTH_SHORT).show();
             }
+        });
+    }
+
+    private void processImage(Bitmap bitmap) {
+        parsed = new HashSet<>();
+
+        contextThemeWrapper = new ContextThemeWrapper(requireContext(), ((MainActivity) requireActivity()).getCurrentTheme().equals("Dark") ? R.style.DarkProgressDialog : R.style.LightProgressDialog);
+        progressDialog = new ProgressDialog(contextThemeWrapper);
+        progressDialog.setTitle(getString(R.string.parsing));
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMax(4);
+        progressDialog.show();
+
+        Disposable disposable = OCR.parseImage(bitmap)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(strings -> {
+                    progressDialog.incrementProgressBy(1);
+                    parsed.addAll(strings);
+                }, throwable -> {
+                    if (throwable instanceof UnknownHostException) {
+                        Toast.makeText(requireContext(), R.string.internet_required, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    throwable.printStackTrace();
+                    if (progressDialog != null) progressDialog.dismiss();
+
+                    progressDialog = null;
+                }, () -> {
+                    if (progressDialog != null) progressDialog.dismiss();
+
+                    progressDialog = null;
+                    startSearching();
+                });
+
+        progressDialog.setOnCancelListener(dialog -> {
+            if (!disposable.isDisposed()) disposable.dispose();
+            progressDialog = null;
         });
     }
 
@@ -237,5 +255,27 @@ public class BillScanFragment extends SimpleCookItFragment {
                 dialog.show();
             }
         }
+    }
+
+    public void onLaunchCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        photoFile = getPhotoFileUri("CookItBillPhoto.jpg");
+
+        Uri fileProvider = FileProvider.getUriForFile(requireContext(), "org.slovenlypolygon.recipes.fileprovider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+
+        if (intent.resolveActivity(requireContext().getPackageManager()) != null) {
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+    public File getPhotoFileUri(String fileName) {
+        File mediaStorageDir = new File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
+
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
+            Log.d(APP_TAG, "failed to create directory");
+        }
+
+        return new File(mediaStorageDir.getPath() + File.separator + fileName);
     }
 }
