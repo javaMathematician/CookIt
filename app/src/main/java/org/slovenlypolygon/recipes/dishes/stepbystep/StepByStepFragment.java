@@ -98,6 +98,7 @@ public class StepByStepFragment extends SimpleCookItFragment {
         picasso.load(dish.getImageURL())
                 .placeholder(R.drawable.loading_animation)
                 .networkPolicy(NetworkPolicy.OFFLINE)
+                .error(R.drawable.wifi_error_image)
                 .fit()
                 .centerCrop()
                 .into(imageView, new Callback() {
@@ -109,7 +110,7 @@ public class StepByStepFragment extends SimpleCookItFragment {
                     public void onError(Exception e) {
                         picasso.load(dish.getImageURL())
                                 .placeholder(R.drawable.loading_animation)
-                                .error(R.drawable.error_image)
+                                .error(R.drawable.wifi_error_image)
                                 .fit()
                                 .centerCrop()
                                 .into(imageView, new Callback() {
@@ -202,6 +203,7 @@ public class StepByStepFragment extends SimpleCookItFragment {
                 picasso.load(url)
                         .placeholder(R.drawable.loading_animation)
                         .networkPolicy(NetworkPolicy.OFFLINE)
+                        .error(R.drawable.wifi_error_image)
                         .fit()
                         .centerCrop()
                         .into(imageView, new Callback() {
@@ -213,7 +215,7 @@ public class StepByStepFragment extends SimpleCookItFragment {
                             public void onError(Exception e) {
                                 picasso.load(url)
                                         .placeholder(R.drawable.loading_animation)
-                                        .error(R.drawable.error_image)
+                                        .error(R.drawable.wifi_error_image)
                                         .fit()
                                         .centerCrop()
                                         .into(imageView, new Callback() {

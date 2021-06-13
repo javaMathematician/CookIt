@@ -1,7 +1,10 @@
 package org.slovenlypolygon.recipes.components.adapters;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -97,6 +100,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
         picasso.load(component.getImageURL())
                 .placeholder(R.drawable.loading_animation)
                 .networkPolicy(NetworkPolicy.OFFLINE)
+                .error(R.drawable.wifi_error_image)
                 .fit()
                 .centerCrop()
                 .into(ingredientViewHolder.imageView, new Callback() {
@@ -106,21 +110,23 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
 
                     @Override
                     public void onError(Exception e) {
-                        picasso.load(component.getImageURL())
-                                .placeholder(R.drawable.loading_animation)
-                                .error(R.drawable.error_image)
-                                .fit()
-                                .centerCrop()
-                                .into(ingredientViewHolder.imageView, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                    }
+                        if (checkConnection(ingredientViewHolder.itemView)) {
+                            picasso.load(component.getImageURL())
+                                    .placeholder(R.drawable.loading_animation)
+                                    .error(R.drawable.no_image_error)
+                                    .fit()
+                                    .centerCrop()
+                                    .into(ingredientViewHolder.imageView, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+                                        }
 
-                                    @Override
-                                    public void onError(Exception e) {
-                                        System.out.println(component.getName());
-                                    }
-                                });
+                                        @Override
+                                        public void onError(Exception e) {
+                                            System.out.println(component.getName());
+                                        }
+                                    });
+                        }
                     }
                 });
     }
@@ -183,8 +189,28 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
         this.contextThemeWrapper = contextThemeWrapper;
     }
 
+    public boolean checkConnection(View itemView) {
+        boolean status = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager) itemView.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getNetworkInfo(0);
+            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
+                status = true;
+            } else {
+                netInfo = cm.getNetworkInfo(1);
+                if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED)
+                    status = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return status;
+    }
+
     public void clearItemLongClickCallback() {
-        longClickListenerCallback = component -> {}; // у категорий нет действия на лонг клик, поэтому надо очистить
+        longClickListenerCallback = component -> {
+        }; // у категорий нет действия на лонг клик, поэтому надо очистить
     }
 
     public void updateComponent(Component component) {

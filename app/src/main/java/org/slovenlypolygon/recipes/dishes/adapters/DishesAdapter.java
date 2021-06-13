@@ -110,6 +110,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         picasso.load(dish.getImageURL())
                 .placeholder(R.drawable.loading_animation)
                 .networkPolicy(NetworkPolicy.OFFLINE)
+                .error(R.drawable.wifi_error_image)
                 .fit()
                 .centerCrop()
                 .into(dishViewHolder.imageView, new Callback() {
@@ -121,7 +122,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                     public void onError(Exception e) {
                         picasso.load(dish.getImageURL())
                                 .placeholder(R.drawable.loading_animation)
-                                .error(R.drawable.error_image)
+                                .error(R.drawable.wifi_error_image)
                                 .fit()
                                 .centerCrop()
                                 .into(dishViewHolder.imageView, new Callback() {
