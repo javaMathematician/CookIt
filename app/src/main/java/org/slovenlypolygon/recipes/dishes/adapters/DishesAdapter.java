@@ -27,6 +27,7 @@ import org.slovenlypolygon.recipes.dishes.stepbystep.StepByStepFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
@@ -195,6 +196,12 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
 
     public Dish getDish(int position) {
         return dishes.get(position);
+    }
+
+    public void addUniqueDishes(List<FrontendDish> frontendDishes) {
+        dishes.addAll(frontendDishes);
+        dishes = new ArrayList<>(new TreeSet<>(dishes));
+        notifyDataSetChanged();
     }
 
     public static class DishViewHolder extends RecyclerView.ViewHolder {

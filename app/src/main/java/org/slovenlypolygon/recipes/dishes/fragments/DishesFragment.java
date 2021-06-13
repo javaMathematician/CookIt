@@ -116,7 +116,6 @@ public class DishesFragment extends AbstractSearchableContentFragment {
     }
 
     protected void getMatches() {
-        dishesAdapter.clearDataset();
         provider.subscribeOn(Schedulers.newThread())
                 .map(this::splitIngredients)
                 .buffer(600, TimeUnit.MILLISECONDS)

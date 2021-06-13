@@ -1,9 +1,7 @@
 package org.slovenlypolygon.recipes.dishes.entitys;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.ToIntFunction;
 
 public class FrontendDish extends Dish implements Comparable<FrontendDish> {
     private Set<String> selectedIngredients = new HashSet<>();
@@ -38,6 +36,6 @@ public class FrontendDish extends Dish implements Comparable<FrontendDish> {
 
     @Override
     public int compareTo(FrontendDish o) {
-        return Comparator.comparingInt((ToIntFunction<FrontendDish>) value -> value.selectedIngredients.size()).compare(this, o);
+        return getName().compareTo(o.getName());
     }
 }
