@@ -120,7 +120,7 @@ public class SettingsFragment extends SimpleCookItFragment {
     private SwitchMaterial switchMaterial;
     private CardView cardView;
     private Button button;
-    private TextView helpText;
+    private TextView label;
     private ConstraintLayout constraintLayout;
 
     @Nullable
@@ -129,11 +129,13 @@ public class SettingsFragment extends SimpleCookItFragment {
         View rootView = inflater.inflate(R.layout.settings_fragment, container, false);
         setRetainInstance(true);
 
-        switchMaterial = rootView.findViewById(R.id.download_pictures_switch);
+        TextView helpText = rootView.findViewById(R.id.helpText);
+
+        label = rootView.findViewById(R.id.helpLabel);
         cardView = rootView.findViewById(R.id.helpCard);
         button = rootView.findViewById(R.id.expandHelpButton);
-        helpText = rootView.findViewById(R.id.helpText);
         constraintLayout = rootView.findViewById(R.id.expandableHelp);
+        switchMaterial = rootView.findViewById(R.id.download_pictures_switch);
 
         helpText.setText(Html.fromHtml(HTML, Html.FROM_HTML_MODE_COMPACT));
 
@@ -144,9 +146,11 @@ public class SettingsFragment extends SimpleCookItFragment {
             if (constraintLayout.getVisibility() == View.GONE) {
                 constraintLayout.setVisibility(View.VISIBLE);
                 button.setBackgroundResource(R.drawable.expandable_arrow_up);
+                label.setVisibility(View.GONE);
             } else {
                 constraintLayout.setVisibility(View.GONE);
                 button.setBackgroundResource(R.drawable.expandable_arrow_down);
+                label.setVisibility(View.VISIBLE);
             }
         });
 
