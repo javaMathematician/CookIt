@@ -13,7 +13,6 @@ import org.slovenlypolygon.recipes.components.entitys.ComponentType;
 import org.slovenlypolygon.recipes.utils.DeleteSubstrate;
 
 public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
-
     @Override
     protected ComponentType setDataSource() {
         return ComponentType.FAVORITE_COMPONENT;

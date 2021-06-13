@@ -24,16 +24,11 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="3aee31ab-4aaf-4a3b-9209-6b2d19aec44c">
-        <schema name="main" object-types="table, view, constraint, index, column, dataset trigger" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="3aee31ab-4aaf-4a3b-9209-6b2d19aec44c">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[SELECT dishComponentCrossReference.componentID FROM component, dishComponentCrossReference 
-WHERE dishID = 185 AND qIsIngredient = 0 group by dishComponentCrossReference.componentID]]></console>
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -79,9 +74,9 @@ WHERE dishID = 185 AND qIsIngredient = 0 group by dishComponentCrossReference.co
           <driver-library value="" />
           <driver value="" />
           <url-type value="FILE" />
-          <host value="" />
-          <port value="" />
-          <database value="" />
+          <host value="localhost" />
+          <port value="1234" />
+          <database value="database" />
           <files>
             <file path="C:\CookIt\app\src\main\assets\database\global.sqlite3" schema="main" />
           </files>

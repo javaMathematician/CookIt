@@ -17,8 +17,8 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,22 +56,23 @@ public class OCR {
 
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                     String string = IOUtil.toString(reader);
-
+                    Set<String> strings = new TreeSet<>();
                     Log.d("TAG", string);
 
                     JSONObject object = (JSONObject) new JSONObject(string).getJSONArray("ParsedResults").get(0);
-                    String parsedRaw = object.getString("ParsedText").toLowerCase();
-                    String regex = "[а-я]{4,}|[nutela]{4,}";
+                    String[] parsedRaw = object.getString("ParsedText").toLowerCase().split("\\r\\n");
 
-                    Set<String> parsedWords = new HashSet<>();
-                    Pattern pattern = Pattern.compile(regex);
-                    Matcher matcher = pattern.matcher(parsedRaw);
+                    Pattern pattern = Pattern.compile("[а-яnutela ]{3,}");
 
-                    while (matcher.find()) {
-                        parsedWords.add(parsedRaw.substring(matcher.start(), matcher.end()));
+                    for (String item : parsedRaw) {
+                        Matcher matcher = pattern.matcher(item);
+
+                        if (matcher.find()) {
+                            strings.add(item.substring(matcher.start(), matcher.end()));
+                        }
                     }
 
-                    emitter.onNext(parsedWords);
+                    emitter.onNext(strings);
                 }
             }
 

@@ -28,6 +28,7 @@ import org.slovenlypolygon.recipes.backend.DishComponentDAO;
 import org.slovenlypolygon.recipes.components.entitys.Component;
 import org.slovenlypolygon.recipes.dishes.fragments.DishesFragment;
 
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
@@ -100,12 +101,16 @@ public class BillScanFragment extends SimpleCookItFragment {
                             progressDialog.incrementProgressBy(1);
                             parsed.addAll(strings);
                         }, throwable -> {
-                            Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            if (throwable instanceof UnknownHostException) {
+                                Toast.makeText(requireContext(), R.string.internet_required, Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+
                             throwable.printStackTrace();
+                            if (progressDialog != null) progressDialog.dismiss();
 
-                            if (alertDialog != null) alertDialog.dismiss();
-
-                            alertDialog = null;
+                            progressDialog = null;
                         }, () -> {
                             if (progressDialog != null) progressDialog.dismiss();
 
@@ -147,11 +152,10 @@ public class BillScanFragment extends SimpleCookItFragment {
                 .subscribe(component -> {
                     progressDialog.incrementProgressBy(1);
 
-                    if (parsed.stream().anyMatch(string -> component.getName().toLowerCase().contains(string))) {
+                    if (parsed.stream().anyMatch(string -> containsString(component, string))) {
                         foundComponents.add(component);
                     }
                 }, throwable -> {
-                    Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     throwable.printStackTrace();
 
                     progressDialog.dismiss();
@@ -198,6 +202,12 @@ public class BillScanFragment extends SimpleCookItFragment {
                         alertDialog.show();
                     }
                 });
+    }
+
+    private boolean containsString(Component component, String string) {
+        String componentName = component.getName().toLowerCase();
+
+        return componentName.contains(string) || string.contains(componentName);
     }
 
     @Override
