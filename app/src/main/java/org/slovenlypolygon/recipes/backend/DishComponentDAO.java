@@ -155,10 +155,10 @@ public class DishComponentDAO {
             Set<Integer> componentsIDs = new HashSet<>();
             String joinedDishesIDs = Joiner.on(", ").join(dishesIDs);
 
-            String queryForComponents = "SELECT component.componentID FROM component, dishComponentCrossReference " +
+            String queryForComponents = "SELECT dishComponentCrossReference.componentID FROM component, dishComponentCrossReference " +
                     "WHERE dishID IN (" + joinedDishesIDs + ") AND qIsIngredient = 0 " +
-                    "GROUP BY component.componentID";
-
+                    "group by dishComponentCrossReference.componentID";
+            
             try (Cursor cursor = database.rawQuery(queryForComponents, null)) {
                 while (cursor.moveToNext()) {
                     componentsIDs.add(cursor.getInt(0));

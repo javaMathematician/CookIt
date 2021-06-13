@@ -11,7 +11,7 @@ public class RecommendedDishesFragment extends DishesFragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        initializeDataProvider();
         if (!initialized) {
             getMatches();
         }

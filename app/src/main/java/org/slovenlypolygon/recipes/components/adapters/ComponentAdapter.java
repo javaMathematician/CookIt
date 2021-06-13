@@ -118,7 +118,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
 
                                     @Override
                                     public void onError(Exception e) {
-                                        e.printStackTrace();
+                                        System.out.println(component.getName());
                                     }
                                 });
                     }

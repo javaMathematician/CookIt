@@ -24,21 +24,23 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="3aee31ab-4aaf-4a3b-9209-6b2d19aec44c">
+        <schema name="main" object-types="table, view, constraint, index, column, dataset trigger" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="3b0cbda1-a972-41cb-bb8a-671ea9bb402e">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[SELECT * from component where "componentID" > 400]]></console>
+    <connection id="3aee31ab-4aaf-4a3b-9209-6b2d19aec44c">
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[SELECT dishComponentCrossReference.componentID FROM component, dishComponentCrossReference 
+WHERE dishID = 185 AND qIsIngredient = 0 group by dishComponentCrossReference.componentID]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="3b0cbda1-a972-41cb-bb8a-671ea9bb402e" />
-  </component>
-  <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="3b0cbda1-a972-41cb-bb8a-671ea9bb402e" dataset="main.shoppingList" active-filter-id="" />
+    <connection id="3aee31ab-4aaf-4a3b-9209-6b2d19aec44c" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -66,7 +68,7 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="3b0cbda1-a972-41cb-bb8a-671ea9bb402e" active="true">
+      <connection id="3aee31ab-4aaf-4a3b-9209-6b2d19aec44c" active="true">
         <database>
           <name value="Connection" />
           <description value="" />
@@ -77,11 +79,11 @@
           <driver-library value="" />
           <driver value="" />
           <url-type value="FILE" />
-          <host value="localhost" />
-          <port value="1234" />
-          <database value="database" />
+          <host value="" />
+          <port value="" />
+          <database value="" />
           <files>
-            <file path="C:\Users\Seryozha\StudioProjects\CookIt\app\src\main\assets\database\global.sqlite3" schema="main" />
+            <file path="C:\CookIt\app\src\main\assets\database\global.sqlite3" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />
