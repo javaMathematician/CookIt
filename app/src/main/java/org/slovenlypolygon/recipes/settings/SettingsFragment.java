@@ -1,6 +1,7 @@
 package org.slovenlypolygon.recipes.settings;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.transition.AutoTransition;
@@ -160,10 +161,14 @@ public class SettingsFragment extends SimpleCookItFragment {
     @Override
     public void onActivityCreated(@Nullable @javax.annotation.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE);
+
         switchMaterial.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            activity.getSharedPreferences("org.slovenlypolygon.recipes_preferences", Context.MODE_PRIVATE).edit().putBoolean("download_pictures", isChecked).apply();
+            sharedPreferences.edit().putBoolean("download_pictures", isChecked).apply();
             activity.notifySharedPreferencesChanged();
         });
+
+        switchMaterial.setChecked(sharedPreferences.getBoolean("download_pictures", false));
     }
 }
 
