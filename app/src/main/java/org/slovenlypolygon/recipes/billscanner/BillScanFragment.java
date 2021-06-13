@@ -1,5 +1,6 @@
 package org.slovenlypolygon.recipes.billscanner;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -45,6 +46,7 @@ import javax.annotation.Nullable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -52,8 +54,8 @@ import pl.aprilapps.easyphotopicker.MediaFile;
 import pl.aprilapps.easyphotopicker.MediaSource;
 
 public class BillScanFragment extends SimpleCookItFragment {
-    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
-    public static final String APP_TAG = "CookIt";
+    private final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    private static final String APP_TAG = "CookIt";
 
     private ContextThemeWrapper contextThemeWrapper;
     private Set<String> parsed = new HashSet<>();
@@ -91,7 +93,7 @@ public class BillScanFragment extends SimpleCookItFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
             processImage(takenImage);
         }
@@ -115,6 +117,7 @@ public class BillScanFragment extends SimpleCookItFragment {
     }
 
     private void processImage(Bitmap bitmap) {
+        RxJavaPlugins.setErrorHandler(throwable -> { });
         parsed = new HashSet<>();
 
         contextThemeWrapper = new ContextThemeWrapper(requireContext(), ((MainActivity) requireActivity()).getCurrentTheme().equals("Dark") ? R.style.DarkProgressDialog : R.style.LightProgressDialog);
@@ -128,7 +131,10 @@ public class BillScanFragment extends SimpleCookItFragment {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(strings -> {
-                    progressDialog.incrementProgressBy(1);
+                    if (progressDialog != null) {
+                        progressDialog.incrementProgressBy(1);
+                    }
+
                     parsed.addAll(strings);
                 }, throwable -> {
                     if (throwable instanceof UnknownHostException) {
@@ -138,19 +144,27 @@ public class BillScanFragment extends SimpleCookItFragment {
                     }
 
                     throwable.printStackTrace();
-                    if (progressDialog != null) progressDialog.dismiss();
 
-                    progressDialog = null;
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
                 }, () -> {
-                    if (progressDialog != null) progressDialog.dismiss();
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
 
-                    progressDialog = null;
                     startSearching();
                 });
 
         progressDialog.setOnCancelListener(dialog -> {
-            if (!disposable.isDisposed()) disposable.dispose();
+            if (!disposable.isDisposed()) {
+                disposable.dispose();
+            }
+
             progressDialog = null;
+            Toast.makeText(requireContext(), R.string.canceled, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -257,9 +271,9 @@ public class BillScanFragment extends SimpleCookItFragment {
         }
     }
 
-    public void onLaunchCamera() {
+    private void onLaunchCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        photoFile = getPhotoFileUri("CookItBillPhoto.jpg");
+        photoFile = getPhotoFileUri();
 
         Uri fileProvider = FileProvider.getUriForFile(requireContext(), "org.slovenlypolygon.recipes.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
@@ -269,13 +283,13 @@ public class BillScanFragment extends SimpleCookItFragment {
         }
     }
 
-    public File getPhotoFileUri(String fileName) {
+    private File getPhotoFileUri() {
         File mediaStorageDir = new File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
 
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
             Log.d(APP_TAG, "failed to create directory");
         }
 
-        return new File(mediaStorageDir.getPath() + File.separator + fileName);
+        return new File(mediaStorageDir.getPath() + File.separator + "CookItBillPhoto.jpg");
     }
 }
