@@ -44,11 +44,11 @@
     <!-- Side menu -->
     <string name="menu">Меню</string>
     <string name="dishes">Все рецепты</string>
+    <string name="settings">Настройки</string>
     <string name="categories">Категории</string>
     <string name="ingredients">Ингредиенты</string>
     <string name="refrigerator">Холодильник</string>
     <string name="bill_scan">Сканировать чек</string>
-    <string name="settings">Настройки и информация</string>
     <string name="shopping_lists">Списки покупок</string>
     <string name="favorites_dishes">Избранные блюда</string>
     <string name="recommendations">Вам могут понравиться</string>

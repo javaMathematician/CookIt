@@ -101,8 +101,11 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         drawerLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             ImageButton themeButton = findViewById(R.id.themeButton);
-            themeButton.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
-            themeButton.setOnClickListener(item -> changeTheme());
+
+            if (themeButton != null) {
+                themeButton.setBackgroundResource(Objects.equals(sharedPreferences.getString(THEME, "Light"), "Dark") ? R.drawable.dark_mode : R.drawable.light_mode);
+                themeButton.setOnClickListener(item -> changeTheme());
+            }
         });
 
         toggle.syncState();
