@@ -38,7 +38,10 @@ public class FavoriteIngredientsFragment extends AbstractComponentsFragment {
         super.onResume();
 
         tabComponentAdapter.clearSelected();
+        selectedComponents.clear();
+
         addDataSource();
+        updateButton();
     }
 
     @Override
