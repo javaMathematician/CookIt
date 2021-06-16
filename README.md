@@ -23,17 +23,14 @@ CookIt! — приложение, которое подберет для Вас 
 Установочный APK-файл собран, Вы можете скачать его [здесь](./app/release/app-release.apk).
 
 ## Дополнительные материалы
-[Здесь](https://docs.google.com/presentation/d/1FZTXho6n1ZGT4v0Jj_Zoge-rPRDOJFGpTgEtpkwiUfM/edit?usp=sharing) Вы можете ознакомиться с презентацией, а [тут](https://youtu.be/awFPdkjSGAg) — с видео.
+[Здесь](https://docs.google.com/presentation/d/1-8a-D1saWtJf-N4c2B9KIM7-cMjjOr_FGneT4oYdDqk/edit?usp=sharing) Вы можете ознакомиться с презентацией, а [тут](https://youtu.be/awFPdkjSGAg) — с видео.
 
 ## Скриншоты
-<img src = "./app/screenshots/Screenshot_1623528320.png" width = 480 />
-<img src = "./app/screenshots/Screenshot_1623528335.png" width = 480 />
-<img src = "./app/screenshots/Screenshot_1623528383.png" width = 480 />
-<img src = "./app/screenshots/Screenshot_1623528395.png" width = 480 />
-<img src = "./app/screenshots/Screenshot_1623528424.png" width = 480 />
-<img src = "./app/screenshots/Screenshot_1623529693.png" width = 480 />
-<img src = "./app/screenshots/Screenshot_1623530391.png" width = 480 />
-<img src = "./app/screenshots/Screenshot_12.06.21-23.52.58_CookIt!.png" width = 480 />
+<img src = "./app/screenshots/Screenshot_16.06.21-02.48.55_CookIt!.png" width = 440 /> <img src = "./app/screenshots/Screenshot_16.06.21-02.49.05_CookIt!.png" width = 440 />
+<img src = "./app/screenshots/Screenshot_16.06.21-02.49.58_CookIt!.png" width = 440 /> <img src = "./app/screenshots/Screenshot_16.06.21-02.50.05_CookIt!.png" width = 440 />
+<img src = "./app/screenshots/Screenshot_16.06.21-02.50.25_CookIt!.png" width = 440 /> <img src = "./app/screenshots/Screenshot_16.06.21-02.50.44_CookIt!.png" width = 440 />
+<img src = "./app/screenshots/Screenshot_16.06.21-02.52.02_CookIt!.png" width = 440 /> <img src = "./app/screenshots/Screenshot_16.06.21-02.52.21_CookIt!.png" width = 440 />
+<img src = "./app/screenshots/Screenshot_16.06.21-02.53.22_CookIt!.png" width = 440 /> <img src = "./app/screenshots/Screenshot_16.06.21-02.53.35_CookIt!.png" width = 440 />
 
 ## Дисклеймер
 Все данные взяты с [eda.ru](https://www.eda.ru). Приложение никак не монетизируется, не показывает рекламу и написано с целью популяризации сайта и рецептов на нём на некоммерческой основе.
