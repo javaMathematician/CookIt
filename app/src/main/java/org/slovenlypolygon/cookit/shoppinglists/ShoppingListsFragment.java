@@ -13,12 +13,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.cookit.R;
 import org.slovenlypolygon.cookit.abstractfragments.SimpleCookItFragment;
 import org.slovenlypolygon.cookit.backend.DatabaseFragment;
 import org.slovenlypolygon.cookit.backend.DishComponentDAO;
 import org.slovenlypolygon.cookit.utils.DeleteSubstrate;
+
+import javax.annotation.Nonnull;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -30,7 +31,7 @@ public class ShoppingListsFragment extends SimpleCookItFragment {
     private TextView textView;
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@Nonnull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.shopping_lists_fragment, container, false);
         setRetainInstance(true);
 

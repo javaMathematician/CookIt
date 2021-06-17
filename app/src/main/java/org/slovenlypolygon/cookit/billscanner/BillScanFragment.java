@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
@@ -25,7 +24,6 @@ import androidx.core.content.FileProvider;
 
 import com.google.common.base.Joiner;
 
-import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.cookit.MainActivity;
 import org.slovenlypolygon.cookit.R;
 import org.slovenlypolygon.cookit.abstractfragments.SimpleCookItFragment;
@@ -35,6 +33,8 @@ import org.slovenlypolygon.cookit.components.entitys.Component;
 import org.slovenlypolygon.cookit.dishes.fragments.DishesFragment;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -48,18 +48,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import pl.aprilapps.easyphotopicker.DefaultCallback;
-import pl.aprilapps.easyphotopicker.EasyImage;
-import pl.aprilapps.easyphotopicker.MediaFile;
-import pl.aprilapps.easyphotopicker.MediaSource;
 
 public class BillScanFragment extends SimpleCookItFragment {
     private final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    private final static int PICK_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
     private static final String APP_TAG = "CookIt";
 
     private ContextThemeWrapper contextThemeWrapper;
     private Set<String> parsed = new HashSet<>();
-    private EasyImage easyImage;
     private File photoFile;
 
     @Nullable private ProgressDialog progressDialog;
@@ -68,11 +64,6 @@ public class BillScanFragment extends SimpleCookItFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        easyImage = new EasyImage.Builder(requireContext())
-                .setCopyImagesToPublicGalleryFolder(false)
-                .allowMultiple(true)
-                .build();
     }
 
     @Override
@@ -84,7 +75,7 @@ public class BillScanFragment extends SimpleCookItFragment {
         CardView gallery = inflate.findViewById(R.id.galleryOpener);
 
         camera.setOnClickListener(t -> onLaunchCamera());
-        gallery.setOnClickListener(t -> easyImage.openGallery(this));
+        gallery.setOnClickListener(t -> onLaunchGallery());
 
         return inflate;
     }
@@ -93,27 +84,20 @@ public class BillScanFragment extends SimpleCookItFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-            processImage(takenImage);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+                processImage(BitmapFactory.decodeFile(photoFile.getAbsolutePath()));
+            } else if (requestCode == PICK_IMAGE_ACTIVITY_REQUEST_CODE) {
+                try (InputStream imageStream = requireContext().getContentResolver().openInputStream(Objects.requireNonNull(data).getData())) {
+                    processImage(BitmapFactory.decodeStream(imageStream));
+                } catch (IOException e) {
+                    Toast.makeText(requireContext(), getString(R.string.something_wrong) + ": " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            Toast.makeText(requireContext(), R.string.photo_closed, Toast.LENGTH_SHORT).show();
         }
-
-        easyImage.handleActivityResult(requestCode, resultCode, data, requireActivity(), new DefaultCallback() {
-            @Override
-            public void onMediaFilesPicked(@NotNull MediaFile[] mediaFiles, @NotNull MediaSource mediaSource) {
-                processImage(BitmapFactory.decodeFile(mediaFiles[0].getFile().getAbsolutePath()));
-            }
-
-            @Override
-            public void onImagePickerError(@NonNull Throwable error, @NonNull MediaSource source) {
-                error.printStackTrace();
-            }
-
-            @Override
-            public void onCanceled(@NonNull MediaSource source) {
-                Toast.makeText(requireContext(), R.string.incorrect_photo, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void processImage(Bitmap bitmap) {
@@ -281,6 +265,10 @@ public class BillScanFragment extends SimpleCookItFragment {
         if (intent.resolveActivity(requireContext().getPackageManager()) != null) {
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
+    }
+
+    private void onLaunchGallery() {
+        startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), PICK_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
     private File getPhotoFileUri() {

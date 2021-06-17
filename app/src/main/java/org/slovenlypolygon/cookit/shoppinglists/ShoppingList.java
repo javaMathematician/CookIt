@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
-import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.cookit.dishes.entitys.Dish;
 
 import java.util.Comparator;
@@ -13,9 +12,9 @@ import javax.annotation.Nonnull;
 
 public class ShoppingList implements Comparable<ShoppingList> {
     private final int id;
-    @NotNull private final Dish dish;
+    @Nonnull private final Dish dish;
 
-    public ShoppingList(int id, @NotNull Dish dish) {
+    public ShoppingList(int id, @Nonnull Dish dish) {
         this.id = id;
         this.dish = dish;
     }
@@ -24,7 +23,7 @@ public class ShoppingList implements Comparable<ShoppingList> {
         return this.id;
     }
 
-    @NotNull
+    @Nonnull
     public final Dish getDish() {
         return this.dish;
     }

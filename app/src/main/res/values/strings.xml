@@ -24,7 +24,7 @@
     <string name="nothing_found">Ингредиенты не найдены</string>
     <string name="added_to_favorites">Добавлено в избранное</string>
     <string name="deleted_from_favorites">Удалено из избранного</string>
-    <string name="incorrect_photo">Попробуйте другое приложение (возможно, Вы отменили выбор фото)</string>
+    <string name="photo_closed">Возможно, Вы отменили выбор фото</string>
     <string name="found_following_components">Найдены следующие ингредиенты:</string>
     <string name="added_to_shopping_list">Ингредиенты добавлены в список покупок</string>
     <string name="removed_from_shopping_list">Ингредиенты удалены из списка покупок</string>
@@ -67,4 +67,5 @@
     <string name="searching_ingredients">Ищем ингредиенты…</string>
     <string name="canceled">Отменено</string>
     <string name="scroll">scroll</string>
+    <string name="something_wrong">Что-то пошло не так</string>
 </resources>

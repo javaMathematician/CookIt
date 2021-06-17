@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.google.common.base.Joiner;
 
-import org.jetbrains.annotations.NotNull;
 import org.slovenlypolygon.cookit.components.entitys.Component;
 import org.slovenlypolygon.cookit.components.entitys.ComponentType;
 import org.slovenlypolygon.cookit.dishes.entitys.Dish;
@@ -21,6 +20,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 
@@ -31,8 +32,8 @@ public class DishComponentDAO {
         this.database = database;
     }
 
-    @NotNull
-    private FrontendDish getDishFromCursor(@NotNull Cursor cursor) {
+    @Nonnull
+    private FrontendDish getDishFromCursor(@Nonnull Cursor cursor) {
         int dishID = cursor.getInt(cursor.getColumnIndex("dishID"));
         String dishName = cursor.getString(cursor.getColumnIndex("dishName"));
         String dishImageURL = cursor.getString(cursor.getColumnIndex("dishImageURL"));
@@ -41,7 +42,7 @@ public class DishComponentDAO {
         return new FrontendDish(dishID, dishName, dishImageURL, dishURL);
     }
 
-    @NotNull
+    @Nonnull
     private FrontendDish getRichDish(FrontendDish dish) {
         FrontendDish clone = new FrontendDish(dish);
 
@@ -50,8 +51,8 @@ public class DishComponentDAO {
         return clone;
     }
 
-    @NotNull
-    private Component getComponentFromCursor(@NotNull Cursor cursor) {
+    @Nonnull
+    private Component getComponentFromCursor(@Nonnull Cursor cursor) {
         int id = cursor.getInt(cursor.getColumnIndex("componentID"));
         int qIsIngredient = cursor.getInt(cursor.getColumnIndex("qIsIngredient"));
 
@@ -61,7 +62,7 @@ public class DishComponentDAO {
         return new Component(id, qIsIngredient == 1 ? ComponentType.INGREDIENT : ComponentType.CATEGORY, name, imageURL);
     }
 
-    @NotNull
+    @Nonnull
     private Observable<FrontendDish> getDishesFromComponentIDs(Set<Integer> componentIDs) {
         return Observable.create(emitter -> {
             String joinedIDs = Joiner.on(", ").join(componentIDs);
@@ -86,7 +87,7 @@ public class DishComponentDAO {
         });
     }
 
-    @NotNull
+    @Nonnull
     private Set<Integer> getFavoriteDishIDs() {
         Set<Integer> ids = new HashSet<>();
 
@@ -117,7 +118,7 @@ public class DishComponentDAO {
         });
     }
 
-    public Observable<FrontendDish> getDishesFromComponents(@NotNull Set<Component> components) {
+    public Observable<FrontendDish> getDishesFromComponents(@Nonnull Set<Component> components) {
         if (components.isEmpty()) {
             return getAllDishes();
         }
@@ -238,7 +239,7 @@ public class DishComponentDAO {
         });
     }
 
-    private void fillCleanIngredients(@NotNull FrontendDish dish) {
+    private void fillCleanIngredients(@Nonnull FrontendDish dish) {
         String query = "SELECT qIsIngredient, component.componentID, componentName, componentImageURL FROM component " +
                 "JOIN dishComponentCrossReference ON dishComponentCrossReference.componentID = component.componentID " +
                 "JOIN dish ON dishComponentCrossReference.dishID = dish.dishID " +
@@ -255,7 +256,7 @@ public class DishComponentDAO {
         }
     }
 
-    private void fillDirtyIngredients(@NotNull FrontendDish dish) {
+    private void fillDirtyIngredients(@Nonnull FrontendDish dish) {
         String query = "SELECT content FROM rawIngredient WHERE dishID = " + dish.getId();
         Set<String> dirtyIngredients = new TreeSet<>(Comparator.comparing(String::length));
 
@@ -268,7 +269,7 @@ public class DishComponentDAO {
         dish.setDirtyIngredients(dirtyIngredients);
     }
 
-    private void fillSteps(@NotNull FrontendDish dish) {
+    private void fillSteps(@Nonnull FrontendDish dish) {
         String query = "SELECT stepText, stepImageUrl FROM step WHERE dishID = " + dish.getId() + " ORDER BY localOrder";
 
         try (Cursor cursor = database.rawQuery(query, null)) {
@@ -290,15 +291,15 @@ public class DishComponentDAO {
         }
     }
 
-    public void addToFavorites(@NotNull FrontendDish dish) {
+    public void addToFavorites(@Nonnull FrontendDish dish) {
         database.execSQL("INSERT INTO favoriteDishes (dishID) VALUES (" + dish.getId() + ")");
     }
 
-    public void removeFromFavorites(@NotNull Dish dish) {
+    public void removeFromFavorites(@Nonnull Dish dish) {
         database.execSQL("DELETE FROM favoriteDishes WHERE dishID = " + dish.getId());
     }
 
-    public boolean containsFavorites(@NotNull Dish dish) {
+    public boolean containsFavorites(@Nonnull Dish dish) {
         String query = "SELECT count(*) FROM favoriteDishes WHERE dishID = " + dish.getId();
 
         try (Cursor cursor = database.rawQuery(query, null)) {
@@ -307,19 +308,19 @@ public class DishComponentDAO {
         }
     }
 
-    public void deleteFavorite(@NotNull Dish dish) {
+    public void deleteFavorite(@Nonnull Dish dish) {
         database.execSQL("DELETE FROM favoriteDishes WHERE dishID = " + dish.getId());
     }
 
-    public void addToFavorites(@NotNull Component component) {
+    public void addToFavorites(@Nonnull Component component) {
         database.execSQL("INSERT INTO favoriteComponents (componentID) VALUES (" + component.getId() + ")");
     }
 
-    public void removeFromFavorites(@NotNull Component component) {
+    public void removeFromFavorites(@Nonnull Component component) {
         database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
     }
 
-    public boolean containsFavorites(@NotNull Component component) {
+    public boolean containsFavorites(@Nonnull Component component) {
         String query = "SELECT count(*) FROM favoriteComponents WHERE componentID = " + component.getId();
 
         try (Cursor cursor = database.rawQuery(query, null)) {
@@ -328,15 +329,15 @@ public class DishComponentDAO {
         }
     }
 
-    public void deleteFavorite(@NotNull Component component) {
+    public void deleteFavorite(@Nonnull Component component) {
         database.execSQL("DELETE FROM favoriteComponents WHERE componentID = " + component.getId());
     }
 
-    public void addToShoppingList(@NotNull Dish dish) {
+    public void addToShoppingList(@Nonnull Dish dish) {
         database.execSQL("INSERT INTO shoppingList (dishID) VALUES (" + dish.getId() + ")");
     }
 
-    public boolean containsShoppingList(@NotNull Dish dish) {
+    public boolean containsShoppingList(@Nonnull Dish dish) {
         String query = "SELECT count(*) FROM shoppingList WHERE dishID = " + dish.getId();
 
         try (Cursor cursor = database.rawQuery(query, null)) {
@@ -345,7 +346,7 @@ public class DishComponentDAO {
         }
     }
 
-    public void removeFromShoppingList(@NotNull Dish dish) {
+    public void removeFromShoppingList(@Nonnull Dish dish) {
         database.execSQL("DELETE FROM shoppingList WHERE dishID = " + dish.getId());
     }
 }

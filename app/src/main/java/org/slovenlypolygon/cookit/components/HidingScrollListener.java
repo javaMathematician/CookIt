@@ -3,14 +3,12 @@ package org.slovenlypolygon.cookit.components;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jetbrains.annotations.NotNull;
-
 public abstract class HidingScrollListener extends RecyclerView.OnScrollListener {
     private boolean controlsVisible = true;
     private int scrolledDistance;
 
     @Override
-    public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
+    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
 
         if (scrolledDistance > 20 && controlsVisible) {

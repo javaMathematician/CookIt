@@ -17,7 +17,7 @@
     </queries>
 
     <application
-        android:name="org.slovenlypolygon.cookit.GlobalInitializer"
+        android:name=".GlobalInitializer"
         android:allowBackup="false"
         android:icon="@mipmap/logo_cook_it_main"
         android:label="@string/app_name"
@@ -28,7 +28,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name="org.slovenlypolygon.cookit.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|screenLayout"
             android:label="@string/app_name">
 
