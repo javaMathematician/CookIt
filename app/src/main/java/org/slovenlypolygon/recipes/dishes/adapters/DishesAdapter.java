@@ -152,10 +152,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
                 final FilterResults oReturn = new FilterResults();
                 final List<Dish> results = new ArrayList<>();
 
-                if (original.isEmpty()) {
-                    original = dishes;
-                }
-
+                if (original == null || original.isEmpty()) original = dishes;
                 if (constraint != null) {
                     if (!original.isEmpty()) {
                         for (Dish iterate : original) {

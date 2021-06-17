@@ -159,5 +159,7 @@ public class DishesFragment extends AbstractSearchableContentFragment {
         if (!initialized) {
             initialized = true;
         }
+
+        dishesAdapter.notifyDataSetChanged(); // убедиться в том, что контент будет показан
     }
 }

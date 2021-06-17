@@ -35,7 +35,9 @@ import org.slovenlypolygon.recipes.components.entitys.Component;
 import org.slovenlypolygon.recipes.components.entitys.ComponentType;
 import org.slovenlypolygon.recipes.dishes.fragments.DishesFragment;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -182,11 +184,22 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
     }
 
     protected void addDataSource() {
+        List<Component> components = new ArrayList<>(1300);
+
         dao.getComponentByType(setDataSource())
                 .subscribeOn(Schedulers.newThread())
                 .buffer(300, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(componentAdapter::addComponents, Throwable::printStackTrace, this::checkQuantity);
+                .subscribe(componentList -> {
+                    componentAdapter.addComponents(componentList);
+                    components.addAll(componentList);
+                }, Throwable::printStackTrace, () -> { // костыль (на медленных телефонах не успевает подгружаться что-то, так что на всякий случай)
+                    if (!components.isEmpty()) {
+                        componentAdapter.setComponents(components);
+                    }
+
+                    checkQuantity();
+                });
     }
 
     protected void checkQuantity() {
@@ -294,12 +307,13 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
         if (actionsWithIngredientDialog != null) {
             actionsWithIngredientDialog.show();
         }
+
+        componentAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         updateData();
     }
 }

@@ -46,6 +46,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
 
     private Consumer<Component> longClickListenerCallback;
     private Consumer<Component> itemClickedCallback;
+    private Filter filter;
 
     public void deleteComponent(Component component) {
         int index = components.indexOf(component);
@@ -135,17 +136,14 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         this.ownerRecyclerView = recyclerView;
-    }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
+        filter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
                 final List<Component> results = new ArrayList<>();
 
-                if (original == null) original = components;
+                if (original == null || original.isEmpty()) original = components;
                 if (constraint != null) {
                     if (original != null && !original.isEmpty()) {
                         for (Component iterate : original) {
@@ -171,9 +169,19 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
         };
     }
 
-    public void addComponents(List<? extends Component> components) {
-        this.components.addAll(components);
-        this.components = new ArrayList<>(new TreeSet<>(components));
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setComponents(List<Component> components) {
+        this.components = components;
+        notifyDataSetChanged();
+    }
+
+    public void addComponents(List<? extends Component> list) {
+        components.addAll(list);
+        components = new ArrayList<>(new TreeSet<>(components));
         notifyDataSetChanged();
     }
 
@@ -198,8 +206,9 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
                 status = true;
             } else {
                 netInfo = cm.getNetworkInfo(1);
-                if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED)
+                if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
                     status = true;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
