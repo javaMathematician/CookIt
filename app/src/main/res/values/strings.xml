@@ -66,4 +66,5 @@
     <string name="parsing">Распознавание изображения…</string>
     <string name="searching_ingredients">Ищем ингредиенты…</string>
     <string name="canceled">Отменено</string>
+    <string name="scroll">scroll</string>
 </resources>

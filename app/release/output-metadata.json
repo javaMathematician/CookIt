@@ -4,14 +4,14 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "org.slovenlypolygon.recipes",
+  "applicationId": "org.slovenlypolygon.cookit",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 505,
-      "versionName": "1.0.0.5-1",
+      "versionCode": 506,
+      "versionName": "1.0.5-2",
       "outputFile": "app-release.apk"
     }
   ]

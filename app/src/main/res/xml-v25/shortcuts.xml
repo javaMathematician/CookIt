@@ -6,9 +6,9 @@
         android:shortcutShortLabel="@string/dishes">
 
         <intent
-            android:action="org.slovenlypolygon.recipes.ALL_DISHES"
-            android:targetClass="org.slovenlypolygon.recipes.MainActivity"
-            android:targetPackage="org.slovenlypolygon.recipes" />
+            android:action="org.slovenlypolygon.cookit.ALL_DISHES"
+            android:targetClass="org.slovenlypolygon.cookit.MainActivity"
+            android:targetPackage="org.slovenlypolygon.cookit" />
     </shortcut>
 
     <shortcut
@@ -18,9 +18,9 @@
         android:shortcutShortLabel="@string/favorites_dishes">
 
         <intent
-            android:action="org.slovenlypolygon.recipes.FAVORITE_DISHES"
-            android:targetClass="org.slovenlypolygon.recipes.MainActivity"
-            android:targetPackage="org.slovenlypolygon.recipes" />
+            android:action="org.slovenlypolygon.cookit.FAVORITE_DISHES"
+            android:targetClass="org.slovenlypolygon.cookit.MainActivity"
+            android:targetPackage="org.slovenlypolygon.cookit" />
     </shortcut>
 
     <shortcut
@@ -30,9 +30,9 @@
         android:shortcutShortLabel="@string/refrigerator">
 
         <intent
-            android:action="org.slovenlypolygon.recipes.REFRIGERATOR"
-            android:targetClass="org.slovenlypolygon.recipes.MainActivity"
-            android:targetPackage="org.slovenlypolygon.recipes" />
+            android:action="org.slovenlypolygon.cookit.REFRIGERATOR"
+            android:targetClass="org.slovenlypolygon.cookit.MainActivity"
+            android:targetPackage="org.slovenlypolygon.cookit" />
     </shortcut>
 
     <shortcut
@@ -42,8 +42,8 @@
         android:shortcutShortLabel="@string/shopping_lists">
 
         <intent
-            android:action="org.slovenlypolygon.recipes.SHOPPING_LISTS"
-            android:targetClass="org.slovenlypolygon.recipes.MainActivity"
-            android:targetPackage="org.slovenlypolygon.recipes" />
+            android:action="org.slovenlypolygon.cookit.SHOPPING_LISTS"
+            android:targetClass="org.slovenlypolygon.cookit.MainActivity"
+            android:targetPackage="org.slovenlypolygon.cookit" />
     </shortcut>
 </shortcuts>

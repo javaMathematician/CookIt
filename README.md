@@ -23,7 +23,7 @@ CookIt! — приложение, которое подберет для Вас 
 Установочный APK-файл собран, Вы можете скачать его [здесь](./app/release/app-release.apk).
 
 ## Дополнительные материалы
-[Здесь](https://docs.google.com/presentation/d/1-8a-D1saWtJf-N4c2B9KIM7-cMjjOr_FGneT4oYdDqk/edit?usp=sharing) Вы можете ознакомиться с презентацией, а [тут](https://youtu.be/awFPdkjSGAg) — с видео.
+[Здесь](https://drive.google.com/file/d/1fzDUmVzvNJ9gAA3vNmUrGBN4rsNqtCKA/view?usp=sharing) Вы можете ознакомиться с презентацией, а [тут](https://youtu.be/awFPdkjSGAg) — с видео.
 
 ## Скриншоты
 <img src = "./app/screenshots/Screenshot_16.06.21-02.48.55_CookIt!.png" width = 400 /> <img src = "./app/screenshots/Screenshot_16.06.21-02.49.05_CookIt!.png" width = 400 />

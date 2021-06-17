@@ -7,11 +7,11 @@ android {
 
     defaultConfig {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        applicationId "org.slovenlypolygon.recipes"
+        applicationId "org.slovenlypolygon.cookit"
         targetSdkVersion 30
         minSdkVersion 24
-        versionName "1.0.0.5-1"
-        versionCode 505
+        versionName "1.0.5-2"
+        versionCode 506
     }
 
     buildTypes {

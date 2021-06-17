@@ -44,7 +44,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="68dp"
         android:clickable="true"
-        android:contentDescription="scroll"
+        android:contentDescription="@string/scroll"
         android:focusable="true"
         app:backgroundTint="?attr/toolbarBackgroundColor"
         app:layout_constraintBottom_toBottomOf="@+id/DishesLinearLayout"
