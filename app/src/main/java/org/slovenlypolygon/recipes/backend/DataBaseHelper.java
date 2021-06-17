@@ -20,6 +20,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private final String DB_NAME;
     private SQLiteDatabase database;
 
+    public DataBaseHelper(@Nullable Context context) {
+        super(context, "global.sqlite3", null, 1);
+        this.context = context;
+
+        DB_NAME = super.getDatabaseName();
+        DB_PATH = context.getDatabasePath(DB_NAME).getPath();
+    }
+
     public DataBaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.context = context;

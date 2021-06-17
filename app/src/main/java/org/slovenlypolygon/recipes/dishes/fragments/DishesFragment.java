@@ -42,7 +42,6 @@ public class DishesFragment extends AbstractSearchableContentFragment {
     protected Observable<FrontendDish> provider;
     private FloatingActionButton scrollToTop;
     private boolean highlightSelected;
-    protected String savedSearchQuery = "";
     private Set<Component> selectedComponents = new HashSet<>();
 
     @Override
@@ -89,7 +88,6 @@ public class DishesFragment extends AbstractSearchableContentFragment {
 
     @Override
     protected void searchTextChanged(String newText) {
-        if (!newText.isEmpty()) savedSearchQuery = newText;
         dishesAdapter.getFilter().filter(newText);
     }
 
@@ -160,10 +158,6 @@ public class DishesFragment extends AbstractSearchableContentFragment {
 
         if (!initialized) {
             initialized = true;
-        }
-
-        if (!savedSearchQuery.isEmpty()) {
-            activity.getSearchView().setQuery(savedSearchQuery, true);
         }
     }
 }

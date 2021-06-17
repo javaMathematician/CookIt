@@ -133,13 +133,6 @@ public class MainActivity extends AppCompatActivity {
         String ingredients = "ingredients";
         String categories = "categories";
 
-/*        if (id == R.id.clearSelected) {
-            AbstractComponentsFragment abstractComponentsFragment = findOrGetFragment(ingredients, IngredientsFragment.class);
-
-            // сначала узнаем, какой фрагмент сейчас видим (ингредиенты или категории). если ингредиенты не видны, то пробуем категории
-            if (!abstractComponentsFragment.isVisible()) abstractComponentsFragment = findOrGetFragment(categories, IngredientsFragment.class);
-            if (abstractComponentsFragment.isVisible()) abstractComponentsFragment.clearSelected(); // чистим конкретный датасет
-        } else */
         if (id == R.id.toIngredients) {
             changeFragment(findOrGetFragment(ingredients, IngredientsFragment.class), ingredients);
         } else if (id == R.id.toDishes) {

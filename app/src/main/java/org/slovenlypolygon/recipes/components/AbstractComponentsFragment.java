@@ -49,7 +49,6 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
     protected RecyclerView recyclerView;
     protected Button changeViewComponent;
     protected RecyclerView selectedAsTabs;
-    protected String savedSearchQuery = "";
     protected ComponentAdapter componentAdapter;
     protected TabComponentAdapter tabComponentAdapter;
     protected Set<Component> selectedComponents = new HashSet<>();
@@ -66,10 +65,6 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
 
     @Override
     protected void searchTextChanged(String newText) {
-        if (!newText.isEmpty()) {
-            savedSearchQuery = newText;
-        }
-
         componentAdapter.getFilter().filter(newText);
     }
 
@@ -299,9 +294,12 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
         if (actionsWithIngredientDialog != null) {
             actionsWithIngredientDialog.show();
         }
+    }
 
-        if (!savedSearchQuery.isEmpty()) {
-            activity.getSearchView().setQuery(savedSearchQuery, true);
-        }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        updateData();
     }
 }

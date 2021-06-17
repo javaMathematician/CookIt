@@ -14,16 +14,18 @@ import org.slovenlypolygon.recipes.R;
 import java.util.Objects;
 
 public abstract class AbstractSearchableContentFragment extends SimpleCookItFragment {
-    protected String searchQuery = "";
+    protected String savedSearchQuery = "";
+    private SearchView searchView;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         Objects.requireNonNull(activity.getSupportActionBar()).setTitle(R.string.app_name);
+        searchView = activity.getSearchView();
 
-        activity.getSearchView().setVisibility(View.VISIBLE);
-        activity.getSearchView().setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setVisibility(View.VISIBLE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -31,7 +33,7 @@ public abstract class AbstractSearchableContentFragment extends SimpleCookItFrag
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchTextChanged(searchQuery = newText.toLowerCase());
+                searchTextChanged(newText.toLowerCase());
                 return false;
             }
         });
@@ -48,14 +50,21 @@ public abstract class AbstractSearchableContentFragment extends SimpleCookItFrag
     @Override
     public void onResume() {
         super.onResume();
-        activity.getSearchView().setVisibility(View.VISIBLE);
-        activity.getSearchView().setIconified(true);
+        searchView.setVisibility(View.VISIBLE);
+        searchView.setIconified(true);
+        searchView.setQuery(savedSearchQuery, true);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        activity.getSearchView().setVisibility(View.VISIBLE);
-        activity.getSearchView().setIconified(true);
+        searchView.setVisibility(View.VISIBLE);
+        searchView.setIconified(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        savedSearchQuery = searchView.getQuery().toString();
     }
 }
