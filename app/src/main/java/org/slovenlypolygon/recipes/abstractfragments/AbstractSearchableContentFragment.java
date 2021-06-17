@@ -51,8 +51,8 @@ public abstract class AbstractSearchableContentFragment extends SimpleCookItFrag
     public void onResume() {
         super.onResume();
         searchView.setVisibility(View.VISIBLE);
-        searchView.setIconified(savedSearchQuery.isEmpty());
         searchView.setQuery(savedSearchQuery, true);
+        searchView.setIconified(savedSearchQuery.isEmpty());
     }
 
     @Override
