@@ -24,18 +24,25 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="d3758ced-b994-452a-9989-7810457f1a58">
+        <schema name="main" object-types="table, view, column" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="3aee31ab-4aaf-4a3b-9209-6b2d19aec44c">
-      <console name="Connection" type="STANDARD" schema="" session="Main" />
+    <connection id="d3758ced-b994-452a-9989-7810457f1a58">
+      <console name="Connection 1" type="STANDARD" schema="main" session="Main"><![CDATA[select *, count(ref."componentID") from dish, "dishComponentCrossReference" as ref
+where dish."dishID" = ref."dishID"
+group by "dishName"
+order by count(ref."componentID") desc]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="3aee31ab-4aaf-4a3b-9209-6b2d19aec44c" />
+    <connection id="d3758ced-b994-452a-9989-7810457f1a58" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -63,9 +70,9 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="3aee31ab-4aaf-4a3b-9209-6b2d19aec44c" active="true">
+      <connection id="d3758ced-b994-452a-9989-7810457f1a58" active="true">
         <database>
-          <name value="Connection" />
+          <name value="Connection 1" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
@@ -78,7 +85,7 @@
           <port value="1234" />
           <database value="database" />
           <files>
-            <file path="C:\CookIt\app\src\main\assets\database\global.sqlite3" schema="main" />
+            <file path="C:\Users\Seryozha\StudioProjects\CookIt\app\src\main\assets\database\global.sqlite3" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

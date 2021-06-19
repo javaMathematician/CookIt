@@ -68,4 +68,19 @@
     <string name="canceled">Отменено</string>
     <string name="scroll">scroll</string>
     <string name="something_wrong">Что-то пошло не так</string>
+
+    <!-- Welcome help screen -->
+    <string name="next">Далее</string>
+
+    <string name="ingredients_help">Ингредиенты / компоненты</string>
+    <string name="ingredients_content">Выберите несколько ингредиентов, нажмиите кнопку «К рецептам»</string>
+
+    <string name="dishes_help">Рецепты</string>
+    <string name="dishes_content">Нажмите на интересующее Вас блюдо</string>
+
+    <string name="step_by_step_help">Пошаговый рецепт</string>
+    <string name="step_by_step_content">Если к шагу приложена картинка, то можно раскрыть карточку вниз</string>
+
+    <string name="close_help">К списку</string>
+    <string name="previous">Назад</string>
 </resources>

@@ -42,6 +42,10 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
+        <activity
+            android:name=".welcomescreen.WelcomeActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="org.slovenlypolygon.cookit.fileprovider"

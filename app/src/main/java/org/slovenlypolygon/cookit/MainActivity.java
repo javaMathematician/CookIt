@@ -1,6 +1,7 @@
 package org.slovenlypolygon.cookit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageButton;
@@ -27,6 +28,7 @@ import org.slovenlypolygon.cookit.dishes.fragments.FavoriteDishesFragment;
 import org.slovenlypolygon.cookit.dishes.fragments.RecommendedDishesFragment;
 import org.slovenlypolygon.cookit.settings.SettingsFragment;
 import org.slovenlypolygon.cookit.shoppinglists.ShoppingListsFragment;
+import org.slovenlypolygon.cookit.welcomescreen.WelcomeActivity;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -44,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("org.slovenlypolygon.cookit_preferences", Context.MODE_PRIVATE);
+
+        if (sharedPreferences.getBoolean("first_launch", true)) {
+            startActivity(new Intent(this, WelcomeActivity.class));
+            sharedPreferences.edit().putBoolean("first_launch", false).apply();
+        }
 
         notifySharedPreferencesChanged();
         initializeDatabaseAndSettingsFragment();
