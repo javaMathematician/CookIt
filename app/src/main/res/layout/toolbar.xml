@@ -6,8 +6,8 @@
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/toolbarBackgroundColor"
     android:elevation="0dp"
-    app:title="@string/app_name"
     app:layout_scrollFlags="scroll|enterAlways|snap"
+    app:title="@string/app_name"
     app:titleTextColor="?attr/textCardColor">
 
     <androidx.appcompat.widget.SearchView
@@ -17,9 +17,9 @@
         android:layout_gravity="end"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="gone"
         android:inputType="textPersonName"
         android:layoutDirection="rtl"
+        android:visibility="gone"
         app:queryBackground="@android:color/white"
         app:queryHint="@string/search_hint"
         app:searchIcon="@drawable/search_icon"

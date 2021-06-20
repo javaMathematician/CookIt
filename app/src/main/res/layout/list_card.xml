@@ -5,13 +5,13 @@
     android:id="@+id/listCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="4dp"
     android:layout_marginHorizontal="8dp"
+    android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
-    app:cardCornerRadius="8dp"
     android:elevation="4dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="?attr/cardBackgroundColor"
+    app:cardCornerRadius="8dp"
     app:cardElevation="6dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -20,16 +20,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        android:animateLayoutChanges="true">
 
         <TextView
             android:id="@+id/listName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
             android:layout_marginStart="2dp"
             android:textColor="?attr/textCardColor"
+            android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@id/expandListButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -58,11 +58,11 @@
                 android:id="@+id/listContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:lineSpacingExtra="4dp"
                 android:textColor="?attr/textCardColor"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

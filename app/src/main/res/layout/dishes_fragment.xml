@@ -10,8 +10,8 @@
         android:id="@+id/DishesLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:elevation="16dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,9 +21,9 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dishesRecyclerView"
-            android:elevation="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="16dp"
             android:overScrollMode="never" />
 
         <TextView

@@ -17,9 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:gravity="center"
             android:text="@string/bill_select_prompt"
             android:textColor="?attr/textCardColor"
-            android:gravity="center"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,8 +69,8 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="16dp"
                         android:gravity="center"
-                        android:textAlignment="textStart"
                         android:text="@string/open_gallery"
+                        android:textAlignment="textStart"
                         android:textColor="?attr/textCardColor"
                         android:textSize="24sp" />
                 </LinearLayout>
@@ -108,8 +108,8 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="16dp"
                         android:gravity="center"
-                        android:textAlignment="textStart"
                         android:text="@string/open_camera"
+                        android:textAlignment="textStart"
                         android:textColor="?attr/textCardColor"
                         android:textSize="24sp" />
                 </LinearLayout>

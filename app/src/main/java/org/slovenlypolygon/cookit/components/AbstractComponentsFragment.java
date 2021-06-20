@@ -280,10 +280,10 @@ public abstract class AbstractComponentsFragment extends AbstractSearchableConte
     private void initializeAdapters() {
         if (componentAdapter == null || tabComponentAdapter == null) {
             componentAdapter = new ComponentAdapter();
-            componentAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
+            componentAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
 
             tabComponentAdapter = new TabComponentAdapter();
-            componentAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
+            componentAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
 
             selectedAsTabs.setAdapter(tabComponentAdapter);
             recyclerView.setAdapter(componentAdapter);

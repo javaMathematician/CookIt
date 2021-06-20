@@ -1,5 +1,7 @@
 package org.slovenlypolygon.cookit.welcomescreen;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,6 +23,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.welcome_carcass);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("org.slovenlypolygon.cookit_preferences", Context.MODE_PRIVATE);
         ViewPager viewPager = findViewById(R.id.pagerIntroSlider);
         TabLayout tabLayout = findViewById(R.id.tabs);
         Button next = findViewById(R.id.next_slide_button);
@@ -37,7 +40,10 @@ public class WelcomeActivity extends AppCompatActivity {
             if (currentItem < adapter.getCount() - 1) {
                 viewPager.setCurrentItem(currentItem + 1);
             } else {
+                sharedPreferences.edit().putBoolean("first_launch", false).apply();
+
                 finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
 

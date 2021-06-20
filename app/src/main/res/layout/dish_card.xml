@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dishCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,9 +12,9 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="12dp"
-        app:cardElevation="5dp"
         app:cardBackgroundColor="?attr/cardBackgroundColor"
         app:cardCornerRadius="1000dp"
+        app:cardElevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,17 +33,17 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/dishCardView"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="150dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="6dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:minHeight="150dp"
+        app:cardBackgroundColor="?attr/cardBackgroundColor"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
-        app:cardBackgroundColor="?attr/cardBackgroundColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,17 +52,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="150dp"
             android:layout_margin="8dp"
-            android:background="?attr/cardBackgroundColor">
+            android:background="?attr/cardBackgroundColor"
+            android:minHeight="150dp">
 
             <TextView
                 android:id="@+id/dishName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_marginStart="80dp"
                 android:layout_marginEnd="12dp"
+                android:gravity="center_vertical"
                 android:text=""
                 android:textColor="?attr/textCardColor"
                 android:textSize="18sp"

@@ -47,11 +47,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("org.slovenlypolygon.cookit_preferences", Context.MODE_PRIVATE);
-
-        if (sharedPreferences.getBoolean("first_launch", true)) {
+        if (getSharedPreferences("org.slovenlypolygon.cookit_preferences", Context.MODE_PRIVATE).getBoolean("first_launch", true)) {
             startActivity(new Intent(this, WelcomeActivity.class));
-            sharedPreferences.edit().putBoolean("first_launch", false).apply();
         }
 
         notifySharedPreferencesChanged();

@@ -28,7 +28,6 @@
         app:tabGravity="center"
         app:tabIndicatorHeight="0dp" />
 
-
     <Button
         android:id="@+id/previous_slide_button"
         style="?android:attr/buttonBarButtonStyle"

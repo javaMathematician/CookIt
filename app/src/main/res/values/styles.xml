@@ -13,7 +13,6 @@
         <!-- Dialogs and fonts -->
         <item name="alertDialogTheme">@style/LightDialog</item>
         <item name="android:dialogTheme">@style/LightDialog</item>
-        <item name="android:fontFamily">@font/montserrat_font</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
 
         <!-- Main colors -->
@@ -48,7 +47,6 @@
         <!-- Dialogs and fonts -->
         <item name="alertDialogTheme">@style/DarkDialog</item>
         <item name="android:dialogTheme">@style/DarkDialog</item>
-        <item name="android:fontFamily">@font/montserrat_font</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
 
         <!-- Main colors -->
