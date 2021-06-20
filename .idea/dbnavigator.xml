@@ -24,18 +24,11 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="d3758ced-b994-452a-9989-7810457f1a58">
-        <schema name="main" object-types="table, view, column" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="d3758ced-b994-452a-9989-7810457f1a58">
-      <console name="Connection 1" type="STANDARD" schema="main" session="Main"><![CDATA[select *, count(ref."componentID") from dish, "dishComponentCrossReference" as ref
-where dish."dishID" = ref."dishID"
-group by "dishName"
-order by count(ref."componentID") desc]]></console>
+      <console name="Connection 1" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">

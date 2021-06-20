@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.RawRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
@@ -19,10 +20,10 @@ import org.slovenlypolygon.cookit.R;
 import javax.annotation.Nullable;
 
 public class WelcomeHelpFragment extends Fragment {
-    @DrawableRes private static final int[] PAGE_IMAGE = {R.drawable.settings, R.drawable.settings, R.drawable.settings};
+    @RawRes private static final int[] PAGE_IMAGE = {R.raw.ingredient_ex, R.raw.dish_ex, R.raw.step_ex};
     @StringRes private static final int[] PAGE_TITLES = {R.string.ingredients_help, R.string.dishes_help, R.string.step_by_step_help};
     @StringRes private static final int[] PAGE_TEXT = {R.string.ingredients_content, R.string.dishes_content, R.string.step_by_step_content};
-    @ColorRes private static final int[] BACKGROUND_IMAGES = {android.R.color.holo_red_light, android.R.color.holo_blue_light, android.R.color.holo_green_light};
+    @ColorRes private static final int[] BACKGROUND_IMAGES = {R.color.firstColor, R.color.secondColor, R.color.thirdColor};
 
     private static final String ARG_POSITION = "slider-position";
     private int position;

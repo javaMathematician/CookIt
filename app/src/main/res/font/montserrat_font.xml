@@ -4,17 +4,17 @@
 
     <!-- regular -->
     <font
-        android:font="@font/montserrat"
+        android:font="@font/nunito"
         android:fontStyle="normal"
         android:fontWeight="400"
 
-        app:font="@font/montserrat"
+        app:font="@font/nunito"
         app:fontStyle="normal"
         app:fontWeight="400" />
 
     <!-- italic -->
     <font
-        android:font="@font/montserrat"
+        android:font="@font/nunito"
         android:fontStyle="italic"
 
         android:fontWeight="400"
@@ -23,7 +23,7 @@
 
     <!-- bold -->
     <font
-        android:font="@font/montserrat"
+        android:font="@font/nunito"
         android:fontStyle="normal"
 
         android:fontWeight="700"

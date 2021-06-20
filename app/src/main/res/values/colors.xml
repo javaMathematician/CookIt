@@ -21,6 +21,9 @@
     <color name="textLightColor">#FFFFFF</color>
 
     <!-- Additional attributes -->
+    <color name="firstColor">#FFC46B</color>
+    <color name="secondColor">#2398AB</color>
+    <color name="thirdColor">#FF756B</color>
     <color name="searchViewColorWhite">#FFFFFF</color>
     <color name="recipesAndLoadingColor">#5C5C5C</color>
 </resources>

@@ -79,8 +79,8 @@
     <string name="dishes_content">Нажмите на интересующее Вас блюдо</string>
 
     <string name="step_by_step_help">Пошаговый рецепт</string>
-    <string name="step_by_step_content">Если к шагу приложена картинка, то можно раскрыть карточку вниз</string>
+    <string name="step_by_step_content">Если к шагу приложена картинка, то ее можно раскрыть, нажав на карточку</string>
 
-    <string name="close_help">К списку</string>
+    <string name="close_help">Закрыть</string>
     <string name="previous">Назад</string>
 </resources>
