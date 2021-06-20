@@ -9,8 +9,8 @@ android {
         applicationId "org.slovenlypolygon.cookit"
         targetSdkVersion 30
         minSdkVersion 24
-        versionName "1.0.5-4"
-        versionCode 508
+        versionName "1.0.5-6"
+        versionCode 509
     }
 
     buildTypes {

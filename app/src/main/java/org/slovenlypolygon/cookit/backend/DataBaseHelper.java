@@ -39,6 +39,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void createDataBase() {
         if (!checkDataBase()) {
             this.getWritableDatabase();
+            this.close();
 
             try {
                 copyDataBase();
