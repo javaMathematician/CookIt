@@ -198,23 +198,22 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.Ingr
     }
 
     public boolean checkConnection(View itemView) {
-        boolean status = false;
         try {
-            ConnectivityManager cm = (ConnectivityManager) itemView.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = cm.getNetworkInfo(0);
-            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
-                status = true;
+            ConnectivityManager connectivityManager = (ConnectivityManager) itemView.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo managerNetworkInfo = connectivityManager.getNetworkInfo(0);
+
+            if (managerNetworkInfo != null && managerNetworkInfo.getState() == NetworkInfo.State.CONNECTED) {
+                return true;
             } else {
-                netInfo = cm.getNetworkInfo(1);
-                if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
-                    status = true;
-                }
+                NetworkInfo networkInfo = connectivityManager.getNetworkInfo(1);
+                if (networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED) return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return status;
+
+        return false;
     }
 
     public void clearItemLongClickCallback() {
