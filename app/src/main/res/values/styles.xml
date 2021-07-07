@@ -12,7 +12,7 @@
 
         <!-- Dialogs and fonts -->
         <item name="alertDialogTheme">@style/LightDialog</item>
-        <item name="android:dialogTheme">@style/LightDialog</item>
+        <item name="dialogTheme">@style/LightDialog</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
 
         <!-- Main colors -->
@@ -46,7 +46,7 @@
 
         <!-- Dialogs and fonts -->
         <item name="alertDialogTheme">@style/DarkDialog</item>
-        <item name="android:dialogTheme">@style/DarkDialog</item>
+        <item name="dialogTheme">@style/DarkDialog</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
 
         <!-- Main colors -->
@@ -75,32 +75,32 @@
     <style name="LightDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/lightAccentColor</item>
         <item name="android:textColorPrimary">@color/textDarkColor</item>
-        <item name="android:background">@color/lightThemeBackgroundCardColor</item>
+        <item name="background">@color/lightThemeBackgroundCardColor</item>
     </style>
 
     <style name="DarkDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/darkAccentColor</item>
         <item name="android:textColorPrimary">@color/textLightColor</item>
-        <item name="android:background">@color/darkThemeBackgroundCardColor</item>
+        <item name="background">@color/darkThemeBackgroundCardColor</item>
     </style>
 
     <style name="LightProgressDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:textColor">@color/textDarkColor</item>
         <item name="android:textColorPrimary">@color/textDarkColor</item>
-        <item name="android:background">@color/lightThemeBackgroundCardColor</item>
+        <item name="background">@color/lightThemeBackgroundCardColor</item>
     </style>
 
     <style name="DarkProgressDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:textColor">@color/textLightColor</item>
         <item name="android:textColorPrimary">@color/textLightColor</item>
-        <item name="android:background">@color/darkThemeBackgroundCardColor</item>
+        <item name="background">@color/darkThemeBackgroundCardColor</item>
     </style>
 
     <style name="ProgressBar" parent="@android:style/Widget.ProgressBar">
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:visibility">gone</item>
-        <item name="android:background">?attr/cardBackgroundColor</item>
+        <item name="background">?attr/cardBackgroundColor</item>
         <item name="colorAccent">@color/darkAccentColor</item>
         <item name="android:textColorPrimary">@color/textLightColor</item>
         <item name="android:textColor">@color/textLightColor</item>
@@ -108,12 +108,12 @@
 
     <style name="TextAppearanceLight">
         <item name="actionMenuTextColor">@android:color/black</item>
-        <item name="android:actionMenuTextColor">@android:color/black</item>
+        <item name="actionMenuTextColor">@android:color/black</item>
     </style>
 
     <style name="TextAppearanceDark">
         <item name="actionMenuTextColor">@android:color/white</item>
-        <item name="android:actionMenuTextColor">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
     </style>
 
     <style name="toggleArrowDark" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -139,17 +139,17 @@
         <item name="searchHintIcon">@drawable/search_icon</item>
         <item name="backgroundTint">?attr/searchViewColor</item>
         <item name="queryBackground">?attr/searchViewColor</item>
-        <item name="android:queryHint">@string/search_hint</item>
+        <item name="queryHint">@string/search_hint</item>
         <item name="backgroundColor">?attr/searchViewColor</item>
-        <item name="android:closeIcon">@drawable/close_icon</item>
+        <item name="closeIcon">@drawable/close_icon</item>
         <item name="android:textColor">?attr/searchViewColor</item>
-        <item name="android:searchIcon">@drawable/search_icon</item>
+        <item name="searchIcon">@drawable/search_icon</item>
         <item name="android:textColorHint">?attr/searchViewColor</item>
-        <item name="android:editTextColor">?attr/searchViewColor</item>
+        <item name="editTextColor">?attr/searchViewColor</item>
         <item name="colorControlActivated">?attr/searchViewColor</item>
-        <item name="android:queryBackground">?attr/searchViewColor</item>
-        <item name="android:submitBackground">?attr/searchViewColor</item>
-        <item name="android:backgroundTint">?attr/toolbarBackgroundColor</item>
+        <item name="queryBackground">?attr/searchViewColor</item>
+        <item name="submitBackground">?attr/searchViewColor</item>
+        <item name="backgroundTint">?attr/toolbarBackgroundColor</item>
     </style>
 
     <style name="checkBoxStyle"

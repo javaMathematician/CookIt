@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.5"
-                android:foreground="?android:selectableItemBackground"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardBackgroundColor="?attr/cardBackgroundColor"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="16dp">
@@ -61,7 +61,7 @@
                             android:layout_width="120dp"
                             android:layout_height="120dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/gallery_image" />
+                            app:srcCompat="@drawable/gallery_image" />
                     </LinearLayout>
 
                     <TextView
@@ -82,7 +82,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="24dp"
                 android:layout_weight="0.5"
-                android:foreground="?android:selectableItemBackground"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardBackgroundColor="?attr/cardBackgroundColor"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="16dp">
@@ -101,7 +101,7 @@
                             android:layout_width="120dp"
                             android:layout_height="120dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/camera_image" />
+                            app:srcCompat="@drawable/camera_image" />
                     </LinearLayout>
 
                     <TextView

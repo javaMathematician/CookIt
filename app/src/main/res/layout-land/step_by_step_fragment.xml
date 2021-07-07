@@ -52,7 +52,7 @@
                         android:adjustViewBounds="true"
                         android:background="?attr/cardBackgroundColor"
                         android:contentDescription="@string/dish_image_step_by_step"
-                        android:src="@drawable/sample_dish_for_error"
+                        app:srcCompat="@drawable/sample_dish_for_error"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

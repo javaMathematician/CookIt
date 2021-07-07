@@ -47,7 +47,7 @@
                     android:adjustViewBounds="true"
                     android:background="?attr/cardBackgroundColor"
                     android:contentDescription="@string/dish_image_step_by_step"
-                    android:src="@android:mipmap/sym_def_app_icon"
+                    app:srcCompat="@android:mipmap/sym_def_app_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
-                android:background="?android:attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
                 android:textColor="?attr/textCardColor" />

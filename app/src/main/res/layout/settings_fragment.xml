@@ -34,7 +34,7 @@
                 android:layout_margin="12dp"
                 android:layout_marginHorizontal="8dp"
                 android:elevation="4dp"
-                android:foreground="?android:attr/selectableItemBackground"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardBackgroundColor="?attr/cardBackgroundColor"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="6dp"

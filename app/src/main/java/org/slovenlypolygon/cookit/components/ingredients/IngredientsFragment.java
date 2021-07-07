@@ -8,11 +8,4 @@ public class IngredientsFragment extends AbstractComponentsFragment {
     protected ComponentType setDataSource() {
         return ComponentType.INGREDIENT;
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        componentAdapter.getFilter().filter(searchView.getQuery());
-    }
 }
