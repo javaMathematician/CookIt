@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RawRes;
 import androidx.annotation.StringRes;
@@ -20,10 +19,41 @@ import org.slovenlypolygon.cookit.R;
 import javax.annotation.Nullable;
 
 public class WelcomeHelpFragment extends Fragment {
-    @RawRes private static final int[] PAGE_IMAGE = {R.raw.ingredient_ex, R.raw.dish_ex, R.raw.step_ex};
-    @StringRes private static final int[] PAGE_TITLES = {R.string.ingredients_help, R.string.dishes_help, R.string.step_by_step_help};
-    @StringRes private static final int[] PAGE_TEXT = {R.string.ingredients_content, R.string.dishes_content, R.string.step_by_step_content};
-    @ColorRes private static final int[] BACKGROUND_IMAGES = {R.color.firstColor, R.color.secondColor, R.color.thirdColor};
+    @RawRes private static final int[] PAGE_IMAGE = {
+            R.raw.ingredient_ex,
+            R.raw.dish_ex,
+            R.raw.step_ex,
+            R.raw.step_ex,
+            R.raw.step_ex,
+            R.raw.step_ex
+    };
+
+    @StringRes private static final int[] PAGE_TITLES = {
+            R.string.ingredients_help,
+            R.string.dishes_help,
+            R.string.step_by_step_help,
+            R.string.favorite_dishes_help,
+            R.string.favorite_ingredients_help,
+            R.string.more_in_help
+    };
+
+    @StringRes private static final int[] PAGE_TEXT = {
+            R.string.ingredients_content,
+            R.string.dishes_content,
+            R.string.step_by_step_content,
+            R.string.favorite_dishes_content,
+            R.string.favorite_ingredients_content,
+            R.string.more_in_help_content
+    };
+
+    @ColorRes private static final int[] BACKGROUND_IMAGES = {
+            R.color.first_color_help,
+            R.color.second_color_help,
+            R.color.third_color_help,
+            R.color.first_color_help,
+            R.color.second_color_help,
+            R.color.third_color_help
+    };
 
     private static final String ARG_POSITION = "slider-position";
     private int position;

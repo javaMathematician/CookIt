@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -26,12 +28,24 @@ public class WelcomeActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("org.slovenlypolygon.cookit_preferences", Context.MODE_PRIVATE);
         ViewPager viewPager = findViewById(R.id.pagerIntroSlider);
         TabLayout tabLayout = findViewById(R.id.tabs);
+
         Button next = findViewById(R.id.next_slide_button);
-        Button previous = findViewById(R.id.previous_slide_button);
-        SliderPagerAdapter adapter = new SliderPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        Button close = findViewById(R.id.close_slide_button);
+
+        FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public int getCount() {
+                return 6;
+            }
+
+            @NonNull
+            @Override
+            public Fragment getItem(int position) {
+                return WelcomeHelpFragment.newInstance(position);
+            }
+        };
 
         viewPager.setAdapter(adapter);
-        previous.setVisibility(View.GONE);
         tabLayout.setupWithViewPager(viewPager);
 
         next.setOnClickListener(view -> {
@@ -47,13 +61,7 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
-        previous.setOnClickListener(view -> {
-            int currentItem = viewPager.getCurrentItem();
-
-            if (currentItem > 0) {
-                viewPager.setCurrentItem(currentItem - 1);
-            }
-        });
+        close.setOnClickListener(view -> finish());
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -62,8 +70,9 @@ public class WelcomeActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                next.setText(position == adapter.getCount() - 1 ? R.string.close_help : R.string.next);
-                previous.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+                boolean temp = position == adapter.getCount() - 1;
+                next.setText(temp ? R.string.close_help : R.string.next);
+                close.setVisibility(temp ? View.GONE : View.VISIBLE);
             }
 
             @Override

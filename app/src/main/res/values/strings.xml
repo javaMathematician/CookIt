@@ -81,7 +81,14 @@
     <string name="step_by_step_help">Пошаговый рецепт</string>
     <string name="step_by_step_content">Если к шагу приложена картинка, то ее можно раскрыть, нажав на карточку</string>
 
+    <string name="favorite_dishes_help">Избранные блюда</string>
+    <string name="favorite_dishes_content">Нажмите на сердечко в пошаговом режиме или подержите блюдо в меню</string>
+
+    <string name="favorite_ingredients_help">Холодильник</string>
+    <string name="favorite_ingredients_content">Зажмите ингредиент в соответствующем меню для добавления в избранное</string>
+
+    <string name="more_in_help">Справка</string>
+    <string name="more_in_help_content">Детальнее о возможностях приложения — в справке в настройках</string>
+
     <string name="close_help">Закрыть</string>
-    <string name="previous">Назад</string>
-    <string name="cancel">Отмена</string>
 </resources>

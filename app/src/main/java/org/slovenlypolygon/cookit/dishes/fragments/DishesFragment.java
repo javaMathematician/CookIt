@@ -115,7 +115,7 @@ public class DishesFragment extends AbstractSearchableContentFragment {
             dishesAdapter.setDishLongClick(new Consumer<Dish>() {
                 @Override
                 public void accept(Dish dish) {
-                    String[] options = {getString(R.string.add_to_favorites_suggestion), getString(R.string.cancel)};
+                    String[] options = {getString(R.string.add_to_favorites_suggestion), getString(R.string.dismiss)};
 
                     final boolean containsFavorites = dao.containsFavorites(dish);
                     if (containsFavorites) {

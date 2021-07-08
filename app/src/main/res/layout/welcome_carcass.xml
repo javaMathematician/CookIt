@@ -12,10 +12,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0."
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1." />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
@@ -29,7 +29,7 @@
         app:tabIndicatorHeight="0dp" />
 
     <Button
-        android:id="@+id/previous_slide_button"
+        android:id="@+id/close_slide_button"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         android:background="?attr/selectableItemBackground"
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
-        android:text="@string/previous"
+        android:text="@string/close_help"
         android:textAlignment="textStart"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
