@@ -3,12 +3,18 @@ package org.slovenlypolygon.cookit.dishes.fragments;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,18 +22,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.Sets;
 
+import org.slovenlypolygon.cookit.MainActivity;
 import org.slovenlypolygon.cookit.R;
 import org.slovenlypolygon.cookit.abstractfragments.AbstractSearchableContentFragment;
 import org.slovenlypolygon.cookit.backend.DatabaseFragment;
 import org.slovenlypolygon.cookit.backend.DishComponentDAO;
 import org.slovenlypolygon.cookit.components.entitys.Component;
 import org.slovenlypolygon.cookit.dishes.adapters.DishesAdapter;
+import org.slovenlypolygon.cookit.dishes.entitys.Dish;
 import org.slovenlypolygon.cookit.dishes.entitys.FrontendDish;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -37,12 +46,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class DishesFragment extends AbstractSearchableContentFragment {
     protected boolean initialized;
     protected DishComponentDAO dao;
-    protected DishesAdapter dishesAdapter;
     protected RecyclerView recyclerView;
+    protected DishesAdapter dishesAdapter;
     protected Observable<FrontendDish> provider;
-    private FloatingActionButton scrollToTop;
     private boolean highlightSelected;
+    private FloatingActionButton scrollToTop;
     private Set<Component> selectedComponents = new HashSet<>();
+    private AlertDialog actionsWithDishDialog;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -102,10 +112,49 @@ public class DishesFragment extends AbstractSearchableContentFragment {
         if (!initialized) {
             dishesAdapter = new DishesAdapter(highlightSelected);
             dishesAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
+            dishesAdapter.setDishLongClick(new Consumer<Dish>() {
+                @Override
+                public void accept(Dish dish) {
+                    String[] options = {getString(R.string.add_to_favorites_suggestion), getString(R.string.cancel)};
+
+                    final boolean containsFavorites = dao.containsFavorites(dish);
+                    if (containsFavorites) {
+                        options[0] = getString(R.string.delete_from_favorites_suggestion);
+                    }
+
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(requireContext(), R.layout.item_dialog, R.id.dialogTextView, options) {
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            View view = super.getView(position, convertView, parent);
+
+                            ImageView imageView = view.findViewById(R.id.dialogImageView);
+                            imageView.setBackground(ContextCompat.getDrawable(requireContext(), position == 0 ? R.drawable.to_favorites_icon : R.drawable.cancel_close_clear_icon));
+
+                            return view;
+                        }
+                    };
+
+                    ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(requireContext(), ((MainActivity) requireActivity()).getCurrentTheme().equals("Dark") ? R.style.DarkProgressDialog : R.style.LightProgressDialog);
+                    actionsWithDishDialog = new AlertDialog.Builder(contextThemeWrapper).setTitle(R.string.ingredient_actions).setAdapter(arrayAdapter, (dialog1, which) -> {}).create();
+                    actionsWithDishDialog.getListView().setOnItemClickListener((parent, view1, position, id) -> {
+                        if (position == 0 && containsFavorites) {
+                            dao.removeFromFavorites(dish);
+                            Toast.makeText(requireContext(), R.string.deleted_from_favorites, Toast.LENGTH_SHORT).show();
+                        } else if (position == 0) {
+                            dao.addToFavorites(dish);
+                            Toast.makeText(requireContext(), R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
+                        }
+
+                        actionsWithDishDialog.dismiss();
+                        actionsWithDishDialog = null;
+                    });
+
+                    actionsWithDishDialog.setOnCancelListener(dialog -> actionsWithDishDialog = null);
+                    actionsWithDishDialog.show();
+                }
+            });
         }
 
         recyclerView.setAdapter(dishesAdapter);
-
         return rootView;
     }
 
@@ -156,10 +205,16 @@ public class DishesFragment extends AbstractSearchableContentFragment {
     public void onResume() {
         super.onResume();
 
-        if (!initialized) {
-            initialized = true;
-        }
+        if (!initialized) initialized = true;
+        if (actionsWithDishDialog != null) actionsWithDishDialog.show();
 
         dishesAdapter.notifyDataSetChanged(); // убедиться в том, что контент будет показан
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (actionsWithDishDialog != null) actionsWithDishDialog.dismiss();
     }
 }

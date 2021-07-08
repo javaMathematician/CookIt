@@ -21,7 +21,7 @@ CookIt! — приложение, которое подберет для Вас 
 
 ## Начните использовать
 Установочный APK-файл собран, Вы можете скачать его [здесь](./app/release/app-release.apk).
-
+[app-release.apk](app/release/app-release.apk)
 ## Дополнительные материалы
 [Тут](https://disk.yandex.ru/d/qOQsjJpnu8Ah-Q) можно найти видео и презентацию.
 

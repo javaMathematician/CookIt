@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.collect.Maps;
 
 import org.apache.commons.io.FileUtils;
 import org.slovenlypolygon.cookit.backend.DatabaseFragment;
@@ -54,14 +55,14 @@ public class MainActivity extends AppCompatActivity {
         notifySharedPreferencesChanged();
         initializeDatabaseAndSettingsFragment();
 
-        setTheme();
+        prepareTheme();
         setContentView(R.layout.carcass);
         setFrontend();
 
         showBaseFragment();
     }
 
-    private void setTheme() {
+    private void prepareTheme() {
         sharedPreferences = getSharedPreferences(THEME, Context.MODE_PRIVATE);
         currentTheme = sharedPreferences.getString(THEME, "Light");
         setTheme(Objects.equals(currentTheme, "Dark") ? R.style.Dark : R.style.Light);
@@ -81,16 +82,12 @@ public class MainActivity extends AppCompatActivity {
         map.put(getPackageName() + ".FAVORITE_DISHES", R.id.toFavoritesDishes);
         map.put(getPackageName() + ".SHOPPING_LISTS", R.id.toShoppingLists);
 
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            if (entry.getKey().equals(getIntent().getAction())) {
-                menuItemsActions(entry.getValue());
-                break;
-            }
-        } // заменяет миллион элифов и делает псевдо свитч-кейз
-
-        if (!map.containsKey(getIntent().getAction()) && getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            menuItemsActions(R.id.toIngredients);
-        }
+        menuItemsActions(map.entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().equals(getIntent().getAction()))
+                .findFirst()
+                .orElse(Maps.immutableEntry(null, R.id.toIngredients))
+                .getValue());
     }
 
     private void setFrontend() {
@@ -169,15 +166,13 @@ public class MainActivity extends AppCompatActivity {
     private <T> T findOrGetFragment(String tag, Class<T> fragmentClass) {
         T found = (T) getSupportFragmentManager().findFragmentByTag(tag);
 
-        if (found == null) {
-            try {
-                return fragmentClass.newInstance();
-            } catch (IllegalAccessException | InstantiationException exception) {
-                exception.printStackTrace();
-            }
+        try {
+            return found == null ? fragmentClass.newInstance() : found;
+        } catch (IllegalAccessException | InstantiationException exception) {
+            exception.printStackTrace();
         }
 
-        return found;
+        return null;
     }
 
     private void changeFragment(Fragment fragment, String tag) {

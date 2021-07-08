@@ -50,6 +50,7 @@ public class FavoriteDishesFragment extends DishesFragment {
         });
 
         new ItemTouchHelper(substrate.getItemTouchHelperCallback()).attachToRecyclerView(recyclerView);
+        dishesAdapter.setDishLongClick(dish -> {});
     }
 
     @Override

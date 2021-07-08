@@ -28,12 +28,14 @@ import org.slovenlypolygon.cookit.dishes.stepbystep.StepByStepFragment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHolder> implements Filterable {
     private final boolean highlight;
 
     private String accent;
+    private Consumer<Dish> dishLongClick;
 
     private List<FrontendDish> dishes = new ArrayList<>();
     private List<FrontendDish> original = new ArrayList<>();
@@ -55,6 +57,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         dishes.clear();
         original.clear();
         notifyDataSetChanged();
+    }
+
+    public void setDishLongClick(Consumer<Dish> dishLongClick) {
+        this.dishLongClick = dishLongClick;
     }
 
     @Override
@@ -92,6 +98,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
         }
 
         dishViewHolder.name.setText(dish.getName());
+        dishViewHolder.cardView.setOnLongClickListener(view -> {
+            dishLongClick.accept(dish);
+            return true;
+        });
+
         dishViewHolder.cardView.setOnClickListener(view -> {
             StepByStepFragment stepByStepFragment = new StepByStepFragment(dish);
 
@@ -199,6 +210,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishViewHo
     public void addUniqueDishes(List<FrontendDish> frontendDishes) {
         dishes.addAll(frontendDishes);
         dishes = new ArrayList<>(new TreeSet<>(dishes));
+        notifyDataSetChanged();
+    }
+
+    public void removeDish(Dish dish) {
+        dishes.removeIf(frontendDish -> frontendDish.getId() == dish.getId());
         notifyDataSetChanged();
     }
 

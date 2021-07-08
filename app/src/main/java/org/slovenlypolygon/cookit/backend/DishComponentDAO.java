@@ -291,7 +291,7 @@ public class DishComponentDAO {
         }
     }
 
-    public void addToFavorites(@Nonnull FrontendDish dish) {
+    public void addToFavorites(@Nonnull Dish dish) {
         database.execSQL("INSERT INTO favoriteDishes (dishID) VALUES (" + dish.getId() + ")");
     }
 

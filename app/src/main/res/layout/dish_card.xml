@@ -13,22 +13,21 @@
         android:layout_height="120dp"
         android:layout_marginStart="12dp"
         app:cardBackgroundColor="?attr/cardBackgroundColor"
-        app:cardCornerRadius="1000dp"
+        app:cardCornerRadius="60dp"
         app:cardElevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/dishImage"
             android:layout_width="121dp"
             android:layout_height="121dp"
             android:layout_gravity="center"
-            android:src="?attr/cardBackgroundColor"
+            app:srcCompat="?attr/cardBackgroundColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
