@@ -9,7 +9,7 @@ android {
         applicationId "org.slovenlypolygon.cookit"
         targetSdkVersion 30
         minSdkVersion 24
-        versionName "1.0.7-1"
+        versionName "1.0.7-2"
         versionCode 520
     }
 
@@ -39,16 +39,12 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    // utils
-    implementation 'commons-io:commons-io:20030203.000550'
+    /* images */ implementation 'com.squareup.picasso:picasso:2.71828'
+    /* utils */ implementation 'commons-io:commons-io:20030203.000550'
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
     implementation 'com.google.guava:guava:30.1.1-jre'
 
-    // images
-    implementation 'com.squareup.picasso:picasso:2.71828'
-
-    // android's views
-    implementation 'androidx.cardview:cardview:1.0.0'
+    /* android's views */ implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
@@ -56,7 +52,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
 
-    // rxjava
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    /* rxjava */ implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.3'
 }
