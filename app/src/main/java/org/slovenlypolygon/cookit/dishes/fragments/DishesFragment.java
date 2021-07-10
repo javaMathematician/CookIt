@@ -134,7 +134,7 @@ public class DishesFragment extends AbstractSearchableContentFragment {
                     };
 
                     ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(requireContext(), ((MainActivity) requireActivity()).getCurrentTheme().equals("Dark") ? R.style.DarkProgressDialog : R.style.LightProgressDialog);
-                    actionsWithDishDialog = new AlertDialog.Builder(contextThemeWrapper).setTitle(R.string.ingredient_actions).setAdapter(arrayAdapter, (dialog1, which) -> {}).create();
+                    actionsWithDishDialog = new AlertDialog.Builder(contextThemeWrapper).setTitle(R.string.recipe_actions).setAdapter(arrayAdapter, (dialog1, which) -> {}).create();
                     actionsWithDishDialog.getListView().setOnItemClickListener((parent, view1, position, id) -> {
                         if (position == 0 && containsFavorites) {
                             dao.removeFromFavorites(dish);

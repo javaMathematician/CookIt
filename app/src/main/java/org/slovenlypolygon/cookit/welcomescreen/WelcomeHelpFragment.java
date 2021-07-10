@@ -23,9 +23,9 @@ public class WelcomeHelpFragment extends Fragment {
             R.raw.ingredient_ex,
             R.raw.dish_ex,
             R.raw.step_ex,
-            R.raw.step_ex,
-            R.raw.step_ex,
-            R.raw.step_ex
+            R.raw.actions_with_recipe,
+            R.raw.actions_with_ingredient,
+            R.raw.settings_image
     };
 
     @StringRes private static final int[] PAGE_TITLES = {
@@ -52,7 +52,7 @@ public class WelcomeHelpFragment extends Fragment {
             R.color.third_color_help,
             R.color.first_color_help,
             R.color.second_color_help,
-            R.color.third_color_help
+            R.color.darkThemeBackgroundCardColor
     };
 
     private static final String ARG_POSITION = "slider-position";
