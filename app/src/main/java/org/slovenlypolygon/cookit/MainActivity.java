@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeDatabaseAndSettingsFragment() {
         DatabaseFragment fragment = findOrGetFragment(getString(R.string.backend_database_fragment_tag), DatabaseFragment.class);
 
-        if (!fragment.isAdded()) getSupportFragmentManager().beginTransaction().add(fragment, getString(R.string.backend_database_fragment_tag)).commitNow();
+        if (!Objects.requireNonNull(fragment).isAdded()) getSupportFragmentManager().beginTransaction().add(fragment, getString(R.string.backend_database_fragment_tag)).commitNow();
     }
 
     private void showBaseFragment() {
